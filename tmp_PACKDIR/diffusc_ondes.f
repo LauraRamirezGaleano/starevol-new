@@ -1005,22 +1005,20 @@ C If I=mspec, ------------- electrons -----------------
 C For I=mspec,2mspec, we get the heat fluxes
 C For I=N-1, we get the electric field
 C For I=N, we get the gravitational force g
-c      CALL MKL_SET_NUM_THREADS(4)
-      CALL dgetrf(n,n,delta,nmax,indx,d)
+      CALL LUDCMP(delta,n,nmax,indx,d)
 c$$$      print *, 'delta',delta,'indx',indx,n,nmax,d
 c$$$      stop
-      CALL dgetrs('N',n,1,delta,nmax,indx,alpha,nmax,d)
-      CALL dgetrs('N',n,1,delta,nmax,indx,nu,nmax,d)
+      CALL LUBKSB(delta,n,nmax,indx,alpha)
+      CALL LUBKSB(delta,n,nmax,indx,nu)
       do j = 1,n
          do i = 1,n
             ga(i) = gamma(i,j)
          enddo
-         CALL dgetrs('N',n,1,delta,nmax,indx,ga,nmax,d)
+         CALL LUBKSB(delta,n,nmax,indx,ga)
          do i = 1,n
             gamma(i,j) = ga(i)
          enddo
       enddo
-c      CALL MKL_SET_NUM_THREADS(1)
 c      if (jshell.eq.2) print *, alpha(4),dc(4),cc
 c      if (jshell.eq.4) stop
 C The results for the coefficients must be multiplied by p/K_0:
