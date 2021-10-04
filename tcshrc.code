@@ -1,0 +1,46 @@
+set prompt = "%B"$PWD">%b"     # command prompt.
+setenv DIR_STAR /usr/local/bigdata/palacios/mnt/
+setenv DIR_EXE /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/
+setenv DIR_BATCH /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/BATCH/
+setenv DIR_EVOL /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/
+setenv DIR_LIB /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/LIB/
+setenv DIR_OPA /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_EXT/GN93/
+setenv DIR_OPAAGS05 /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_NEW/
+setenv DIR_OPA3 /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/SRC/Data/
+setenv DIR_OPAAGSS09 /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_09/
+setenv DIR_OPA4 /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_09/
+setenv DIR_OPAhoudek /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/INTERPOL/v9/opal95/
+setenv DIRGRID_OPA /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_GRID/
+setenv DIR_UTILS /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/UTILS/
+setenv DIR_SUN /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/UTILS/solar_calibration/
+setenv DIR_SVNLA /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/CODE_SVN
+setenv DIR_STARLOC /usr/local/bigdata/palacios/mnt/
+setenv DIR_BATCHLOC /usr/local/bigdata/palacios/mnt/CALCULS/BATCH/
+setenv DIR_MODELSLOC /usr/local/bigdata/palacios/mnt/CALCULS/MODELS/
+setenv DIR_RESEVOLLOC /usr/local/bigdata/palacios/mnt/CALCULS/RESEVOL/
+setenv DIR_RESULTSLOC /usr/local/bigdata/palacios/mnt/CALCULS/RESULTS/
+setenv DIR_ATMP /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/ATMOSPHERE/PHOENIX/
+setenv DIR_ATMM /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/ATMOSPHERE/MARCS/
+#setenv SOLCOMP AGS05
+#setenv SOLCOMP GN93 
+setenv GONGFILE on
+setenv SOLCOMP AGSS09
+setenv LC_ALL C
+setenv STAR_ATM PHOENIX
+setenv FORTRAN ifort
+setenv BITSIZE "uname -p"
+setenv FORTRAN32 /opt/intel/f32/bin/ifort
+#setenv FORTRAN_FLAGS  "-O2 -W1 -w -Vaxlib -static -no-ipo"
+#setenv FORTRAN_FLAGS  "-O2 -W1 -w -Vaxlib -static"
+setenv FORTRAN_FLAGS  "-O2 -W1 -w -static -no-ipo"
+setenv FORTRAN_DBFLAGS "-check all -warn all -gen_interfaces -traceback -fpe0 -fpstkchk -no-ipo"
+# For 64bits compiler
+setenv DIR_ANIM /usr/local/bigdata/palacios/mnt/CALCULS/SMONGO/ANIM/
+setenv DIR_SMEPS /usr/local/bigdata/palacios/mnt/CALCULS/SMONGO/
+setenv DIR_SMMAC /usr/local/bigdata/palacios/mnt/CALCULS/SMONGO/
+setenv OPTS_LAME "-V2 --vbr-new -q0 --lowpass 19.7"
+
+# For MESA code
+#setenv MESA_DIR /usr/local/bigdata/palacios/mnt/MESA/mesa-r6794
+#setenv MESASDK_ROOT $MESA_DIR/../mesasdk
+#source $MESASDK_ROOT/bin/mesasdk_init.csh

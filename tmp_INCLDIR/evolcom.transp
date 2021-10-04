@@ -1,0 +1,67 @@
+c -*-FORTRAN-*-
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      integer ndtold,ndbold
+      integer idiffvr,idiffvr0
+
+      double precision hhp,hht,khi,khit,epsit,grav,xi,xnum,
+     &     rtot,gs,omega_S,ur_S
+      double precision V_circ,xalpha
+      double precision rray,rkonv,rkonvL,muizero,vmud
+      double precision rraym,gravm,hhtm,khitm,xlumlm,rmassm,rdensm,
+     &     rkonvm,rkonvLm,epsitm,rraym2,rrog,hnenn,xKtm,vrraym,vrraym2,
+     &     xnumm
+      double precision coeff,xnorm,del_zc,D_zc,xLtot,xLloc,Dh_max
+      double precision xnuvv,Dhd,dnuvvp,dnuvvl,dnuvvo
+      double precision auxs,urs,xpsis,oms,xlambdas,xmom_tots,ur_Ss
+      double precision epsimu,khi_mu,epsimum,khi_mum,khim
+      double precision xKt
+      double precision rro,vrro
+      double precision grad_crit
+      double precision diffvr,breaktime
+C Modifs CC ondes (2/04/07)
+      double precision Dondes,Dondeschim,epx
+      double precision xspd,vxspd
+      
+      double precision dmoment,dmoment1
+
+      logical zgradmu
+      logical inits
+ 
+      common /comp_chim/ vxspd(nsh,nsp),xspd(nsh,nsp)
+      common /rotlaw/ diffvr,breaktime,idiffvr,idiffvr0
+      common /limitemu/ grad_crit,zgradmu
+      common /comomega/ hhp(nsh),hht(nsh),khi(nsh),khit(nsh),
+     &     epsit(nsh),grav(nsh),xi(nsh),xnum(nsh),rtot,gs,
+     &     omega_S,ur_S
+      common /depsmu/ epsimu(nsh),khi_mu(nsh),epsimum(nsh),khi_mum(nsh),
+     &     khim(nsh)
+      common /emu/ V_circ(nsh),xalpha(nsh)
+      common /parametres/ coeff,xnorm,del_zc,D_zc,xLtot,xLloc,Dh_max
+      common /save_ang/ auxs(nsh),urs(nsh),xpsis(nsh),oms(nsh),
+     &     xlambdas(nsh),xmom_tots,ur_Ss,ndtold,ndbold,inits
+      common /star/ rray(nsh),rkonv(nsh),rkonvL(nsh),muizero(nsh),
+     &     vmud(nsh)
+      common /valmoy/ rraym(nsh),gravm(nsh),hhtm(nsh),khitm(nsh),
+     &     xlumlm(nsh),rmassm(nsh),rdensm(nsh),rkonvm(nsh),rkonvLm(nsh),
+     &     epsitm(nsh),rraym2(nsh),rrog(nsh),hnenn(nsh),xKtm(nsh),
+     &     vrraym(nsh),vrraym2(nsh),xnumm(nsh)
+      common /difftherm/ xKt(nsh)
+C Modifs CC ondes (2/04/07)
+      common /viscosite_turb/ xnuvv(nsh),Dhd(nsh),dnuvvp(nsh),
+     &     dnuvvl(nsh),dnuvvo(nsh),
+     &     Dondes(nsh),Dondeschim(nsh)
+
+      common /momEC/ dmoment,dmoment1
+
+      common /densrot/ rro(nsh),vrro(nsh)
+
+
+C coeff = 4piR^3
+C xnorm = R*omega_S**2/gs**2
+C D_zc = coeff de diffusion utilise dans les ZC
+C xLtot = R^2 * omega_s
+C xLloc = coeff

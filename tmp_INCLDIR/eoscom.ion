@@ -1,0 +1,56 @@
+*********************************************
+*WARNING: This common requires evolpar.chem *
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+*********************************************
+*===========================MAXIMUMS FOR EOS============================
+*
+*     zionmax: Ionization can be computed for Z such as:
+*	      1	< Z < zionmax
+*      This is constrainted by the number of datas written in the 
+*       code (energy levels and degeneracy of fundamental level).
+      INTEGER zionmax
+
+*     nbzmax is the maximum total number of chemical species which 
+*      can be taken into account. For each, eos must known mass 
+*      (the user gives it in anuc) and the fundamental state 
+*      degeneracy for the neutral specie.
+      INTEGER nbzmax
+
+*     nbionZmax is the maximum of ions which can be computed 
+*      simultaneously in the plasma = SUM(z+1) from 2 to 
+*      zionmax = zionmax*(zionmax+3)/2-2.
+      INTEGER nbionZmax
+
+*     nbionHmax is the maximum of "ions" calculated for Hydrogen. 
+*      4 is for H,H+,H- and H2.
+      INTEGER nbionHmax
+
+*     first and last nsp for a Z
+      INTEGER nspmin,nspmax
+*
+*==========================PARAMETERS==============================
+*
+      PARAMETER (nspmin=2)
+      PARAMETER (nspmax=53)
+      PARAMETER (nbzmax=21)
+      PARAMETER (zionmax=20)
+      PARAMETER (nbionHmax=4)
+
+*     zionmax*(zionmax+3)/2-2
+      PARAMETER (nbionZmax=228)   
+*
+*=================QUANTITIES FOR ION COMPUTATIONS====================
+*
+*     Atomic numbers of chemical species computed in the code
+*     (nbzmax-2 because H and heavy are computed separatly)
+      INTEGER Z(nbzmax-2)
+
+*     What is the index of the atomic number of a given isotope ?     
+      INTEGER izsp(nsp)
+
+      COMMON /newion/ Z,izsp
+  

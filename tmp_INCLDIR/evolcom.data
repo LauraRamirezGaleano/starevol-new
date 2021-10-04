@@ -1,0 +1,30 @@
+* -*-fortran-*-
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      integer iih,iic,iin,iio,iih2,iih2o,iioh,iico,iicn,iic2,iin2,iich
+      integer iino,iio2,iinh,idxmol
+      integer nspecies,natoms,neqchim,ireac
+
+      double precision amlos
+      double precision xspsol,xspref,zsol
+      double precision akap,aIrwin,aSauval,aheavy,Eion
+
+      character*4 molname
+c     character*5 refsolar
+      character*6 refsolar
+
+      common /data/ amlos(6,5)
+      common /composition/ xspref(5,nis+6)   ! TD 12/2019
+c      common /composition/ xspref(4,nis+6)
+cc      common /composition/ xspref(3,nis+6)
+ccc      common /composition/ xspref(2,nis+6)
+
+      common /solar/ xspsol(nis+6),zsol,refsolar
+      common /kapCO/ akap(neqchimmax,5),ireac(neqchimmax,6),aheavy(7),
+     &	     idxmol(nmole,3),iih,iic,iin,iio,iih2,iih2o,iioh,iico,
+     &	     iicn,iic2,iin2,iinh,iich,iino,iio2,nspecies,natoms,neqchim
+      common /kapmol/ molname(nmole+4)
+      common /kapfunc/ aIrwin(7,12),aSauval(nioniz,10),Eion(nioniz)

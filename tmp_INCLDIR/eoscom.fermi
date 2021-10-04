@@ -1,0 +1,17 @@
+**************************************************
+* To be used for tabulated Fermi-Dirac integrals *
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+**************************************************
+*
+      INTEGER dimeta,dimlogt
+      PARAMETER (dimeta=191,dimlogt=100)
+      DOUBLE PRECISION limeta1,limeta2,limlogt1,limlogt2,dlogt,deta
+      PARAMETER (limeta1=-30.0d0,limeta2=65.0d0,deta=0.5d0)
+      PARAMETER (limlogt1=4.0d0,limlogt2=9.0d0,dlogt=0.05d0)
+      DOUBLE PRECISION fct12(dimeta,dimlogt),fct32(dimeta,dimlogt)
+      DOUBLE PRECISION fct52(dimeta,dimlogt)
+      COMMON /fermidirac/ fct12,fct32,fct52

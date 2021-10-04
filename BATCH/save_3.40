@@ -1,0 +1,276 @@
+
+#
+#! /bin/sh
+#
+
+
+echo 
+if [ $# -ne 7 ]
+   then
+   echo " !! 7 arguments needed:"
+   echo " 1: evolution file name"
+   echo " 2: phase directory (under $DIR_RESEVOL)"
+   echo " 3: specific star directory (generally under $DIR_MODELS)"
+   echo " 4: first seq. number to compute"
+   echo " 5: current seq. number"
+   echo " 6: last seq. number to compute"
+   echo " 7: starevol.e copied date"
+   echo save aborted.
+   echo 
+   exit 2
+fi
+
+icurrent=$5
+seqn=`expr $icurrent + 10000`
+istr=`echo ${seqn} | cut -c2-5`
+starevolog=$1.log
+
+FILE=$1
+phdir=$2
+subinis=$3
+
+oldstardate=$7
+FILEX=$1_$istr
+istart=`expr $4 + 10000 | cut -c2-5`
+iend=`expr $6 + 10000 | cut -c2-5`
+resevoldir=$DIR_RESEVOL/$phdir
+
+ext="hr as tc1 tc2 c1 c2 c3 c4 c5 c6 s1 s2 s3 s4 v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13"
+
+FILEd=${FILEX}d
+FILEb=${FILEX}b
+FILEa=${FILEX}a
+FILEo=${FILEX}o
+kf=0
+FILE0=$resevoldir/${FILE}
+
+# banner modification : first sequence only
+if [ $icurrent -eq $istart ]
+  then
+  compo=`grep INITIAL evoldisp | cut -c 24-54`
+  iscompo=`grep Surface ${FILE}.s1 | wc -c`
+  compovi=`echo $compo | sed 's#/#\\\/#g'`
+  if [ $iscompo -eq 30 ]
+  then
+    ex ${FILE}.s1 << EOF
+    2,2 s/:/: $compovi /
+wq
+EOF
+fi
+  #dispbanner=`head evoldisp | grep network`
+  #evolbanner=`head ${FILE}.hr | grep network`
+  #echo $dispbanner
+  #echo $evolbanner
+  #if [ "$dispbanner" != "$evolbanner" ]
+  #  then
+  #  echo changing banner for evolution files
+  #  echo
+  #  for i in $ext
+  #  do
+  #    if [ -s ${FILE}.$i ]
+  #    then
+  #      sed -e "1,1 s/$evolbanner/$dispbanner/" ${FILE}.$i > ${FILE0}.$i
+  #     fi
+  #  done
+  #  gzip -fq ${FILE0}.*
+  #fi
+fi
+
+diff -ib starevol.par /tmp/starevol_$FILE.par > _modif
+
+#  check changes 
+if [ $icurrent -lt $iend ]
+  then
+  if [ -s _modif ]
+    then 
+    kf=1
+    seqn1=`expr $icurrent + 10001`
+    istr1=`echo ${seqn1} | cut -c2-5`
+    echo " " >> $subinis/$starevolog
+    echo "*** Sequence ${FILE}_$istr1 : `date` " >> $subinis/$starevolog
+    echo "   - modif in starevol.par " >> $subinis/$starevolog
+    cat _modif >> $subinis/$starevolog
+  fi
+  
+  stardate=` date -r starevol.e | sed 's/\ /\_'/g`
+  if [ $stardate != $oldstardate ]
+    then
+    if [ ! -s _modif ]
+      then
+      kf=2
+      seqn1=`expr $icurrent + 10001`
+      istr1=`echo ${seqn1} | cut -c2-5`
+      echo " " >> $subinis/$starevolog
+      echo "*** Sequence ${FILE}_$istr1 : `date` " >> $subinis/$starevolog
+    fi
+    echo " o WARNING :  starevol.e has been changed " >> $subinis/$starevolog
+  fi
+  \rm -f _modif
+fi
+
+
+echo `date` : saving evolhr, evolvar*, evolch* ...
+
+varindex=" 1 2 3 4 5 6 7 8 9 10 11 12 13"
+chemindex=" c1 c2 c3 c4 c5 s1 s2 s3 s4 "
+
+if [ $icurrent == $istart -o $kf == 1 ]
+  then
+  i="hr"
+  sed 's/####/'$istr'/' evolhr | sed '1,1 s/@/</'  >> ${FILE}.$i
+  sed 's/####/'$istr'/' evolhr | sed '1,1 s/@/</' | gzip -c >> ${FILE0}.$i.gz
+  i="as"
+  sed 's/####/'$istr'/' evolas | sed '1,1 s/@/</'  >> ${FILE}.$i
+  sed 's/####/'$istr'/' evolas | sed '1,1 s/@/</' | gzip -c >> ${FILE0}.$i.gz
+  i="tc1"
+  echo i $i
+  sed 's/####/'$istr'/' evoltc1 | sed '1,1 s/@/</'  >> ${FILE}.$i
+  sed 's/####/'$istr'/' evoltc1 | sed '1,1 s/@/</' | gzip -c >> ${FILE0}.$i.gz
+  i="tc2"
+  sed 's/####/'$istr'/' evoltc2 | sed '1,1 s/@/</'  >> ${FILE}.$i
+  sed 's/####/'$istr'/' evoltc2 | sed '1,1 s/@/</' | gzip -c >> ${FILE0}.$i.gz
+  for i in $varindex
+  do
+    if [ -s evolvar$i ]
+    then
+      sed '1,1 s/@/</' evolvar$i >> ${FILE}.v$i
+      sed '1,1 s/@/</' evolvar$i | gzip -c >> ${FILE0}.v$i.gz
+    fi
+  done
+  for i in $chemindex
+  do
+    if [ -s evolch$i ]
+    then
+      sed '1,1 s/@/</' evolch$i >> ${FILE}.$i
+      sed '1,1 s/@/</' evolch$i | gzip -c >> ${FILE0}.$i.gz
+    fi
+  done
+else
+  if [ $kf = "2" ]
+    then
+    i="hr"
+    sed 's/####/'$istr'/' evolhr | sed '1,1 s/@/|/' >> ${FILE}.$i
+    sed 's/####/'$istr'/' evolhr | sed '1,1 s/@/|/' | gzip -c >> ${FILE0}.$i.gz
+    i="as"
+    sed 's/####/'$istr'/' evolas | sed '1,1 s/@/|/' >> ${FILE}.$i
+    sed 's/####/'$istr'/' evolas | sed '1,1 s/@/|/' | gzip -c >> ${FILE0}.$i.gz
+    i="tc1"
+    echo i $i
+    sed 's/####/'$istr'/' evoltc1 | sed '1,1 s/@/|/' >> ${FILE}.$i
+    sed 's/####/'$istr'/' evoltc1 | sed '1,1 s/@/|/' | gzip -c >> ${FILE0}.$i.gz
+    i="tc2"
+    sed 's/####/'$istr'/' evoltc2 | sed '1,1 s/@/|/' >> ${FILE}.$i
+    sed 's/####/'$istr'/' evoltc2 | sed '1,1 s/@/|/' | gzip -c >> ${FILE0}.$i.gz
+    for i in $varindex
+    do
+      if [ -s evolvar$i ]
+      then
+    echo ${FILE}.v$i ${FILE0}.v$i.gz
+        sed '1,1 s/@/|/' evolvar$i >> ${FILE}.v$i
+        sed '1,1 s/@/|/' evolvar$i | gzip -c >> ${FILE0}.v$i.gz
+      fi
+    done
+    for i in $chemindex
+    do
+      if [ -s evolch$i ]
+      then
+    echo ${FILE}.$i ${FILE0}.$i.gz
+        sed '1,1 s/@/|/' evolch$i >> ${FILE}.$i
+        sed '1,1 s/@/|/' evolch$i | gzip -c >> ${FILE0}.$i.gz
+      fi
+    done
+  else
+    i="hr"
+    sed 's/####/'$istr'/' evolhr | sed '1,1 s/@/>/' >> ${FILE}.$i
+    sed 's/####/'$istr'/' evolhr | sed '1,1 s/@/>/' | gzip -c >> ${FILE0}.$i.gz
+    i="as"
+    sed 's/####/'$istr'/' evolas | sed '1,1 s/@/>/' >> ${FILE}.$i
+    sed 's/####/'$istr'/' evolas | sed '1,1 s/@/>/' | gzip -c >> ${FILE0}.$i.gz
+    i="tc1"
+    echo i $i
+    sed 's/####/'$istr'/' evoltc1 | sed '1,1 s/@/>/' >> ${FILE}.$i
+    sed 's/####/'$istr'/' evoltc1 | sed '1,1 s/@/>/' | gzip -c >> ${FILE0}.$i.gz
+    i="tc2"
+    sed 's/####/'$istr'/' evoltc2 | sed '1,1 s/@/>/' >> ${FILE}.$i
+    sed 's/####/'$istr'/' evoltc2 | sed '1,1 s/@/>/' | gzip -c >> ${FILE0}.$i.gz
+    for i in $varindex
+    do
+      if [ -s evolvar$i ]
+      then
+        sed '1,1 s/@/>/' evolvar$i >> ${FILE}.v$i
+        sed '1,1 s/@/>/' evolvar$i | gzip -c >> ${FILE0}.v$i.gz
+      fi
+    done
+    for i in $chemindex
+    do
+      if [ -s evolch$i ]
+      then
+        sed '1,1 s/@/>/' evolch$i >> ${FILE}.$i
+        sed '1,1 s/@/>/' evolch$i | gzip -c >> ${FILE0}.$i.gz
+      fi
+    done
+  fi
+fi
+#if [ -s evolas ]
+#  then
+#    sed '1,1 s/@/>/' evolas >> ${FILE}.as
+#        sed '1,1 s/@/>/' evolas | gzip -c >> ${FILE0}.as.gz
+#fi
+#if [ -s evoltc ]
+#  then
+#     sed '1,1 s/@/>/' evoltc >> ${FILE}.tc
+#     sed '1,1 s/@/>/' evoltc | gzip -c >> ${FILE0}.tc.gz
+#fi
+#    
+if [ -s evolchc6 ]
+  then
+  cp -f evolchc6 ${FILE}.c6
+fi
+
+echo `date` : saving evoldisp, nextini.bin and nextang,bin to ${FILEX} "..."
+cp evoldisp $FILEd
+cp nextini.bin $FILEb
+if [ -s nextang.bin ]
+  then
+  cp nextang.bin $FILEa
+fi
+if [ -s evoldiff ]
+  then
+  cp evoldiff $FILEo
+fi
+if [ -s evolvarang ]
+  then
+  cp evolvarang $FILEo
+fi
+echo `date` : compressing and copying files ${FILEX} ...
+
+gzip -f $FILEX[dbao]
+#cp $FILEX[dlb].gz $DIR_RESULTS/$phdir
+
+if [ $PWD != $subinis ]
+  then
+  gzip -c nextini.bin > $subinis/modini.bin.gz
+  if [ -s nextang.bin ]
+    then
+    #cp $FILEX[a].gz $DIR_RESULTS/$phdir
+    gzip -c nextang.bin > $subinis/modang.bin.gz
+  fi
+  cp -f starevol.par $subinis/starevol.par
+fi
+cp -f starevol.par /tmp/starevol_$FILE.par
+
+if [ -s evolflame ]
+then
+  cat evolflame >> ${FILE}.flame
+  gzip -c evolflame >> ${FILE0}.flame.gz
+fi
+rm -f evolflame
+
+if [ -s ${FILE}.c6 ]
+  then
+  cp -i ${FILE}.c6 _ttpppc6
+fi
+
+
+echo `date` : save completed.
+echo

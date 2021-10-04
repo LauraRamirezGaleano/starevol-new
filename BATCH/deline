@@ -1,0 +1,100 @@
+
+#
+#! /bin/sh
+#
+
+if [ $# -lt 4 ] ||  [ $# -gt 5 ]
+then
+   echo " !! 4 argument needed:"
+   echo " 1: evolution file name"
+   echo " 2: repository directory (under $DIR_RESEVOL)"
+   echo " 3: first model number to be deleted"
+   echo " 4: last  model number to be deleted (if 0 delete lines till the end of file)"
+   echo " 5 OPTINAL : if set, default repository directory is defined in 2nd argument"
+   echo
+   echo " ex : m1.0z02 TEST 123 255"
+   echo
+   exit 2
+fi
+
+
+filein=$1
+nseqi=$3
+nseqf=$4
+
+if [ $# -eq 5 ]
+then
+  phdir=`basename $2`
+  dir=$2
+else
+  phdir=$2
+  dir=$DIR_RESEVOL/$phdir
+fi
+file=$dir/$filein
+filehr=$file".hr"
+filehrz=$file".hr.gz"
+
+echo ${dir}
+
+if [ ! -s ${dir} ]
+then
+  echo directory ${dir} does not exist
+  echo delevol aborted
+  echo
+  exit 2
+fi
+
+echo
+if [ $nseqf -eq 0 ]
+then
+  echo delete model numbers $3 to end from files $file"[.hr,.v?,.c?,.s?,.tc?,.as?]"
+else
+  echo delete model numbers $3 to $4 from files $file"[.hr,.v?,.c?,.s?,.tc?,.as?]"
+fi
+echo 
+
+izip=0
+if [ -s ${filehr} ] || [ -s ${filehrz} ] 
+  then
+  if [ -s ${filehrz} ]
+  then
+     izip=1
+     echo "gunzip evolutionary files"
+     gunzip $file.*
+  fi
+else
+  echo files ${file} do not exist
+  exit 2
+fi
+echo $nseqi
+
+if [ $nseqf -le 0 ]
+then
+  echo $nseqi 5000000 "'$file'" | evoldeline_3.40.e
+else
+  if [ $nseqi -le 0 ]
+  then
+    echo 1 $nseqf "'$file'" | evoldeline_3.40.e
+  else
+    echo $nseqi $nseqf "'$file'" | evoldeline_3.40.e
+  fi
+fi
+
+# replace non truncated files by truncated files
+ext=".as .tc1 .tc2 .hr .c1 .c2 .c3 .c4 .c5 .s1 .s2 .s3 .s4 .v1 .v2 .v3 .v4 .v5 .v6 .v7 .v8 .v9 .v10 .v11 .v12 .v13"
+for i in $ext
+do
+  if [ -s $file$i"s" ]
+  then
+    mv -f $file$i"s" $file$i
+  fi
+done
+if [ -s $file.sav6 ]
+then
+  mv -f $file.sav6 $file.c6
+fi
+
+if [ $izip = 1 ]
+then
+   gzip $file.*
+fi

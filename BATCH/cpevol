@@ -1,0 +1,115 @@
+
+#
+#! /bin/sh
+#
+
+echo 
+if [ $# -gt 4 ] || [ $# -lt 3 ]
+   then
+   echo
+   echo " cpevol makes a copy of the evolutionary files in the same repository directory"
+   echo
+   echo " !! at lest 3 arguments needed:"
+   echo " 1: existing evolution filename (init : mevol msn malpha massive)"
+   echo " 2: new evolution filename"
+   echo " 3: repository directory (default is under $DIR_RESEVOL)"
+   echo " 4: optional : if set to 1, defaut repository directory set by 3rd argument"
+   echo "               defines the full path"
+   echo
+   echo "    ex  cpevol mevol m11_z02 M11  -- or -- cpevol mevol m11_z02 /evol2/siess/RESEVOL/M11 1"
+   echo cpevol aborted.
+   echo 
+   exit 2
+fi
+
+FILE1=$1
+FILE2=$2
+if [ $# -eq 4 ]
+   then
+   dir_src=$3/..
+   phdir1=`basename $3`
+   phdir2=`basename $3`
+else
+   dir_src=$DIR_RESEVOL
+   phdir1=$3
+   phdir2=$3
+fi
+
+if [ ! -d $dir_src/${phdir2} ]
+then
+  echo 1 : $dir_src/${phdir2} does not exist
+  echo cpevol aborted
+  echo
+  exit 2
+fi
+
+if [ ${FILE1} = mevol ] || [ ${FILE1} = mevol230 ] || [ ${FILE1} = malpha ] || [ ${FILE1} = msn ] || [ ${FILE1} = massive ]
+then
+  phdir1=HEADERS
+else
+  FILE1hr=$dir_src/${phdir1}/${FILE1}.hr
+  FILE1hrgz=${FILE1hr}.gz
+  if [ ! -s ${FILE1hr} ] &&  [ ! -s ${FILE1hrgz} ]
+  then
+    echo 2 : files $dir_src/${phdir1}/${FILE1}* does not exist
+    echo
+    exit
+  fi
+fi
+
+FILEIN=$dir_src/${phdir1}/${FILE1}
+FILEOUT=$dir_src/${phdir2}/${FILE2}
+
+FILEhr=${FILEOUT}.hr
+FILEhrgz=${FILEhr}.gz
+
+
+if [ -e ${FILEhr} ] || [ -e ${FILEhrgz} ]
+  then
+  echo "copying ${FILEIN}.[*] to ${FILEOUT}.[*]"
+  if  [ -e ${FILEhr} ]
+    then
+      echo file ${FILEhr} already exists
+  else
+      echo file ${FILEhrgz} already exists
+  fi
+  echo -n "Files will be erased - OK to proceed ? [y/n] "
+  echo
+  stty cbreak    # or  stty raw
+  readchar=`dd if=/dev/tty bs=1 count=1 2>/dev/null`
+  stty -cbreak
+  test=$readchar"1"
+  if [ $test != y1 ]
+    then
+    echo
+    echo cpevol aborted
+    exit
+   else
+    echo
+  fi
+else
+  echo "copying ${FILEIN}.[*] to ${FILEOUT}.[*]"
+fi
+
+if [ -s ${FILEIN}.hr ] 
+then
+  gzip ${FILEIN}.*
+fi
+
+ext="as tc1 tc2 hr c1 c2 c3 c4 c5 s1 s2 s3 s4 v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13 flame tpagb0 tpabg1 tpagb2 tpagb3"
+for i in $ext
+do
+  if [ -s ${FILEIN}.$i.gz ]
+  then
+    cp ${FILEIN}.$i.gz ${FILEOUT}.$i.gz
+  fi
+done
+
+if [ ! -s ${FILE1}.c6.gz ]
+  then
+  rm -f  ${FILEOUT}.c6.gz
+fi
+
+echo command ok : cpevol $FILE1 $FILE2 $phdir1
+echo copy files : ${FILEOUT}
+echo

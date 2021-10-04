@@ -1,0 +1,41 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      character scr*1,dtnmix*1
+
+      integer iturb
+      integer mmin,mmax
+      integer nczm
+      integer novlim,nschwar,nledoux,nsemiconv,nthermha,novopt,
+     &     nsconv,idup
+      integer hpmlt
+      integer crz
+
+      logical ledouxmlt,semiconv,mixopt,mixopt0
+      logical ihro,lmix,chkmix
+
+      double precision etaturb,alphatu
+      double precision delmcz
+      double precision aup,adwn
+      double precision am,amacc
+      double precision turnover,turnenv,alphac
+      double precision sconv,eff,fconv,frad,fkin,fkcr
+      double precision Dconv,tconv
+      double precision delmc,delms,yconvlc,yconvls
+
+      common /convturb/ etaturb,alphatu,iturb,ihro
+      common /isconvz/ delmcz,nczm
+      common /ovsh/ aup,adwn,novlim(nmaxconv,ntypeconv),nschwar,
+     &     nledoux,nsemiconv,nthermha,nsconv,novopt,idup,lmix,chkmix
+      common /nucmix/ am(nmaxconv),amacc(nmaxconv),mmin(nmaxconv),
+     &     mmax(nmaxconv)
+      common /convp/ turnover(nmaxconv),turnenv,alphac,hpmlt,ledouxmlt,
+     &     semiconv,mixopt,mixopt0,dtnmix
+      common /conv/ sconv(nsh),eff(nsh),fconv(nsh),frad(nsh),
+     &     fkin(nsh),fkcr(nsh)
+      common /convdiff/ Dconv(nsh),tconv(nsh)
+      common /shelltype/ crz(nsh),scr
+      common /diflim/ delmc,delms,yconvlc(nsp),yconvls(nsp)

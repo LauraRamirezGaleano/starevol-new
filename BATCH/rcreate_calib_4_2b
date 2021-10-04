@@ -1,0 +1,532 @@
+#! /bin/ksh
+echo
+echo "   ******   Calibrating a solar model  ******"
+echo
+
+echo 
+if [ $# -ne 8 ]
+   then
+   echo " !! 8 arguments needed:"
+   echo " 1: metallicity  (format f8.6 : ex 0.020000)"
+   echo " 2: helium content (format f8.6 : ex 0.280000)"
+   echo " 3: hydrogen content (format f8.6 : ex 0.7180000)"
+   echo " 4: MLT parameter alpha(format f6.4 : ex 1.7500)"
+   echo " 5: iteration number in the calibration process"
+   echo " 6: Model type: 1 (no transport), 2 (mic. diff) or 3 (micro. diffu + rot)"
+   echo " 7: Reference solar chemical composition : 1 (GN93), 2 (AGS05) or 3 (AGS09)"
+   echo " 8: STAREVOL code version (ex : gag2.60)"
+   echo 
+   echo "   ex : rcreate 0.020000 0.280000 1.6000 0 1 1 gag2.92"
+   echo 
+   exit 2
+fi
+
+
+metal=$1
+helium=$2
+hydrogen=$3
+alpha=$4
+iteration=`expr $5`
+mtype=$6
+solcomp=$7
+code=$8
+
+echo "Iteration " $iteration " in the process of calibration of the solar model"
+echo
+
+d_r=`expr 0`
+d_l=`expr 0`
+d_Zsx=`expr 0`
+
+#Created directory where the entire calibration will be computed
+
+metalc=`echo $metal | cut -c 1-8`
+heliumc=`echo $helium | cut -c 1-8`
+alphac=`echo $alpha | cut -c 1-6`
+
+# Loop until solar model calibrated at 1e-5 is obtained
+
+while ([ "$d_r" -ge -05 ] || [ "$d_l" -ge -05 ] || [ "$d_Zsx" -ge -05 ])
+  do
+
+
+# Recall the type of model that is going to be calibrated
+
+  echo "Requested metallicty " $metal "initial Y"  $helium " MLT parameter" $alpha 
+  echo
+  if [ $solcomp -eq 1 ] 
+      then
+      echo "Adopted reference solar composition by Grevesse & Noels 1993"
+  elif [ $solcomp -eq 2 ]
+      then
+      echo "Adopted reference solar composition by Asplund et al. 2005"
+  elif [ $solcomp -eq 3 ]
+      then
+      echo "Adopted reference solar composition by Asplund et al. 2009"
+  fi   
+  
+  echo " Type of model" $mtype
+  if [ $mtype -eq 1 ]
+      then
+      echo
+      echo "Classical model : no additional transport processes"
+      echo
+      dir=Sun_std_${metalc}${heliumc}${alphac}
+  elif [ $mtype -eq 2 ]
+      then
+      echo "Model computed with microscopic diffusion (Montmerle & Michaud  1976)"
+      echo
+      dir=Sun_diff_${metalc}${heliumc}${alphac}
+  elif [ $mtype -eq 3 ]
+      then
+      echo "Model computed with microscopic diffusion and rotation-induced mixing. "
+      echo "  Radial velocity on the ZAMS: 2.2 km/s , Kawaler braking law."
+      dir=Sun_rot_${metalc}${heliumc}${alphac}2.2kms
+      echo
+  fi
+
+  mkdir $DIR_MODELS/$dir
+  mkdir $DIR_RESEVOL/$dir 
+   
+
+
+##
+# If calibrating a classical model, a new matrix is generated 
+##
+
+  if [ $mtype -eq 1 ]
+      then
+      alphac=`echo $alpha | cut -c 1-6`
+      alpha_1=$alphac
+      helium_1=$helium
+      alpha_2=`echo 0$alphac-0.01 | bc`
+      helium_2=$helium
+      alpha_3=$alphac
+      helium_3i=`echo $helium-0.001 | bc`
+      helium_3=`echo 0${helium_3i}`
+      echo $helium $helium_1 $helium_2 $helium_3
+      it=1
+      while ([ $it -le 3 ])
+	do
+# Create the evolutionary flies for the current model of the new calibration matrix
+	file=suncal_${iteration}_${it}
+	echo Creating the ${it}th models  $file of the new calibrating matrix
+	$DIR_BATCH/cpevol mevol $file $dir
+	cd $DIR_MODELS/$dir
+	
+# Generate the appropriate initial binary file
+
+	_file=$DIR_INIT/sini_1.00.bin.gz
+	if [ ! -e $_file ] 
+	    then
+	    echo generating new stellar model
+	    newmass=2
+	else
+	    cp $DIR_INIT/sini_1.00.bin.gz modini.bin.gz    
+	    echo "copying $DIR_INIT/sini_1.00.bin.gz $DIR_MODELS/$dir/modini.bin.gz"
+	fi
+	
+	if [ -e modini1.bin ]
+	    then
+	    rm -f modini1.bin
+	fi
+
+	gunzip -f $DIR_MODELS/$dir/modini.bin.gz
+
+	Y=helium_${it}
+	if [ "$Y" == 'helium_1' ] 
+	    then
+	    echo $metal $helium_1 0 s > _cmd_yy_${iteration}_${it}
+	    echo
+	    echo "Generating appropriate initial binary file with Z = "$metal "and Y = "$helium_1
+	elif [ "$Y" == 'helium_2' ]
+	    then
+	    echo $metal $helium_2 0 s > _cmd_yy_${iteration}_${it}
+	    echo
+	    echo "Generating appropriate initial binary file with Z = "$metal "and Y = "$helium_2
+	else [ "$Y" == 'helium_3' ]
+	    echo $metal $helium_3 0 s > _cmd_yy_${iteration}_${it}
+	    echo
+	    echo "Generating appropriate initial binary file with Z = "$metal "and Y = "$helium_3
+	fi
+
+
+	$DIR_BATCH/starevolman3.30_suncal.e < _cmd_yy_${iteration}_${it}
+	
+	mv zini.out zini.out_${iteration}_${it}
+
+	gzip -f modini1.bin
+	\cp modini1.bin.gz modini.bin.gz
+
+# Modify the starevol.par file according to adopted values of Z and alpha
+
+#	cp $DIR_BATCH/starevol_grid.par .
+	cp $DIR_BATCH/starevol_cal.par .
+	
+	al=alpha_${it}
+	echo $al $alpha_1 $alpha_2 $alpha_3
+	if [ "$al" == 'alpha_1' ] 
+	    then
+	    sed 's/mtini =  10.00/mtini =   1.00/g' starevol_cal.par | sed 's/zkint = 0.013400/zkint = '$metalc'/g' | sed 's/mlp =  1/mlp =  0/g'| sed 's/hpmlt = 3/hpmlt = 1/g'  > starevola.par
+	    sed 's/alphac = 1.7500/alphac = '$alpha_1'/g' starevola.par > starevol.par
+	elif [ "$al" == 'alpha_2' ]
+	    then
+	    sed 's/mtini =  10.00/mtini =   1.00/g' starevol_cal.par | sed 's/zkint = 0.013400/zkint = '$metalc'/g' | sed 's/mlp =  1/mlp =  0/g'| sed 's/hpmlt = 3/hpmlt = 1/g'  > starevola.par
+	    sed 's/alphac = 1.7500/alphac = '$alpha_2'/g' starevola.par > starevol.par
+	else [ "$al" == 'alpha_3' ]
+	    sed 's/mtini =  10.00/mtini =   1.00/g' starevol_cal.par | sed 's/zkint = 0.013400/zkint = '$metalc'/g' | sed 's/mlp =  1/mlp =  0/g'| sed 's/hpmlt = 3/hpmlt = 1/g'  > starevola.par
+	    sed 's/alphac = 1.7500/alphac = '$alpha_3'/g' starevola.par > starevol.par
+	fi
+
+
+#	if [ $iteration == 0 ]
+#	    then
+#	    exit
+#	fi
+
+# Compute the itth model of the new calibration matrix
+
+	echo "runevol $file $dir 1 100 3 4.6000000000E+09 $code > 00.log &" > run_${iteration}_${it}
+	echo "runevol $file $dir 1 100 3 4.6000000000E+09 $code > 00.log &" 
+	echo $code
+   
+	chmod u+x run_${iteration}_${it}
+	$DIR_BATCH/runevol $file $dir 1 100 3 4.6000000000E+09 $code > 00.log 
+#	./run_${iteration}_${it}
+#	exit
+
+# Build the input file for the calibration routine
+
+	r=`cat input_calibration | awk '{print $1}'`
+	l=`cat input_calibration | awk '{print $2}'`
+	
+
+	if [ "$Y" == 'helium_1' ] 
+	    then
+	    echo $l $r $helium_1 $alpha_1 > calib_$it
+	elif [ "$Y" == 'helium_2' ]
+	    then
+	    echo $l $r $helium_2 $alpha_2 > calib_$it
+	else [ "$Y" == 'helium_3' ]
+	    echo $l $r $helium_3 $alpha_3 > calib_$it
+	fi
+	cat calib_$it
+	it=`expr $it + 1`
+
+      done
+
+      cat calib_1 calib_2 calib_3 > calib_donnees_${iteration}
+      cp -f calib_donnees_${iteration} calib_donnees
+
+##
+# If calibrating a standard model (with atomic diffusion), a new matrix is generated 
+##
+
+   elif [ $mtype -eq 2 ] || [ $mtype -eq 3 ]  
+      then
+      alphac=`echo $alpha | cut -c 1-6`
+      zoverxc=`echo "scale=10 ; 1/$hydrogen-$helium/$hydrogen-1" | bc`
+      zoverxcx=`echo 0${zoverxc}`
+#      zoverxc=`echo "scale=10 ;  1/0.70457" | bc`
+      echo $zoverxc $hydrogen
+      alpha_1=$alphac
+      helium_1=$helium
+      hydrogen_1=$hydrogen
+      metal_1=$metal
+      alpha_2=`echo $alphac-0.02 | bc`
+      helium_2=$helium
+      hydrogen_2=$hydrogen
+      metal_2=$metal
+      alpha_3=$alphac
+      helium_3i=`echo $helium-0.0005 | bc`
+      helium_3=`echo 0${helium_3i}`
+      hydrogen_3in=`echo 1-${helium_3} | bc`
+      hydrogen_3in=`echo 0${hydrogen_3in}`
+      echo $hydrogen_3in
+      hydrogen_3id=`echo 1+$zoverxc | bc`
+      echo $hydrogen_3id
+      hydrogen_3i=`echo "scale=10 ; $hydrogen_3in/$hydrogen_3id" | bc`
+      hydrogen_3=`echo 0${hydrogen_3i}`
+      echo $hydrogen_3
+      metal_3i=`echo $hydrogen_3*$zoverxc | bc`
+      metal_3=`echo 0${metal_3i}`
+      alpha_4=$alphac
+      hydrogen_4=$hydrogen
+      helium_4i=`echo $helium+0.0005 | bc`
+      helium_4=`echo 0${helium_4i}`
+      metal_4i=`echo 1-$helium_4-$hydrogen_4 | bc`
+      metal_4=`echo 0${metal_4i}`
+
+      
+      
+      echo $helium_1 $helium_2 $helium_3 $helium_4
+      echo $hydrogen_1 $hydrogen_2 $hydrogen_3 $hydrogen_4
+      echo $metal_1 $metal_2 $metal_3 $metal_4
+      it=1
+      while ([ $it -le 4 ])
+	do
+# Create the evolutionary flies for the current model of the new calibration matrix
+	file=suncal_${iteration}_${it}
+	echo Creating the ${it}th models  $file of the new calibrating matrix
+	$DIR_BATCH/cpevol mevol $file $dir
+	cd $DIR_MODELS/$dir
+	
+# Generate the appropriate initial binary file
+	if [ $mtype -eq 2 ] 
+	    then
+	    _file=$DIR_INIT/sini_1.00.bin.gz
+	    if [ ! -e $_file ] 
+		then
+		echo generating new stellar model
+		newmass=2
+	    else
+		cp $DIR_INIT/sini_1.00.bin.gz modini.bin.gz    
+		echo "copying $DIR_INIT/sini_1.00.bin.gz $DIR_MODELS/$dir/modini.bin.gz"
+	    fi
+	    
+	    if [ -e modini1.bin ]
+		then
+		rm -f modini1.bin
+	    fi
+	    
+	    gunzip -f $DIR_MODELS/$dir/modini.bin.gz
+
+	    Y=helium_${it}
+	    if [ "$Y" == 'helium_1' ] 
+		then
+		echo $metal_1 $helium_1 0 s> _cmd_yy_${iteration}_${it}
+		echo
+		echo "Generating appropriate initial binary file with Z = "$metal "and Y = "$helium_1
+	    elif [ "$Y" == 'helium_2' ]
+		then
+		echo $metal_2 $helium_2 0 s> _cmd_yy_${iteration}_${it}
+		echo
+		echo "Generating appropriate initial binary file with Z = "$metal_2 "and Y = "$helium_2
+	    elif [ "$Y" == 'helium_3' ]
+		then
+		echo $metal_3 $helium_3 0 s> _cmd_yy_${iteration}_${it}
+		echo
+		echo "Generating appropriate initial binary file with Z = "$metal_3 "and Y = "$helium_3
+	    else [ "$Y" == 'helium_4' ]
+		echo $metal_4 $helium_4 0 s> _cmd_yy_${iteration}_${it}
+		echo
+		echo "Generating appropriate initial binary file with Z = "$metal_4 "and Y = "$helium_4
+	    fi
+	    
+	    $DIR_BATCH/starevolman3.30_suncal.e < _cmd_yy_${iteration}_${it}
+	    
+	    mv zini.out zini.out_${iteration}_${it}
+	    
+	    gzip -f modini1.bin
+	    \cp modini1.bin.gz modini.bin.gz
+	    
+	elif [ $mtype -eq 3 ]
+	    then
+		cp $DIR_INIT/sini_1.00.bin.gz modini.bin.gz    
+	#	echo "copying $DIR_SUN/sini_1.00_ZAMS_AGS05.bin.gz $DIR_MODELS/$dir/modini.bin.gz"
+		echo "copying $DIR_INIT/modinicalib_1.00.bin.gz $DIR_MODELS/$dir/modini.bin.gz"
+	    if [ -e modini1.bin ]
+		then
+		rm -f modini1.bin
+	    fi
+	    if [ -e modang1.bin ]
+		then
+		rm -f modang1.bin
+	    fi
+	    
+	    gunzip -f $DIR_MODELS/$dir/modini.bin.gz
+
+	    Y=helium_${it}
+	    if [ "$Y" == 'helium_1' ] 
+		then
+		echo $metal_1 $helium_1 2.2 s > _cmd_yy_${iteration}_${it}
+		echo
+		echo "Generating appropriate initial binary file with Z = "$metal "and Y = "$helium_1
+	    elif [ "$Y" == 'helium_2' ]
+		then
+		echo $metal_2 $helium_2 2.2 s > _cmd_yy_${iteration}_${it}
+		echo
+		echo "Generating appropriate initial binary file with Z = "$metal_2 "and Y = "$helium_2
+	    elif [ "$Y" == 'helium_3' ]
+		then
+		echo $metal_3 $helium_3 2.2 s > _cmd_yy_${iteration}_${it}
+		echo
+		echo "Generating appropriate initial binary file with Z = "$metal_3 "and Y = "$helium_3
+	    else [ "$Y" == 'helium_4' ]
+		echo $metal_4 $helium_4 2.2 s > _cmd_yy_${iteration}_${it}
+		echo
+		echo "Generating appropriate initial binary file with Z = "$metal_4 "and Y = "$helium_4
+	    fi
+	    
+	    $DIR_BATCH/starevolman3.30_suncal.e < _cmd_yy_${iteration}_${it}
+	    
+	    mv zini.out zini.out_${iteration}_${it}
+	    
+	    gzip -f modini2.bin 
+	    gzip -f modang2.bin
+	    \cp modini2.bin.gz modini.bin.gz
+	    \cp modang2.bin.gz modang.bin.gz	    
+	fi
+
+# Modify the starevol.par file according to adopted values of Z and alpha
+
+#	cp $DIR_BATCH/starevol_grid.par .
+	cp $DIR_BATCH/starevol_cal.par .
+	
+	al=alpha_${it}
+	echo $metalc
+	echo $al $alpha_1 $alpha_2 $alpha_3 $alpha_4 $metal_4
+	sed 's/Ov Thl Tac Mic  00, 00, 00, 00/Ov Thl Tac Mic  00, 00, 00, 00/g' starevol_cal.par | sed 's/idiffcc = F/idiffcc = T/g' > starevol_sunb.par
+	if [ "$al" == 'alpha_1' ] 
+	    then
+	    sed 's/mtini =  10.00/mtini =   1.00/g' starevol_sunb.par | sed 's/zkint = 0.013400/zkint = '$metalc'/g' | sed 's/alphac = 1.6431/alphac = '$alpha_1'/g'| sed 's/mlp =  1/mlp =  0/g'| sed 's/hpmlt = 3/hpmlt = 1/g'  > starevol.par
+	elif [ "$al" == 'alpha_2' ]
+	    then
+	    sed 's/mtini =  10.00/mtini =   1.00/g' starevol_sunb.par | sed 's/zkint = 0.013400/zkint = '$metalc'/g' | sed 's/alphac = 1.6431/alphac = '$alpha_2'/g'| sed 's/mlp =  1/mlp =  0/g' | sed 's/hpmlt = 3/hpmlt = 1/g' > starevol.par
+	elif [ "$al" == 'alpha_3' ]
+	    then
+	    sed 's/mtini =  10.00/mtini =   1.00/g' starevol_sunb.par | sed 's/zkint = 0.013400/zkint = '$metal_3'/g' | sed 's/alphac = 1.6431/alphac = '$alpha_3'/g'| sed 's/mlp =  1/mlp =  0/g' | sed 's/hpmlt = 3/hpmlt = 1/g' > starevol.par
+	else [ "$al" == 'alpha_4' ]
+	    sed 's/mtini =  10.00/mtini =   1.00/g' starevol_sunb.par | sed 's/zkint = 0.013400/zkint = '$metal_4'/g' | sed 's/alphac = 1.6431/alphac = '$alpha_4'/g'| sed 's/mlp =  1/mlp =  0/g' | sed 's/hpmlt = 3/hpmlt = 1/g' > starevol.par
+	fi
+	echo toto
+	if [ $mtype -eq 3 ]
+	    then
+	    \mv starevol.par starevol_rot.par
+	    sed 's/idiffcc = F/idiffcc = T/g' starevol_rot.par | sed 's/idiffty = 00/idiffty = 13/g' | sed 's/zgradmu = F/zgradmu = T/g' |  sed 's/Dh_prescr = Zahn1992/Dh_prescr = MPZ_2004/g'| sed 's/diffvr = 3.00D+02/diffvr = 2.20D+00/g' > starevol.par
+	fi
+	
+
+#   	if [ $iteration == 1 ]
+#	    then
+#	    exit
+#	fi
+
+# Compute the itth model of the new calibration matrix
+
+	echo "runevol $file $dir 1 100 3 4.5700000000E+09 $code > 00.log &" > run_${iteration}_${it}
+   
+	chmod u+x run_${iteration}_${it}
+	$DIR_BATCH/runevol $file $dir 1 100 3 4.6000000000E+09 $code > ${iteration}_${it}.log 
+
+# Build the input file for the calibration routine
+
+	r=`cat input_calibration | awk '{print $2}'`
+	l=`cat input_calibration | awk '{print $1}'`
+	xf=`cat input_calibration | awk '{print $3}'`
+	yf=`cat input_calibration | awk '{print $4}'`
+	
+
+	if [ "$Y" == 'helium_1' ] 
+	    then
+	    echo $xf $yf $l $r $hydrogen_1 $helium_1 $alpha_1 > calib_$it
+	elif [ "$Y" == 'helium_2' ]
+	    then
+	    echo $xf $yf $l $r $hydrogen_2 $helium_2 $alpha_2 > calib_$it
+	elif [ "$Y" == 'helium_3' ]
+	    then
+	    echo $xf $yf $l $r $hydrogen_3 $helium_3 $alpha_3 > calib_$it
+	else [ "$Y" == 'helium_4' ]
+	    echo $xf $yf $l $r $hydrogen_4 $helium_4 $alpha_4 > calib_$it
+	fi
+	cat calib_$it
+	it=`expr $it + 1`
+
+      done
+
+      cat calib_1 calib_2 calib_3 calib_4 > calib_donnees_diff_${iteration}
+      cp -f calib_donnees_diff_${iteration} calib_donnees_diff
+  fi
+
+  if [ $mtype -eq 1 ]
+      then
+      calibcode=`echo $DIR_SUN/calib_std.e`
+  else [ $mtype -eq 2 ] || [ $mtype -eq 3 ]
+      calibcode=`echo $DIR_BATCH/calib_diff.e`
+  fi
+
+ 
+# Verify if the computed model is a calibrated sun. If not, compute the new Y,Z and alpha and go back to start
+
+  if [ "$iteration" -ge 0 ]
+       then
+#      if [ ! -e $calibcode ] 
+#	   then   
+#	   cp $DIR_BATCH/$calibcode .
+#       fi
+       
+       if [ $mtype -eq 2 ] || [ $mtype -eq 3 ]
+	   then
+	   file=suncal_${iteration}_1
+	   tail -1 $file.hr > newvalues_$iteration
+	   newl=`cat newvalues_$iteration | awk '{print $3}'` 
+	   newr=`cat newvalues_$iteration | awk '{print $4}'`
+	   dl=`echo $newl-1 | bc`
+	   dr=`echo $newr-1 | bc`
+	   tail -1 $file.s1 > newvalueschem_$iteration
+	   newx=`cat newvalueschem_$iteration | awk '{print $3}'`
+	   newy=`cat newvalueschem_$iteration | awk '{print $5}'`
+	   newy2=`cat newvalueschem_$iteration | awk '{print $6}'`
+	   newx=`echo ${newx} | sed 's/E/\\*10\\^/' | sed 's/+//'`
+	   newy=`echo ${newy} | sed 's/E/\\*10\\^/' | sed 's/+//'`
+	   newy2=`echo ${newy2} | sed 's/E/\\*10\\^/' | sed 's/+//'`
+	   num1=`echo "scale=15; 1-$newx-$newy-$newy2" | bc -l`
+	   newx=`echo "scale=15; $newx-1+1" | bc -l`
+	   newbeta=`echo "scale=15; $num1 / $newx" | bc`
+#	   newbeta=`echo $(((1-$newx-$newy-$newy2)/$newx)) | bc`
+	   if [ $solcomp -eq 1 ]
+	      then
+              dbeta=`echo $newbeta-0.0245 | bc`
+           elif [ $solcomp -eq 2 ]
+	      then
+              dbeta=`echo $newbeta-0.0165 | bc`
+	   elif [ $solcomp -eq 3 ]
+              then
+              dbeta=`echo $newbeta-0.0180 | bc`
+           fi
+	   echo $dl $dr $dbeta> _cmd_zz
+	   echo $solcomp >> _cmd_zz
+
+	   $calibcode < _cmd_zz > output_calibration_$iteration
+	   message=`grep Your output_calibration_$iteration`
+	   if [ "$message" == 'Your' ]
+	       then
+#	       done
+	       exit
+	   fi
+#           exit
+	   alpha=`grep alpha output_calibration_$iteration | cut -c 8-22`
+	   hydrogen=`grep X0 output_calibration_$iteration | cut -c 28-42`
+	   helium=`grep Y0 output_calibration_$iteration | cut -c 48-62`
+	   metalc=`grep Z0 output_calibration_$iteration | cut -c 68-82`
+	   
+      
+       else [ $mtype -eq 1 ]
+	   file=suncal_${iteration}_1
+	   tail -1 $file.hr > newvalues_$iteration
+	   newl=`cat newvalues_$iteration | awk '{print $3}'`
+	   newr=`cat newvalues_$iteration | awk '{print $4}'`
+	   dl=`echo $newl-1 | bc`
+	   dr=`echo $newr-1 | bc`
+	   echo $dl $dr > _cmd_zz
+
+	   $calibcode < _cmd_zz > output_calibration_$iteration
+	   message=`grep Your output_calibration_$iteration`
+	   if [ "$message" == 'Your' ]
+	       then
+#	       done
+	       exit
+	   fi
+	   helium=`grep Y0 output_calibration_$iteration | cut -c 10-28`
+	   alpha=`grep alpha output_calibration_$iteration | cut -c 46-64`
+       fi
+       iteration=` expr $iteration + 1 `
+       #if [ $iteration == 10 ]
+	#   then
+	 #  exit 2
+       #fi
+  fi
+#   cd $home_local
+
+done
+echo Calibration completed

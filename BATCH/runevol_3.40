@@ -1,0 +1,451 @@
+
+#
+#! /bin/sh
+#
+
+# check that the environment variables are defined
+
+base=/`basename $PWD`
+echo base $base
+LOCALDIR=$PWD/$base/
+echo LOCALDIR $LOCALDIR
+
+echo
+echo "   ******   Running Stellar Evolution Program  ******"
+echo
+echo "command :    runevol $1 $2 $3 $4 $5 $6 $7 > 00.log"
+
+echo 
+if [ $# -lt 7 ] || [ $# -gt 8 ]
+   then
+   echo " !! 6 arguments needed:"
+   echo " 1: evolution file name"
+   echo " 2: repository directory (under $DIR_RESEVOL)"
+   echo " 3: first seq. number to compute"
+   echo " 4: last seq. number to compute"
+   echo " 5: phase where STAREVOL stops"
+   echo " 6: Age at which to stop if any"
+   echo " 7: STAREVOL version : gag217, gag230, gag235 ..."
+   echo
+   echo " 8: OPTIONAL : STAR_STDOUT (96 for file output)"
+   echo runevol aborted.
+   echo 
+   exit 2
+fi
+
+FILE=$1
+phdir=$2
+ibeg=$3
+iend=$4 
+phase=$5
+ftype=`basename $7 .e`
+stopage=$6
+bintype=0
+starevolog=$1.rec
+#shift 9
+
+if [ -n $8 ]
+then
+  export STAR_STDOUT=$7
+fi
+
+############################
+#       CHECKINGS          #
+############################
+
+
+# check that the environment variables are defined
+if [ -z ${DIR_EXE} ] 
+then
+  echo try to redefine environment variables
+  base=/`basename $PWD`
+  LOCALDIR=${PWD//$base/}
+  if [ -e ../EXE ]
+    then
+      export DIR_EXE=$PWD/../EXE
+  else
+     echo DIR_EXE not defined
+     exit 2
+  fi
+  if [ -z $DIR_LIB ] 
+  then
+    if [ -e ../LIB ]
+      then
+        export DIR_LIB=$PWD/../LIB
+    else
+       echo DIR_LIB not defined
+       exit 2
+    fi
+  fi
+  if [ -z $DIR_OPA ] 
+  then
+    if [ -e ../OPA ]
+      then
+        export DIR_OPA=$PWD/../LIB
+    else
+       echo DIR_OPA not defined
+       exit 2
+    fi
+  fi
+  if [ -z $DIR_RESEVOL ] 
+  then
+    if [ -e ../RESEVOL ]
+      then
+        export DIR_RESEVOL=$PWD/../RESEVOL
+    else
+       echo DIR_RESEVOL not defined
+       exit 2
+    fi
+  fi
+  if [ -z $DIR_BATCH ] 
+  then
+    if [ -e ../BATCH ]
+      then
+        export DIR_BATCH=$PWD/../BATCH
+    else
+       echo DIR_BATCH not defined
+       exit 2
+    fi
+  fi
+  if [ -z $DIR_MODELS ] 
+  then
+    export DIR_MODELS=$PWD/..
+  fi
+  export PATH=$PATH:$DIR_BATCH
+fi
+
+
+# check if execution file exists
+execfile=$DIR_EXE/starevol_$ftype.e
+if [ ! -s $execfile ]
+then
+  echo "code version : $DIR_EXE/starevol_$ftype not found"
+  echo runevol aborted at `date`
+  echo
+  exit 2
+fi
+
+subinilib=$DIR_LIB
+subinis=$PWD
+subexe=$PWD
+
+#check if modini.bin is present
+if [ ! -s $subinis/modini.bin.gz ]
+  then
+  echo $subinis/modini.bin.gz not present
+  echo runevol aborted at `date`
+  echo
+  exit 2
+fi
+
+#check if starevol.par is present
+if [ ! -s $subinis/starevol.par ]
+  then
+  echo $subinis/starevol.par not present
+  echo runevol aborted at `date`
+  echo
+  exit 2
+fi
+
+#check if evolutionary files exist
+filevol=$DIR_RESEVOL/$phdir/${FILE}.hr
+filevolgz=${filevol}.gz
+if [ ! -s $filevolgz ]
+  then
+  if [ -s $filevol ]
+    then
+    echo Evolutionary file $filevol exist but is not in a .gz format
+    echo runevol aborted
+    echo
+    exit 2
+  else
+    if [ ! -e $DIR_RESEVOL/$phdir ]
+       then
+       mkdir $DIR_RESEVOL/$phdir
+       echo creating directory $DIR_RESEVOL/$phdir
+    fi
+    topevol=`head -2 starevol.par | cut -c 40-42`
+    if [ $topevol == ALP ] 
+      then
+      evol_format=malpha
+    fi
+    if [ $topevol == MAS ] 
+      then
+      evol_format=massive
+    fi
+    if [ $topevol == AGB ] 
+      then
+      evol_format=mevol
+    fi
+    if [ $topevol == SN ] 
+      then
+      evol_format=msn
+    fi
+    echo "cpevol $evol_format $FILE $phdir"
+    cpevol_3.40 $evol_format $FILE $phdir
+  fi
+fi
+
+#check if evolution file are in the right format
+#cp -f $DIR_MODELS/$phdir/${FILE}.hr /tmp/${FILE}.hr
+#cp -f $DIR_RESEVOL/$phdir/${FILE}.hr.gz /tmp/${FILE}.hr.gz
+#gunzip -f /tmp/${FILE}.hr.gz
+topheader=`head -1 $DIR_MODELS/$phdir/${FILE}.hr| cut -c 2-4`
+topevol=`head -2 starevol.par | cut -c 40-42`
+
+echo $topheader $topevol
+#\rm -f  /tmp/${FILE}.hr
+if [ $topheader != $topevol ]
+  then
+  echo wrong evolution file format
+  echo
+  exit 2
+fi
+
+#check if sequence has already been computed
+ibegstr=`expr $ibeg + 10000 | cut -c2-5`
+filexe=$subexe/${FILE}_${ibegstr}b.gz
+if [ -s $filexe ]
+  then
+  echo Sequence $filexe already computed
+  echo runevol aborted
+  echo
+  exit 2
+fi
+
+#check if sequence name has been upgraded to run[i]
+isrun="0"`echo $FILE | grep run`
+if [  -e ${FILE}_run ] 
+then
+if [ $isrun == "0" ] && [  -e ${FILE}_run ]
+  then
+  isfilerun=`ls ${FILE}_run* | wc -l`
+  if [ $isfilerun -ne 0 ]
+    then
+    echo    sequence ${FILE}_run[*] already exists
+    echo    check filename argument in runevol
+    echo
+    exit 2
+  fi
+else
+  l_file=`expr length $FILE`
+  beg_run=`expr $l_file - 4`
+  file_suf=`expr substr $FILE $beg_run 4`
+  if [ $file_suf == '_run' ]
+    then
+      index_run=`expr $l_file - 1`
+    else
+      index_run=`expr $l_file - 2`
+  fi
+  index_count=`expr $index_run + 1`
+  root_name=`expr substr $FILE 1 $index_run`
+  v_file=`expr substr $FILE $index_count $l_file`
+  isfilerun=`ls $root_name*hr* | grep -v $root_name$v_file | wc -l`
+  if [ $isfilerun -ne 0 ]
+    then
+    for frun in $(ls $root_name*hr* | grep -v $root_name$v_file)
+    do
+      ff1=`basename $frun .gz`
+      ff=`basename $ff1 .hr`
+      ilrun=`expr substr $ff $index_count $l_file`
+      if [ $ilrun -gt $v_file ]
+        then
+          echo
+          echo    sequence ${root_name}$ilrun already exists
+          echo    check filename argument in runevol
+          echo
+	  exit 2
+      fi
+    done
+  fi
+fi
+fi
+
+#check if computation with rotation 
+rotation=f
+idiffcc=`grep idiffcc starevol.par | cut -c 28-28`
+idiffty=`grep idiffty starevol.par | cut -c 55-56`
+echo $idiffty
+if [ $idiffcc == t -o  $idiffcc == T ]
+then
+  if ([ $idiffty -ge 8 ] && [ $idiffty -le 13 ]) || [ $idiffty -eq 15 ]
+  then
+    rotation=t
+  fi
+fi
+
+#check if modang.bin is present
+if [ $rotation == t ] && [ ! -s $subinis/modang.bin.gz ]
+  then
+  echo $subinis/modang.bin.gz not present
+  echo runevol aborted `date`
+  echo
+  exit 2
+fi
+
+#check if new sequence is about to start
+ibegstr=`expr $ibeg + 9999 | cut -c2-5`
+filehr=$subexe/${FILE}.hr
+if [ ! -s $filehr ]
+  then
+  cp -f $subinis/modini.bin.gz $subexe/${FILE}_start_${ibegstr}b.gz
+  cp -f $subinis/starevol.par  $subexe/${FILE}_start_${ibegstr}d.par
+  if [ -s $subinis/modang.bin.gz ]
+    then
+    cp -f $subinis/modang.bin.gz $subexe/${FILE}_start_${ibegstr}a.gz
+  fi
+fi
+
+sversion=$ftype
+
+
+#############################
+#       BATCH BEGINS        #
+#############################
+
+echo runevol started `date` on $subexe
+
+if [ ! -s $subexe/${FILE}.hr ]
+then
+  seqn=`expr $ibeg + 10000`
+  istr=`echo ${seqn} | cut -c2-5`
+  echo " Start computation of file : ${FILE}_$istr on host $HOST at `date`" > $subinis/$starevolog
+  echo " command : runevol $1 $2 $3 $4 $5 $6 $7 " >> $subinis/$starevolog
+  head -31 $subinis/starevol.par >> $subinis/$starevolog
+fi
+
+#  check changes 
+if [ -s $subexe/starevol.e ]
+then
+  diff --brief $execfile $subexe/starevol.e | grep differ > _modif_bin
+fi
+if ([ -s /tmp/starevol_$1.par ] && [ $ibeg -gt 1 ]) || [ -s _modif_bin ]
+then
+  seqn=`expr $ibeg + 10000`
+  istr=`echo ${seqn} | cut -c2-5`
+
+  if [ -s _modif_bin ]
+  then
+    echo " o WARNING :  starevol.e has changed " > _modif_bin
+  fi
+  if [ -s /tmp/starevol_$1.par ]
+  then
+    diff $subexe/starevol.par /tmp/starevol_$1.par > _modif_par
+  fi
+  if [ -s _modif_par ]
+  then
+    echo " o Changes in starevol.par" >> _modif_bin
+  fi
+  if [ -s _modif_bin -o -s _modif_par ]
+  then
+    touch _modif_par
+    touch _modif_bin
+    cat _modif_bin _modif_par > _modif
+    kf=1
+    echo " " >> $subinis/$starevolog
+    echo "Program restarted on `date`" >> $subinis/$starevolog
+    echo " command : runevol $1 $2 $3 $4 $5 $6 $7 " >> $subinis/$starevolog
+    echo "*** Sequence ${FILE}_$istr ***" >> $subinis/$starevolog
+    cat _modif >> $subinis/$starevolog
+  fi
+  \rm -f _modif _modif_par
+fi
+
+### install work directory : copy files
+
+if [ $ibeg -eq 1 -o -s _modif_bin -o ! -s $subexe/starevol.e ]
+then
+  echo copying $execfile $subexe/starevol.e
+  cp -f $execfile $subexe/starevol.e
+  chmod u+x $subexe/starevol.e
+else
+  echo starevol.e not copied
+  chmod u+x $subexe/starevol.e
+fi
+\rm -f _modif_bin
+
+if [ ! -e $subexe/paq_rp1.dat ]
+then
+  ln -s $subinilib/paq_rp1.dat $subexe
+  ln -s $subinilib/paq_rp2.dat $subexe
+  ln -s $subinilib/paq_rp3.dat $subexe
+  ln -s $subinilib/paq_rp4.dat $subexe
+  ln -s $subinilib/paq_ap1.dat $subexe
+  ln -s $subinilib/paq_ap2.dat $subexe
+  ln -s $subinilib/paq_ap3.dat $subexe
+  ln -s $subinilib/paq_ap4.dat $subexe
+fi
+
+cp -f $subinis/starevol.par /tmp/starevol_$1.par
+
+echo "copying $DIR_RESEVOL/${phdir}/${FILE}.*  $subexe"
+cp -f $DIR_RESEVOL/${phdir}/${FILE}.[hvscat]*.gz $subexe
+if [ -s $DIR_RESEVOL/${phdir}/${FILE}.c6.gz ]
+then
+  cp -f $DIR_RESEVOL/${phdir}/${FILE}.c6.gz $subexe/evolvar6.gz
+fi
+cp -f $DIR_BATCH/batche_3.40 $subexe
+cp -f $DIR_BATCH/save_3.40 $subexe
+cp -f $DIR_BATCH/nexte_3.40 $subexe
+chmod u+x $subexe/batche_3.40
+chmod u+x $subexe/save_3.40
+chmod u+x $subexe/nexte_3.40
+
+cd $subexe
+gunzip -f modini.bin.gz
+if [ -s modang.bin.gz ]
+then
+  gunzip -f modang.bin.gz
+fi
+gunzip -f ${FILE}.[hvscat]*.gz
+if [ -s evolvar6.gz ]
+then
+  gunzip -f evolvar6.gz
+fi
+metal=`grep zkint starevol.par | cut -c 70-77`
+ismetal=`grep Surface ${FILE}.s1 | wc -c`
+echo
+echo metallicity : Zini = $metal
+echo
+#if [ $ismetal -eq 30 ]
+#then
+#  ex ${FILE}.s1 << EOF
+#  2,2 s/:/: Zini = $metal/
+#wq
+#EOF
+#fi
+
+touch ${DIR_MODELS}/${FILE}.started
+
+echo "$1 ==================== `date` " >> $DIR_RESEVOL/run.log 
+#echo "   runevol $1 $2 $3 $4 $5 $6 $7" >> $DIR_RESEVOL/run.log 
+echo "   runevol $1 $2 $3 $4 $5 $6 $7" >> $DIR_RESEVOL/run.log 
+echo "   from $PWD on host $HOST" >> $DIR_RESEVOL/run.log 
+echo  >> $DIR_RESEVOL/run.log 
+
+ if [ $6 == 0 ] 
+   then
+   ../../EVOL/BATCH/batche_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${bintype}
+ else
+   ../../EVOL/BATCH/batchesun_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${stopage} ${bintype}
+ fi
+
+echo
+echo end of report from host $HOST on `date`
+
+echo
+echo end of runevol
+
+if [ -e ${DIR_MODELS}/${FILE}.started ]
+then
+  mv ${DIR_MODELS}/${FILE}.started ${DIR_MODELS}/${FILE}.done 
+else
+  touch ${DIR_MODELS}/${FILE}.done
+fi
+
+if [ -n $STAR_STDOUT ]
+then
+  unset STAR_STDOUT
+fi
+
+exit

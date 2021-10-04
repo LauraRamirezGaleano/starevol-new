@@ -1,0 +1,27 @@
+********************************************
+* WARNING: This common requires eoscom.ion *
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+********************************************
+*
+*     Energy levels of H (Energy level of H2 is taken such as 
+*      E(H2)-2*E(H)=dissociation energy) and Z>1
+      DOUBLE PRECISION enerlevelH(nbionHmax), enerlevelZ(nbionZmax)
+
+*     logarithm of the degeneracy of the fundamental states of H and Z>1
+      DOUBLE PRECISION lng0H(nbionHmax),lng0Z(nbionZmax)
+
+*     ions masses (nbz-2 because of heavy and H computed seperatly)
+      DOUBLE PRECISION lnmH(nbionHmax),lnmZ(nbz-2)
+
+*     For "heavy" (Z, mass and zero level energy degeneracy)
+      DOUBLE PRECISION Zheavy, lnmheavy, lng0heavy
+
+
+      COMMON /datas/ lnmH,lnmZ,enerlevelH,enerlevelZ,lng0H,lng0Z,
+     &Zheavy, lnmheavy, lng0heavy
+
+

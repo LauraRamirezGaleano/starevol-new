@@ -1,0 +1,30 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 15:45:03 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: palacios                                                 $ *
+* $Rev:: 11                                                          $ *
+*                                                                      *
+      integer lgrav
+
+      double precision enucl,venucl,denucldt,denucldf,denucldro
+      double precision evisc,devdu1,devdu2,devdr1,devdr2,devdf1,devdf2,
+     &     devdt1,devdt2
+      double precision accel,egrav,gmr,hydrat
+      double precision eloc,delocdf,delocdt,egconv,degconvdf,degconvdt
+      double precision enuclnu
+C Modif CC - ST (energie ondes soleil)
+c      double precision eondes
+
+      logical lnucl
+
+      common /enuctherm/ enucl(nsh),venucl(nsh),denucldt(nsh),
+     &     denucldf(nsh),denucldro(nsh)
+      common /evisctherm/ evisc(nsh),devdu1(nsh),devdu2(nsh),devdr1(nsh)
+     &     ,devdr2(nsh),devdf1(nsh),devdf2(nsh),devdt1(nsh),devdt2(nsh)
+      common /egravtherm/ egrav(nsh),gmr(nsh),accel(nsh),hydrat(nsh),
+     &     lgrav,lnucl
+      common /urca/ eloc(nsh),delocdf(nsh),delocdt(nsh),egconv(nsh),
+     &     degconvdf(nsh),degconvdt(nsh)
+      common /epsnuc/ enuclnu(nsh)
+C Modif CC - ST (energie ondes soleil)
+c      common /eondessoleil/ eondes(nsh)

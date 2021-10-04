@@ -1,0 +1,48 @@
+******************************************
+*WARNING: This common requires eoscom.ion*
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+******************************************
+*
+*     Ionic masses are supposed to be an isotopic average
+      LOGICAL compavmass
+*     Take into acount CNO partition function, He partition function
+      LOGICAL compZCNO,compZHe,compZH0
+*     Choice of the partition function for H2
+      LOGICAL VardyaZH2, IrwinZH2
+*     Which chemical element the user wants to ionize ?
+      LOGICAL ionized(nbzmax)
+*     H2 to be computed
+      LOGICAL compH2
+*     H- to be computed 
+      LOGICAL compHm
+*     Ionization pressure taken into account
+      LOGICAL compionpres
+*     Coulomb shielding taken into account
+      LOGICAL compcoulshiel
+*     Elements whose ionization is not computed are they totaly ionized ?
+      LOGICAL totioniz
+*     Check the composition of the plasma
+      LOGICAL checkcomposition,checkparacard
+*     Numerical computation of the second order derivatives
+      LOGICAL eosderiv
+*     Approximate f for Coulomb shielding
+      LOGICAL fapprocoul
+*     Is there non ideal effects ?
+      LOGICAL nonideal
+*     Approximate or not the sod calculus for Newton-Raphson derivatives?
+      LOGICAL approxsod
+*     Approximate or not the Fermi-Dirac integrals for electronic component
+      LOGICAL approxFermiDirac
+*     Save some quantities in file (for eosc+main)
+      INTEGER printinfile
+*     Prefix at the beginning of the name of the file for saving
+      CHARACTER*5 prefix
+
+      COMMON /parameters/ compavmass,compZCNO,ionized,compH2,compHm,
+     &compionpres,compcoulshiel,totioniz,checkcomposition,eosderiv,
+     &fapprocoul,checkparacard,compZHe,compZH0,VardyaZH2,IrwinZH2,
+     &nonideal,approxsod,approxFermiDirac,printinfile,prefix

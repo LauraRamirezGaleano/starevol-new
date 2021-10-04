@@ -1,0 +1,13 @@
+# Ignore datrepositories
+MAN/
+HEADERS/
+INIT/
+PHYSICS/
+UTILS/
+
+# Ignore executables and object files
+*.o
+*.~
+*.mod
+*.e
+last_compil

@@ -1,0 +1,19 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      integer neff,ntprof,nmue
+
+      double precision tau0,taueff,taulim,tphot,teff,teffagb,tsurf
+      double precision soll,leff,solr,reff,teffy,roeff,geff,zeff
+      double precision tau,dtaudf,dtaudt,dptau
+      double precision qtau,dqdtau,ddqtau,xsitau,qtau0,qtaus
+
+      common /atmos/ qtau0,qtaus,qtau(nsh),dqdtau(nsh),ddqtau(nsh),
+     &     xsitau(nsh),dptau(nsh)
+      common /surface/ tau0,taueff,taulim,tphot,teff,teffagb,tsurf,
+     &     ntprof,neff,nmue
+      common /surfpr/ soll,leff,solr,reff,teffy,roeff,geff,zeff
+      common /tauv/ tau(nsh),dtaudf(nsh),dtaudt(nsh)

@@ -1,0 +1,12 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      double precision lh,lhe,lc,lne,lo,lsi,vlh,vlhe,vlc,vlne,vlo,vlsi,
+     &     lpp,vlpp,totnucl,totgrav
+ 
+      common /luminosity/ lh,lhe,lc,lne,lo,lsi,lpp
+      common /vluminosity/ vlh,vlhe,vlc,vlne,vlo,vlsi,vlpp,totnucl,
+     &     totgrav

@@ -1,0 +1,29 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      double precision dpdt,dpdf,gamma1
+      double precision p,prad,beta,vp,mu,muinv,dmudf,dmudt,hp,
+     &     cp,cv,cs,ro,vro,betanicor
+      double precision pvisc,vpvisc,drvdm,vdrvdm,dpvdu1,dpvdu2,dpvdr1,
+     &     dpvdr2,dpvdf1,dpvdt1,dpvdf2,dpvdt2
+      double precision e,ve,dedt,dedf,degdf1,degdf2,degdt1,degdt2
+      double precision s,vs,dsdt,dsdf
+      double precision deltaKS,phiKS
+      double precision m,mr,dm,wi,wj
+ 
+      common /entrop/ s(nsh),vs(nsh),dsdt(nsh),dsdf(nsh)
+      common /eintherm/ e(nsh),ve(nsh),dedt(nsh),dedf(nsh),degdf1(nsh),
+     &     degdf2(nsh),degdt1(nsh),degdt2(nsh)
+      common /therm/ beta(nsh),betanicor(nsh),gamma1(nsh),mu(nsh),
+     &     muinv(nsh),dmudf(nsh),dmudt(nsh),cp(nsh),cv(nsh),cs(nsh),
+     &	   hp(nsh)
+      common /rotherm/ ro(nsh),vro(nsh)
+      common /pressure/ p(nsh),vp(nsh),prad(nsh),dpdt(nsh),dpdf(nsh)
+      common /pvisctherm/ pvisc(nsh),vpvisc(nsh),drvdm(nsh),vdrvdm(nsh),
+     &     dpvdu1(nsh),dpvdu2(nsh),dpvdr1(nsh),dpvdr2(nsh),dpvdf1(nsh),
+     &     dpvdt1(nsh),dpvdf2(nsh),dpvdt2(nsh)
+      common /GNPFT/ deltaKS(nsh),phiKS(nsh)
+      common /massgrid/ m(nsh),mr(nsh),dm(nsh),wi(nsh),wj(nsh)

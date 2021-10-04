@@ -1,0 +1,15 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-05 15:47:48 +0100 (Wed, 05 Feb 2014)    $ *
+* $Author:: amard                                                    $ *
+* $Rev:: 34                                                          $ *
+*                                                                      *
+      double precision omega,vomega,k2conv,k2rad,vsurf,angradr,angconvr
+      double precision cost,sint,sint2,plegendre,dtheta,dtheta2,ft,fp
+      double precision om_sat
+
+      common /rotvar/ omega(nsh),vomega(nsh),k2conv,k2rad,vsurf,
+     &     angradr,angconvr,om_sat
+      common /angle/ cost(intmax),sint(intmax),sint2(intmax),
+     &     plegendre(intmax),dtheta,dtheta2
+      common /ftfp/ ft(nsh),fp(nsh)

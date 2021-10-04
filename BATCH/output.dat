@@ -1,0 +1,24 @@
+
+   ******   Calibrating a solar model  ******
+
+
+Iteration  0  in the process of calibration of the solar model
+
+ Type of model 2
+Model computed with microscopic diffusion (Montmerle & Michaud  1976 ou Thoul 1994 (coeff Paquette 76))
+
+Requested metallicty  0.014430 initial Y 0.273093  MLT parameter 1.7936
+
+Adopted reference solar composition by Asplund et al. 2009
+.0201945775 0.712518
+0.727407
+1.0201945775
+0.7130081026
+0.273093 0.273093 0.272593 0.273593
+0.712518 0.712518 0.7130081026 0.712518
+0.014430 0.014430 0.0143988973 0.013889
+Creating the 1th models suncal_0_1 of the new calibrating matrix
+
+copying /Users/td23/STAREVOL/RESEVOL//HEADERS/mevol.[*] to /Users/td23/STAREVOL/RESEVOL//Sun_diff_0.0144300.2730931.7936/suncal_0_1.[*]
+file /Users/td23/STAREVOL/RESEVOL//Sun_diff_0.0144300.2730931.7936/suncal_0_1.hr.gz already exists
+Files will be erased - OK to proceed ? [y/n] 

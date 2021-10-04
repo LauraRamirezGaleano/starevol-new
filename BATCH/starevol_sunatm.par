@@ -1,0 +1,437 @@
+
+ PARAMETER CARD for STAREVOL : version AGB 3.00
+
+ evol. sequence: maxmod = 300, imodpr = 012, mtini =  10.00, zkint = 0.020000
+ eos           : addH2 = T, addHm = T, tmaxioH = 1.00D+05, tmaxioHe = 5.00D+05
+                 ionizHe = T, ionizC = t, ionizN = t, ionizO = t, ionizNe = t
+ gravitation   : lgrav = 1, lnucl = t
+ convection    : alphac = 1.7500, dtnmix = f, mixopt = t, hpmlt = 3, nczm =  0
+                 ihro = F, iturb = 0, etaturb = 1.000D-02, alphatu = 1.0000
+                 novopt = 0, aup = 0.10, adwn = 0.00, idup = 0
+ atmosphere    : tau0 = 0.00100, ntprof = 4, taulim = 1.00D+01
+ mass loss     : mlp =  1, etapar =  1.00, dmlinc = 1.0D+00
+ nuclear       : nucreg = 1, nuclopt = f, tolnuc = 1.0D+00, ftnuc = 1.00D+00, znetmax =  50
+ diffusion     : idiffcc = F, idiffnuc = 2, idiffty = 00, diffzc = f, diffst = 3.000D+01
+                 zgradmu = F, grad_crit = 3.0000D-12, del_zc = 1.00D-02, semiconve = F
+ rotation      : omegaconv = F, Dh_prescr = Zahn1992, dm_ext =  2.90
+                 Ch =  1.00, Dh_max = 10.0, D_zc = 1.00D+12, disctime = 5.00D+06, eq_thermique = T
+                 diffvr = 3.00D+02, idiffvr = 5, idiffex = 3, diffcst = 6.000D+47, breaktime = 9.09D-06
+ time-dep conv.: nmixd = 0, itmind =  3, itmaxd = 30, rprecd = 1.00D-05, nretry =  5
+ extra mixing  : Ov Thl Tac Mic  00, 00, 00, 00
+ accretion     : iaccr = 0, accphase = 6, itacc = 0, massrate = 3.50D-08, massend =  2.00, menv = 8.0000D-01
+                 ric = 1.00D+00, prrc = 0.500, xiaccr = 0.500, fdtacc = 1.20, alphaccr = 0.00D+00
+ hydrodynamics : hydro = 0, ivisc = 0, q0 =  0.000, mcut = 0.0000D+00
+ shell masses  : maxsh =  100, nresconv =  05
+                 dvarma = 1.20D-01, dvarmi = 1.00D-02, denucma = 2.00D-01, dmrma = 5.00D-03, dmrmi = 5.00D-05
+ time-step     : dtin = 0.000D+00, dtmin = 1.000D-10, dtmax = 1.000D+07, facdt = 1.25, fkhdt = 2.00D+00
+                 ishtest = t, fts = 0.050, ftsh =  0.05, ftshe = 0.05, ftsc = 0.05, ftacc = 0.167, ftst = 0.300
+ iterations    : itmin =  3, itermax = 100, itermix =  50, icrash = -3, numeric = 9, icorr = t
+ tolerances    : u = 1.00D-03, r = 1.00D-03, lnf = 1.00D-03, lnT = 1.00D-04, l = 1.00D-03, ang = 1.00D-03
+ convergence   : phi = 1.00, alpha = 0.50, iacc = t, alphmin = 0.30, alphmax = 1.00, sigma = 1.000, vlconv = F
+
+ nuclides and nuclear network: T = stable, F = unstable, U : URCA pair
+ 
+   1 NEUT    1.00000   0.   1.00000D-50  T   1.00000D-50
+   2 PROT    1.00000   1.   1.00000D-50  T   7.10847D-01
+   3 DEUT    2.00000   1.   1.00000D-50  T   4.83392D-05
+   4 HE  3   3.00000   2.   1.00000D-50  T   2.88999D-05
+   5 HE  4   4.00000   2.   9.80000D-01  T   2.71513D-01
+   6 LI  6   6.00000   3.   1.00000D-50  T   6.52992D-10
+   7 LI  7   7.00000   3.   1.00000D-50  T   9.39820D-09
+   8 BE  7   7.00000   4.   1.00000D-50  F   1.00000D-50
+   9 B   8   8.00000   5.   1.00000D-50  F   1.00000D-50
+  10 BE  9   9.00000   4.   1.00000D-50  T   1.68282D-10
+  11 B  10  10.00000   5.   1.00000D-50  T   1.07241D-09
+  12 B  11  11.00000   5.   1.00000D-50  T   4.75218D-09
+  13 C  12  12.00000   6.   5.00000D-03  T   2.99350D-03
+  14 C  13  13.00000   6.   1.00000D-50  T   3.60329D-05
+  15 N  13  13.00000   7.   1.00000D-50  F   1.00000D-50
+  16 C  14  14.00000   6.   1.00000D-50  U   1.00000D-50
+  17 N  14  14.00000   7.   1.00000D-02  U   9.25395D-04
+  18 N  15  15.00000   7.   1.00000D-50  T   3.65459D-06
+  19 O  15  15.00000   8.   1.00000D-50  F   1.00000D-50
+  20 O  16  16.00000   8.   5.00000D-03  T   8.41163D-03
+  21 O  17  17.00000   8.   1.00000D-50  T   3.40879D-06
+  22 O  18  18.00000   8.   1.00000D-50  T   1.90065D-05
+  23 F  18  18.00000   9.   1.00000D-50  F   1.00000D-50
+  24 F  19  19.00000   9.   1.00000D-50  T   4.07897D-07
+  25 F  20  20.00000   9.   1.00000D-50  U   1.00000D-50
+  26 NE 20  20.00000  10.   1.00000D-50  U   1.58926D-03
+  27 NE 21  21.00000  10.   1.00000D-50  T   4.05194D-06
+  28 NE 22  22.00000  10.   1.00000D-50  T   1.27837D-04
+  29 NA 22  22.00000  11.   1.00000D-50  F   1.00000D-50
+  30 NE 23  23.00000  10.   1.00000D-50  U   1.00000D-50
+  31 NA 23  23.00000  11.   1.00000D-50  U   3.33829D-05
+  32 NA 24  24.00000  11.   1.00000D-50  U   1.00000D-50
+  33 MG 24  24.00000  12.   1.00000D-50  U   5.12630D-04
+  34 NA 25  25.00000  11.   1.00000D-50  U   1.00000D-50
+  35 MG 25  25.00000  12.   1.00000D-50  U   6.73785D-05
+  36 MG 26  26.00000  12.   1.00000D-50  T   7.72774D-05
+  37 AL26m  26.00000  13.   1.00000D-50  F   1.00000D-50
+  38 AL26g  26.00000  13.   1.00000D-50  F   1.00000D-50
+  39 MG 27  27.00000  12.   1.00000D-50  U   1.00000D-50
+  40 AL 27  27.00000  13.   1.00000D-50  U   5.79643D-05
+  41 SI 28  28.00000  14.   1.00000D-50  T   6.51352D-04
+  42 SI 29  29.00000  14.   1.00000D-50  T   3.41697D-05
+  43 SI 30  30.00000  14.   1.00000D-50  T   2.34644D-05
+  44 P  31  31.00000  15.   1.00000D-50  T   8.18763D-06
+  45 S  32  32.00000  16.   1.00000D-50  T   4.02469D-04
+  46 S  33  33.00000  16.   1.00000D-50  T   3.27625D-06
+  47 S  34  34.00000  16.   1.00000D-50  T   1.89763D-05
+  48 S  35  35.00000  16.   1.00000D-50  F   1.00000D-50
+  49 CL 35  35.00000  17.   1.00000D-50  T   3.51191D-06
+  50 S  36  36.00000  16.   1.00000D-50  T   9.53556D-08
+  51 CL 36  36.00000  17.   1.00000D-50  F   1.00000D-50
+  52 CL 37  37.00000  17.   1.00000D-50  T   1.18517D-06
+  53 HEAVY  38.00000  18.   1.00000D-50  T   1.55348D-03
+  54 CAPTN  39.00000  18.   1.00000D-50  F   1.00000D-50
+  55 OOOOO 999.99999  99.   1.00000D-50  F   1.00000D-50
+ 
+   1    1 PROT  ( 1 NEUT , 0 OOOOO ) 1 DEUT  : Q =   2.224 MeV      2   1  55   3  QINU =  0.000 MeV
+   2    2 PROT  ( 0 OOOOO, 0 NUTRI ) 1 DEUT  : Q =   1.442 MeV      2  55   0   3  QINU =  0.270 MeV
+   3    1 DEUT  ( 1 PROT , 0 OOOOO ) 1 HE  3 : Q =   5.494 MeV      3   2  55   4  QINU =  0.000 MeV
+   4    2 DEUT  ( 0 OOOOO, 0 OOOOO ) 1 HE  4 : Q =  23.847 MeV      3  55  55   5  QINU =  0.000 MeV
+   5    2 DEUT  ( 0 OOOOO, 1 NEUT  ) 1 HE  3 : Q =   3.270 MeV      3  55   1   4  QINU =  0.000 MeV
+   6    1 HE  3 ( 1 NEUT , 0 OOOOO ) 1 HE  4 : Q =  20.577 MeV      4   1  55   5  QINU =  0.000 MeV
+   7    1 HE  3 ( 1 DEUT , 1 PROT  ) 1 HE  4 : Q =  18.353 MeV      4   3   2   5  QINU =  0.000 MeV
+   8    2 HE  3 ( 0 OOOOO, 2 PROT  ) 1 HE  4 : Q =  12.859 MeV      4  55   2   5  QINU =  0.000 MeV
+   9    1 HE  4 ( 1 DEUT , 0 OOOOO ) 1 LI  6 : Q =   1.475 MeV      5   3  55   6  QINU =  0.000 MeV
+  10    1 HE  4 ( 1 HE  3, 0 OOOOO ) 1 BE  7 : Q =   1.587 MeV      5   4  55   8  QINU =  0.000 MeV
+  11    3 HE  4 ( 0 OOOOO, 0 OOOOO ) 1 C  12 : Q =   7.275 MeV      5  55  55  13  QINU =  0.000 MeV
+  12    1 LI  6 ( 1 PROT , 0 OOOOO ) 1 BE  7 : Q =   5.606 MeV      6   2  55   8  QINU =  0.000 MeV
+  13    1 LI  6 ( 1 PROT , 1 HE  3 ) 1 HE  4 : Q =   4.019 MeV      6   2   4   5  QINU =  0.000 MeV
+  14    1 LI  7 ( 1 PROT , 0 OOOOO ) 2 HE  4 : Q =  17.347 MeV      7   2  55   5  QINU =  0.000 MeV
+  15    1 LI  7 ( 1 DEUT , 1 NEUT  ) 2 HE  4 : Q =  15.123 MeV      7   3   1   5  QINU =  0.000 MeV
+  16    1 BE  7 ( 0 BETAP, 0 NUTRI ) 1 LI  7 : Q =   0.861 MeV      8   0   0   7  QINU =  0.861 MeV
+  17    1 BE  7 ( 1 PROT , 0 OOOOO ) 1 B   8 : Q =   0.137 MeV      8   2  55   9  QINU =  0.000 MeV
+  18    1 BE  7 ( 1 DEUT , 1 PROT  ) 2 HE  4 : Q =  16.766 MeV      8   3   2   5  QINU =  0.000 MeV
+  19    1 B   8 ( 0 BETAP, 0 NUTRI ) 2 HE  4 : Q =  18.071 MeV      9   0   0   5  QINU =  8.662 MeV
+  20    1 B   8 ( 0 OOOOO, 1 PROT  ) 1 BE  7 : Q =  -0.137 MeV      9  55   2   8  QINU =  0.000 MeV
+  21    1 BE  9 ( 1 PROT , 0 OOOOO ) 1 B  10 : Q =   6.586 MeV     10   2  55  11  QINU =  0.000 MeV
+  22    1 BE  9 ( 1 PROT , 1 DEUT  ) 2 HE  4 : Q =   0.651 MeV     10   2   3   5  QINU =  0.000 MeV
+  23    1 BE  9 ( 1 PROT , 1 HE  4 ) 1 LI  6 : Q =   2.126 MeV     10   2   5   6  QINU =  0.000 MeV
+  24    1 B  10 ( 1 PROT , 1 HE  4 ) 1 BE  7 : Q =   1.146 MeV     11   2   5   8  QINU =  0.000 MeV
+  25    1 B  10 ( 1 PROT , 0 OOOOO ) 1 B  11 : Q =  10.672 MeV     11   2  55  12  QINU =  0.582 MeV
+  26    1 B  11 ( 1 PROT , 0 OOOOO ) 1 C  12 : Q =  15.957 MeV     12   2  55  13  QINU =  0.000 MeV
+  27    1 B  11 ( 1 PROT , 0 OOOOO ) 3 HE  4 : Q =   8.682 MeV     12   2  55   5  QINU =  0.000 MeV
+  28    1 B  11 ( 1 HE  4, 1 PROT  ) 1 C  14 : Q =   0.784 MeV     12   5   2  16  QINU =  0.000 MeV
+  29    1 C  12 ( 1 NEUT , 0 OOOOO ) 1 C  13 : Q =   4.946 MeV     13   1  55  14  QINU =  0.000 MeV
+  30    1 C  12 ( 1 PROT , 0 OOOOO ) 1 N  13 : Q =   1.944 MeV     13   2  55  15  QINU =  0.000 MeV
+  31    1 C  12 ( 1 HE  4, 0 OOOOO ) 1 O  16 : Q =   7.162 MeV     13   5  55  20  QINU =  0.000 MeV
+  32    2 C  12 ( 0 OOOOO, 1 HE  4 ) 1 NE 20 : Q =   4.617 MeV     13  55   5  26  QINU =  0.000 MeV
+  33    2 C  12 ( 0 OOOOO, 1 PROT  ) 1 NA 23 : Q =   2.240 MeV     13  55   2  31  QINU =  0.000 MeV
+  34    1 C  13 ( 1 NEUT , 0 OOOOO ) 1 C  14 : Q =   8.176 MeV     14   1  55  16  QINU =  0.000 MeV
+  35    1 C  13 ( 1 PROT , 0 OOOOO ) 1 N  14 : Q =   7.551 MeV     14   2  55  17  QINU =  0.000 MeV
+  36    1 C  13 ( 1 HE  4, 1 NEUT  ) 1 O  16 : Q =   2.216 MeV     14   5   1  20  QINU =  0.000 MeV
+  37    1 N  13 ( 0 BETAP, 0 NUTRI ) 1 C  13 : Q =   2.220 MeV     15   0   0  14  QINU =  0.712 MeV
+  38    1 N  13 ( 1 NEUT , 1 PROT  ) 1 C  13 : Q =   3.002 MeV     15   1   2  14  QINU =  0.000 MeV
+  39    1 N  13 ( 1 PROT , 0 OOOOO ) 1 N  14 : Q =   9.771 MeV     15   2  55  17  QINU =  2.222 MeV
+  40    1 C  14 ( 1 NEUT , 0 OOOOO ) 1 N  15 : Q =  10.990 MeV     16   1  55  18  QINU =  5.064 MeV
+  41    1 C  14 ( 1 PROT , 0 OOOOO ) 1 N  15 : Q =  10.208 MeV     16   2  55  18  QINU =  0.000 MeV
+  42    1 C  14 ( 1 PROT , 1 NEUT  ) 1 N  14 : Q =  -0.625 MeV     16   2   1  17  QINU =  0.000 MeV
+  43    1 C  14 ( 1 PROT , 1 HE  4 ) 1 B  11 : Q =  -0.784 MeV     16   2   5  12  QINU =  0.000 MeV
+  44    1 C  14 ( 1 HE  4, 1 NEUT  ) 1 O  17 : Q =  -1.817 MeV     16   5   1  21  QINU =  0.000 MeV
+  45    1 C  14 ( 1 HE  4, 0 OOOOO ) 1 O  18 : Q =   6.227 MeV     16   5  55  22  QINU =  0.000 MeV
+  46    1 N  14 ( 1 NEUT , 0 OOOOO ) 1 N  15 : Q =  10.833 MeV     17   1  55  18  QINU =  0.000 MeV
+  47    1 N  14 ( 1 NEUT , 1 PROT  ) 1 C  14 : Q =   0.625 MeV     17   1   2  16  QINU =  0.000 MeV
+  48    1 N  14 ( 1 PROT , 0 OOOOO ) 1 O  15 : Q =   7.297 MeV     17   2  55  19  QINU =  0.000 MeV
+  49    1 N  14 ( 1 HE  4, 0 OOOOO ) 1 F  18 : Q =   4.415 MeV     17   5  55  23  QINU =  0.000 MeV
+  50    1 N  15 ( 1 NEUT , 0 OOOOO ) 1 O  16 : Q =  12.909 MeV     18   1  55  20  QINU =  5.388 MeV
+  51    1 N  15 ( 1 PROT , 1 HE  4 ) 1 C  12 : Q =   4.965 MeV     18   2   5  13  QINU =  0.000 MeV
+  52    1 N  15 ( 1 PROT , 0 OOOOO ) 1 O  16 : Q =  12.127 MeV     18   2  55  20  QINU =  0.000 MeV
+  53    1 N  15 ( 1 HE  4, 0 OOOOO ) 1 F  19 : Q =   4.013 MeV     18   5  55  24  QINU =  0.000 MeV
+  54    1 O  15 ( 0 BETAP, 0 NUTRI ) 1 N  15 : Q =   2.754 MeV     19   0   0  18  QINU =  0.997 MeV
+  55    1 O  15 ( 1 NEUT , 1 HE  4 ) 1 C  12 : Q =   8.501 MeV     19   1   5  13  QINU =  0.000 MeV
+  56    1 O  15 ( 1 NEUT , 1 PROT  ) 1 N  15 : Q =   3.536 MeV     19   1   2  18  QINU =  0.000 MeV
+  57    1 O  16 ( 1 NEUT , 0 OOOOO ) 1 O  17 : Q =   4.143 MeV     20   1  55  21  QINU =  0.000 MeV
+  58    1 O  16 ( 1 PROT , 0 OOOOO ) 1 O  17 : Q =   3.361 MeV     20   2  55  21  QINU =  1.000 MeV
+  59    1 O  16 ( 1 HE  4, 0 OOOOO ) 1 NE 20 : Q =   4.730 MeV     20   5  55  26  QINU =  0.000 MeV
+  60    1 O  16 ( 1 C  12, 1 NEUT  ) 1 AL 27 : Q =   4.389 MeV     20  13   1  40  QINU =  2.054 MeV
+  61    1 O  16 ( 1 C  12, 1 PROT  ) 1 AL 27 : Q =   5.171 MeV     20  13   2  40  QINU =  0.000 MeV
+  62    1 O  16 ( 1 C  12, 1 HE  4 ) 1 MG 24 : Q =   6.771 MeV     20  13   5  33  QINU =  0.000 MeV
+  63    2 O  16 ( 0 OOOOO, 1 PROT  ) 1 P  31 : Q =   7.678 MeV     20  55   2  44  QINU =  0.000 MeV
+  64    2 O  16 ( 0 OOOOO, 1 HE  4 ) 1 SI 28 : Q =   9.594 MeV     20  55   5  41  QINU =  0.000 MeV
+  65    1 O  17 ( 1 NEUT , 1 HE  4 ) 1 C  14 : Q =   1.817 MeV     21   1   5  16  QINU =  0.000 MeV
+  66    1 O  17 ( 1 NEUT , 0 OOOOO ) 1 O  18 : Q =   8.044 MeV     21   1  55  22  QINU =  0.000 MeV
+  67    1 O  17 ( 1 PROT , 0 OOOOO ) 1 F  18 : Q =   5.607 MeV     21   2  55  23  QINU =  0.000 MeV
+  68    1 O  17 ( 1 PROT , 1 HE  4 ) 1 N  14 : Q =   1.192 MeV     21   2   5  17  QINU =  0.000 MeV
+  69    1 O  17 ( 1 HE  4, 1 NEUT  ) 1 NE 20 : Q =   0.587 MeV     21   5   1  26  QINU =  0.000 MeV
+  70    1 O  17 ( 1 HE  4, 0 OOOOO ) 1 NE 21 : Q =   7.348 MeV     21   5  55  27  QINU =  0.000 MeV
+  71    1 O  18 ( 1 NEUT , 0 OOOOO ) 1 F  19 : Q =   8.776 MeV     22   1  55  24  QINU =  2.576 MeV
+  72    1 O  18 ( 1 PROT , 0 OOOOO ) 1 F  19 : Q =   7.994 MeV     22   2  55  24  QINU =  0.000 MeV
+  73    1 O  18 ( 1 PROT , 1 HE  4 ) 1 N  15 : Q =   3.981 MeV     22   2   5  18  QINU =  0.000 MeV
+  74    1 O  18 ( 1 HE  4, 0 OOOOO ) 1 NE 22 : Q =   9.667 MeV     22   5  55  28  QINU =  0.000 MeV
+  75    1 O  18 ( 1 HE  4, 1 NEUT  ) 1 NE 21 : Q =  -0.696 MeV     22   5   1  27  QINU =  0.000 MeV
+  76    1 F  18 ( 0 BETAP, 0 NUTRI ) 1 O  18 : Q =   1.655 MeV     23   0   0  22  QINU =  0.397 MeV
+  77    1 F  18 ( 1 NEUT , 1 PROT  ) 1 O  18 : Q =   2.437 MeV     23   1   2  22  QINU =  0.000 MeV
+  78    1 F  18 ( 1 NEUT , 1 HE  4 ) 1 N  15 : Q =   6.418 MeV     23   1   5  18  QINU =  0.000 MeV
+  79    1 F  18 ( 1 HE  4, 1 PROT  ) 1 NE 21 : Q =   1.741 MeV     23   5   2  27  QINU =  0.000 MeV
+  80    1 F  19 ( 1 NEUT , 0 OOOOO ) 1 NE 20 : Q =  13.626 MeV     24   1  55  26  QINU =  3.685 MeV
+  81    1 F  19 ( 1 PROT , 0 OOOOO ) 1 NE 20 : Q =  12.844 MeV     24   2  55  26  QINU =  0.000 MeV
+  82    1 F  19 ( 1 PROT , 1 HE  4 ) 1 O  16 : Q =   8.114 MeV     24   2   5  20  QINU =  0.000 MeV
+  83    1 F  19 ( 1 HE  4, 1 PROT  ) 1 NE 22 : Q =   1.673 MeV     24   5   2  28  QINU =  0.000 MeV
+  84    1 NE 20 ( 1 NEUT , 0 OOOOO ) 1 NE 21 : Q =   6.761 MeV     26   1  55  27  QINU =  0.000 MeV
+  85    1 NE 20 ( 1 PROT , 0 OOOOO ) 1 NE 21 : Q =   5.979 MeV     26   2  55  27  QINU =  1.409 MeV
+  86    1 NE 20 ( 0 OOOOO, 1 HE  4 ) 1 O  16 : Q =  -4.730 MeV     26  55   5  20  QINU =  0.000 MeV
+  87    1 NE 20 ( 1 HE  4, 0 OOOOO ) 1 MG 24 : Q =   9.316 MeV     26   5  55  33  QINU =  0.000 MeV
+  88    1 NE 20 ( 1 HE  4, 1 PROT  ) 1 NA 23 : Q =  -2.377 MeV     26   5   2  31  QINU =  0.000 MeV
+  89    1 NE 21 ( 1 NEUT , 0 OOOOO ) 1 NE 22 : Q =  10.363 MeV     27   1  55  28  QINU =  0.000 MeV
+  90    1 NE 21 ( 1 NEUT , 1 HE  4 ) 1 O  18 : Q =   0.696 MeV     27   1   5  22  QINU =  0.000 MeV
+  91    1 NE 21 ( 1 PROT , 0 OOOOO ) 1 NA 22 : Q =   6.739 MeV     27   2  55  29  QINU =  0.000 MeV
+  92    1 NE 21 ( 1 HE  4, 0 OOOOO ) 1 MG 25 : Q =   9.886 MeV     27   5  55  35  QINU =  0.000 MeV
+  93    1 NE 21 ( 1 HE  4, 1 NEUT  ) 1 MG 24 : Q =   2.555 MeV     27   5   1  33  QINU =  0.000 MeV
+  94    1 NE 22 ( 1 NEUT , 0 OOOOO ) 1 NA 23 : Q =   9.576 MeV     28   1  55  31  QINU =  2.350 MeV
+  95    1 NE 22 ( 1 PROT , 0 OOOOO ) 1 NA 23 : Q =   8.794 MeV     28   2  55  31  QINU =  0.000 MeV
+  96    1 NE 22 ( 1 HE  4, 1 NEUT  ) 1 MG 25 : Q =  -0.477 MeV     28   5   1  35  QINU =  0.000 MeV
+  97    1 NE 22 ( 1 HE  4, 0 OOOOO ) 1 MG 26 : Q =  10.615 MeV     28   5  55  36  QINU =  0.000 MeV
+  98    1 NA 22 ( 0 BETAP, 0 NUTRI ) 1 NE 22 : Q =   2.842 MeV     29   0   0  28  QINU =  1.043 MeV
+  99    1 NA 22 ( 1 NEUT , 0 OOOOO ) 1 NA 23 : Q =  12.418 MeV     29   1  55  31  QINU =  0.000 MeV
+ 100    1 NA 22 ( 1 NEUT , 1 PROT  ) 1 NE 22 : Q =   3.624 MeV     29   1   2  28  QINU =  0.000 MeV
+ 101    1 NA 22 ( 1 PROT , 0 OOOOO ) 1 NA 23 : Q =  11.636 MeV     29   2  55  31  QINU =  1.669 MeV
+ 102    1 NA 23 ( 1 NEUT , 0 OOOOO ) 1 MG 24 : Q =  12.475 MeV     31   1  55  33  QINU =  2.926 MeV
+ 103    1 NA 23 ( 1 PROT , 1 HE  4 ) 1 NE 20 : Q =   2.377 MeV     31   2   5  26  QINU =  0.000 MeV
+ 104    1 NA 23 ( 1 PROT , 0 OOOOO ) 1 MG 24 : Q =  11.693 MeV     31   2  55  33  QINU =  0.000 MeV
+ 105    1 NA 23 ( 1 HE  4, 1 PROT  ) 1 MG 26 : Q =   1.821 MeV     31   5   2  36  QINU =  0.000 MeV
+ 106    1 MG 24 ( 1 NEUT , 0 OOOOO ) 1 MG 25 : Q =   7.331 MeV     33   1  55  35  QINU =  0.000 MeV
+ 107    1 MG 24 ( 1 PROT , 0 OOOOO ) 1 MG 25 : Q =   6.549 MeV     33   2  55  35  QINU =  1.782 MeV
+ 108    1 MG 24 ( 1 HE  4, 1 PROT  ) 1 AL 27 : Q =  -1.600 MeV     33   5   2  40  QINU =  0.000 MeV
+ 109    1 MG 24 ( 1 HE  4, 0 OOOOO ) 1 SI 28 : Q =   9.985 MeV     33   5  55  41  QINU =  0.000 MeV
+ 110    1 MG 25 ( 1 NEUT , 0 OOOOO ) 1 MG 26 : Q =  11.092 MeV     35   1  55  36  QINU =  0.000 MeV
+ 111    1 MG 25 ( 1 PROT , 0 OOOOO ) 1 AL26m : Q =   6.078 MeV     35   2  55  37  QINU =  0.000 MeV
+ 112    1 MG 25 ( 1 PROT , 0 OOOOO ) 1 AL26g : Q =   6.306 MeV     35   2  55  38  QINU =  0.000 MeV
+ 113    1 MG 25 ( 1 HE  4, 1 PROT  ) 1 SI 28 : Q =   3.436 MeV     35   5   2  41  QINU =  2.485 MeV
+ 114    1 MG 25 ( 1 HE  4, 1 NEUT  ) 1 SI 28 : Q =   2.654 MeV     35   5   1  41  QINU =  0.000 MeV
+ 115    1 MG 25 ( 1 HE  4, 0 OOOOO ) 1 SI 29 : Q =  11.127 MeV     35   5  55  42  QINU =  0.000 MeV
+ 116    1 MG 26 ( 1 NEUT , 0 OOOOO ) 1 AL 27 : Q =   9.054 MeV     36   1  55  40  QINU =  1.452 MeV
+ 117    1 MG 26 ( 1 PROT , 0 OOOOO ) 1 AL 27 : Q =   8.272 MeV     36   2  55  40  QINU =  0.000 MeV
+ 118    1 MG 26 ( 1 HE  4, 0 OOOOO ) 1 SI 30 : Q =  10.644 MeV     36   5  55  43  QINU =  0.000 MeV
+ 119    1 MG 26 ( 1 HE  4, 1 PROT  ) 1 SI 29 : Q =   0.817 MeV     36   5   2  42  QINU =  1.998 MeV
+ 120    1 MG 26 ( 1 HE  4, 1 NEUT  ) 1 SI 29 : Q =   0.035 MeV     36   5   1  42  QINU =  0.000 MeV
+ 121    1 AL26m ( 0 BETAP, 0 NUTRI ) 1 MG 26 : Q =   4.232 MeV     37   0   0  36  QINU =  1.759 MeV
+ 122    1 AL26m ( 1 NEUT , 1 PROT  ) 1 MG 26 : Q =   5.014 MeV     37   1   2  36  QINU =  0.000 MeV
+ 123    1 AL26m ( 1 NEUT , 1 HE  4 ) 1 NA 23 : Q =   3.193 MeV     37   1   5  31  QINU =  0.000 MeV
+ 124    1 AL26m ( 1 NEUT , 0 OOOOO ) 1 AL 27 : Q =  13.286 MeV     37   1  55  40  QINU =  0.000 MeV
+ 125    1 AL26m ( 1 PROT , 0 OOOOO ) 1 AL 27 : Q =  11.501 MeV     37   2  55  40  QINU =  1.543 MeV
+ 126    1 AL26g ( 0 BETAP, 0 NUTRI ) 1 MG 26 : Q =   4.004 MeV     38   0   0  36  QINU =  1.643 MeV
+ 127    1 AL26g ( 1 NEUT , 0 OOOOO ) 1 AL 27 : Q =  13.058 MeV     38   1  55  40  QINU =  0.000 MeV
+ 128    1 AL26g ( 1 NEUT , 1 PROT  ) 1 MG 26 : Q =   4.786 MeV     38   1   2  36  QINU =  0.000 MeV
+ 129    1 AL26g ( 1 NEUT , 1 HE  4 ) 1 NA 23 : Q =   2.965 MeV     38   1   5  31  QINU =  0.000 MeV
+ 130    1 AL26g ( 1 PROT , 0 OOOOO ) 1 AL 27 : Q =  11.273 MeV     38   2  55  40  QINU =  1.543 MeV
+ 131    1 AL26g ( 0 OOOOO, 0 OOOOO ) 1 AL26m : Q =  -0.228 MeV     38  55  55  37  QINU =  0.000 MeV
+ 132    1 AL26m ( 0 OOOOO, 0 OOOOO ) 1 AL26g : Q =   0.228 MeV     37  55  55  38  QINU =  0.000 MeV
+ 133    1 AL 27 ( 1 PROT , 0 OOOOO ) 1 SI 28 : Q =  11.585 MeV     40   2  55  41  QINU =  0.000 MeV
+ 134    1 AL 27 ( 1 PROT , 1 HE  4 ) 1 MG 24 : Q =   1.600 MeV     40   2   5  33  QINU =  0.000 MeV
+ 135    1 AL 27 ( 1 HE  4, 1 NEUT  ) 1 SI 30 : Q =   1.590 MeV     40   5   1  43  QINU =  1.759 MeV
+ 136    1 AL 27 ( 1 HE  4, 1 PROT  ) 1 SI 30 : Q =   2.372 MeV     40   5   2  43  QINU =  0.000 MeV
+ 137    1 SI 28 ( 1 NEUT , 0 OOOOO ) 1 SI 29 : Q =   8.473 MeV     41   1  55  42  QINU =  0.000 MeV
+ 138    1 SI 28 ( 1 PROT , 0 OOOOO ) 1 SI 29 : Q =   7.691 MeV     41   2  55  42  QINU =  2.120 MeV
+ 139    1 SI 28 ( 1 HE  4, 0 OOOOO ) 1 S  32 : Q =   6.948 MeV     41   5  55  45  QINU =  0.000 MeV
+ 140    1 SI 29 ( 1 NEUT , 0 OOOOO ) 1 SI 30 : Q =  10.609 MeV     42   1  55  43  QINU =  0.000 MeV
+ 141    1 SI 29 ( 1 PROT , 0 OOOOO ) 1 SI 30 : Q =   9.827 MeV     42   2  55  43  QINU =  1.759 MeV
+ 142    1 SI 30 ( 1 NEUT , 0 OOOOO ) 1 P  31 : Q =   8.079 MeV     43   1  55  44  QINU =  0.870 MeV
+ 143    1 SI 30 ( 1 PROT , 0 OOOOO ) 1 P  31 : Q =   7.297 MeV     43   2  55  44  QINU =  0.000 MeV
+ 144    1 P  31 ( 1 NEUT , 0 OOOOO ) 1 S  32 : Q =   9.646 MeV     44   1  55  45  QINU =  0.986 MeV
+ 145    1 P  31 ( 1 PROT , 1 HE  4 ) 1 SI 28 : Q =   1.916 MeV     44   2   5  41  QINU =  0.000 MeV
+ 146    1 P  31 ( 1 PROT , 0 OOOOO ) 1 S  32 : Q =   8.864 MeV     44   2  55  45  QINU =  0.000 MeV
+ 147    1 S  32 ( 1 NEUT , 0 OOOOO ) 1 S  33 : Q =   8.641 MeV     45   1  55  46  QINU =  0.000 MeV
+ 148    1 S  32 ( 1 NEUT , 1 HE  4 ) 1 SI 29 : Q =   1.525 MeV     45   1   5  42  QINU =  0.000 MeV
+ 149    1 S  32 ( 1 PROT , 0 OOOOO ) 1 S  33 : Q =   7.859 MeV     45   2  55  46  QINU =  2.444 MeV
+ 150    1 S  33 ( 1 NEUT , 0 OOOOO ) 1 S  34 : Q =  11.417 MeV     46   1  55  47  QINU =  0.000 MeV
+ 151    1 S  33 ( 1 NEUT , 1 HE  4 ) 1 SI 30 : Q =   3.493 MeV     46   1   5  43  QINU =  0.000 MeV
+ 152    1 S  33 ( 1 PROT , 0 OOOOO ) 1 S  34 : Q =  10.635 MeV     46   2  55  47  QINU =  2.398 MeV
+ 153    1 S  34 ( 1 NEUT , 0 OOOOO ) 1 S  35 : Q =   6.985 MeV     47   1  55  48  QINU =  0.000 MeV
+ 154    1 S  34 ( 1 PROT , 0 OOOOO ) 1 CL 35 : Q =   6.371 MeV     47   2  55  49  QINU =  0.000 MeV
+ 155    1 S  35 ( 0 BETAM, 0 NUTRI ) 1 CL 35 : Q =   0.168 MeV     48   0   0  49  QINU =  0.110 MeV
+ 156    1 S  35 ( 1 NEUT , 0 OOOOO ) 1 S  36 : Q =   9.889 MeV     48   1  55  50  QINU =  0.000 MeV
+ 157    1 S  35 ( 1 PROT , 0 OOOOO ) 1 CL 36 : Q =   7.965 MeV     48   2  55  51  QINU =  0.000 MeV
+ 158    1 CL 35 ( 1 NEUT , 0 OOOOO ) 1 CL 36 : Q =   8.579 MeV     49   1  55  51  QINU =  0.000 MeV
+ 159    1 CL 35 ( 1 PROT , 0 OOOOO ) 1 HEAVY : Q =   8.505 MeV     49   2  55  53  QINU =  0.000 MeV
+ 160    1 S  36 ( 1 NEUT , 0 OOOOO ) 1 CL 37 : Q =   9.169 MeV     50   1  55  52  QINU =  2.598 MeV
+ 161    1 S  36 ( 1 PROT , 0 OOOOO ) 1 CL 37 : Q =   8.387 MeV     50   2  55  52  QINU =  0.000 MeV
+ 162    1 CL 36 ( 0 BETAM, 0 NUTRI ) 1 HEAVY : Q =   0.708 MeV     51   0   0  53  QINU =  0.440 MeV
+ 163    1 CL 36 ( 1 NEUT , 0 OOOOO ) 1 CL 37 : Q =  10.311 MeV     51   1  55  52  QINU =  0.000 MeV
+ 164    1 CL 36 ( 1 PROT , 0 OOOOO ) 1 CL 37 : Q =   9.529 MeV     51   2  55  52  QINU =  0.814 MeV
+ 165    1 CL 37 ( 1 NEUT , 0 OOOOO ) 1 HEAVY : Q =  11.024 MeV     52   1  55  53  QINU =  2.624 MeV
+ 166    1 CL 37 ( 1 PROT , 0 OOOOO ) 1 HEAVY : Q =  10.242 MeV     52   2  55  53  QINU =  0.000 MeV
+ 167    1 HEAVY ( 1 NEUT , 0 OOOOO)  1 CAPTN : Q =   8.221 MeV     53   1  55  54  QINU =  0.000 MeV
+ 168    1 N  14 ( 0 CATPE, 0 NUTRI)  1 C  14 : Q =  -0.157 MeV     17  55   0  16  QINU =  0.000 MeV
+ 169    1 C  14 ( 0 BETAM, 0 NUTRI)  1 N  14 : Q =   0.157 MeV     16   0   0  17  QINU =  0.000 MeV
+ 170    1 NE 20 ( 0 CATPE, 0 NUTRI)  1 F  20 : Q =  -7.029 MeV     26  55   0  25  QINU =  0.000 MeV
+ 171    1 F  20 ( 0 BETAM, 0 NUTRI)  1 NE 20 : Q =   7.029 MeV     25   0   0  26  QINU =  0.000 MeV
+ 172    1 NA 23 ( 0 CATPE, 0 NUTRI)  1 NE 23 : Q =  -4.376 MeV     31  55   0  30  QINU =  0.000 MeV
+ 173    1 NE 23 ( 0 BETAM, 0 NUTRI)  1 NA 23 : Q =   4.376 MeV     30   0   0  31  QINU =  0.000 MeV
+ 174    1 MG 24 ( 0 CATPE, 0 NUTRI)  1 NA 24 : Q =  -5.514 MeV     33  55   0  32  QINU =  0.000 MeV
+ 175    1 NA 24 ( 0 BETAM, 0 NUTRI)  1 MG 24 : Q =   5.514 MeV     32   0   0  33  QINU =  0.000 MeV
+ 176    1 MG 25 ( 0 CATPE, 0 NUTRI)  1 NA 25 : Q =  -3.833 MeV     35  55   0  34  QINU =  0.000 MeV
+ 177    1 NA 25 ( 0 BETAM, 0 NUTRI)  1 MG 25 : Q =   3.833 MeV     34   0   0  35  QINU =  0.000 MeV
+ 178    1 AL 27 ( 0 CATPE, 0 NUTRI)  1 MG 27 : Q =  -2.611 MeV     40  55   0  39  QINU =  0.000 MeV
+ 179    1 MG 27 ( 0 BETAM, 0 NUTRI)  1 AL 27 : Q =   2.611 MeV     39   0   0  40  QINU =  0.000 MeV
+
+nuclear network references:
+
+    1  Wagoner R.V., 1969, ApJS 18, 247                             
+    2  Nacre reaction rates 280399  ppnu     (nominal)              
+    3  Nacre reaction rates 280399  dpg      (nominal)              
+    4  Nacre reaction rates 280399  ddg      (nominal)              
+    5  Nacre reaction rates 280399  ddn      (nominal)              
+    6  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+    7  Descouvemont, P., Adahchour, A., Angulo, C., et al. 2004, At 
+    8  Nacre reaction rates 280399  he3he3   (nominal)              
+    9  Nacre reaction rates 280399  dag      (nominal)              
+   10  Nacre reaction rates 280399  he3ag    (nominal)              
+   11  Fynbo et al. (2005), Nature 433, 136                         
+   12  Nacre reaction rates 280399  li6pg    (nominal)              
+   13  Nacre reaction rates 280399  li6pa    (nominal)              
+   14  Nacre reaction rates 280399  li7pa    (nominal)              
+   15  CF88                                                         
+   16  CF88 / Valid at T9 < 3 /WARNING: To obtain reaction rate, mu 
+   17  Nacre reaction rates 280399  be7pg    (nominal)              
+   18  CF88                                                         
+   19  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the 
+   20  Nacre reaction rates 280399  be7pg    (nominal)  REVERSE     
+   21  Nacre reaction rates 280399  be9pg    (nominal)              
+   22  Nacre reaction rates 280399  be9pd    (nominal)              
+   23  Nacre reaction rates 280399  be9pa    (nominal)              
+   24  Nacre reaction rates 280399  b10pa    (nominal)              
+   25  Nacre reaction rates 280399  b10pg    (nominal)              
+   26  Nacre reaction rates 280399  b11pg    (nominal)              
+   27  Nacre reaction rates 280399  b11pa    (nominal)              
+   28  CF88                                                         
+   29  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   30  Nacre reaction rates 280399  c12pg    (nominal)              
+   31  Nacre reaction rates 280399  c12ag    (nominal)              
+   32  CF88; valid  for T9 < 6                                      
+   33  CF88; valid for T9 < 6                                       
+   34  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   35  Nacre reaction rates 280399  c13pg    (nominal)              
+   36  Nacre reaction rates 280399  c13an    (nominal)              
+   37  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the 
+   38  Nacre nominal (explicit reverse)                             
+   39  Nacre reaction rates 280399  n13pg    (nominal)              
+   40  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   41  Wiescher M., Goerres J., Thielemann F.-K., 1990, ApJ 363, 34 
+   42  Koehler P.E., O'Brien, H.A. 1989, Phys. Rev. C 39, 1655      
+   43  CF88                                                         
+   44  Schatz H., Kappeler F.,  Koehler P.E., Wiescher M.,  Trautve 
+   45  Not valid above T9=3!DC + SUB: Funck C., Langanke K., 1989,  
+   46  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   47  Koehler P.E., O'Brien, H.A. 1989, Phys. Rev. C 39, 1655      
+   48  Mukhamedzhanov, A.M., Bem, P., Brown, B.A., et al. 2003 Phys 
+   49  Nacre reaction rates 280399  n14ag    (nominal)              
+   50  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   51  Nacre reaction rates 280399  n15pa    (nominal)              
+   52  Nacre reaction rates 280399  n15pg    (nominal)              
+   53  Nacre reaction rates 280399  n15ag    (nominal)              
+   54  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the 
+   55  CF88REV                                                      
+   56  Nacre nominal (explicit reverse)                             
+   57  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   58  Nacre reaction rates 280399  o16pg    (nominal)              
+   59  Nacre reaction rates 280399  o16ag    (nominal)              
+   60  CF88, valid above T9 = 0.5                                   
+   61  CF88                                                         
+   62  CF88                                                         
+   63  CF88                                                         
+   64  CF88                                                         
+   65  Schatz H., Kappeler F.,  Koehler P.E., Wiescher M.,  Trautve 
+   66  Wagoner R., 1969, ApJS 18, 247                               
+   67  Nacre reaction rates 280399  o17pg    (nominal)              
+   68  Nacre reaction rates 280399  o17pa    (nominal)              
+   69  Nacre reaction rates 280399  o17an    (nominal)              
+   70  CF88                                                         
+   71  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   72  Nacre reaction rates 280399  o18pg    (nominal)              
+   73  Nacre reaction rates 280399  o18pa    (nominal)              
+   74  Nacre reaction rates 280399  o18ag    (nominal)              
+   75  Nacre reaction rates 280399  o18an    (nominal)              
+   76  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the 
+   77  Hauser-Feshbach                                              
+   78  Hauser-Feshbach                                              
+   79  Wagoner R., 1969, ApJS 18, 247                               
+   80  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   81  Nacre reaction rates 280399  f19pg    (nominal)              
+   82  Nacre reaction rates 280399  f19pa    (nominal)              
+   83  CF88                                                         
+   84  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   85  Nacre reaction rates 280399  ne20pg   (nominal)              
+   86  Nacre reaction rates 280399  o16ag    (nominal)  REVERSE     
+   87  Nacre reaction rates 280399  ne20ag   (nominal)              
+   88  Nacre reaction rates 280399  na23pa   (nominal)  REVERSE     
+   89  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+   90  Nacre nominal (explicit reverse)                             
+   91  Nacre reaction rates 280399  ne21pg   (nominal)              
+   92  CF88                                                         
+   93  Nacre reaction rates 280399  ne21an   (nominal)              
+   94  Beer H., Sedyshev P.V., Rochow W., Mohr P., Oberhummer H., 2 
+   95  Hale, S.E., Champagne, A.E., Iliadis, C., et al. 2002, Phys. 
+   96  Nacre reaction rates 280399  ne22an   (nominal)              
+   97  Nacre reaction rates 280399  ne22ag   (nominal)              
+   98  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the 
+   99  Hauser-Feshbach                                              
+  100  CF88                                                         
+  101  Nacre reaction rates 280399  na22pg   (nominal)              
+  102  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  103  Nacre reaction rates 280399  na23pa   (nominal)              
+  104  Nacre reaction rates 280399  na23pg   (nominal)              
+  105  Hauser-Feshbach                                              
+  106  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  107  Nacre reaction rates 280399  mg24pg   (nominal)              
+  108  Nacre reaction rates 280399  al27pa   (nominal)  REVERSE     
+  109  CF88                                                         
+  110  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  111  Nacre reaction rates 280399  mg25pg3  (nominal)              
+  112  Nacre reaction rates 280399  mg25pg2  (nominal)              
+  113  Hauser-Feshbach                                              
+  114  Nacre reaction rates 280399  mg25an   (nominal)              
+  115  CF88                                                         
+  116  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  117  Nacre reaction rates 280399  mg26pg   (nominal)              
+  118  CF88                                                         
+  119  Hauser-Feshbach                                              
+  120  Nacre reaction rates 280399  mg26an   (nominal)              
+  121  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the 
+  122  CF88                                                         
+  123  Nacre nominal (explicit reverse)                             
+  124  Woosley S.E., Fowler W.A., Holmes J.A., Zimmerman B.A., 1978 
+  125  Nacre reaction rates 280399  al26pg2  (nominal)              
+  126  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the 
+  127  Woosley S.E., Fowler W.A., Holmes J.A., Zimmerman B.A., 1978 
+  128  CF88; Total rate (g+m) above T8 = 3.9                        
+  129  Nacre nominal (explicit reverse) (total m+g rate above T8=3. 
+  130  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001,  
+  131  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001,  
+  132  Vogelaar R.B., 1989, Ph.D.thesis, Caltech - WARNING: Transit
+  133  Nacre reaction rates 280399  al27pg   (nominal)              
+  134  Nacre reaction rates 280399  al27pa   (nominal)              
+  135  Nacre reaction rates 280399  al27an   (nominal)              
+  136  Hauser-Feshbach                                              
+  137  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  138  Nacre reaction rates 280399  si28pg   (nominal)              
+  139  Hauser-Feshbach                                              
+  140  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  141  Nacre reaction rates 280399  si29pg   (nominal)              
+  142  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  143  Nacre reaction rates 280399  si30pg   (nominal)              
+  144  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  145  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001,  
+  146  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001,  
+  147  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  148  Hauser-Feshbach                                              
+  149  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001,  
+  150  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  151   Wagemans C., Weigmann H., Barthelemy R., 1987, Nucl.Phys. A 
+  152  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001,  
+  153  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  154  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001,  
+  155  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the 
+  156  Hauser-Feshbach                                              
+  157  Hauser-Feshbach                                              
+  158  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  159  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001,  
+  160  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  161  Hauser-Feshbach                                              
+  162  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the 
+  163  Hauser-Feshbach                                              
+  164  Hauser-Feshbach                                              
+  165  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch 
+  166  Hauser-Feshbach                                              

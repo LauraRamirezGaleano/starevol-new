@@ -1,0 +1,118 @@
+
+#
+#! /bin/sh
+#
+
+echo 
+if [ $# -ne 1 ]
+   then
+   echo " !! 1 argument needed:"
+   echo " filename to which the header will be added"
+   echo " ex : header m2.0_test"
+   echo
+   exit 2
+fi
+fileheader=$DIR_RESEVOL/HEADERS/mevol
+
+FILE=$1
+if [ ! -e ${FILE}.hr.gz ] && [ ! -e ${FILE}.hr ]
+then
+    echo file does not exist
+    echo header aborted
+    echo
+    exit 2
+fi
+
+gunzip -f ${fileheader}.*
+gunzip -f ${FILE}.*
+
+cat ${fileheader}.hr ${FILE}.hr >> ninter
+mv ninter ${FILE}.hr
+cat ${fileheader}.v1 ${FILE}.v1 >> ninter
+mv ninter ${FILE}.v1
+cat ${fileheader}.v2 ${FILE}.v2 >> ninter
+mv ninter ${FILE}.v2
+cat ${fileheader}.v3 ${FILE}.v3 >> ninter
+mv ninter ${FILE}.v3
+cat ${fileheader}.v4 ${FILE}.v4 >> ninter
+mv ninter ${FILE}.v4
+cat ${fileheader}.v5 ${FILE}.v5 >> ninter
+mv ninter ${FILE}.v5
+cat ${fileheader}.v6 ${FILE}.v6 >> ninter
+mv ninter ${FILE}.v6
+cat ${fileheader}.v7 ${FILE}.v7 >> ninter
+mv ninter ${FILE}.v7
+cat ${fileheader}.tc1 ${FILE}.tc1 >> ninter
+mv ninter ${FILE}.tc1
+cat ${fileheader}.tc2 ${FILE}.tc2 >> ninter
+mv ninter ${FILE}.tc2
+cat ${fileheader}.as ${FILE}.as >> ninter
+mv ninter ${FILE}.as
+
+if [ -s ${fileheader}.v8 ]
+ then
+   cat ${fileheader}.v8 ${FILE}.v8 >> ninter
+   mv ninter ${FILE}.v8
+fi
+if [ -s ${fileheader}.v9 ]
+then
+  cat ${fileheader}.v9 ${FILE}.v9 >> ninter
+  mv ninter ${FILE}.v9
+fi
+if [ -s ${fileheader}.v10 ]
+then
+  cat ${fileheader}.v10 ${FILE}.v10 >> ninter
+  mv ninter ${FILE}.v10
+fi
+if [ -s ${fileheader}.v11 ]
+then
+  cat ${fileheader}.v11 ${FILE}.v11 >> ninter
+  mv ninter ${FILE}.v11
+fi
+if [ -s ${fileheader}.v12 ]
+then
+  cat ${fileheader}.v12 ${FILE}.v12 >> ninter
+  mv ninter ${FILE}.v12
+fi
+if [ -s ${fileheader}.v13 ]
+then
+  cat ${fileheader}.v13 ${FILE}.v13 >> ninter
+  mv ninter ${FILE}.v13
+fi
+cat ${fileheader}.s1 ${FILE}.s1 >> ninter
+mv ninter ${FILE}.s1
+cat ${fileheader}.s2 ${FILE}.s2 >> ninter
+mv ninter ${FILE}.s2
+if [ -s ${fileheader}.s3 ]
+then
+  cat ${fileheader}.s3 ${FILE}.s3 >> ninter
+  mv ninter ${FILE}.s3
+fi
+if [ -s ${fileheader}.s4 ]
+then
+  cat ${fileheader}.s4 ${FILE}.s4 >> ninter
+  mv ninter ${FILE}.s4
+fi
+cat ${fileheader}.c1 ${FILE}.c1 >> ninter
+mv ninter ${FILE}.c1
+cat ${fileheader}.c2 ${FILE}.c2 >> ninter
+mv ninter ${FILE}.c2
+if [ -s ${fileheader}.c3 ]
+then
+ cat ${fileheader}.c3 ${FILE}.c3 >> ninter
+ mv ninter ${FILE}.c3
+fi
+if [ -s ${fileheader}.c4 ]
+then
+  cat ${fileheader}.c4 ${FILE}.c4 >> ninter
+  mv ninter ${FILE}.c4
+fi
+if [ -s ${fileheader}.c5 ]
+then
+  cat ${fileheader}.c5 ${FILE}.c5 >> ninter
+   mv ninter ${FILE}.c5
+fi
+
+
+gzip ${fileheader}.*
+#gzip ${FILE}.*

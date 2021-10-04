@@ -1,0 +1,136 @@
+* -*-fortran-*-
+************************************************************************
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)     $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+************************************************************************
+C Number of frequency
+      integer nfreq
+      parameter (nfreq = 30)
+C Maximal number of l mode
+      integer llmax
+      parameter (llmax = 60)
+
+C Minimal value for wave luminosity to be considered as excited
+      double precision xlum_max
+      parameter (xlum_max = 1.d10)
+
+C Mass coordonate
+      double precision xdm_o
+C Angular momentum
+      double precision om_o
+C Thermal part of Brunt-Vassala frequency (square)
+      double precision xNt_o
+C Brunt-Vassala frequency (square) thermal and chemical part
+      double precision xN_o
+C Brunt-Vassala frequency (sqrt(xN_o))
+      double precision brunt_o
+      
+C Wave frequncy
+      double precision freqonde
+
+C Wave luminosity (after SLO damping) for conv. env.
+      double precision xlum_ond
+C Wave luminosity (after SLO damping) for conv. core
+      double precision xlum_ond_core
+
+C Wave flux (before SLO damping) for conv. env.
+      double precision fluxtotalafiltrer
+C Wave flux (before SLO damping) for conv. core
+      double precision fluxtotalafiltrer_core
+
+C Local frequency for wave excitation
+      double precision freqrefinert
+
+C Total energy flux from conv. env.:
+      double precision Fenerg
+C Total energy flux from conv. core:
+      double precision Fenerg_core
+
+C Radial wave depotsit of AM (for a given l, m wave) (dLj)
+      double precision depotonde
+C Total radial wave deposit of AM (core+surf)
+      double precision depottot
+C Total radial wave deposit of AM (surf)
+      double precision depottot_surf
+C Total radial wave deposit of AM (core)
+      double precision depottot_core
+C Radial wave luminosity (for a given l, m wave) (Lj)
+      double precision lumonde
+C Total wave luminosity from envelope 
+      double precision lumondes_surf
+C Radial wave luminosity form core
+      double precision lumondes_core
+C Total wave luminosity (core+surf)
+      double precision lumondestot
+C Total wave deposit (for printing in resulpr) in "standard" unit
+      double precision depotondestot,depotwaves
+
+C Term used for wave optical depth computation
+      double precision fint
+C Richardson number
+      double precision Ri
+
+C Term used for diff coeffcient computation in the SLO
+      double precision lumwave,lumwave_core
+
+C Amplitude of excitation by conv. region
+      double precision amplitudemoyenne,amplitudemoyenne_core
+
+C From CC_2007
+      double precision dm_m1,dm_p1
+      double precision dlum_zc
+      double precision nturb_o,xnuvv_o
+      double precision xKm_o
+      double precision rraym_o,rraym2_o
+      double precision hnenn_o,xNmu_o
+      double precision rray_o,xpress_o,rdens_o,grav_o
+      double precision cs_o,rtemp_o,xcp_o,khi_o,xluml_o
+      double precision rmass_o,dlnmu_o,hp_o,dm_o
+      double precision rkonv_o,vconv_o,xnurad_o
+
+
+      common /igw_transp/ om_o(nsh),xdm_o(nsh),xNt_o(nsh),xN_o(nsh),
+     &     brunt_o(nsh)
+
+      common /igw_excitation/ freqonde(nfreq),
+     &     xlum_ond(nfreq,llmax,-llmax:llmax),
+     &     xlum_ond_core(nfreq,llmax,-llmax:llmax),
+     &     fluxtotalafiltrer(nfreq,llmax),
+     &     fluxtotalafiltrer_core(nfreq,llmax),
+     &     freqrefinert(nfreq)
+
+      common /igw_depotsit/ depottot(nsh),depottot_surf(nsh),
+     &     depottot_core(nsh),depotonde(nsh),depotondestot(nsh),
+     &     depotwaves(nsh)
+
+      common /igw_diffusion/ lumwave(nsh),lumwave_core(nsh)
+      
+      common /igw_flux/ Fenerg,Fenerg_core
+      
+      common /igw_diagnosis/ lumonde(nsh),lumondestot(nsh),
+     &     lumondes_surf(nsh),lumondes_core(nsh)
+
+      common /igw_calc_divers/ fint(nsh),Ri(nsh)
+
+
+      common/igw_amp/amplitudemoyenne(-2:2,nfreq,llmax),
+     &           amplitudemoyenne_core(-2:2,nfreq,llmax)
+
+
+      common /transpondesmoy/ rraym_o(nsh),rraym2_o(nsh),
+     &        hnenn_o(nsh),xNmu_o(nsh),
+     &        xKm_o(nsh)
+
+       common /calcond_divers/ dm_m1(nsh),dm_p1(nsh)
+
+      common /transpondes/ rray_o(nsh),xpress_o(nsh),
+     &        rdens_o(nsh),grav_o(nsh),cs_o(nsh),
+     &        rtemp_o(nsh),xcp_o(nsh),khi_o(nsh),
+     &        xluml_o(nsh),rmass_o(nsh),dlnmu_o(nsh),
+     &        hp_o(nsh),dm_o(nsh),
+     &        rkonv_o(nsh),vconv_o(nsh),xnurad_o(nsh)
+C Modif CC 17/11/05
+     &        ,nturb_o(nsh),xnuvv_o(nsh)

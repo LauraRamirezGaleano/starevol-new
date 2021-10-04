@@ -1,0 +1,19 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      double precision u,lnr,lnf,lnt,lum,vu,vlnr,vlnf,vlnt,vlum,eps,epsa
+      double precision t,vt
+      double precision r,vr
+      double precision vhconv,vsconv
+      double precision eps0
+
+      common /tolang/ epsa
+      common /tolerance/ eps0(neq)
+      common /varia/ u(nsh),lnr(nsh),lnf(nsh),lnt(nsh),lum(nsh),vu(nsh),
+     &     vlnr(nsh),vlnf(nsh),vlnt(nsh),vlum(nsh),eps(neq)
+      common /vartvt/ t(nsh),vt(nsh)
+      common /varrvr/ r(nsh),vr(nsh)
+      common /lconv/ vhconv(nsh),vsconv(nsh)

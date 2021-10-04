@@ -1,0 +1,26 @@
+* -*-fortran-*-
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+
+      integer ma
+      integer nca,nbatm
+
+      integer nb_Teff,nb_geff,nb_Zeff
+
+      parameter (nca = 6)    
+
+      double precision ddqtausv,dqdtausv,qtausv,coefsv,coefssv,rhoatmsv
+
+      double precision coefcst,arg
+      double precision chisq,alamda,covar(nca,nca),alphamat(nca,nca)
+      double precision icoef,mqcoef
+
+      common /tableatmsav/ ddqtausv(nsh),dqdtausv(nsh),qtausv(nsh),
+     &     coefsv(nca),coefssv(nca),rhoatmsv(nsh)
+      common /nb_ATM/ nb_Teff,nb_geff,nb_Zeff
+
+      common/levmq/ chisq,alamda,icoef(nca),mqcoef(nca)
+

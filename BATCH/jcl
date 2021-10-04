@@ -1,0 +1,54 @@
+
+#! /bin/sh
+# 
+
+echo batch beginning: Compilation and Linking
+echo 
+if [ $# -ne 2 ]
+   then
+   echo " !! 2 arguments needed:"
+   echo " 1: program file name (without suffix .f)"
+   echo " 2: local directory ($PWD)"
+   echo jcl aborted.
+   echo 
+   exit 2
+fi
+
+file=`basename $1 .f`
+dir=$2
+
+# compiler flags: debug, warnings, optimisations...
+FC=$FORTRAN
+if [ "$FC" == "f90" ]
+then
+    FFLAGS="--nchk --ntrace --nsav --o2 --nwarn -static"
+else
+    FFLAGS=${FORTRAN_FLAGS}
+fi
+
+
+# linker flags: debug, warnings, optimisations...
+LD=$FORTRAN
+SFLAGS=${FORTRAN_SFLAGS}
+if [ "$LD" == "f90" ] || [ "$LD" == "ifort" ]
+then
+   SFLAGS=" -static"
+fi
+
+subini=$dir
+cd $subini
+if [ -f $1.link ]
+  then
+  SFLAGS=`head -1 $1.link`
+fi
+
+echo $file compilation and linking
+
+$FC -c $FFLAGS $file.f
+$LD  $SFLAGS $file.o -o $file.e
+rm $file.o
+
+echo
+echo batch jcl completed.
+exit
+

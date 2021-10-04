@@ -1,0 +1,20 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      integer mlp,mlp0
+      integer maxsh,maxsh0,nresconv
+
+      double precision psi,omi,dvdti,dtdti,dpdti
+      double precision etapar,dmlinc,dms
+      double precision mtini,totm,mdredgeup
+      double precision dlnvma,dlnvmi,dmrma,dmrmi,dlnenuc,dmdup,
+     &     dmtotdup,slp
+
+      common /massdt/ psi(nsh),omi(nsh),dvdti(nsh),dtdti(nsh),dpdti(nsh)
+      common /massloss/ etapar,dmlinc,dms,mlp,mlp0
+      common /mass/ mtini,totm,mdredgeup
+      common /meshlaw/ dlnvma,dlnvmi,dmrma,dmrmi,dlnenuc,dmdup,
+     &     dmtotdup,slp,maxsh,maxsh0,nresconv

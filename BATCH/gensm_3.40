@@ -1,0 +1,298 @@
+
+#
+#! /bin/tcsh
+# 
+
+echo
+echo " Generate output files for Super Mongo Plots"
+#if [ $# -lt 2 ] || [ $# -gt 3 ]; then 
+#   echo " !! 2 arguments needed:"
+#   echo " 1 filename "
+#   echo " 2 filename directory "
+#   echo " ex : gensm novae_q2_0024 /evol/$USER/MODELS/NOVAE"
+#   echo "  or  gensm nextini.bin $DIR_STAR/ACCRETION"
+#   echo gensm aborted.
+#   echo 
+#   exit 2
+#fi
+
+# user define variables
+libpaq=$DIR_LIB
+
+inextini=0
+_f1=`basename $1 .gz`
+_f2=`basename $_f1 b`
+_f3=`basename $_f2 a`
+filename=`basename $_f3 d`
+filenamez=$filename".gz"
+file=$2/$filename
+filez=${file}".gz"
+
+type=1
+if [ ! -z $3 ]; then
+	echo 11
+	if [ $3 = kip ]; then  
+		filexe=$DIR_BATCH/binlist_evol.e
+ 		 type=0
+	fi
+fi
+
+filexe=$DIR_BATCH/binlist_$3.e
+echo $filexe
+
+# case input file = modini or nextini
+#####################################
+if [ -s ${file} ] || [ -s ${filez} ]; then
+  if [ ! -s starevol.par ]; then
+	echo starevol.par not present
+    	echo
+    	exit 2
+  fi
+
+  # define code version
+
+  topevol=`head -2 starevol.par | cut -c 40-42`
+  if [ $topevol = ALP ]; then
+    	evol_format=alpha
+  fi
+  if [ $topevol = MAS ]; then
+    	evol_format=massive
+  fi
+  if [ $topevol = AGB ]; then
+    	evol_format=evol
+  fi
+  if [ $topevol = SN ]; then
+    	evol_format=sn
+  fi
+#  filexe=$DIR_BATCH/binlist_${evol_format}.e
+#  filexe=$DIR_BATCH/binlist_evol_thermohaline_x86_64.e
+  filexe=$DIR_BATCH/binlist_$3.e
+#  filexe=$DIR_BATCH/binlist_evol_thermohaline_x86_64.e
+
+
+  #check if computation with rotation 
+
+  rotation=f
+  idiffcc=`grep idiffcc starevol.par | cut -c 28-28`
+  idiffty=`grep idiffty starevol.par | cut -c 55-56`
+  micro=`grep Mic starevol.par | cut -c 46-47`
+  thermohaline=`grep Thl starevol.par | cut -c 38-39`
+  codeversion=
+  if [ $idiffcc = t ] || [ $idiffcc = T ]; then
+       echo DIFFUSION
+	if ([ $idiffty -ge 8 ] && [ $idiffty -le 13 ]) || [ $idiffty -eq 15 ]; then
+#	if ([ $idiffty => 8 ] && [ $idiffty <= 13 ]) || [ $idiffty = 15 ]; then
+		rotation=t
+		echo     rotation files detected
+    	fi
+  fi
+
+ echo rotation idiffcc idiffty $rotation $idiffcc $idiffty
+  if [ -s ${file} ]; then
+    cp $file $DIR_RESULTS.
+    if [ $micro != 0 ] || [ $thermohaline != 0 ]; then
+	echo
+	if [ -s evoldiff ]; then
+		echo  copying evoldiff
+		cp evoldiff $DIR_RESULTS.
+	else
+		echo evoldiff does not exist
+		#exit 2
+	fi
+    fi
+    if [ $rotation != f ]; then
+	echo ROTATION DETECTED
+      	if [ $1 = modini.bin ]; then
+		if [ -s modang.bin ]; then
+			echo  copying modang.bin
+			\cp modang.bin $DIR_RESULTS.
+		else
+			echo modang.bin does not exist
+			exit 2
+		fi
+      	else
+        	if [ -s nextang.bin ]; then
+			echo  copying nextang.bin
+			\cp nextang.bin $DIR_RESULTS.
+		else
+			echo nextang.bin does not exist
+ 			exit 2
+		fi
+	fi
+    fi
+    if [ $thermohaline -ne 0 ] || [ $micro -ne 0 ]; then
+	if [ -s evoldiff ]; then
+		echo  copying evoldiff
+		cp evoldiff $DIR_RESULTS.
+	fi
+    fi	
+  else
+echo 'test2'
+    cp $filez $DIR_RESULTS.
+    echo $filez $DIR_RESULTS
+    gunzip $DIR_RESULTS/$filenamez
+    if [ $rotation = t ]; then
+	if [ $filename = modini.bin ]; then
+		if [ -s modang.bin.gz ]; then
+			echo  copying modang.bin.gz
+			\cp modang.bin.gz $DIR_RESULTS.
+			gunzip $DIR_RESULTS/modang.bin.gz
+		else
+			echo modang.bin.gz does not exist
+			exit 2
+		fi
+      	else
+		if [ -s nextang.bin.gz ]; then
+			echo  copying nextang.bin.gz
+			\cp nextang.bin.gz $DIR_RESULTS.
+			gunzip $DIR_RESULTS/nextang.bin.gz
+		else
+			echo nextang.bin.gz does not exist
+			exit 2
+		fi
+      	fi
+    fi
+  fi
+  FILEPAR=$DIR_RESULTS/starevol.par
+  echo copying $2/starevol.par
+  \cp $2/starevol.par $FILEPAR
+  localdir=$PWD
+  echo " local directory : $PWD"
+  cd /tmp
+  if [ ! -e /tmp/paq_ap1.dat ]; then
+	ln -s ${libpaq}/paq_*.dat /tmp
+  fi
+  rm -f /tmp/_temp
+  echo "9 $type $filename" | $filexe
+  rm -f /tmp/*.bin /tmp/*ang /tmp/evoldisp_tmp /tmp/fort*
+
+else
+echo 'test3'
+  # case sequence number
+  ######################
+  rotation=f
+  idiffcc=`grep idiffcc starevol.par | cut -c 28-28`
+  idiffty=`grep idiffty starevol.par | cut -c 55-56`
+  micro=`grep Mic starevol.par | cut -c 46-47`
+  thermohaline=`grep Thl starevol.par | cut -c 38-39`
+  codeversion=
+   echo $micro $thermohaline $idiffcc
+ if [ $idiffcc = t ] || [ $idiffcc = T ]; then
+       echo I\'m in idiffcc true
+	if ([ $idiffty -ge 8 ] && [ $idiffty -le 13 ]) || [ $idiffty -eq 15 ]; then
+#	if ([ $idiffty => 8 ] && [ $idiffty <= 13 ]) || [ $idiffty = 15 ]; then
+		rotation=t
+		echo     rotation files detected
+    	fi
+  fi
+
+  fileaz=${file}"a.gz"
+  filea=${file}"a"
+  filebz=${file}"b.gz"
+  fileb=${file}"b"
+  filedz=${file}"d.gz"
+  filed=${file}"d"
+  fileoz=${file}"o.gz"
+  fileo=${file}"o"
+  echo $micro $thermohaline $rotation
+  if [ ! -s $fileb ] && [ ! -s ${filebz} ]; then
+	echo File $file"{b,b.gz}" does not exist
+	echo
+	exit 2
+  fi
+  if [ ! -s $filed ] && [ ! -s ${filedz} ]; then
+	echo File $file"{d,d.gz}" does not exist
+	echo
+	exit 2
+  fi
+  #check if computation with thermohaline or microscopic diffusion
+  if [ $micro != 0 ] || [ $thermohaline != 0 ]; then
+       if [ ! -s $fileo ] && [ ! -s ${fileoz} ]; then
+ 	    echo File $file"{o,o.gz}" does not exist
+ 	    echo
+ 	    exit 2
+       fi
+  fi
+  fdispl=0
+  if [ -s ${fileb} ]; then
+	\cp $fileb $DIR_RESULTS
+  else
+	\cp $filebz $DIR_RESULTS
+	gunzip $DIR_RESULTS/$filename"b.gz"
+  fi
+  if [ $micro != 0 ] || [ $thermohaline != 0 ]; then
+        echo thermohaline and/or microscopic diffusion
+     if [ -s ${fileo} ]; then
+		\cp $fileo $DIR_RESULTS
+     else
+		\cp $fileoz $DIR_RESULTS
+		gunzip $DIR_RESULTS/$filename"o.gz"
+     fi
+  fi
+
+  echo $rotation rotation
+  if ([ $rotation = t ] || [ $rotation = T ]); then
+        echo rotation
+     if [ -s ${filea} ]; then
+	\cp $filea $DIR_RESULTS
+     else
+	\cp $fileaz $DIR_RESULTS
+	gunzip $DIR_RESULTS/$filename"a.gz"
+     fi
+  fi
+  if [ -s ${filed} ]; then
+	\cp $filed $DIR_RESULTS
+	fdispl=1
+  else
+  	if [ -s ${filedz} ]; then
+		\cp $filedz $DIR_RESULTS
+		gunzip $DIR_RESULTS/$filename"d.gz"
+		fdispl=1
+	else
+		fdispl=0
+	fi
+  fi
+
+
+
+  # define code version
+
+  topevol=`head -8 $DIR_RESULTS/$filename"d" | grep PARAMETER | cut -c 40-42`
+  if [ $topevol = ALP ]; then
+    	evol_format=alpha
+  fi
+  if [ $topevol = MAS ]; then
+    	evol_format=massive
+  fi
+  if [ $topevol = AGB ]; then
+    	evol_format=evol
+  fi
+  if [ $topevol = SN ]; then
+    	evol_format=sn
+  fi
+ 
+  evol_format=$3
+
+  filexe=$DIR_BATCH/binlist_${evol_format}.e
+
+
+  localdir=$PWD
+  cd /tmp
+  if [ ! -e /tmp/paq_ap1.dat ]; then
+	ln -s ${libpaq}/paq_*.dat /tmp
+  fi
+  FILEPAR=$DIR_RESULTS/$filename"d"
+  fdispl=1
+  echo $fdispl
+  rm -f /tmp/_temp
+ # if [ $fdispl == 1 ]; then
+ #       echo "ttut"
+	echo "1 $type $filename" | $filexe
+ # else
+# 	echo "9 $type $filename" | $filexe
+ # fi
+  rm -f /tmp/*.bin /tmp/*ang /tmp/evoldisp_tmp /tmp/fort*
+fi
+
+rm -f fort.9
+cd $localdir

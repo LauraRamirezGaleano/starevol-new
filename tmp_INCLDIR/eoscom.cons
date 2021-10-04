@@ -1,0 +1,45 @@
+********************************************
+*WARNING: This common requires EVOLPAR.CHEM*
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+********************************************
+*
+      DOUBLE PRECISION m8pl3,mc28pl3,mc2inv,lc,mh,gamcoeff,khiH,
+     &lncoeffnQ,pi8l3,lnavn,lnamu,ergev,dissH2,masselec,amu,lnmasselec
+*
+      DOUBLE PRECISION inv3,ln4,ln2,ln10,ln10inv
+
+*     Changes in pourcentages for derivatives computation
+      DOUBLE PRECISION corlnfp,corlnfm,corTm,corTp
+
+*     Numerical limit for DOUBLE PRECISION 
+      DOUBLE PRECISION numericalimit
+
+*     Value for f at which pe=nekT with numericalimit precision 
+*     for this value, eta must be -infinity (perfect gas)
+      DOUBLE PRECISION physicalimit
+
+*     Value for zero
+      DOUBLE PRECISION zero
+
+*     Cut for the argument of an exponential
+      DOUBLE PRECISION limexp,liminf
+
+*     ln(anuc)
+      DOUBLE PRECISION lnanuc(nsp)
+
+*     Maximum temperature for the use of partition function fits for H2
+      DOUBLE PRECISION Tmaxirwin,Tmaxvardya,TmaxH2
+
+*     Value of lnf to substract to get the physical lnf
+      DOUBLE PRECISION lnf0
+
+
+      COMMON /constanteos/ m8pl3,mc28pl3,mc2inv,lc,mh,gamcoeff,khiH,
+     &lncoeffnQ,pi8l3,lnavn,lnamu,ergev,inv3,lnanuc,corlnfp,corlnfm,
+     &corTp,corTm,zero,dissH2,numericalimit,physicalimit,limexp, 
+     &Tmaxirwin,masselec,amu,Tmaxvardya,lnmasselec,ln2,ln4,lnf0,
+     &TmaxH2,ln10,ln10inv,liminf

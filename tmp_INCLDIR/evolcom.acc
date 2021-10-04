@@ -1,0 +1,35 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      integer iaccr,itacc,accphase
+      integer itauac
+      integer iaccbot,iacctop
+      integer nnucacc,iprint,idcur
+
+      double precision eshrdr1,eshrdr2,eshrdf1,eshrdf2,eshrdt1,
+     &     eshrdt2,eaccdr
+      double precision macc,dmaccr,massrate,dmacc1,dmacc2,ddmacc,
+     &     raccbot,maccbot
+      double precision accrw,xiaccr,rir,ric,prrc,fdtacc,massend,
+     &     alphaccr
+      double precision dtnacc,tauaccr,taudnuc,taudnuc0,qdeut,ldacc
+      double precision facc,vfacc,xspacc,eshr,vacc,tacc,dfaccdr,sigma0,
+     &     lacc,muiacc,lshr,eacc,taccend,sinthac,thacc
+      double precision yd0,vyd0,yd1,vyd1,rnucacc
+
+      common /accdvar/ eshrdr1(nsh),eshrdr2(nsh),eshrdf1(nsh),
+     &     eshrdf2(nsh),eshrdt1(nsh),eshrdt2(nsh),eaccdr(nsh)	
+      common /accmas/ macc(nsh),dmaccr,massrate,dmacc1,dmacc2,ddmacc,
+     &     raccbot,maccbot
+      common /accpar/ accrw,xiaccr,rir,ric,prrc,fdtacc,massend,
+     &     alphaccr,iaccr,itacc,accphase
+      common /acctime/ dtnacc,tauaccr,taudnuc,taudnuc0,qdeut,ldacc,
+     &     itauac
+      common /accvar/ facc(nsh),vfacc(nsh),eshr(nsh),eacc(nsh),
+     &     vacc(nsh),tacc(nsh),dfaccdr(nsh),xspacc(nsp),sigma0,lacc,
+     &     muiacc,taccend,sinthac,thacc,lshr,iaccbot,iacctop
+      common /accxsp/ yd0(nsh),vyd0(nsh),yd1(nsh),vyd1(nsh)
+      common /accconv/ nnucacc(nmaxconv),iprint(nmaxconv),rnucacc,idcur

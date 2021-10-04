@@ -1,0 +1,27 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 13:20:38 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 9                                                           $ *
+*                                                                      *
+      integer maxnbcz
+
+      parameter (maxnbcz=10)
+
+      integer dntheo,vibCOcz,ibCOcz,itCOcz,iminlumprof,ilummaxcz,nbcz,
+     &     vnbcz
+
+      double precision vrff,vmff,vtempff,thurff,urff,umff,vpfrwidth,
+     &   drtheo,drpreflame,height,dmtheo
+
+      logical lpreflame
+      character *1 myerrx,myerrr,myerrt
+
+      common /speedflame/ vrff(maxnbcz),vmff(maxnbcz),vtempff(maxnbcz),
+     &     thurff(maxnbcz),urff(maxnbcz),umff(maxnbcz),
+     &     vpfrwidth(maxnbcz),drtheo(maxnbcz),dmtheo(maxnbcz),
+     &     dntheo(maxnbcz),vibCOcz(maxnbcz),ibCOcz(maxnbcz),
+     &     itCOcz(maxnbcz),iminlumprof(maxnbcz),ilummaxcz(maxnbcz),
+     &     nbcz,vnbcz
+      common /errflame/ myerrx(maxnbcz),myerrr(maxnbcz),myerrt(maxnbcz)
+      common /paramflame/ drpreflame,height,lpreflame

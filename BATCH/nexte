@@ -1,0 +1,44 @@
+
+#
+#! /bin/sh
+#
+
+
+echo
+if [ ! -f nextini.bin ]
+   then 
+   echo "No sequence computed !"
+   echo "nexte aborted."
+   echo
+   exit 2
+fi
+
+echo "copying nextini.bin to modini.bin and nextang.bin to modang.bin ..."
+cp -f nextini.bin modini.bin
+if [ -s nextang.bin ]
+then
+  cp -f nextang.bin modang.bin
+fi
+
+echo "removing files ..."
+\rm -f evoldisp
+\rm -f evolhr*
+\rm -f evolvar*
+\rm -f evolchc*
+\rm -f evolchs*
+\rm -f evolas*
+\rm -f evoltc*
+
+if [ -s _ttpppc6 ]
+  then
+  mv -i _ttpppc6 evolchc6
+fi
+
+\rm -f nextini.bin
+if [ -s nextang.bin ]
+then
+  \rm -f nextang.bin
+fi
+
+echo nexte completed.
+echo

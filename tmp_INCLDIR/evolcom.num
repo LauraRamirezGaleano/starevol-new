@@ -1,0 +1,20 @@
+	double precision realprecision,safemin,safemax
+	double precision deps,finity,sqrtfy,sqrtty,tiny,dpnewl,fact
+	double precision zero,half,one,two,three,to3rds,nine,sxteen
+
+	integer emaxm1,eminm1,expdep,lrgexp,dbase,newl,newu
+	logical ovflow,unflow
+	
+        parameter (zero=0.0d0,half=0.50d0,one=1.0d0,two=2.0d0,
+     &   three=3.0d0,to3rds=two/three,nine=9.0d0,sxteen=16.0d0)
+
+c	parameter ( realprecision = z'3ca0000000000001' )
+	parameter (realprecision =  1.11022302462516D-16)
+c  	parameter ( safemax = z'7fefffffffffffff' )
+  	parameter ( safemax = 1.79769313486231D+308 )
+c        parameter ( safemin = z'0010000000000000' )
+        parameter ( safemin = 2.98333629248009D-154)
+
+	common /flow_NAG/ ovflow,unflow
+	common /dat1_NAG/ deps,finity,sqrtfy,sqrtty,tiny,dpnewl,fact
+	common /dat2_NAG/ emaxm1,eminm1,expdep,lrgexp,dbase,newl,newu

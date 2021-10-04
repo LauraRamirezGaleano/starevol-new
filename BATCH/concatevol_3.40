@@ -1,0 +1,76 @@
+
+#
+#! /bin/sh
+#
+
+echo 
+if [ $# -ne 4 ]
+   then
+   echo " !! 4 arguments needed:"
+   echo " 1: 1st evolution filename"
+   echo " 2: 2nd evolution filename to be appended"
+   echo " 3: resulting filename"
+   echo " 4: directory (under $DIR_RESEVOL)"
+   echo concatevol aborted.
+   echo 
+   exit 2
+fi
+
+FILE1=$1
+FILE2=$2
+FILE3=$3
+file1hr=$FILE1.hr
+file1hrgz=$FILE1.hr.gz
+file2hr=$FILE2.hr
+file2hrgz=$FILE2.hr.gz
+if [ ! -s $file1hrgz ] && [ ! -s $file1hr ]
+then
+  echo
+  echo file $1 does not exist 
+  echo concatevol aborted
+  exit 2
+else
+  if [ -s $file1hrgz ]
+  then
+    gunzip -f $FILE1.*
+  fi
+fi
+if [ ! -s $file2hrgz ] && [ ! -s $file2hr ]
+then
+  echo
+  echo file $2 does not exist 
+  echo concatevol aborted
+  exit 2
+else
+  if [ -s $file2hrgz ]
+  then
+    gunzip -f $FILE2.*
+  fi
+fi
+
+echo "processing concatenation : cat $1 $2 > $3 "
+
+phdir=$4
+#cd $DIR_RESEVOL/$phdir
+
+ext="hr as tc1 tc2 c1 c2 c3 c4 c5 s1 s2 s3 s4 v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13"
+for i in $ext
+do
+  if [ -s ${FILE2}.$i ]
+    then
+    sed "1,7 d" ${FILE2}.$i > FILE2tmp.$i
+    if [ $FILE1 == $FILE3 ] 
+       then
+       cat FILE2tmp.$i >> ${FILE3}.$i
+    else
+      cat ${FILE1}.$i FILE2tmp.$i >> ${FILE3}.$i
+    fi
+  fi
+done
+
+rm FILE2tmp.*
+
+gzip -f $FILE1.* $FILE2.* 
+
+echo concatevol completed.
+echo

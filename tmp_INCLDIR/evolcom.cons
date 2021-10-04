@@ -1,0 +1,15 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      double precision pi,sec,seci,c,g,boltz,h,sig,sigc,avn,rk,ech,
+     &     econv,msun,rsun,lsun,saha,mprot,omsun 
+      double precision pim2,pim4,pim8,pw17,pw14,pw13,pw23,pw34,pw43,
+     &     pw53,pw235,pw635,vlog10,pw16
+
+      common /constant/ pi,sec,seci,c,g,boltz,h,sig,avn,rk,ech,
+     &     econv,msun,rsun,lsun,saha,mprot,omsun 
+      common /constants/ pim2,pim4,pim8,pw14,pw17,pw13,pw23,pw34,pw43,
+     &     pw53,pw235,pw635,pw16,vlog10

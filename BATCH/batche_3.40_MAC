@@ -1,0 +1,207 @@
+#
+#! /bin/sh
+#
+
+echo
+if [ $# -ne 7 ]
+   then
+   echo " !! 8 arguments needed:"
+   echo " 1: evolution file name"
+   echo " 2: phase directory (under $DIR_RESEVOL)"
+   echo " 3: specific star directory (under $DIR_MODELS)"
+   echo " 4: first seq. number to compute"
+   echo " 5: last seq. number to compute"
+   echo " 6: phase at which to stop"
+   echo " 7: binary type : 0 (little endian : PC) else IBM (big endian)"
+   echo batche aborted.
+   echo 
+   exit 2
+fi
+
+date
+
+starevolog=$1.rec
+FILE=$1
+phdir=$2
+subinis=$3
+ibeg=$4
+iend=$5
+phase=$6
+bintype=$7
+
+
+ibegstr=`expr $ibeg + 10000 | cut -c2-5`
+iendstr=`expr $iend + 10000 | cut -c2-5`
+isrun="0"`echo $FILE | grep run`
+
+#define root filename in case new ones must be created
+isrun="0"`echo $FILE | grep run`
+if [ $isrun != "0" ]
+  then
+  l_file=`expr length $FILE`
+  beg_run=`expr $l_file - 4`
+  file_suf=`expr substr $FILE $beg_run 4`
+  if [ $file_suf == '_run' ]
+    then
+      index_run=`expr $l_file - 1`
+    else
+      index_run=`expr $l_file - 2`
+  fi
+  index_count=`expr $index_run + 1`
+  root_name=`expr substr $FILE 1 $index_run`
+  v_file=`expr substr $FILE $index_count $l_file`
+else
+  root_name=${FILE}_run
+  v_file=1
+  filerun=${FILE}_run${v_file}
+  filerun_resevol=$DIR_RESEVOL/$phdir/${filerun}.hr
+  filerun_resevolgz=$DIR_RESEVOL/$phdir/${filerun}.hr.gz
+  if [ -s ${filerun} ] || [ -s ${filerun_resevol} ]  || [ -s ${filerun_resevolgz} ]
+    then
+    echo ${FILE}_run${v_file} already exist
+    echo batche aborted at `date`
+    echo
+    exit 2
+  fi
+fi
+
+i=$ibeg
+while [ $i -le $iend ]
+  do
+  istr=`expr $i + 10000 | cut -c2-5`
+  FILEX=${FILE}_${istr}
+  seqa=${FILEX}a
+  seqaz=${FILEX}a.gz
+  seqb=${FILEX}b
+  seqbz=${FILEX}b.gz
+  seqd=${FILEX}d
+  seqdz=${FILEX}d.gz
+  if [ -s  $seqbz ] || [ -s $seqb ] || [ -s $seqd ] || [ -s $seqdz ] || [ -s $seqa ] || [ -s $seqaz ]
+    then
+    echo 
+    echo Sequence ${istr} for ${FILE} already computed
+    echo batche aborted
+    echo
+    gzip ${FILE}.[hvscat]*
+    exit 2
+  fi
+
+  echo
+  echo ====================================================== from ${ibegstr} to ${iendstr} ====================== current : ${FILEX} =====
+  echo
+
+  echo " sequence ${istr} started " `date` on host $HOST
+
+  stardate=` gdate -r starevol.e | sed 's/\ /\_'/g`
+
+  echo $PWD
+
+  if [ $bintype -ne 0 ]
+  then
+    #./starevol.e -Wl,-T90,-T91,-T92
+     ./starevol.e -Wl,-T
+  else
+    ./starevol.e
+  fi
+
+  grep normal evoldisp > ninter
+  if [ ! -s ninter ]
+    then
+    echo
+    echo stop 'failed'
+    echo batche aborted.
+    echo
+    gzip ${FILE}.[hvscat]*
+    exit 2
+  fi
+
+  grep NaN evolhr > error.file
+  if [ -s error.file ]
+    then
+    echo "NaN generation"
+    echo "batche aborted"
+    echo
+    gzip ${FILE}.[hvscat]*
+    exit 2
+  fi
+  grep Inf evolhr >> error.file
+  if [ -s error.file ]
+    then
+    echo "Inf generation"
+    echo "batche aborted"
+    echo
+    gzip ${FILE}.[hvscat]*
+    exit 2
+  fi
+  rm -f error.file
+
+  Phase="Phase "$phase
+  grep "$Phase" evoldisp > ninterlst
+
+  mv -f evolhr ninter
+  sed 's/####/'$istr'/' ninter > evolhr
+
+  ./save ${FILE} ${phdir} ${subinis} ${ibeg} ${istr} ${iend} ${stardate}
+  ./nexte
+
+  if [ -s ninterlst ]
+    then
+    echo
+    echo $Phase reached
+    echo batche stopped.
+    echo
+    gzip ${FILE}.[hvscat]*
+    exit 2
+  fi
+
+  echo "sequence ${istr} ended " `date`
+  echo
+  i=` expr $i + 1 `
+  #if evolution files too long, create new ones
+  nline=`wc -l $FILE.hr`
+  nline=`basename $nline`
+  if [ $nline -ge 200007 ]
+    then
+    OLDFILE=$FILE
+    starevol_tmp=/tmp/starevol_$FILE.par
+    v_file=`expr $v_file + 1`
+    FILE=${root_name}$v_file
+    echo "files too long : create new version : $FILE"
+    echo " files too long, create new version : $FILE `date`" >> $subinis/$starevolog
+    cp -f $starevol_tmp /tmp/starevol_$FILE.par
+    topevol=`head -2 starevol.par | cut -c 40-42`
+    if [ $topevol == ALP ]
+      then
+      evol_format=malpha
+    fi
+    if [ $topevol == MAS ]
+      then
+      evol_format=massive
+    fi
+    if [ $topevol == AGB ]
+      then
+      evol_format=mevol
+    fi
+    if [ $topevol == SN ]
+      then
+      evol_format=msn
+    fi
+    if [ -s $DIR_RESEVOL/${phdir}/${FILE}.hr ] || [ -s $DIR_RESEVOL/${phdir}/${FILE}.hr.gz ]
+      then
+      echo ${FILE}.hr already exists !
+      echo batche aborted
+      gzip ${OLDFILE}.[hvscat]*
+      exit 2
+    else
+      echo cpevol $evol_format $FILE $phdir
+      $DIR_BATCH/cpevol_3.40 $evol_format $FILE $phdir
+      cp -f $DIR_RESEVOL/${phdir}/${FILE}.[hvscat]*.gz .
+      gunzip ${FILE}.[hvscat]*
+      gzip ${OLDFILE}.[hvscat]*
+    fi
+  fi
+done
+
+gzip ${FILE}.[hvscat]*
+
+echo batche completed.

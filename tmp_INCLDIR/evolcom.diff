@@ -1,0 +1,53 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      integer kcentd,ksurfd,nmixd,nmixd0,itmind,itmaxd
+      integer lover,lthal,ltach,lmicro
+      integer idiffty
+      integer idiffex
+      integer idiffnuc
+
+      double precision rprecd,dtmind
+      double precision diffst,diffcst
+      double precision rayon0
+      double precision Dsc,coefDtacho,Dthc,Dherw,Dbar,Dkyle
+      double precision Dmicro,vmicro
+      double precision Dturbul
+
+      logical rotation,diffover,diffusconv,difftacho,microdiffus,
+     &     thermohaline 
+      logical diffzc,eq_thermique
+      logical idiffcc,idiffcc0
+
+C Modifs CC ondes (19/10/07)
+      logical igw,igwsurfchim,igwcorechim
+      logical igwsurfrot,igwcorerot,igwrot
+      logical igwsurfenerg,igwcoreenerg
+C <--
+
+      character omegaconv*1,omegaconv0*1
+      character Dh_prescr*8
+      character Dv_prescr*8
+
+      common /mixdif/ rprecd,dtmind,kcentd,ksurfd,nmixd,nmixd0,
+     &     itmind,itmaxd
+      common /turbulence/ diffst,diffcst,idiffex,diffzc,eq_thermique
+      common /turb_prescription/ Dh_prescr
+      common /Dvprescription/ Dv_prescr
+      common /omega_convection/ omegaconv,omegaconv0
+      common /difftype/ idiffty,lover,lthal,ltach,lmicro,rotation,
+     &     diffover,diffusconv,difftacho,microdiffus,thermohaline
+      common /diffcode/ idiffnuc,idiffcc,idiffcc0
+      common /precedstar/ rayon0
+      common /dsemiconv/ Dsc(nsh)
+      common /dthermohaline/ Dthc(nsh)
+      common /dovershooting/ Dherw(nsh),Dbar(nsh),Dkyle(nsh)
+      common /dturbulence/ Dturbul(nsh)
+      common /dtachocline/ coefDtacho(nsh)
+      common /dmicroscopic/ Dmicro(nsh),vmicro(nsh)
+C Modifs CC ondes (19/10/07)
+      common /logical_ondes / igw,igwsurfchim,igwcorechim,igwrot,
+     &        igwsurfrot,igwcorerot,igwsurfenerg,igwcoreenerg

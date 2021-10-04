@@ -1,0 +1,58 @@
+
+*                                                                      *
+* $LastChangedDate:: 2014-02-04 11:36:36 +0100 (Tue, 04 Feb 2014)    $ *
+* $Author:: decress1                                                 $ *
+* $Rev:: 7                                                           $ *
+*                                                                      *
+      character elem*5,react*37
+      character*1 istate
+
+      integer jbeta,jneut,jlibeb
+      integer ineutron,ih1,ih2,ihe3,ihe4,ili6,ili7,ibe7,ibe9,ib8,ib10,
+     &     ib11,ic12,ic13,ic14,in13,in14,in15,io15,io16,io17,io18,if19,
+     &     ine20,ine21,ine22,ina23,img24,img26,ial27,isi28,ip31,is32,
+     &	   icl35,idxspc,idxsps,idxspci
+      integer ina24,ina25,ine23,ial26g,ial26m,if18,if20,ina22,img27,
+     &     is35,icl36,img25
+      integer k1,k2,k3,k4,k5,k6,k7,k8
+      integer ippd,inpg,i3a,icag,ioag,iccga,iccgp,inega,i2he3,ippg,iddn,
+     &     ipdg,ihe3ag,ili6pa,ili7d,ili7pa,ibe7beta,ibe7pg,ib8beta,
+     &     ib11pa,icpg,ic13pg,in13beta,in14pg,in15pa,in15pg,io15beta,
+     &     io16pg,io17pa,ine20ag,img24ag,isi28ag,ioogp,iooga,ioca,iocp,
+     &     iocn
+
+      integer nucreg
+      integer kdecay,ndecay,nnulim,znetmax
+
+      double precision fact
+      double precision anuc,znuc
+      double precision ymin,ytmin,ytminc,dnuc
+      double precision qi,qinu
+      double precision exposure,signt,tirrm1,tirrm2,ddm1
+      double precision tdecay
+
+      logical hbb
+
+      common /reaccode/ jlibeb(nlibeb),ippd,inpg,i3a,icag,ioag,iccga,
+     &     iccgp,inega,i2he3,ippg,iddn,ipdg,ihe3ag,ili6pa,ili7d,ili7pa,
+     &     ibe7beta,ibe7pg,ib8beta,ib11pa,icpg,ic13pg,in13beta,in14pg,
+     &     in15pa,in15pg,io15beta,io16pg,io17pa,ine20ag,img24ag,
+     &     isi28ag,ioogp,iooga,ioca,iocp,iocn
+      common /cfact/ fact(0:6)
+      common /cmatr/ k1(nreac),k2(nreac),k3(nreac),k4(nreac),k5(nreac),
+     &     k6(nreac),k7(nreac),k8(nreac)
+      common /cnetw/ anuc(nsp),znuc(nsp),znetmax
+      common /cparm/ ymin,ytmin,ytminc,dnuc
+      common /cq/ qi(nreac),qinu(nreac)
+      common /neutr/ exposure(nsh),signt(nsh),tirrm1,tirrm2,ddm1
+      common /nuclinfo/ nnulim(nmaxenu,3)
+      common /nucpar/ nucreg,hbb
+      common /netwbn/ jbeta(nbeta),jneut(nneut)
+      common /nucstable/ tdecay(nsp),kdecay(nsp),ndecay
+      common /species/ elem(nsp),react(nreac),istate(nsp)
+      common /specindex/ ineutron,ih1,ih2,ihe3,ihe4,ili6,ili7,ibe7,ibe9,
+     &     ib8,ib10,ib11,ic12,ic13,ic14,in13,in14,in15,io15,io16,io17
+     &     ,io18,if19,ine20,ine21,ine22,ina23,img24,ial27,isi28,ip31,
+     &     is32,icl35,ina24,ina25,ine23,img26,ial26g,ial26m,if18,if20,
+     &     ina22,img27,is35,icl36,img25,idxspc(nprintc),idxsps(nprint)
+     &	   ,idxspci(9)

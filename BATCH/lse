@@ -1,0 +1,30 @@
+#!/usr/bin/perl -w
+
+use strict;
+use File::Basename;
+
+my $count = 1;
+my $COUNT = 0;
+my $dir = basename $ENV{PWD}; 
+while (defined $ARGV[0]) {
+    my $arg = shift(@ARGV);
+    if ($arg =~ /^-c/) {
+	$COUNT = 1;
+    }
+    elsif ($arg =~ /-h/) {
+	print "help message: lse -c -h DIR"
+    }
+    else {
+	$dir = $arg
+    }
+}
+$dir =~ s/\/$//;
+
+chdir $dir;
+foreach my $f (<*hr>,<*hr.gz>) {
+	$f =~ s/.gz//;
+	$f =~ s/.hr//;
+	print "readi $f $dir 0 0 $count\n";
+	$count++ if ($COUNT)
+}
+
