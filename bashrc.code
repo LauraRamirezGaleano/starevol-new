@@ -1,0 +1,106 @@
+export TERMINFO=/usr/share/terminfo/
+export DIR_STAR=/home/afaure/Codes/
+export DIR_INIT=/home/afaure/Codes/EVOLSTELL/STAREVOL/INIT/
+export DIR_EXE=/home/afaure/Codes/EVOLSTELL/STAREVOL/
+export DIR_MODELS=/home/afaure/Codes/EVOLSTELL/MODELS/
+export DIR_BATCH=/home/afaure/Codes/EVOLSTELL/STAREVOL/BATCH/
+export DIR_EVOL=/home/afaure/Codes/EVOLSTELL/STAREVOL/
+export DIR_RESEVOL=/home/afaure/Codes/EVOLSTELL/RESEVOL/
+export DIR_RESULTS=/home/afaure/Codes/EVOLSTELL/RESULTS/
+export DIR_LIB=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/LIB/
+export DIR_OPA=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_EXT/GN93/
+export DIR_OPAAGS05=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_NEW/
+export DIR_OPA3=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/SRC/Data/
+export DIR_OPAAGSS09=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_09/
+export DIR_OPA4=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_09/
+export DIR_OPAhoudek=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/INTERPOL/v9/opal95/
+export DIRGRID_OPA=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_GRID/
+export DIR_UTILS=/home/afaure/Codes/EVOLSTELL/STAREVOL/UTILS/
+export DIR_SUN=/home/afaure/Codes/EVOLSTELL/STAREVOL/UTILS/solar_calibration/
+export DIR_SVNLA=/home/afaure/Codes/EVOLSTELL/STAREVOL/CODE_SVN
+export DIR_STARLOC=/home/afaure/Codes/
+export DIR_ATMP=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/ATMOSPHERE/PHOENIX/
+export DIR_ATMM=/home/afaure/Codes/EVOLSTELL/STAREVOL/PHYSICS/ATMOSPHERE/MARCS/
+export GYRE_INC=$GYRE_DIR/src/mesa/
+
+#export SOLCOMP=AGS05
+#export SOLCOMP=GN93 
+export GONGFILE=off
+export SOLCOMP=AGSS09
+export LC_ALL=C
+
+#Rajoute par Alice
+export GYRE=off
+export DETAIL=on
+export STEL=off
+
+# TESTS FEOS
+export PREFIX=/home/afaure/Codes/FEOS/library/free_eos/2.2.1
+#export MKLROOT=/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/mkl
+# Library path
+#export LD_LIBRARY_PATH=/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/tbb/lib/intel64_lin/gcc4.7:/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/compiler/lib/intel64_lin:/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/mkl/lib/intel64_lin
+#export LD_LIBRARY_PATH=/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/tbb/lib/intel64_lin/gcc4.7:/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/compiler/lib/intel64_lin:/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/mkl/lib/intel64_lin:/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/tbb/lib/intel64_lin/gcc4.8:/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/compiler/lib/intel64_lin:/home/afaure/intel/compilers_and_libraries_2020.3.279/linux/mkl/lib/intel64_lin
+#export STAR_ATM=PHOENIX
+
+export BITSIZE="uname -p"
+
+# For gfortran use :
+#export FORTRAN=/usr/bin/gfortran
+#export FORTRAN32=/usr/bin/gfortran
+
+# For MPI use :
+#export FORTRAN=/usr/bin/mpif77
+#export FORTRAN32=/usr/bin/mpif77
+
+# For ifort use :
+export FORTRAN=ifort
+export FORTRAN32=ifort 
+
+#................. FLAGS ................:
+
+# For ifort without MKL and SVML :
+#export FORTRAN_FLAGS="-O2 -W1 -w -Vaxlib -static -no-ipo"
+#-fimf-use-svml=true
+
+# For vectorization reports
+#export FORTRAN_FLAGS="-O2 -W1 -w -Vaxlib -static -no-ipo -qopt-report-phase=vec -qopt-report=5" 
+
+# For gfortran sequential best 
+#export FORTRAN_FLAGS="-O2 -Wall -fopt-info-all-vec -fno-lto"
+
+# To link with dynamic librairies ?
+#export FORTRAN_FLAGS="-O2 -Wall -fopt-info-all-vec -fno-lto"
+
+# For GYRE 
+#export FORTRAN_FLAGS="-O2 -g -xf95-cpp-input -fopt-info-all-vec -fno-lto"
+#export FORTRAN_FLAGS="-O2 -g -f95-cpp-input -no-ipo"
+
+# For mkl without ifort
+#export FORTRAN_FLAGS="-O2 -m64 -I$MKLROOT/include -static -fno-lto" 
+#export FORTRAN_FLAGS="-O2 -W1 -w -static -no-ipo -mkl"
+#export FORTRAN_FLAGS="-O2 -I${MKLROOT}/include"
+
+# To use SVML (vectorized math library by Intel):
+#export FORTRAN_FLAGS="-O2 -W1 -w -Vaxlib -static -no-ipo -fimf-use-svml=true"
+
+# For regular compilation or MKL dynamic use on Linux and MacOS :
+export FORTRAN_FLAGS="-g -O2 -cpp -W1 -w -Vaxlib -no-ipo"
+#export FORTRAN_FLAGS="-g -O2 -cpp -W1 -w -Vaxlib -static -no-ipo"
+#export FORTRAN_FLAGS="-O2 -g -check bounds,arg_temp_created -fp-stack-check -gen-interfaces -warn interfaces -cpp -W1 -w -Vaxlib -static -no-ipo"
+#export FORTRAN_FLAGS="-O2 -g -traceback -cpp -check arg_temp_created -warn all -fp-stack-check -gen-interfaces -warn interfaces -W1 -w -Vaxlib -static -no-ipo"
+
+# FOR MKL static use on Linux and MacOS :
+#export FORTRAN_FLAGS="-O2 -W1 -w -Vaxlib -static -no-ipo -I$MKLROOT/include"
+
+# For 64bits compiler
+#export OPTS_LAME="-V2 --vbr-new -q0 --lowpass 19.7"
+
+export FORTRAN_DBFLAGS="-check all -warn all -gen_interfaces -traceback -fpe0 -fpstkchk -no-ipo"
+#export LDFLAGS='-pg'
+
+# For MESA code
+#export MESA_DIR=/home/afaure/MESA/mesa-r6794
+#export MESASDK_ROOT=$MESA_DIR/../mesasdk
+#source $MESASDK_ROOT/bin/mesasdk_init.csh
+
+
