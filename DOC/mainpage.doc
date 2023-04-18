@@ -1,0 +1,12 @@
+      /**
+     @mainpage STAREVOL Documentation
+    
+      This document describes the source code for the STAREVOL model.
+
+      The following diagram shows the breakdown of the entire STAREVOL model.
+
+      A box with a red border indicates a node that has more arrows than are shown.
+
+     @image html starevol.png
+
+     */
