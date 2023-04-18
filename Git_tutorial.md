@@ -52,12 +52,16 @@ Cette action peut être effectuée lorsque l'on veut intégrer une fonctionnalit
 - télécharger les derniers changements apportés au main : `git pull origin main`. 
 - fusionner la branche avec le main : `git merge <nom-de-la-branche>`.
 
+Une fois la fusion faite, ne pas oublier de publier les changements sur le dépôt distant : `git push origin <nom-de-la-branche>`.
+
 ### Intégrer des changements d'autres branches dans sa branche
 
 Pour intégrer des changements d'autres branches (par exemple les changements de la branche gyre) :
 - télécharger les derniers changements apportés à la branche gyre : `git checkout gyre` puis `git pull origin gyre`.
 - se placer sur sa branche : `git checkout <nom-de-sa-branche>`.
 - fusionner la branche gyre avec sa branche : `git merge gyre`.
+
+Une fois la fusion faite, ne pas oublier de publier les changements sur le dépôt distant : `git push origin <nom-de-la-branche>`.
 
 ## ENGLISH VERSION
 
@@ -113,11 +117,16 @@ If you want to integrate a feature developed in a branch to the final version of
 - download the latest changes of the main : `git pull origin main`. 
 - merge the feature branch to the main : `git merge <branch-name>`.
 
+Once your merge is done, do not forget to push your changes to the remote repository : `git push origin <branch-name>`.
+
 ### Get features from other branches in your branch
 
 To get features from other branches (for example the gyre branch features) :
 - download the latest changes of the gyre branch : `git checkout gyre` then `git pull origin gyre`. 
 - switch to your own branch : `git checkout <your-branch-name>`.
 - merge the gyre branch to your own branch : `git merge gyre`.
+
+Once your merge is done, do not forget to push your changes to the remote repository : `git push origin <branch-name>`.
+
 
 
