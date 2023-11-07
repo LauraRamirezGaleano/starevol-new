@@ -1056,7 +1056,7 @@ C free parameter chosen to fit the p-mode energy
 
 c        do i=mtu,1,-1
 c           write (994,994),i,xNt_o(i),rL2,rray_o(i),w1,cs_o(i),
-c     &          vconv_o(i),alpha_mlt_hp,hp_o(i),eta,rdens_o(i),h_max,xNt_o(i)
+c     &          vconv_o(i),alphac,hp_o(i),eta,rdens_o(i),h_max,xNt_o(i)
 c 994       format (i4,30(1x,1pe17.10))
 c        enddo
 c        stop
@@ -1073,7 +1073,7 @@ c          write (992,*),i,rtot*(rray_o(i)-rray_o(i+1)),kr+old_kr
 
 c calculate resonant eddy size etc. 
 c L_H: vertical size of energy bearing eddies.
-          L_H = alpha_mlt_hp*hp_o(i)
+          L_H = alphac*hp_o(i)
           tau_L = L_H/vconv_o(i)
           tau_h = tau_L
 
@@ -2122,7 +2122,7 @@ c calculate the radial wavenumber and its integral
 
 c calculate resonant eddy size etc. 
 c L_H: vertical size of energy bearing eddies.
-          L_H = alpha_mlt_hp*hp_o(i)
+          L_H = alphac*hp_o(i)
           tau_L = L_H/vconv_o(i)
           tau_h = tau_L
           if (w1*tau_L .gt. eta) tau_h = eta/w1

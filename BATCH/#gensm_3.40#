@@ -156,10 +156,8 @@ echo 'test2'
   FILEPAR=$DIR_RESULTS/starevol.par
   echo copying $2/starevol.par
   \cp $2/starevol.par $FILEPAR
-  \cp $2/starevol.par /tmp/.
   echo copying $2/massloss.par
   \cp $2/massloss.par $DIR_RESULTS/.
-  \cp $2/massloss.par /tmp/.
   echo copying $2/transport_param.par
   \cp $2/transport_param.par $DIR_RESULTS/.
   localdir=$PWD
@@ -178,18 +176,6 @@ else
 echo 'test3'
   # case sequence number
   ######################
-
-
-  FILEPAR=$DIR_RESULTS/starevol.par
-  echo copying $2/starevol.par
-  \cp $2/starevol.par $FILEPAR
-  \cp $2/starevol.par /tmp/.
-  echo copying $2/massloss.par
-  \cp $2/massloss.par $DIR_RESULTS/.
-  \cp $2/massloss.par /tmp/.
-  echo copying $2/transport_param.par
-  \cp $2/transport_param.par $DIR_RESULTS/.
-
   rotation=f
   idiffcc=`grep idiffcc starevol.par | cut -c 28-28`
   idiffty=`grep idiffty starevol.par | cut -c 55-56`

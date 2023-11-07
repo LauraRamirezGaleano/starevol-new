@@ -18,8 +18,8 @@
       double precision Dturbul
 
       logical rotation,diffover,diffusconv,difftacho,microdiffus,
-     &     thermohaline 
-      logical diffzc,eq_thermique
+     &     thermohaline, turbulence, viscosityadd
+      logical diffzc,thermal_equilibrium
       logical idiffcc,idiffcc0
 
 C Modifs CC ondes (19/10/07)
@@ -34,7 +34,8 @@ C <--
 
       common /mixdif/ rprecd,dtmind,kcentd,ksurfd,nmixd,nmixd0,
      &     itmind,itmaxd
-      common /turbulence/ diffst,diffcst,idiffex,diffzc,eq_thermique
+      common /turbulence/ diffst,diffcst,idiffex,diffzc,
+     & 	   thermal_equilibrium,turbulence, viscosityadd
       common /turb_prescription/ Dh_prescr
       common /Dvprescription/ Dv_prescr
       common /omega_convection/ omegaconv,omegaconv0

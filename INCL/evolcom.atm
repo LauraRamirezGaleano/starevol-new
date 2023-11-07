@@ -9,6 +9,11 @@
       integer nca,nbatm
 
       integer nb_Teff,nb_geff,nb_Zeff
+      
+      integer :: nb_Teff_CMFGEN, nb_Mdot_CMFGEN, nb_gs_CMFGEN,
+     &     max_id, avail_CMFGEN
+      double precision :: tau_CMFGEN, T_CMFGEN, 
+     &     rho_CMFGEN, r_CMFGEN, ne_CMFGEN, v_CMFGEN
 
       parameter (nca = 6)    
 
@@ -18,9 +23,18 @@
       double precision chisq,alamda,covar(nca,nca),alphamat(nca,nca)
       double precision icoef,mqcoef
 
+
       common /tableatmsav/ ddqtausv(nsh),dqdtausv(nsh),qtausv(nsh),
      &     coefsv(nca),coefssv(nca),rhoatmsv(nsh)
       common /nb_ATM/ nb_Teff,nb_geff,nb_Zeff
 
       common/levmq/ chisq,alamda,icoef(nca),mqcoef(nca)
+      
+***   commons for the CMFGEN atmosphere models
+      common /CMFGEN_mass_atm/ tau_CMFGEN(50,50,50,100),
+     &     T_CMFGEN(50,50,50,100), rho_CMFGEN(50,50,50,100),
+     &     r_CMFGEN(50,50,50,100), ne_CMFGEN(50,50,50,100),
+     &     v_CMFGEN(50,50,50,100)
+      common /CMFGEN_mass_atm_nb/ nb_Teff_CMFGEN, nb_Mdot_CMFGEN,
+     &     nb_gs_CMFGEN, max_id, avail_CMFGEN(100,4)
 

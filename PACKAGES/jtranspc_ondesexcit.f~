@@ -779,7 +779,7 @@ c      if (ndb.eq.1.or.crz(ndb).lt.0) ur(ndb) = 0.d0
       enddo
 
 *     Si on considere un moment specifique constant dans les ZC, on sort
-      if (.not.thermal_equilibrium.or.idiffvr.ge.6) return
+      if (.not.eq_thermique.or.idiffvr.ge.6) return
 
 
 *------------------------------------------------------------------------

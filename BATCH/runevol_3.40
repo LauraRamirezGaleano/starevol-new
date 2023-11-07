@@ -11,14 +11,14 @@ LOCALDIR=$PWD/$base/
 echo LOCALDIR $LOCALDIR
 
 echo
-echo "   ******   Running Stellar Evolution Program  ******"
+echo "   ******  Running Stellar Evolution Program  ******"
 echo
 echo "command :    runevol $1 $2 $3 $4 $5 $6 $7 > 00.log"
 
 echo 
 if [ $# -lt 7 ] || [ $# -gt 8 ]
    then
-   echo " !! 6 arguments needed:"
+   echo " !! 7 arguments needed:"
    echo " 1: evolution file name"
    echo " 2: repository directory (under $DIR_RESEVOL)"
    echo " 3: first seq. number to compute"
@@ -425,9 +425,9 @@ echo  >> $DIR_RESEVOL/run.log
 
  if [ $6 == 0 ] 
    then
-   ../../EVOL/BATCH/batche_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${bintype}
+   ../../BATCH/batche_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${bintype}
  else
-   ../../EVOL/BATCH/batchesun_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${stopage} ${bintype}
+   ../../BATCH/batchesun_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${stopage} ${bintype}
  fi
 
 echo

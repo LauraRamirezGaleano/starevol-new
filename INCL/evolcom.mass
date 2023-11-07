@@ -11,10 +11,14 @@
       double precision etapar,dmlinc,dms
       double precision mtini,totm,mdredgeup
       double precision dlnvma,dlnvmi,dmrma,dmrmi,dlnenuc,dmdup,
-     &     dmtotdup,slp
+     &     dmtotdup,slp, clumpfac
+
+      logical zscaling
 
       common /massdt/ psi(nsh),omi(nsh),dvdti(nsh),dtdti(nsh),dpdti(nsh)
       common /massloss/ etapar,dmlinc,dms,mlp,mlp0
       common /mass/ mtini,totm,mdredgeup
       common /meshlaw/ dlnvma,dlnvmi,dmrma,dmrmi,dlnenuc,dmdup,
      &     dmtotdup,slp,maxsh,maxsh0,nresconv
+     
+      common /massivemloss/ clumpfac, zscaling
