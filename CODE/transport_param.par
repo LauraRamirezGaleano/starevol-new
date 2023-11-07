@@ -1,0 +1,17 @@
+! Define parameters for transport processes in STAREVOL
+! Created by TD - 06/07/2021
+
+! Parametric turbulence
+! Turbulence function of temperature (eq. 2 Richard et al. 2005)
+&RICHER
+  	     Tfix = 2.63d+6	        ! Solar twins (log T = 6.42)
+	     !Tfix = 2.66d+6 		! Sun (log T = 6.425)
+	     !Tfix = 3.16d+6			
+	     om_turbul = 400		
+	     n_turbul = 3
+/
+! Turbulence function of the density at the base of the convective zone  (eq. 3 Richard et al. 2005)
+&PROFITTMICHAUD
+             PM = 5000                  ! Sun
+/	     
+	     

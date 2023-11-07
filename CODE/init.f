@@ -77,8 +77,6 @@ c      double precision stopage
 ***   initializations for the computation of a new model
 ***   in case of failure or for initial model
 *-------------------------------------------------------
-      print *,'In init',xsp(1,2),xsp(10,2),xsp(20,2),xsp(30,2),xsp(40,2)
-     $     ,xsp(50,2),xsp(60,2),xsp(70,2),xsp(80,2),xsp(90,2),xsp(100,2)
 
       ibrake = .false.
       ilum = 0
@@ -440,6 +438,7 @@ c      if (rotation) dtn = min(dtn,dtnrot)
          dtn = min(dtn,dtnx)
       endif
 
+
 ***   Kelvin-Helmholtz timescale for contraction phases
 *------------------------------------------------------
 
@@ -484,25 +483,6 @@ c            else
                endif
 !!            endif
 
-!!            else
-c$$$               if (egrav(1).lt.1.d0.and.novlim(nsconv,3).gt.1) then
-c$$$c                  dtkh = dtkhpms
-c$$$c                  dtn = min(dtkh*fkhdt,dtn)
-c$$$                  dtkhpms = 1.d99
-c$$$                  do k = 10,nmod
-c$$$                     if (dtkhpms.gt.m(k)*m(k)*g/abs(r(k)*lum(k)).and.
-c$$$     &                    m(k).gt.3.d-6*msun) then
-c$$$                        dtkhpms = m(k)*m(k)*g/abs(r(k)*lum(k))
-c$$$                     endif
-c$$$                  enddo
-c$$$                  dtkhpms = max(dtkhpms,1.d5*sec)
-c$$$               else
-c$$$                  dtkhpms = m(nmod)*m(nmod)*g/abs(r(nmod)*lum(nmod))
-c$$$               endif
-!!            endif
-c            else
-c               dtkhpms = m(nmod)*m(nmod)*g/abs(r(nmod)*lum(nmod))
-c            endif
             dtkh = dtkhpms
             dtn = min(dtkh*fkhdt,dtn)
 
@@ -640,8 +620,6 @@ c      endif
          if (dvlmax.gt.log10(1.d0+ftslum)) then
             facdtlum = facdt0
             if (dvlmax.gt.0.3d0) facdtlum = 10.d0**dvlmax
-c..init236         dtlum = dtalt/min(10.d0**dvlmax,facdt0)
-c..init231         dtlum = dtalt/max(10.d0**dvlmax,facdt0)
             dtlum = dtalt/facdtlum
             if (dtlum.lt.dtn) then
                ilum = 1
@@ -688,12 +666,12 @@ c     &        dtn = min(dtn,dtcour*fts)
 
 c..   first model : dtn = dtin
       if (model.eq.modeli.and.ireset.eq.0.and.dtin.ne.0.d0) dtn = dtin
-
+      print *,'dtin,dtn',dtin,dtn
 c..   luminosity variation too large. Do not increase dtn
-      if (ifail.lt.0) then
+      if (ifail.lt.0.and.mtini.lt.300.d0) then
          dtn = min(dtn,dtalt)
          write (nout,*) 'luminosity variation too large, dtn not ',
-     &        'increased'
+     &        'increased',dtn,dtalt
       endif
 
 *____________________________________________________________
@@ -701,10 +679,20 @@ c..   luminosity variation too large. Do not increase dtn
 *------------------------------------------------------------
 
       xmaxH = 1.d-1
+
       if (nphase.eq.2.and.xsp(1,ih1).le.xmaxH) dtn = min(dtn,dtmax0*
      &     (0.05d0+0.95d0*xsp(1,ih1)/xmaxH))
-c$$$      if (nphase.eq.2.and.xsp(1,ih1).le.xmaxH) dtn = min(dtn,dtmax0*
-c$$$     &     (0.005d0+0.95d0*xsp(1,ih1)/xmaxH))                                  ! In case of atomic diffusion
+      
+
+
+*____________________________________________________________
+***   Treatment of turn-off
+*------------------------------------------------------------
+c      if (ntprof.eq.5.and.nphase.eq.3.and..not.rgbphase) then !Test TD 03/2020
+c         dtn = 1d4/seci
+c      endif
+
+
       
 *____________________________________________________________
 ***   Treatment of centrifugal forces in rotating models

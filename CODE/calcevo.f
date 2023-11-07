@@ -1,19 +1,22 @@
       SUBROUTINE calcevo (*)
 
-************************************************************************
-* Compute the next model and, in case of success, save the results     *
-* If convergence fails, the procedure is repeated by changing the      *
-* current time-step                                                    *
-* 09/03: Simplification of the procedure of re-reading initial model   *
-*        in case of crashes ( see also modification of rinimod)        *
-* Modifs CC ondes (2/04/07 --> 23/11/07)                               *
-*                                                                      *
-* $LastChangedDate:: 2016-05-13 11:10:12 +0200 (Ven, 13 mai 2016)    $ *
-* $Author:: palacios                                                 $ *
-* $Rev:: 73                                                          $ *
-*                                                                      *
-************************************************************************
-
+****************************************************************************
+*     Compute the next model and, in case of success, save the results     *
+*     If convergence fails, the procedure is repeated by changing the      *
+*     current time-step                                                    *
+*     09/03: Simplification of the procedure of re-reading initial model   *
+*     in case of crashes ( see also modification of rinimod)               *
+*     Modifs CC ondes (2/04/07 --> 23/11/07)                               *
+*                                                                          *
+*     $LastChangedDate:: 2016-05-13 11:10:12 +0200 (Ven, 13 mai 2016)    $ *
+*     $Author:: palacios                                                 $ *
+*     $Rev:: 73                                                          $ *
+*                                                                          *
+****************************************************************************
+#ifdef GYRE
+c........................Rajoute par Alice
+      use evolstell_gyre
+#endif
       implicit none
 
       include 'evolpar.star'
@@ -38,14 +41,19 @@
       include 'evolcom.therm2'
       include 'evolcom.var'
 
+#ifdef GYRE     
+c......................Rajoute par Alice
+      include 'evolcom.grad'
+      include 'omp_lib.h'
+#endif      
       integer imerk,icrasht,iflag
       integer ntprof0,itermax0
-      integer normx,neff1,nconvsh,ienvsh
+      integer neff1, nconvsh, ienvsh
       integer error,iexp
       integer i,j,k,l,kl,ksh
       integer klenv,klpulse,klcore,iHecore
       integer imin,imax,itmaxf,itmax,ishockb,ishockt
-      integer fcs         ! first convective shell
+      integer fcs               ! first convective shell
 
       double precision alpha01,alpha00,alphmin0
       double precision ledd,lnuc,vlnuc,dabslum,dloglum,dfnuc
@@ -61,7 +69,6 @@
       double precision mHecore
       double precision geffrot,Rp2
       double precision times,chronos ! Ajout chronos pour mesure du tps de calcul
-      double precision disctime     ! modif TD Fev.2019
 
       logical partialmix,pass
       logical vlconv,adapt
@@ -71,6 +78,18 @@
       parameter (fmt = '(I2.2,A1,I2.2,I3,A3,I4)')
       integer itime(8)
 
+c................Rajoute par Alice
+      logical :: res, resdet
+      integer, dimension(nsh) :: normx
+      logical, dimension(nsh) :: mask
+      double precision brunt
+      double precision bruntv(nsh), bruntv2(nsh)      
+      common /brunt/ brunt(nsh),bruntv2,bruntv
+      double precision xmHb, xmHt
+      common /hburn/ xmHb, xmHt
+      logical rgbphase_gyre
+c.......................Fin rajout
+      
       common /saveMS/ elemsave
       common /convergence/ imerk,icrasht
       common /grid/ alpha00,alpha01,alphmin0,ntprof0,itermax0
@@ -80,19 +99,19 @@
       common /meshconv/ menvconv,dmenvconv,mcore,nconvsh,ienvsh
       common /geffective/ geffrot(nsh),Rp2(nsh)
 c     common /eddington/ ledd
-      common /disclocking/ disctime  ! modif TD Fev.2019
 
       dimension renucl(nsh),vi(nreac),y0(nsp),x(nsp),y(nsp)
 
+
       
       error = 0
-c      if (nphase.eq.4.and.novlim(1,3).eq.1) then
-c         iHecore = novlim(1,4)
-c         mHecore = m(iHecore)
-c      else
-c         iHecore = 1
-c         mHecore = 0.d0
-c      endif
+c       if (nphase.eq.4.and.novlim(1,3).eq.1) then
+c        iHecore = novlim(1,4)
+c        mHecore = m(iHecore)
+c       else
+c        iHecore = 1
+c        mHecore = 0.d0
+c       endif
       model = model+1
       maxsh = abs(maxsh0)
       if (model.le.0) time = 0.d0
@@ -131,7 +150,7 @@ c      endif
 
 c..   before AGB phase
       if (nphase.le.4.and..not.rgbphase.and..not.igwrot)
-     &     maxmod = min(maxmod,300)   ! modif Fev 2019
+     &     maxmod = min(maxmod,300) ! modif Fev 2019
 
 c..   AGB phase
 
@@ -156,7 +175,7 @@ c..   pulse starts, save immediately
          endif
 c..   further constrain structural time step during 3DUP
          if ((icorr.eq.'t'.or.icorr.eq.'a').and.dup3) then
-c         if (dup3) then
+c     if (dup3) then
             fts = min(fts0,2.d-2)
             if (imodpr.eq.33.and.maxmod.eq.maxmod0) then
                maxmod = min(41-mod(model-modeli,40)+no,maxmod0)
@@ -168,13 +187,13 @@ c         if (dup3) then
             fts = fts0
          endif
       endif
-c.. thibaut
-c      if (diffherwig.and.agbphase.and.totm.lt.10.1d0.and.dup3.and.
+c..   thibaut
+c     if (diffherwig.and.agbphase.and.totm.lt.10.1d0.and.dup3.and.
 c     &     dtn*seci.gt.0.1d0) then
-c         dtn = 0.1d0*sec
-c         write (nout,108) dtn*seci
-c         write (90,108) dtn*seci
-c      endif
+c     dtn = 0.1d0*sec
+c     write (nout,108) dtn*seci
+c     write (90,108) dtn*seci
+c     endif
 
       ifail = 0
       no = no+1
@@ -183,14 +202,15 @@ c      endif
 ***   abundance renormalization
 *------------------------------
 
+c..   index of maximum for each row
+      normx(:) = maxloc(xsp, 2)
+c..   loop over rows of xsp
       do k = 1,nmod
-         normx = 1
-         sum1 = 0.d0
-         do l = 1,nsp
-            if (xsp(k,l).gt.xsp(k,normx)) normx = l
-            sum1 = sum1+xsp(k,l)
-         enddo
-         xsp(k,normx) = xsp(k,normx)+(1.d0-sum1)
+c..   compute sum the row      
+         sum1 = sum(xsp(k, 1:nsp))
+c..   for the element of the row which is the maximum,
+c     remove 1+(sum of the row) so that sum of the row = 1 now         
+         xsp(k, normx(k)) = maxval(xsp(k,1:nsp))+(1.d0-sum1)
       enddo
 
 *__________________________________________________________________
@@ -223,42 +243,41 @@ c      endif
 *________________________
 ***   test He-core growth
 *------------------------
-c      if (nphase.eq.4.and.xsp(novlim(1,4),ihe4).gt.
+c     if (nphase.eq.4.and.xsp(novlim(1,4),ihe4).gt.
 c     &     vxsp(novlim(1,4),ihe4)) then
-c         write(nout,*)'Breathing pulse developing : central He4',
+c     write(nout,*)'Breathing pulse developing : central He4',
 c     &        ' abundance increased during this timestep'
-c         error = 35
-c         goto 20
-c      endif
+c     error = 35
+c     goto 20
+c     endif
 
-c      if (nphase.eq.4.and.mHecore.gt.0.d0.and.xsp(1,ihe4).lt.0.5d0.and.
+c     if (nphase.eq.4.and.mHecore.gt.0.d0.and.xsp(1,ihe4).lt.0.5d0.and.
 c     &     xsp(1,ihe4).gt.0.03d0) then
-c         if ((mHecore-m(novlim(1,4))).gt.0.1d0*msun.and.
+c     if ((mHecore-m(novlim(1,4))).gt.0.1d0*msun.and.
 c     &        (novlim(2,3)-novlim(1,4)).gt.5) then
-cc         if (abs(m(novlim(1,4))-mHecore).gt.0.1d0*msun) then
-c            write (nout,75) m(novlim(1,4))/msun,novlim(1,4),
+c     c         if (abs(m(novlim(1,4))-mHecore).gt.0.1d0*msun) then
+c     write (nout,75) m(novlim(1,4))/msun,novlim(1,4),
 c     &           mHecore/msun,iHecore
-c         if (xsp(1,ihe4)/vxsp(1,ihe4).gt.0.001d0) then
-c            write (nout,76) vxsp(1,ihe4),novlim(1,3),xsp(1,ihe4)
+c     if (xsp(1,ihe4)/vxsp(1,ihe4).gt.0.001d0) then
+c     write (nout,76) vxsp(1,ihe4),novlim(1,3),xsp(1,ihe4)
 c     $           ,novlim(1,3)
-c            error = 35
-c            goto 20
-c         endif
-c      endif
+c     error = 35
+c     goto 20
+c     endif
+c     endif
 
 *______________________________
 ***   test temperature increase
 *------------------------------
 
       if (ftst.gt.0.d0.and.model.gt.10) then
-         tmaxf = t(1)
-         itmaxf = 1
-         do i = nmod1,2,-1
-            if (t(i).gt.tmaxf.and.m(i).gt.mcut) then
-               tmaxf = t(i)
-               itmaxf = i
-            endif
-         enddo
+         mask(:)=m.gt.mcut     
+c..   Apply mask for t corresponding to m(i)<mcut except for t(1)
+c     with merge function   
+c..   Find tmax for elements if m(index_element)<mcut
+         tmaxf=maxval([t(1),merge(t(2:), 0.d0, mask(2:))])
+c..   Find index of tmax     
+         itmaxf=maxloc([t(1),merge(t(2:), 0.d0, mask(2:))],1)
          if (abs(log10(tmax/tmaxf)).gt.log10(1.d0+ftst).and.max(tmax,
      &        tmaxf).gt.2.d7) then
             icrasht = icrasht+1
@@ -274,31 +293,32 @@ c      endif
          endif
       endif
 
+      
       call thermo (error)
 
 
-c      if (imodpr.eq.-1) then
-c         call initondes
-c         write (*,'(" mv sortie_ondes sortie_ondes_",i5)') model
-c         stop
+c     if (imodpr.eq.-1) then
+c     call initondes
+c     write (*,'(" mv sortie_ondes sortie_ondes_",i5)') model
+c     stop
 c     endif
       if (error.gt.0) goto 20
 
 
 
 *____________________________________________________________________
-***
+***   
 ***   beyond this point the STRUCTURE has converged otherwise goto 20
-***
+***   
 *--------------------------------------------------------------------
 
 
       icrasht = 0
       maxsh = abs(maxsh0)
       mixopt = mixopt0
-c      print *,coefssv(:)
-c      coefssv(:) = coefsv(:)
-c      print *,coefssv(:)
+c     print *,coefssv(:)
+c     coefssv(:) = coefsv(:)
+c     print *,coefssv(:)
 
 *____________________________________________________________
 ***   calculation of the energy loss by plasma neutrinos
@@ -383,10 +403,10 @@ c..   neutrino energy losses and neutron irradiation
 ***   calculation of the associated nucleosynthesis and diffusion
 *----------------------------------------------------------------
 
-c      if (ondes) call ondes
+c     if (ondes) call ondes
       if (idiffcc.and.agbphase.and..not.idiffcc0) then
          write (nout,100) idiffcc,idiffcc0
-            idiffcc = idiffcc0
+         idiffcc = idiffcc0
       endif
 
       if (nucreg.ne.3) then
@@ -396,11 +416,11 @@ c      if (ondes) call ondes
 
 ***   Compute mixing coefficients and nucleosynthesis
          pass = .true.
-cx         if (flame.and.diffzc) pass = .false.
+c     x         if (flame.and.diffzc) pass = .false.
 
-c.. CASE 1 : diffusion (if nmixd > 0, diffusion treated in netdiff)
-c..
-C Modif CC ondes (19/10/07)
+c..   CASE 1 : diffusion (if nmixd > 0, diffusion treated in netdiff)
+c..   
+C     Modif CC ondes (19/10/07)
          if ((microdiffus.or.rotation.or.diffusconv.or.difftacho.or.
      &        thermohaline.or.igw).and.nmixd.eq.0.and.pass) then
 C     &        thermohaline).and.nmixd.eq.0.and.pass) then
@@ -408,26 +428,16 @@ C     <--
 !     Tests activation diffusion atomique ou non (modif Td Fev.2019)
             if (microdiffus.and.nphase.gt.5) then
                microdiffus = .false.
-c               print *, 'phase after 5 microdiffus false'
-c            else if (nphase.eq.1.and.time*seci.lt.disctime) then ! Ajout test TD AP Fev.2019
+c     print *, 'phase after 5 microdiffus false'
             else if (nphase.eq.1.and.time*seci.lt.2e7) then ! Ajout test TD Juillet.2019 si rotation
-c            else if (nphase.eq.1.and.time*seci.lt.2e6) then ! Ajout test TD AP Fev.2019
+c     else if (nphase.eq.1.and.time*seci.lt.2e6) then ! Ajout test TD AP Fev.2019
                microdiffus = .false.
-c               print *,'no diffusion this young star'
+c     print *,'no diffusion this young star'
             else if (nphase.eq.1.and.novlim(1,3).eq.1.and.nsconv.eq.1)
      $              then   
                microdiffus = .false.
-c               print *,'microdiffus false - no radiative core'
+c     print *,'microdiffus false - no radiative core'
             endif
-            
-c$$$            if (nphase.eq.1.and.novlim(1
-c$$$     $           ,3).eq.1.and.nsconv.eq.1) then   
-c$$$               microdiffus = .false.
-c$$$               print *,'microdiffus false - no radiative core'            
-c$$$            else
-c$$$               microdiffus = .true.
-c$$$               print *,'microdiffus true - radiative core' 
-c$$$            endif
 !     Fin test activation diffusion atomique
             if (idiffnuc.eq.2) then
                if (nucreg.ne.0) call chedif (error)
@@ -447,8 +457,8 @@ c$$$            endif
 
          else
 
-c.. CASE 2 : no diffusion or full coupling
-c..
+c..   CASE 2 : no diffusion or full coupling
+c..   
             if (nucreg.ne.0) then
                if (nsconv.gt.0) then
                   if (novlim(1,3).eq.1) klcore = 1
@@ -468,8 +478,8 @@ c..
                if (error.gt.0) goto 20
             else
 
-c.. CASE 3 : no nucleosynthesis  (nucreg = 0)
-c..          restore initial abundances and do mixing only
+c..   CASE 3 : no nucleosynthesis  (nucreg = 0)
+c..   restore initial abundances and do mixing only
                do l = 1,nsp
                   do k = 1,nmod
                      xsp(k,l) = vxsp(k,l)
@@ -484,8 +494,8 @@ c..          restore initial abundances and do mixing only
             endif
          endif
       else
-c..  nucleosynthesis computed during convergence process
-c..  simply update composition
+c..   nucleosynthesis computed during convergence process
+c..   simply update composition
          do l = 1,nsp
             do k = 1,nmod
                vxsp(k,l) = xsp(k,l)
@@ -550,7 +560,7 @@ c..  simply update composition
             write (nout,1810) model,min(9999,int(dabslum*1.d2)),
      &           int(ftnuc*1.d2)
             error = 30
-c            mixopt = .true.
+c     mixopt = .true.
          else
             error = -30
          endif
@@ -578,7 +588,7 @@ c..   at least 10 models computed
          write (nout,2000)
          write (90,2000)
       endif
-c.. idem for He during core He burning
+c..   idem for He during core He burning
       if (xsp(1,ihe4).lt.elemsave.and.nphase.eq.4) then
          maxmod = min(model-modeli,maxmod0)
          maxmod = max(maxmod,10)
@@ -587,34 +597,17 @@ c.. idem for He during core He burning
       endif
 
 c..   save more models in the Hertzsprung gap
-      if (nphase.eq.3.and..not.rgbphase) maxmod = min(maxmod,25)
+c      if (nphase.eq.3.and..not.rgbphase) maxmod = min(maxmod,25) ! couper TD 03/2020
 
 *_______________________________________________________________________
 ***   determination of the photosphere location, temperature and density
 *-----------------------------------------------------------------------
 
       neff = 0
-c      if (ntprof.eq.0.or.ntprof.eq.2) then
-         do k = nmod-2,2,-1
-            if (tau(k).gt.taueff.and.tau(k+1).ge.taueff) exit
-         enddo
-c$$$      else
-c$$$c..   !! Account for qtau to determine neff in case of realistic treatment of atmosphere
-c$$$         do k = nmod-2,2,-1
-c$$$            if ((tau(k)+qtau(k)).gt.pw43.and.((tau(k+1)+qtau(k+1))
-c$$$     &           .ge.pw43)) exit
-c$$$         enddo
-c$$$      endif
+      do k = nmod-2,2,-1
+         if (tau(k).gt.taueff.and.tau(k+1).ge.taueff) exit
+      enddo
       neff = k+2
-c$$$      if (ntprof.ne.0.and.ntprof.ne.2) then
-c$$$         taueff = pw43-qtau(neff)
-c$$$      endif
-
-c      print *,'Teff =',t(neff-1),t(neff),t(neff+1)
-
-c      print *,'taus =',tau(neff),taueff
-
-      print *,'taueff=',taueff
 
       neff = min(neff,nmod)
       neff1 = neff-1
@@ -652,30 +645,29 @@ c..   the gravitational potential that affects the mass
       else
          ledd = pim4*c*g*m(neff)/kap(neff)
       endif
-      print *,'Ledd',ledd, pim4*c*g*m(neff)/kap(neff)
       if (leff.gt.ledd) then
          write (nout,90) model,leff/lsun,ledd/lsun
-c         nmod = neff
+         error = 66
+         goto 20
+c      nmod = neff
       endif
 
 *______________________________________
 ***   calculation of surface quantities
 *--------------------------------------
       if (hydrorot) then
-c         print *,'############ IN CALCEVO GEFF ##########'
          if (ntprof.eq.2) then
             geff = log10(geffrot(neff-1))
          else
             geff = log10(geffrot(neff))
          endif
-c         print *,geff,geffrot(neff),neff,g*m(neff)/(reff*reff)
 
       else
          geff = log10(g*m(neff)/(reff*reff))
       endif
       soll = leff/lsun
       solr = reff/rsun
-c      teffy = tsurf
+c     teffy = tsurf
       teffy = teff
       if (time.lt.1.d0) then
          write (nout,1100) model,min(soll,9999999.d0),min(9999.d0,solr),
@@ -699,6 +691,7 @@ c      teffy = tsurf
          enddo
       endif
 
+
 *___________________________
 ***   storage of the results
 *---------------------------
@@ -707,6 +700,177 @@ c      teffy = tsurf
       cputime = min(9999.d0,(timeend-timebeg))
 
       call prvar
+
+*___________________________
+***   Rajoute par Alice
+*---------------------------
+
+#ifdef GYRE
+
+      ! For first iteration
+      if (model .eq. 1) then
+         gyreprec = .false.
+         tpgy = 0.d0
+         lpgy = 0.d0
+         deltat = 0.d0
+      endif
+
+      dtgy = dtn*seci
+      mgy = totm
+      tgy = t(nmod)
+      lgy = lum(nmod)/lsun
+
+      xspgy = xsp(1,2)
+
+      rgbphase_gyre = rgbphase.and.xmHb/xmHt.ge.0.8d0
+      
+      iter_gyre = imodpr  ! by default
+      n_time_gyre = model
+
+      call evo_iter("criteria.in", res, resdet, nphase, rgbphase_gyre)
+   
+      if (res .or. resdet) then ! if gyre must run in summary or detail mode     
+
+         !msun = 1.989d33
+         !rsun = 6.9599d10
+         !lsun = 3.86d33
+         nversion_gyre = 101
+         n_gyre = nmod
+         mstar_gyre = totm*msun
+         rstar_gyre = r(nmod)
+         lstar_gyre = lum(nmod)
+         age_gyre = time*seci
+
+         if (allocated(omega_gyre)) then
+            deallocate(omega_gyre)
+         endif
+         if (allocated(kapkt_gyre)) then
+            deallocate(kapkt_gyre)
+         endif
+         if (allocated(kapkro_gyre)) then
+            deallocate(kapkro_gyre)
+         endif
+         if (allocated(enuclt_gyre)) then
+            deallocate(enuclt_gyre)
+         endif
+         if (allocated(enuclro_gyre)) then
+            deallocate(enuclro_gyre)
+         endif
+         if (allocated(r_gyre)) then
+            deallocate(r_gyre)
+         endif
+         if (allocated(mr_gyre)) then
+            deallocate(mr_gyre)
+         endif
+         if (allocated(lum_gyre)) then
+            deallocate(lum_gyre)
+         endif
+         if (allocated(rho_gyre)) then
+            deallocate(rho_gyre)
+         endif
+         if (allocated(t_gyre)) then
+            deallocate(t_gyre)
+         endif
+         if (allocated(p_gyre)) then
+            deallocate(p_gyre)
+         endif
+         if (allocated(abla_gyre)) then
+            deallocate(abla_gyre)
+         endif
+         if (allocated(bruntv2_gyre)) then
+            deallocate(bruntv2_gyre)
+         endif
+         if (allocated(gamma1_gyre)) then
+            deallocate(gamma1_gyre)
+         endif
+         if (allocated(deltaks_gyre)) then
+            deallocate(deltaks_gyre)
+         endif
+         if (allocated(kap_gyre)) then
+            deallocate(kap_gyre)
+         endif
+         if (allocated(enucl_gyre)) then
+            deallocate(enucl_gyre)
+         endif
+         if (allocated(abad_gyre)) then
+            deallocate(abad_gyre)
+         endif
+
+
+         allocate(omega_gyre(n_gyre))
+         allocate(kapkt_gyre(n_gyre))
+         allocate(kapkro_gyre(n_gyre))
+         allocate(enuclt_gyre(n_gyre))
+         allocate(enuclro_gyre(n_gyre))
+         allocate(r_gyre(n_gyre))
+         allocate(mr_gyre(n_gyre))
+         allocate(lum_gyre(n_gyre))
+         allocate(rho_gyre(n_gyre))
+         allocate(t_gyre(n_gyre))
+         allocate(p_gyre(n_gyre))
+         allocate(abla_gyre(n_gyre))
+         allocate(bruntv2_gyre(n_gyre))
+         allocate(gamma1_gyre(n_gyre))
+         allocate(deltaks_gyre(n_gyre))
+         allocate(kap_gyre(n_gyre))
+         allocate(enucl_gyre(n_gyre))
+         allocate(abad_gyre(n_gyre))
+
+         
+         do i = 1,nmod
+            r_gyre(i) = r(i)
+            mr_gyre(i) = mr(i)*msun
+            lum_gyre(i) = lum(i)
+            p_gyre(i) = p(i)
+            t_gyre(i) = t(i)
+            rho_gyre(i) = ro(i)
+            abla_gyre(i) = abla(i)
+            bruntv2_gyre(i) = bruntv2(i)
+            gamma1_gyre(i) = gamma1(i)
+            abad_gyre(i) = abad(i)
+            deltaks_gyre(i) = deltaks(i)
+            kap_gyre(i) = kap(i)
+            kapkt_gyre(i) = t(i)*dkapdt(i)
+            kapkro_gyre(i) = ro(i)*dkapdro(i)
+            enucl_gyre(i) = enucl(i)
+            enuclt_gyre(i) = t(i)*denucldt(i)
+            enuclro_gyre(i) = ro(i)*denucldro(i)
+            omega_gyre(i) = omega(i)
+         enddo
+
+!     open(unit=32, file="verif.log", position=
+!     & "append", status ="unknown")
+         
+!     write(32, *)
+!     write(32, *) "Time iteration :", n_time_gyre
+!     write(32, 5100) "mr_gyre", "lum_gyre",
+!     & "bruntv2_gyre", "enucl_gyre", "omega_gyre",
+!     & "dkapdt_gyre", 
+!     & "dkapdro_gyre", "denucldt_gyre", "denucldro_gyre", 
+!     & "deltaks_gyre"
+!     write_loop : do j = 1, size(r_gyre)
+!     write(32, 6000) mr_gyre(j), lum_gyre(j),
+!     & bruntv2_gyre(j), enucl_gyre(j), omega_gyre(j), 
+!     & kapkt_gyre(j), 
+!     &   kapkro_gyre(j), enuclt_gyre(j),         
+!     &   enuclro_gyre(j), deltaks_gyre(j)
+!     end do write_loop
+
+!     close(unit=32) 
+
+!     5100     format(10(A25))
+!     6000     format(10(E25.16E3))
+
+         call evolstell_build_data
+         call evolstell_run('evolgyre','detail', resdet)
+
+         tpgy = tgy
+         lpgy = lgy
+
+      endif
+#endif      
+c....................................Fin rajout
+      
       call resulpr (error)
       print *, 'error',error
       if (error.eq.-9) then
@@ -724,12 +888,10 @@ c      teffy = tsurf
       endif
       write (90,1900)
 
-c      print *,'maxmod,no 1',maxmod,no
       if (no.lt.maxmod) then
          call flush (90)
          return 1
       endif
-c      print *,'maxmod,no 2',maxmod,no
 
       call date_and_time (values=itime)
       write (GetDateTimeStr,FMT) itime(5),':',itime(6),itime(3),
@@ -756,6 +918,10 @@ c      print *,'maxmod,no 2',maxmod,no
          write (90,1400)
          write (nout,1400)
       else
+         if (error.eq.66) then
+            write (90,1666) model
+            write (nout,1666) model
+         endif
          if (error.eq.50) then
             write (90,1555) model
             write (nout,1555) model
@@ -789,10 +955,10 @@ c..   OPACITY problem
             write (90,3080)
             write (nout,3080)
          endif
-c         if (error.eq.81) then
-c            write (90,3081)
-c            write (nout,3081)
-c         endif
+c     if (error.eq.81) then
+c     write (90,3081)
+c     write (nout,3081)
+c     endif
          if (error.eq.82) then
             write (90,3082)
             write (nout,3082)
@@ -912,11 +1078,11 @@ c..   NUCLEAR problem
             adapt = .true.
          endif
 
-c.. after 2 crashes, mesh is frozen
+c..   after 2 crashes, mesh is frozen
          if (ireset.ge.1.and.(icorr.eq.'m'.or.icorr.eq.'b'.or.adapt))
      &        then
             maxsh = 0
-c            if (ireset.eq.1) dtn = dtn0
+c     if (ireset.eq.1) dtn = dtn0
             write (nout,400)
             write (90,400)
             ireverse = 1
@@ -925,7 +1091,7 @@ c            if (ireset.eq.1) dtn = dtn0
             if (maxsh0.lt.0) ireverse = -1
          endif
 
-c.. after 2 crashes, convergence acceleration disabled
+c..   after 2 crashes, convergence acceleration disabled
          if (ireset.ge.2.and.iacc0.and.iacc.and.(icorr.eq.'h'.or.
      &        adapt)) then
             iacc = .false.
@@ -933,21 +1099,21 @@ c.. after 2 crashes, convergence acceleration disabled
             write (90,500)
          endif
 
-c.. after 2 crashes if end AGB, change tau0
-c         if (ireset.eq.3.and.nphase.eq.5.and.ntprof.ne.2.and.(adapt.or.
+c..   after 2 crashes if end AGB, change tau0
+c     if (ireset.eq.3.and.nphase.eq.5.and.ntprof.ne.2.and.(adapt.or.
 c     &        icorr.eq.'h').and.(dmenvconv.lt.0.15d0*msun.or.
 c     &        dmenvconv/mtini/msun.lt.0.1d0)) then
-c            if (tau0.lt.5.d-4) then
-c               tau0 = 1.d-3
-c            else
-c               tau0 = 1.d-4
-c            endif
-c            dtn = dtn0
-c            write (nout,520) tau0
-c            write (90,520) tau0
-c         endif
+c     if (tau0.lt.5.d-4) then
+c     tau0 = 1.d-3
+c     else
+c     tau0 = 1.d-4
+c     endif
+c     dtn = dtn0
+c     write (nout,520) tau0
+c     write (90,520) tau0
+c     endif
 
-c.. after 2 crashes, tolerence on acceleration reduced
+c..   after 2 crashes, tolerence on acceleration reduced
          if (hydro.and.(icorr.eq.'i'.or.adapt)) then
             if (ireset.ge.2) then
                eps(1) = eps(1)*1.d1
@@ -973,7 +1139,7 @@ c.. after 2 crashes, tolerence on acceleration reduced
       endif
 
       error = 0
-    
+      
 
 c..   restore saved model and current time step
       rewind (92)
@@ -1033,7 +1199,7 @@ c..   restore saved model and current time step
      &     f11.8,1x,1pe10.4,1x,1pe16.10,/)
  1200 format (/,3x,'model',5x,'L',8x,'R',6x,'Teff',7x,'M',8x,'dt (yr)',
      &     7x,'t (yr)',/,75('-'),/,i8,1x,f10.2,1x,f7.2,1x,f7.0,1x,
-     &     f11.8,1x,1pe10.4,1x,1pe16.10,/)
+     &     f8.3,1x,1pe10.4,1x,1pe16.10,/)
  1300 format (/,10x,'model ',i8,' failed : too many iterations',/)
  1400 format (/,10x,'new model computation with a reduced time-step,',
      &     ' due to a convergence problem for angular momentum',
@@ -1044,11 +1210,12 @@ c..   restore saved model and current time step
      &     ' s, with alpha = ',0pf6.4,/)
  1555 format (/,1x,'retry model ',i8,':Too large variation of Vsurf',/)
  1600 format (//,5x,'model ',i8,' failed : time-step too low !',/)
+ 1666 format  (/,1x,'retry model ',i8,'because L > Ledd',/)
  1700 format (//,5x,'model ',i8,' failed : maximum number of crashes ',
      &     ' reached',/)
  1800 format (/,1x,'WARNING : model ',i8,', large variation of the ',
      &     'TOTAL nuclear luminosity (',i4,'%) : time step should be ',
-     &     'reduced!')
+     &     'reduced                  !')
  1810 format (/,1x,'WARNING : model ',i8,', too large variation of ',
      &     'the TOTAL nuclear luminosity (',i4,'% > ftnuc = ',i3,'%),')
 c     &     ' mixopt changed : t')
@@ -1059,7 +1226,7 @@ c     &     ' mixopt changed : t')
  2000 format ('save model because of too large H depletion')
  2100 format ('save model because of too large He depletion')
 
-c.. error labels
+c..   error labels
 
  3001 format (3x,'MLT : too many convective zones')
  3002 format (3x,'max iterations reached for MLT with hro')
@@ -1067,7 +1234,7 @@ c.. error labels
  3006 format (3x,'Corrections too big')
  3007 format (3x,'KAPPA : Mass fractions exceed unity')
  3080 format (3x,'KAPPA : pb table 2')
-c 3081 format (3x,'KAPPA : pb table 3 - O rich')
+c     3081 format (3x,'KAPPA : pb table 3 - O rich')
  3082 format (3x,'KAPPA : pb table 3 - N rich')
  3083 format (3x,'KAPPA : pb table 4')
  3084 format (3x,'KAPPA : pb molecular opacity')

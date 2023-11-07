@@ -48,7 +48,8 @@ C     Modifs CC ondes (2/04/07)
       character month*36,GetDateTimeStr*15,fmt*26
       parameter (month = 'JanFebMarAprMayJunJulAugSepOctNovDec')
       parameter (fmt = '(I2.2,A1,I2.2,I3,A3,I4)')
-      integer itime(8)
+      integer itime(8), n_turbul(1)  ! modif TD AP
+      double precision Tfix, om_turbul, PM ! modif TD AP 
 
       logical vlconv
       logical locconsAM
@@ -58,6 +59,11 @@ C     Modifs CC ondes (2/04/07)
       common /fitcd/ paq_c(3,8,50),paq_d(8,50)
       common /resolution/ vlconv
       common /convergence/ imerk,icrasht
+      common /turbulparam/ n_turbul,Tfix,om_turbul,PM
+
+      namelist /RICHER/ Tfix, om_turbul, n_turbul
+      namelist /PROFITTMICHAUD/ PM
+      namelist /MassiveMloss / clumpfac,zscaling
 
 *__________________________________________
 ***   read values for adjustable parameters
@@ -108,6 +114,7 @@ C     Modifs CC ondes (2/04/07)
       if (mlp.gt.49) mlp = mlp-50
       om_sat=dble(om_sat)
 
+     
 ***   check versions compatibility
       if (code_version.lt.evolpar_version.and.evolpar_version.lt.2.1d0)
      &     then
@@ -133,7 +140,7 @@ C     Modifs CC ondes (2/04/07)
          write (nout,*) 'when HMLT = 5, alphatu MUST be > alphac !'
          stop 'rmodpar : bad alphatu and alphac'
       endif
-      if (.not.(mlp.le.24.or.mlp.ne.55.or.mlp.ne.56)) then
+      if (.not.(mlp.le.28.or.mlp.ne.55.or.mlp.ne.56)) then
          write (nout,*) 'choose a correct value for mlp (0-22) !'
          stop 'rmodpar : bad mlp'
       endif
@@ -160,15 +167,16 @@ c        if (idiffvr.eq.6..or.idiffvr.eq.7.and.omegaconv.ne.'f') then
          write (nout,*) 'imcompatible choice of idiffvr and omegaconv'
          stop 'rmodpar : bad idiffvr'
       endif
-c      if (idiffvr.eq.5.and.omegaconv.ne.'f') then
-c      if (idiffvr.eq.5.or.idiffvr.eq.8.and.omegaconv.ne.'f') then
-c         write (nout,*) 'imcompatible choice of idiffvr and omegaconv'
-c         write (nout,*) 'changing omegaconv to F'
-c         omegaconv = 'f'
-c      endif
 
 
-
+      if (mlp.eq.15.or.mlp.eq.16) then
+         print *,'Reading namelist massloss.par'
+         open(UNIT=79, FILE='massloss.par', STATUS='OLD')
+         rewind(79)
+         read(79, NML=MassiveMloss) 
+         close(79)
+         print *,'    clumpfac',clumpfac
+      endif
 
 ***   define mixing type
 
@@ -181,25 +189,41 @@ c      if (lmicro.eq.3.and.idiffcc.and.(idiffty.eq.11.or.idiffty.eq.13
 c     &     .or.idiffty.eq.14).and.(totm.gt.1.4d0.or.totm.gt.2.d0))
 c     &     lmicro = 0
       if (nmixd.gt.0.and.nmixd.lt.5) diffzc = .false.
-c      diffover = idiffcc.and.lover.eq.62 ! test TD 11/2019
-      diffover = idiffcc.and.(lover.ge.22.and.lover.le.39)
+      diffover = idiffcc.and.((lover.ge.22.and.lover.le.39).or.
+     &     (lover.ge.70.and.lover.le.73))
       if (novopt.gt.0.and.diffover) then
          write (nout,*) 'INCOMPATIBLE PARAMETERS : overshooting ',
      &        'treated EITHER by novopt OR by idiffty, make a choice !'
          stop
       endif
+      if (diffover.and.(lover.eq.60.or.lover.eq.61.or.lover.eq.70.or.
+     $     lover.eq.71)) then
+         open(UNIT=70, FILE='transport_param.par', STATUS='OLD')
+         rewind(70)
+         read(70, NML=Richer) 
+         read(70, NML=ProfittMichaud) 
+         close(70)
+      endif
+      
       semiconv = idiffcc.and.ledouxmlt
       write (nout,*)
       if (ledouxmlt.and..not.diffzc) then
          write (nout,7300)
          write (90,7300)
       endif
-      rotation = idiffcc.and.((idiffty.ge.8.and.idiffty.le.13).or.
-     &     idiffty.eq.14.or.idiffty.eq.17)
+      rotation = idiffcc.and.(idiffty.ge.8.and.idiffty.le.17)                 ! TD ajout 15 (03/2020)
       difftacho = idiffcc.and.(ltach.ge.41.and.ltach.le.44)
+      turbulence = idiffcc.and.((lover.ge.60.and.lover.le.61).or.
+     &     (lover.ge.70.and.lover.le.73))
       diffusconv = diffzc.or.diffover.or.semiconv
-      microdiffus = idiffcc.and.(lmicro.eq.2.or.lmicro.eq.3.or.          ! modif thoul = 4
-     &     lmicro.eq.4)
+      microdiffus = idiffcc.and.(lmicro.ge.2.and.lmicro.le.6) ! modif thoul = 4
+      viscosityadd = idiffcc.and.idiffty.eq.15 ! TD pour nu_add (03/2020)
+      if (viscosityadd.and.grad_crit.lt.1) then ! TD pour nu_add (03/2020)
+         write (nout,*)
+     $        'choose a correct value for additional viscosity'
+         write (nout,*) 'nuadd = 3.5e4 is an exemple of possible value'
+         stop
+      endif
       if (idiffnuc.eq.3.and..not.diffusconv) then
          write (nout,*) 'choose a correct value for idiffnuc/diffusconv'
          write (nout,*) 'idiffnuc.eq.3 not compatible with diffzc = f',
@@ -212,10 +236,6 @@ c      diffover = idiffcc.and.lover.eq.62 ! test TD 11/2019
          write (nout,*) 'if you set nuclopt = m, diffzc must be false !'
          stop
       endif
-c      if (idiffcc.and..not.diffzc) then
-c         write (nout,7400)
-c         write (90,7400)
-c      endif
       locconsAM = idiffcc.and.idiffty.eq.16
       if (locconsAM) rotation = .true.
 
@@ -238,7 +258,6 @@ C      logicalondeschim = .true.
       igwcorerot = idiffcc.and.rotation.and.
      &              ((lover.eq.42).or.(lover.eq.43))
       igwrot = igwsurfrot.or.igwcorerot
-C      igwsurfenerg = .true.
       igwsurfenerg = .false.
       igwcoreenerg = .false.
       igw = igwsurfchim.or.igwcorechim.or.igwrot
@@ -465,7 +484,7 @@ c      nczm = max(1,nczm)
       if (chydro.eq.'3') ihydro = 3
       if (ihydro.eq.1.or.ihydro.eq.3) hydro = .true.
       if (hydro) dynfac = 1.d0
-      if (rotation.and.ihydro.ge.2) hydrorot = .true.
+      if (rotation.and.hydro) hydrorot = .true.            ! Correction 17/04/2020
       if (lgrav.eq.4.and..not.hydro) then
          write (nout,*) 'if you use lgrav = 4, hydro MUST be on !'
          stop 'rmodpar : bad combination of lgrav-hydro'
@@ -558,7 +577,7 @@ c    &        status = 'unknown',convert = 'big_endian')
          close (77)
          close (78)
       endif
-
+      
 
  900  format (/,43x,f4.2)
  1000 format (/,25x,i4,11x,i3,10x,f6.2,10x,f8.6)

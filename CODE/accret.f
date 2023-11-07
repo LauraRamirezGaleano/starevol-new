@@ -448,7 +448,7 @@ c           facc(k) = flinea*((m(k+1)+m(k))*0.5d0-m(iaccbot))
             if (i.eq.iaccbot+1.and.idet.eq.0) dfaccdr(i) = 0.d0
             tacc(i) = (macc(nmod)-macc(i))/dmaccr
             if (accphase.eq.0.and.tacc(i).gt.0.d0) then
-               vacc(i) = alphac*hp(i)/tacc(i)
+               vacc(i) = alpha_mlt_hp*hp(i)/tacc(i)
             else
                vacc(i) = 0.d0
             endif

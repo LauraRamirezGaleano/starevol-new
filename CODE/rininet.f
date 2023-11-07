@@ -70,8 +70,12 @@ c      common /nuc_matrix/ jna(nz),ina(lirn)
       ial26g = -1
       ial26m = -1
       ndecay = 0
+      do i = 1,3
+         read (99,*)
+      end do
       do i = 1,nsp
          read (99,1000) idum,elem(i),anuc(i),znuc(i),xspacc(i),istate(i)
+         write(*,1000) idum,elem(i),anuc(i),znuc(i),xspacc(i),istate(i)
          if (istate(i).eq.'F'.and.i.lt.nis) then
             ndecay = ndecay+1
             kdecay(ndecay) = i
@@ -90,7 +94,7 @@ c      common /nuc_matrix/ jna(nz),ina(lirn)
       endif
       if (ndecay.ne.10) then
          write (nout,*) ndecay
-         stop 'rininet : wrong starevol.par, check istate'
+         stop 'rininet : wrong network.par, check istate'
       endif
 
 *_______________________________________________________
@@ -170,7 +174,6 @@ c     Ajout pour diffusion Thoul                                 ! modif Thoul
       ib10 = ispec(5,10)
       
       zsol = 1.d0-xspsol(ih1)-xspsol(ih2)-xspsol(ihe3)-xspsol(ihe4)
-
 
 *______________________________________________________
 ***   initialize desintegration half-lifes (in seconds)
@@ -532,14 +535,15 @@ c..   index for .c5 file
 *--------------------------------
 
       rewind (99)
-      do i = 1,33+nsp+1
+!     do i = 1,33+nsp+1
+      do i = 1,nsp+3
          read (99,1200)
       enddo
       do j = 1,nreac
          read (99,1300) react(j)
       enddo
 
-      close (99)  !  starevol.par
+      close (99)  !  network.par
 
 *______________________________________
 ***   initialize nuclear reaction types

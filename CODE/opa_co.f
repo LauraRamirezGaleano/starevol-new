@@ -326,7 +326,7 @@ c.. lapack
          enddo
 
       endif
-C verification de la solution convergée :
+C verification de la solution convergï¿½e :
  10   if (k.ge.100) then
          print *,'Too many iteration in NR procedure: T =',tk,
      &        ' rho =',rok

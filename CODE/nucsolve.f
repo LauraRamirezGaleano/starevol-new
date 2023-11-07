@@ -33,8 +33,6 @@
 
       integer nz,lirn,ina,jna,licn
       parameter (nz = 370,lirn=nsp,licn=nz+1)
-c      integer iw(8*nis),indx_s(5*nis)
-c      double precision fjac_s(nz),w(nis)
 
       logical nequil,xequil,nsink,normalize
 
@@ -127,9 +125,7 @@ c      enddo
       do i = istart,neqd
          sumd = sumd + p(i)*anuc(i) 
          suma = suma + abs(p(i))*anuc(i)
-c         write (*,'(i4,4(1x,1pe11.3))') i,suma,sumd,p(i)*anuc(i),y(i)
       enddo
-c      stop
       negflag = 0
       do i = istart,neqd
          y(i) = y(i)+p(i)

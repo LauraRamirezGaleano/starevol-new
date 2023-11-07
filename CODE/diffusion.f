@@ -4,10 +4,11 @@
 *     Compute diffusion coefficients and chemical mixing
 *
 *       The different types of mixing are :
-* lmicro = 2   : microscopic diffusion, Chapman & Cowling
-* lmicro = 3   : microscopic diffusion, Montmerle&Michaud + Paquette
-* lmicro = 4   : atomic diffusion, Thoul et al. 94 + Paquette 86 (ionisation partielle)
-* lmicro = 5   : atomic diffusion, Thoul et al. 94 + Paquette 86 (ionisation totale) ne fonctionne pas en l'état !    
+* lmicro = 2    : microscopic diffusion, Chapman & Cowling
+* lmicro = 3    : microscopic diffusion, Montmerle&Michaud + Paquette 86 (partial ionization)
+* lmicro = 4    : atomic diffusion, Thoul et al. 94 + Paquette 86 (partial ionization)
+* lmicro = 5    : microscopic diffusion, Montmerle&Michaud + Paquette 86 (total ionization)     
+* lmicro = 6    : atomic diffusion, Thoul et al. 94 + Paquette 86 (total ionization)    
 * idiffty = 4   : mixing recipe used in Charbonnel ApJ 1995
 * idiffty = 8   : chemical mixing + AM transport Talon 1997
 * idiffty = 9   : AM transport only, Talon 1997
@@ -17,39 +18,46 @@
 *                 more complete treatment, recommended for giants
 * idiffty = 14  : Omega evolves as a results of structural changes. Angular
 *                 momentum assumed to be preserved in each shell
+* idiffty = 15  : (13) + addition of an additional viscosity      
 * idiffty = 17  : Use simplified expression for Ur (case of massive stars models)
-* lthal =   01  : Thermohaline mixing
+* lthal = 01    : Thermohaline mixing
 * ltach = 41-44 : Tachocline mixing (see Tachocline diffusc_ondes.f)
 * lover = 23-32 : diffusive convective overshoot (Herwig)
-*    lover = 23 : below convective envelope
-*    lover = 24 : above core
-*    lover = 25 : below pulse
-*    lover = 26 : above pulse
-*    lover = 27 : above core and below enveloppe (=23+24)
-*    lover = 28 : below and above pulse (=25+26)
-*    lover = 29 : treat all cases (=27+28)
-*    lover = 30 : overshoot below all convective zones
-*    lover = 31 : overshoot above all convective zones
-*    lover = 32 : overshoot everywhere (=30+31)
-*    lover = 33 : overshoot below EC : Baraffe et al 2017 penetrative convection (see diffbaraffe.f)
-*    lover = 34 : overshoot below a convective zone : Augustson & Mathis 2019 rotating convection model - Baraffe and Pratt type diffusion (see diffkyle.f)
-*    lover = 35 : overshoot above a convection zone : Augustson & Mathis 2019 rotating convection model - Baraffe and Pratt type diffusion (see diffkyle.f)
-*     lover = 36 : overshoot everywhere (=34+35) : Augustson & Mathis 2019 rotating convection model (see diffkyle.f)
-*      lover = 37 : overshoot below a convective zone : Augustson & Mathis 2019 rotating convection model - Baraffe and Pratt type diffusion (see diffkyle.f)   + Dturbul T6.45
-*     lover = 38 : overshoot below a convective zone : Augustson & Mathis 2019 rotating convection model - Baraffe and Pratt type diffusion (see diffkyle.f)  + Dturbul PM12500
-*     lover = 39 : overshoot below a convective zone : Augustson & Mathis 2019 rotating convection model - Korre type diffusion (see diffkyle.f) 2
+* lover = 23    : below convective envelope
+* lover = 24    : above core
+* lover = 25    : below pulse
+* lover = 26    : above pulse
+* lover = 27    : above core and below enveloppe (=23+24)
+* lover = 28    : below and above pulse (=25+26)
+* lover = 29    : treat all cases (=27+28)
+* lover = 30    : overshoot below all convective zones
+* lover = 31    : overshoot above all convective zones
+* lover = 32    : overshoot everywhere (=30+31)
+C Modif TD 2019-2020      
+* lover = 33    : overshoot below EC : Baraffe et al 2017 penetrative convection (see diffbaraffe.f)
+* lover = 34    : overshoot below a convective zone : Augustson & Mathis 2019 rotating convection model - Baraffe and Pratt type diffusion (see diffkyle.f)
+* lover = 35    : overshoot above a convection zone : Augustson & Mathis 2019 rotating convection model - Baraffe and Pratt type diffusion (see diffkyle.f)
+* lover = 36    : overshoot everywhere (=34+35) : Augustson & Mathis 2019 rotating convection model (see diffkyle.f)
+* lover = 37    : overshoot below a convective zone : Korre et al. 2019 type diffusion (see diffkyle.f) 2
+* lover = 38    : overshoot above a convective zone : Korre et al. 2019 (see diffkyle.f) 2
+* lover = 39    : overshoot everywhere (=37+38) : Korre et al. 2019 (see diffkyle.f) 2
+* lover = 70    : overshoot below a convective zone : Augustson & Mathis 2019 rotating convection model - Baraffe and Pratt type diffusion (see diffkyle.f)   + Dturbul T6.4xx
+* lover = 71    : overshoot below a convective zone : Augustson & Mathis 2019 rotating convection model - Baraffe and Pratt type diffusion (see diffkyle.f)  + Dturbul PM10000
+* lover = 72    : overshoot below a convective zone : Korre et al. 2019 (see diffkyle.f) 2 + Dturbul T6.4xx
+* lover = 73    : overshoot below a convective zone : Korre et al. 2019 (see diffkyle.f) 2 + Dturbul PM10000
+*
+* lover = 60    : compute and add turbulence coefficient (temperature fixation T.6xx - see diffturbul.f) - only if atomic diffusion active
+* lover = 61    : compute and add turbulence coefficient (BCZ fixation PM10000 - see diffturbul.f) - only if atomic diffusion active     
+*     
 C Modif CC ondes (5/12/07)
 * lover = 41-43 : Internal gravity waves
-*    lover = 41 : igw below the convective envelope
-*    lover = 42 : igw above the convective core
-*    lover = 43 : igw in both cases (=41+42)
-C     Modif TD turbulence ad hoc (09/2019)
-*    lover = 60 : compute and add turbulence coefficient (temperature fixation - see diffturbul.f) - only if atomic diffusion active
-*    lover = 61 : compute and add turbulence coefficient (BCZ fixation - see diffturbul.f) - only if atomic diffusion active
-* icall = 0 : call during convergence (mixopt=t), do not treat rotational
-*             mixing and do not update vxsp
-* icall = 1 : call after convergence
-* icall = 2 : for binlist_evol.f
+* lover = 41    : igw below the convective envelope
+* lover = 42    : igw above the convective core
+* lover = 43    : igw in both cases (=41+42)    
+* icall = 0     : call during convergence (mixopt=t), do not treat rotational
+*                 mixing and do not update vxsp
+* icall = 1     : call after convergence
+* icall = 2     : for binlist_evol.f
 *
 * NOTE : if nmixd.gt.0 then diffzc = .FALSE.
 *                                                                      *
@@ -115,16 +123,13 @@ c      include 'evolcom.transpondesexcit'
       double precision mueinvk,vi
       double precision fLi7,fLi6,fB11,xt,fdecay
       double precision disctime
-c      double precision xeq(nsp),tnuc(nsp)
       double precision abmuliss,abmax,abmin,gradledoux
-C.. test BS99
       double precision THBS,TEMb,F_BS99
       double precision xnurad,xnumol,ddmax
       double precision brunt(nsh)
       double precision dtacho
       double precision Dhold
       double precision rhosh,tsh,muesh ! MODIF THOUL + modif Fev.2019 muesh
-c     double precision vdiffthoul
       double precision tdiff,tempo,dtkhpms                        ! diffusion PMS
       double precision xdmiche!,Dturbul ! dturbul TD 09/19
       double precision xvdiffhe,xvdiffhenoc
@@ -157,7 +162,6 @@ c     double precision vdiffthoul
       dimension cd(nsh),dd(nsh),dd0(nsh,3),dd1(nsh)
       dimension Dmicro_He(nsh),Dmicro_O(nsh),Dmicro_C(nsh)                   ! maj TD Jan.2018
       dimension Vmicro_He(nsh),Vmicro_O(nsh),Vmicro_C(nsh) ! maj TD Jan.2018
-c      dimension Dturbul(nsh) ! dturbul TD 09/19
       dimension dmdr(nsh),f1(nsh),f2(nsh),f3(nsh)
       dimension istop(nis)
       dimension vi(nreac)
@@ -182,20 +186,27 @@ c$$$      if (microdiffus.and.xsp(1,ih1).lt.1.d-5) then
 c$$$         microdiffus = .false.
 c$$$         write (nout,50)
 c$$$         write (90,50)
-c$$$      endif
+c$$$  endif
+c$$$      if (nphase.ge.3) then
+c$$$         lmicro=0               ! coupe diffu phase 3
+c$$$         print *, 'no atomic diffusion at phase 3 or later'
+c$$$  endif
+      
       if (.not.microdiffus.and..not.rotation.and..not.diffusconv
      $     .and..not.difftacho.and..not.thermohaline.and..not.igw.and.
-     $     .not.diffover) then
+     $     .not.diffover.and..not.turbulence) then
          print *,'no diffusion process active'
          return
       endif
-c      print *,'Entree dans diffusion'
+       
+      if (idiffty.eq.15) print *,
+     $     'Additional viscosity for the transport of angular momentum a
+     $ctive'
 
       ndt = 0
       ndb = 1
       times = time*seci
-c      call cpu_time(chronos)
-c      print *, 'Chrono start diffusion', chronos, 'seconds'
+      call cpu_time(chronos)
       call diffinit (icall)
       if (igw) call diffinitondesexcit
       do k = 1,nmod
@@ -216,7 +227,6 @@ c      print *, 'Chrono start diffusion', chronos, 'seconds'
             coefDtacho(i) = 0.d0 ! tachocline
             dmic(i) = 0.d0       ! microscopic diffusion
             vdmic(i) = 0.d0      ! microscopic velocity
-C           Dondes(i) = 0.d0
             Dondeschim(i) = 0.d0 ! Dwaves
             Dturbul(i) = 0.d0    ! ad oc turbulence (TD 09/2019)
          enddo
@@ -255,12 +265,12 @@ C           Dondes(i) = 0.d0
          call mix (dm,imin,imax,kl,5,partialmix)
       enddo
 
-      if (.not.diffzc.and.microdiffus.and.klenv.eq.0) then
+c      if (.not.diffzc.and.microdiffus.and.klenv.eq.0) then
 c         print *,'out of diffusion.f'
-         return
-      else
+c         return
+c      else
 c         print *, 'diffusion.f active'
-      endif
+c      endif
       
 c..   Initialisations for Rotational mixing (only after convergence)
       if (icall.eq.1.and.(rotation.or.microdiffus.or.igw)) then
@@ -290,24 +300,6 @@ c.. define upper integration boundaries for AM transport
             endif
          endif
 
-c$$$C Modif CC ondes (19/10/07)
-c$$$         if (icall.ne.1.and.igw) then
-c$$$            print *,"diffusion icall ne 1 initialisation ndb,ndt"
-c$$$            if (klenv.gt.0) then
-c$$$               ndtenv = novlim(klenv,3)-1
-c$$$            else
-c$$$               ndtenv = nmod
-c$$$            endif
-c$$$c.. case envelope boundary condition
-c$$$c.. define upper integration boundaries for AM transport
-c$$$            if (klcore.eq.0) then
-c$$$               ndb = 1
-c$$$            else
-c$$$               ndb = novlim(klcore,4)+1
-c$$$            endif
-c$$$            ndt = novlim(klenv,3)-1
-c$$$         endif
-c$$$C Fin modif CC
 
 c..   define the number of equations NEQJ to be solved for
 c..   the transport of angular momentum, as well as the number
@@ -327,23 +319,14 @@ c..   of outer and inner boundary conditions (NCLS and NCLC)
 c..   Initialisations for diffusion (Thoul with lmicro = 4)
       if (microdiffus.or.difftacho) then
          do i = 2,nmod1
-c$$$            dri1 = r(i)-r(i+1)
-c$$$            dri = r(i-1)-r(i)
-c$$$            a = -dri1/dri
-c$$$            b = dri1+dri
-c$$$            dtdr = ((-1.d0/a+a)*t(i)+t(i+1)/a-a*t(i-1))/b
-c$$$  dlntdr(i) = dtdr/t(i)
             dri = dsqrt((r(i+1)**2 + r(i+1)*r(i)+r(i)**2)/3.d0) -
      &           dsqrt((r(i)**2 + r(i)*r(i-1) + r(i-1)**2)/3.d0)
             dtdr = (t(i) - t(i-1))/dri
             dlntdr(i) = 2.d0*dtdr/(t(i)+t(i-1))
             if (lmicro.eq.4) dlntdr(i) = dlntdr(i)*rsun ! modif Thoul
 
-c            dlnpdr(i) = -ro(i)/p(i)*g*m(i)/(r(i)*r(i)) ! modif Thoul (pression)
             dpdr = (p(i) - p(i-1))/dri
             dlnpdr(i) = 2.d0*dpdr/(p(i)+p(i-1))
-c           dlnpdr(i) = -(0.5*(ro(i)+ro(i-1)))/(0.5*(p(i)+p(i-1)))*g
-c     $           *m(i)/(r(i)*r(i))                                ! remise à la couche i, 01/2019
             if (lmicro.eq.4) dlnpdr(i) = dlnpdr(i)*rsun ! modif Thoul
             
             do j = 1,nis        ! modif Thoul (fraction masse)
@@ -351,11 +334,6 @@ c     $           *m(i)/(r(i)*r(i))                                ! remise à l
                dlnxdr(i,j) = 2.d0*dxdr(i,j)/(xsp(i,j)+xsp(i-1,j))
                if (lmicro.eq.4) dlnxdr(i,j) = dlnxdr(i,j)*rsun ! modif Thoul
             enddo
-c            print *, 'i',i,'dlntdr',dlntdr(i),'dlnpdr',dlnpdr(i)          
-c$$$            write(69,'(1x,i4,1x,9(1x,1pe11.4))') i,r(i),t(i),dri,
-c$$$     &           dtdr,dlntdr(i),dlnpdr(i),dlnxdr(i,5),m(i)
-c$$$            write(65,'(1x,i4,1x,9(1x,1pe11.4))') i,r(i),t(i),p(i),
-c$$$     &           m(i),ro(i)
          enddo
          dlntdr(1) = dlntdr(2)
       endif
@@ -364,23 +342,6 @@ c$$$     &           m(i),ro(i)
 ***   Compute diffusion coefficients
 ***   coefficients that are independent of abundances
 *----------------------------------------------------
-
-c$$$CC***   internal gravity waves
-c$$$CC Modif CC (28/10/09)
-c$$$C Calcul de Dondeschim dans le cas sans rotation
-c$$$C Le calcul de Dondeschim dans le cas du calcul complet
-c$$$C est deplace dans la partie "rotational mixing"
-c$$$C de la routine diffusion
-c$$$      if (igwsurfchim.and..not.igwrot) then
-c$$$          mtu = nmod-ndt+1
-c$$$          npasr = nmod-ndb+1
-c$$$      print *,"diffusion, appel a calculflux_chimsurf,nmod,
-c$$$     &         mtu,npasr",nmod,mtu,npasr
-c$$$c          call calculflux_chimsurf(nmod,mtu,npasr)
-c$$$c          call coefondes_surf(ndb,ndt)
-c$$$      stop 'to be implemented'
-c$$$      endif
-c$$$C Fin modif CC
 
 ***   tachocline diffusion
 cc      if (difftacho.and.nphase.eq.2.and.klenv.gt.1.and.icall.eq.1) then
@@ -524,7 +485,6 @@ C Version utilisee pour RGB :
             if (klenv0.ne.0.and.istart.gt.1) then
                fover = etaturb
                cd0 = Dconv(istart)
-c               print *,'before baraffe',istart,r(istart),cd0
                call diffbaraffe (istart,iend,cd0,Dbar,fover)
             endif
             novlim(klenv,7) = iend
@@ -532,21 +492,21 @@ c               print *,'before baraffe',istart,r(istart),cd0
 
 ***   diffusive overshoot : Augustson & Mathis 2019 formalism (code KA, adapt. TD Nov. 2019)
 c..   Diffusion below a convection zone         
-         if (lover.eq.34.or.(lover.ge.36.and.lover.le.39))
-     $        then
+         if (lover.eq.34.or.lover.eq.36.or.lover.eq.37.or.lover.eq.39
+     $        .or.(lover.ge.70.and.lover.lt.73)) then
             klenv0 = klenv
             istart = novlim(klenv,3)
             if (klenv0.ne.0.and.istart.gt.1) then
                fover = etaturb
                cd0 = Dconv(istart)
-c               print *,'before kyle',istart,r(istart),cd0
-               if (lover.eq.34.or.(lover.ge.36.and.lover.le.38)) 
-     $             call diffkyle (istart,1,iend,cd0,fover,Dkyle,1)
-               if (lover.eq.39.) call diffkyle (istart,1,iend,cd0,fover
-     $              ,Dkyle,2)
+               if (lover.eq.34.or.lover.eq.36.or.lover.eq.70.or.
+     $              lover.eq.71) call diffkyle (istart,1,iend,cd0,fover
+     $              ,Dkyle,1)
+               if (lover.eq.37.or.lover.eq.39.or.lover.eq.72.or.
+     $              lover.eq.73)
+     $              call diffkyle (istart,1,iend,cd0,fover,Dkyle,2)
             endif
             novlim(klenv,7) = iend
-c            print *, 'istart over',istart,'iend over',iend,'ndt',ndt
             do i = 1,nmod
                if (Dkyle(i).eq.0.d0) then
                   Dkyle(i) = 1.d0
@@ -555,14 +515,17 @@ c            print *, 'istart over',istart,'iend over',iend,'ndt',ndt
          endif
 
 c..   Diffusion above a convection zone
-         if (lover.eq.35.or.lover.eq.36) then
+         if (lover.eq.35.or.lover.eq.36.or.lover.eq.38.or.lover.eq.39)
+     $        then
             klenv0 = klenv
             istart = novlim(klenv,4)
             if (klenv0.ne.0.and.istart.gt.1) then
                fover = etaturb
                cd0 = Dconv(istart)
-c               print *,'before kyle',istart,r(istart),cd0
-               call diffkyle (istart,-1,iend,cd0,fover,Dkyle)
+               if (lover.eq.35.or.lover.eq.36) 
+     $              call diffkyle (istart,-1,iend,cd0,fover,Dkyle,1)
+               if (lover.eq.38.or.lover.eq.39) 
+     $              call diffkyle (istart,-1,iend,cd0,fover,Dkyle,2)
             endif
             novlim(klenv,8) = iend
          endif
@@ -623,8 +586,6 @@ c..   overshooting below convective envelope
             if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
                write (nout,200) istart,iend,t(iend),
      &              abs(m(istart)-m(iend))/msun,fover
-c               write (90,200) istart,iend,t(iend),
-c     &              abs(m(istart)-m(iend))/msun,fover
             endif
          endif
 c..   overshooting above pulse
@@ -638,8 +599,6 @@ c..   overshooting above pulse
                if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
                   write (nout,200) istart,iend,t(iend),abs(m(istart)-
      &                 m(iend))/msun,fover
-c                  write (90,200) istart,iend,t(iend),abs(m(istart)-
-c     &                 m(iend))/msun,fover
                endif
             endif
 c..   overshooting below pulse
@@ -652,8 +611,6 @@ c..   overshooting below pulse
                if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
                   write (nout,200) istart,iend,t(iend),abs(m(istart)-
      &                 m(iend))/msun,fover
-c                  write (90,200) istart,iend,t(iend),abs(m(istart)-
-c     &                 m(iend))/msun,fover
                endif
             endif
          endif
@@ -667,8 +624,6 @@ c..   overshooting above core
             if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
                write (nout,200) istart,iend,t(iend),
      &              abs(m(istart)-m(iend))/msun,fover
-c               write (90,200) istart,iend,t(iend),abs(m(istart)-m(iend))
-c     &              /msun,fover
             endif
          endif
       endif
@@ -679,7 +634,7 @@ c     &              /msun,fover
 ***   rotational mixing : angular momentum and
 ***   chemical species (Maeder & Zahn 1998)
 *---------------------------------------------
-
+      
       if (icall.eq.1.and.(rotation.or.difftacho)) then
 
          vsurf = vomega(nmod)*vr(nmod)*1.d-5
@@ -712,9 +667,6 @@ C Use omegaconv.eq.true
                call assympt (ndt,neqj,ncls,nclc,times,error)
             else
 
-C Modifs CC ondes (2/04/07)
-c               if (igw) call diffinitondesexcit
-C Fin modifs CC
 
 c..   Solid body rotation during the fully convective PMS phase
                if (nphase.lt.2.and.(idiffvr.eq.5.or.idiffvr.ge.8.or.
@@ -741,7 +693,7 @@ cAP : ajut 10 dec 2012
                   if (omegaconv.ne.omegaconv0) omegaconv = omegaconv0
 c                  if (ndt.eq.0) ndt = nmod1
                   if (ndt.eq.0) omegaconv = 's'
-c                  print *,'ndt=',ndt
+                  print *,'ndt=',ndt
                   if (mtini.ge.15.d0.and.xsp(1,ih1).le.5.d-6) omegaconv
      $                 = 'm'
                   call dif_omega (ndb,ndt,neqj,ncls,nclc,times,error)
@@ -750,33 +702,31 @@ c                  print *,'ndt=',ndt
 
 c..   Check that surface velocity has not change too much
 c..   (in case of AM transport by IGW)
-c            print *, 'aie aie aie'
-c            print *,omega(nmod),vomega(nmod),
-c     &           dabs((omega(nmod)-vomega(nmod))/vomega(nmod))
-c            if (igwrot.and.
-c     &           dabs((omega(nmod)-vomega(nmod))/vomega(nmod)).gt.1d-2)
-c     &           error = 50
             do i = ndb+1,ndt-1
                if (omega(i)*omega(i-1).lt.0.d0.and.omega(i)*omega(i+1)
      &              .lt.0.d0) error = 50
             enddo
             if (error.gt.0) return
          endif
-         
+          
 c.. Tachocline diffusion -> Modif. TD 30/09/2019 - no restriction on phase - specify the choice of the ZC         
-c         if (difftacho.and.nphase.eq.2.and.klenv.gt.1) then
-         if (difftacho) then   
+c     if (difftacho.and.nphase.eq.2.and.klenv.gt.1) then
+         if (difftacho) then
             if (nsconv.eq.1.and.novlim(1,3).ne.1) then
                print *, 'One ZC', 'Dtacho active'
 c     ndt = novlim(klenv,3)-1
                ndt = novlim(1,3)-1
-               call tachocline (ndt,1,coefDtacho)
-c               print *,'ndt-1=',ndt-1
+               if  (ltach.eq.41) call tachocline (ndt,1,coefDtacho,1)
+               if  (ltach.eq.42) call tachocline (ndt,1,coefDtacho,2)
+               if  (ltach.eq.43) call tachocline (ndt,1,coefDtacho,3)
+               print *,'ndt-1=',ndt-1
             else if (nsconv.gt.1.and.novlim(2,3).ne.1) then
-c               print *, 'Nbr ZC=',nsconv, 'Dtacho active'
+               print *, 'Nbr ZC=',nsconv, 'Dtacho active'
                ndt = novlim(2,3)-1
-               call tachocline (ndt,1,coefDtacho)
-c               print *,'ndt-1=',ndt-1
+               if  (ltach.eq.41) call tachocline (ndt,1,coefDtacho,1)
+               if  (ltach.eq.42) call tachocline (ndt,1,coefDtacho,2)
+               if  (ltach.eq.43) call tachocline (ndt,1,coefDtacho,3)
+               print *,'ndt-1=',ndt-1
             endif
             if (igwrot) call coefondes_surf(ndb,ndtenv)
          endif
@@ -808,39 +758,23 @@ c            call zonemucarbon (ndb,ibottom)
          endif
 
          if (idiffty.eq.31) call dturbudenissenkov (ndt,ndb,cd)
-c         if (idiffty.eq.31) then
-c             vturb = 1.d5
-c             xomega = vturb/r(nmod)
-c             call dturbucc95 (ndt,ndb,xomega,cd)
-c         endif
       endif
-c$$$      do jshell=1,nmod
-c$$$         print *, mue(jshell),mu(jshell),muizero(i)
-c$$$      enddo
-c$$$  stop
-c$$$      do j=1,nmod
-c$$$         write(44,*) mue(j)
-c$$$      enddo
-c$$$      stop
+
       if (microdiffus.and.lmicro.eq.4) then
          do jshell = 1,nmod
-c            tsh = t(jshell)
-c            rhosh = ro(jshell)
             tsh = 0.5*(t(jshell)+t(jshell-1))     ! remise à la couche i, 01/2019
             rhosh = 0.5*(ro(jshell)+ro(jshell-1)) ! remise à la couche i, 01/2019
             muesh = mue(jshell) ! ajout TD AP Fev.2019
-c     call diffthoul (jshell,xsp,anuc,znuc,tsh,rhosh)
-c            print *, 'jshell', jshell
+c$$$ Note : if convective core, nsconv and novlim(1,4) have to be used to control diffusion            
             call diffthoul (jshell,xsp,anuc,znuc,tsh,rhosh,muesh,abond,
-     $           nmod)
+     $           nmod,nsconv,novlim(1,4))              
          enddo
       endif
 
 C Ajout TD 09/2019 - Compute turbulence coefficient     
 ***   compute the diffusion coefficient of turbulence (Richer et al. 2000; Richard et al.2005)
-      if
-     $     ((lover.ge.60.and.lover.le.61.and.microdiffus).or.(lover.eq.
-     $     37.and.microdiffus).or.(lover.eq.38.and.microdiffus)) then
+      if ((lover.ge.60.and.lover.le.61).or.(lover.ge.70
+     $     .and.lover.le.73)) then
          print *, 'dturb active'
          if (nphase.eq.1.and.novlim(1,3).eq.1.and.nsconv.eq.1) then
             print *, 'convective core, no ad oc turbulence'
@@ -871,6 +805,8 @@ C Ajout TD 09/2019 - Compute turbulence coefficient
          enddo
       endif
       
+C     Fin ajout TD 09/2019      
+
 ***   compute total diffusion coefficient for chemical species
 
  20   forall (i = 1:nmod) dturb(i) = cd(i)+Dconv(i)+Dsc(i)+Dherw(i)
@@ -879,7 +815,7 @@ C Ajout TD 09/2019 - Compute turbulence coefficient
       if (nmixd.gt.0.and.icall.eq.1) return
 
       if (icall.eq.1) write (nout,500)
-      if (omegaconv.eq.'s'.and.hydrorot) goto 45
+c$$$      if (omegaconv.eq.'s'.and.hydrorot) goto 45    ! commenter 17/04/2020
 
 c      if (.not.diffzc.and.microdiffus.and.klenv.eq.0) return   ! commenter
       if (.not.diffzc.and.rotation.and.novlim(nsconv,3)-1.le.1.and.
@@ -909,7 +845,6 @@ c..   define matrix elements for diffusion
       dd(1) = dd(2)
       dd1(1) = dd1(2)
       
-c      stop
 c..   No diffusion for NEUTRONS and for instable isotopes if
 c..   tconv >> tdecay & dtn >> tconv (mixing efficient if dtn > dtconv)
       istop(1) = .true.
@@ -989,8 +924,6 @@ c..   loop starts at index 2 because neutrons do not diffuse !!
          else
             ielem = 2
          endif
-c         if (ielem.eq.47) print *,'abond(1,47) avt diffsolve'
-c     $        ,abond(1,47)
          do kl = ielem,nis
             if (istop(kl)) then
                i = 0
@@ -1013,18 +946,16 @@ C Modif CC Thermohaline (28/03/07)
      &          call diffsolve(abond,ratneh,anuc,znuc,dd1,f1,f2,f3,dmdr,
      &              kl,nshell,icall,error)
             else
-c               print *, 'abond helium av', kl,abond(1,5)
                call diffsolve(abond,ratneh,anuc,znuc,dd,f1,f2,f3,dmdr,
      &              kl,nshell,icall,error)
             endif
             if (error.gt.0) return
          enddo
-c      print *, 'abond helium', abond(1,5)
+
 c..   normalize and update abundances for nuclear calculation and
 c..   for binary output
          summx = 0.d0
-         nxmax = 1
-c         print *, 'le rassemblement du corbeau !'         
+         nxmax = 1         
          do j = 1,nmod
             xm_sum = 0.d0
             inorm = 2
@@ -1037,26 +968,15 @@ c..   loop starts at index 2 because neutrons did not diffuse !!
                do k = 2,nis
                   xsp(j,k) = abond(j,k)*anuc(k)/anucni
                   xm_sum = xm_sum+xsp(j,k)
-                  if (xsp(j,k).gt.xsp(j,inorm)) inorm = k ! changement d'elem ref si H pas le plus abondant
+                  if (xsp(j,k).gt.xsp(j,inorm)) inorm = k ! changement d elem ref si H pas le plus abondant
                enddo
-c$$$                if (icall.eq.1) write(777,*) j,abs(1.d0-xm_sum)  ! ecriture de summx
                xsp(j,inorm) = xsp(j,inorm)+(1.d0-xm_sum) ! element ref (H en general) absorbe la difference pour retomber à 1
                if (icall.eq.1) vxsp(j,inorm) = xsp(j,inorm)
-c$$$               abond(j,inorm) = xsp(j,inorm)
                abond(j,inorm) = xsp(j,inorm)*anucni/anuc(inorm)  !modif +
-c               if (inorm.ne.2) then
-c                  write (nout,*) 'Atomic diffusion : most abundant ' //
-c     &                 'species at shell ',j,'is not H but ',elem(inorm)
-c     &                 , ' diffusion stopped'
-c                  stop 'diffusion : microscopic'
-c     endif
                summx = abs(1.d0-xm_sum)
             else
                do k = 2,nis
-c                 if (j.le.10) print *,'xm_sum',xm_sum,
-c     $                 xsp(j,k)
                   xsp(j,k) = abond(j,k)
-c                  if (j.le.10) print *,'xm_sum',xm_sum,xsp(j,k),j,k
                   xm_sum = xm_sum+xsp(j,k)
                   if (xsp(j,k).gt.xsp(j,inorm)) inorm = k
                enddo
@@ -1064,14 +984,9 @@ c                  if (j.le.10) print *,'xm_sum',xm_sum,xsp(j,k),j,k
                   summx = abs(1.d0-xm_sum)
                   nxmax = j
                endif
-c               if (icall.eq.1) print *,'inorm,j,xsp(j,inorm)',inorm,j
-c     $              ,xsp(j,inorm),abond(j,inorm),abond(j,ihe4),xm_sum
-c     $              ,summx,xsp(j,1),xsp(j,2),xsp(j,3),xsp(j,4)
                xsp(j,inorm) = xsp(j,inorm)+(1.d0-xm_sum)
                if (icall.eq.1)  vxsp(j,inorm) = xsp(j,inorm)
                abond(j,inorm) = xsp(j,inorm)
-c               print *,'ds diffusion, abond et xsp He et P',xsp(j,inorm)
-c     $              ,xsp(j,ihe4),xsp(j,44)
                if (summx.gt.1.d-8) then
                   if (.not.ipass) then
                      write (nout,400) nxmax,summx,int(diffst)
@@ -1096,10 +1011,6 @@ c                           abond(i,l) = xsp(i,l)*muizero(i)/anuc(l)
             endif
          enddo
       enddo
-c      write(398,*)model
-c      do i = 1,nmod
-c         write(398,*)i,xsp(i,2),crz(i)
-c      enddo
       if (icall.eq.1.and.summx.gt.1.d-10.and..not.microdiffus) then
          write (nout,100) nxmax,kiter,summx
          write (90,100) nxmax,kiter,summx
@@ -1118,9 +1029,7 @@ c..   if mixing done before nucleosynthesis, update abundances
  45   if (inits) inits = .false.
 c      if (icall.eq.1.and.rotation.and.ndt.gt.1) then
 !!      print *,'icall =',icall,rotation,omega_S,idiffvr
-c      do i = 1,ndt
-c         print *,omega(i),vomega(i)
-c      enddo
+
       if (icall.eq.1.and.rotation) then
          call cons_l (oms,xmoment_tot,2,ndb,ndt)
          vom(1:nmod) = vomega(1:nmod)
@@ -1144,14 +1053,7 @@ c               ysp(i,j) = xsp(i,j)/anuc(j)
 c            enddo
 c         enddo
 c     endif
-c$$$      if(icall.eq.1) then
-c$$$         do i=ndt,0,-1
-c$$$            write(554,'(2(1x,i4),4(1x,1pe11.4))'),i
-c$$$     $           ,crz(i),r(i),t(i),ro(i)
-c$$$         enddo
-c$$$      endif
      
-c      print *, 'Chrono end diffusion', chronos, 'seconds'
 
  50   format (' Microscopic diffusion stopped after TO')
  60   format (' Problem ? semiconvective shell ',i4,' has changed !!')

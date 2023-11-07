@@ -72,7 +72,7 @@
       dimension y(nsp),xspr(nsh,100),vxspr(nsh,100),mtotlosr(100)
 
 ***   read binary models
-
+      
       rewind (uread)
 
       read (uread) model,nphase,totm,time,dtn,neff,bin_version,nmod,
@@ -91,15 +91,12 @@
      &        Dhold(k),Dconv(k),abmurj(k),xnuvv(k),xnum(k),k = 1,
      &        nmod),((vxspr(k,l),l = 1,nspr),k = 1,nmod)
       endif
-c      do k = 1,nmod
-c         print *,'k,urs,auxs',k,urs(k),auxs(k)
-c      enddo
       ierr = .false.
       if (neff.lt.0) then
          ierr = .true.
          neff = abs(neff)
       endif
-
+      
 c..   compatibility check
       if (nphase.gt.1.and.mdredgeup.eq.0.d0) mdredgeup = totm*msun
       if (bin_version.lt.2.95d0) then
@@ -122,7 +119,7 @@ c..   compatibility check
             stop
          endif
       enddo
-
+      
 ****************************************************
 * check chemical composition of first sequence model
 ****************************************************
@@ -249,7 +246,7 @@ c..   compatibility check
      &           1pe9.3,' --> new xsp(1,',i2,') = ',1pe9.3)
          enddo
       endif
-
+      
 c..   initializations and variables definition
 
       r(1) = 1.d-99
@@ -265,10 +262,10 @@ c..   initializations and variables definition
          enucl(k) = venucl(k)
       enddo
 
-c      write(899,*)'IN RINIMOD'
-c      do i = 1,nmod
-c         write(899,*) i,vomega(i)
-c      enddo
+      write(899,*)'IN RINIMOD'
+      do i = 1,nmod
+         write(899,*) i,vomega(i)
+      enddo
 
       if (flag.eq.0) then
          rewind (uwrite)
@@ -313,7 +310,7 @@ c..   stop microscopic diffusion if nphase > 4
          t(k) = exp(lnt(k))
          vt(k) = exp(vlnt(k))
       end forall
-
+      
 
 ***   initialize network parameters + thermodynamical variables
       if (flag.eq.0) then
@@ -378,7 +375,7 @@ c            if (nphase.le.2) stop ' rinimod'
          lne = 0.d0
          lo = 0.d0
          lsi = 0.d0
-
+          
 ***   initialize thermo (needed for screening factors, rotation)
          forall (l = 1:nsp, k = 1:nmod) ysp(k,l) = xsp(k,l)/anuc(l)
          forall (k = 1:nmod )
@@ -571,6 +568,6 @@ c.. second order accuracy in the spatial deriatives
          klenv = nsconv
          if (accphase.eq.0) call thermo (error)
       endif
-     
+      
       return
       end

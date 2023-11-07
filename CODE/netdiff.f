@@ -324,8 +324,6 @@ c..   surface boundary conditions
                   dxmax = dx(k)
                   ncmmax = id
                   idmax = k
-c                  write (*,'(i4,i3,1x,a5,5(1x,1pe10.3))') id,idmax,
-c     &               elem(k),xmod(id,k),xa(id,k),dx(k),cormmax,xx
                endif
             endif
          enddo

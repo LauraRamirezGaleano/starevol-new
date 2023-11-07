@@ -1,34 +1,4 @@
 
- PARAMETER CARD for STAREVOL : version AGB 3.10
-
- evol. sequence: maxmod = 100, imodpr = 002, mtini = 002.50, zkint = 0.013400
- eos           : addH2 = F, addHm = F, tmaxioH = 1.00D+05, tmaxioHe = 5.00D+05
-                 ionizHe = T, ionizC = F, ionizN = F, ionizO = F, ionizNe = F
- gravitation   : lgrav = 1, lnucl = t
- convection    : alphac = 1.7020, dtnmix = f, mixopt = t, hpmlt = 3, nczm =  0
-                 ihro = F, iturb = 0, etaturb = 1.000D-02, alphatu = 1.0000
-                 novopt = 1, aup = 0.10, adwn = 0.00, idup = 0
- atmosphere    : tau0 = 0.00500, ntprof = 0, taulim = 1.00D+01
- mass loss     : mlp = 01, etapar = 00.50, dmlinc = 1.0D+00
- nuclear       : nucreg = 1, nuclopt = f, tolnuc = 1.0D+00, ftnuc = 1.00D+00, znetmax =  50
- diffusion     : idiffcc = F, idiffnuc = 2, idiffty = 13, diffzc = f, diffst = 3.000D+01
-                 zgradmu = F, grad_crit = 3.0000D-12, del_zc = 1.00D-02, semiconve = F
- rotation      : omegaconv = F, Dh_prescr = Zahn1992, dm_ext =  2.90
-                 Ch =  1.00, om_sat = 10.0, D_zc = 1.00D+12, disctime = 1.00D+00, eq_thermique = T
-                 diffvr = 5.00D+01, idiffvr = 0, idiffex = 3, diffcst = 1.000D+00, breaktime = 5.40D+07
- time-dep conv.: nmixd = 0, itmind =  3, itmaxd = 30, rprecd = 1.00D-05, nretry =  5
- extra mixing  : Ov Thl Tac Mic  00, 00, 00, 00
- accretion     : iaccr = 0, accphase = 6, itacc = 0, massrate = 3.50D-08, massend =  2.00, menv = 8.0000D-01
-                 ric = 1.00D+00, prrc = 0.500, xiaccr = 0.500, fdtacc = 1.20, alphaccr = 0.00D+00
- hydrodynamics : hydro = 0, ivisc = 0, q0 =  0.000, mcut = 0.0000D+00
- shell masses  : maxsh =  100, nresconv =  20
-                 dvarma = 1.20D-01, dvarmi = 1.00D-02, denucma = 5.00D-01, dmrma = 5.00D-03, dmrmi = 1.00D-05
- time-step     : dtin = 0.000D+00, dtmin = 1.000D-10, dtmax = 3.120d+06, facdt = 1.25, fkhdt = 2.00D+00
-                 ishtest = t, fts = 0.050, ftsh =  0.05, ftshe = 0.05, ftsc = 0.05, ftacc = 0.167, ftst = 0.300
- iterations    : itmin =  3, itermax = 100, itermix =  50, icrash = -3, numeric = 9, icorr = t
- tolerances    : u = 1.00D-03, r = 1.00D-03, lnf = 1.00D-03, lnT = 1.00D-03, l = 1.00D-03, ang = 1.00D-03
- convergence   : phi = 1.00, alpha = 0.50, iacc = t, alphmin = 0.30, alphmax = 1.00, sigma = 1.000, vlconv = F
- 
  nuclides and nuclear network: T = stable, F = unstable, U : URCA pair
  
    1 NEUT    1.00000   0.   1.00000D-50  T   1.00000D-50

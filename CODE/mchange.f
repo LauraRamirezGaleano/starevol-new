@@ -16,6 +16,8 @@
 *     mlp = 19,20 : Crowther
 *     mlp = 21,22 : Van loon et al (2005)
 *     mlp = 23,24 : Cranmer & Saar (2011)
+*     mlp = 25,26 : Graefener (2021)
+*     mlp = 27,28 : Sanders & Vink (2022) -> VMS stars
 ************************************************************************
 
       implicit none
@@ -45,9 +47,8 @@
       integer itmax,ishockb,ishockt
       integer nconvsh,ienvsh
       integer icrazy
-c      integer nenv,nend
 
-      logical arndt,blocker,wood,limit,zscaling
+      logical arndt,blocker,wood,limit!,zscaling
       character prescrip*120,zdep*50
 
       double precision xmm,momlim,dmsmec,rapom,omegacrit
@@ -73,6 +74,11 @@ c      integer nenv,nend
       double precision geffrot,Rp2
       double precision kap,kapm
       double precision disctime
+      double precision alfa,logdms1,logdms2,dms1,dms2,dT
+      double precision tau1,tau2,taus,gammaeff,vinf,gammarot
+     $     ,vesceff,dmsthick
+      double precision Dclump,etawind
+      double precision acoeff, cbd, logmdotoff, gammaeb,logdmsvms
 
       common /disclocking/ disctime
       common /hydrodyn/ Lmax,tmax,mackmax,enucmax,itmax,ishockb,ishockt
@@ -82,19 +88,12 @@ c      integer nenv,nend
       common /boreas_Mloss/ Bcrit,fstar,Bequi
       common /geffective/ geffrot(nsh),Rp2(nsh)
       common /opa/ kap(nsh),kapm(nsh)
-c      common /eddington/ ledd
 
       if (abs(mlp0).gt.49) then
          limit = .true.
       else
          limit = .false.
       endif
-      if (mlp0.gt.0) then
-         zscaling = .true.
-      else
-         zscaling = .false.
-      endif
-      zscaling = .false.        ! Modif TD et CC Juillet 2018 (com supr.)
 
 *____________________
 ***   Initializations
@@ -139,10 +138,8 @@ c         goto 20
 
 
 ***   if no mass loss, define interpolation coefficients
-c      if (dmaccr.eq.0.d0.and.(nphase.lt.2.or.mlp.eq.0)) then
       if (dmaccr.eq.0.d0.and.((nphase.lt.2.and.mlp.ne.23)
      $    .or.mlp.eq.0)) then
-!!         if (mlp.eq.23.and.time/sec.le.disctime) then
             if (numeric.eq.2.or.numeric.eq.3) then
 c..   first order accuracy in the spatial derivatives
                forall (i = 1:nmod)
@@ -178,16 +175,8 @@ c..   second order accuracy in the spatial deriatives
             call boreas (totm,solr,soll,prot,gmr(nmod),0.d0,dms,teff,
      &           icrazy)
             if (icrazy.gt.0) mlp = 01
-c            call boreas (totm,solr,soll,prot,0.d0,dms,icrazy)
-c     if (icrazy.gt.0) then
-c     dms = min(etapar*3.98d-13*soll*solr/totm,1.d-4)
-c     print *,'Out of authorized bounds.',
-c     &              'Switch from Cranmer & Saar to Reimers: ',dms,
-c     &              'solar masses /year'
-c     else
             print *,'Cranmer mass loss',dms,'solar masses / year '
             print *,'with gmr =',gmr(nmod)
-c     endif
          endif
 
          if (tmax.gt.5.d6.or.mlp.eq.23.or.mlp.eq.24) then
@@ -200,7 +189,7 @@ c     endif
                if (lnt(k).gt.log(5.d6)) goto 10
             enddo
  10         imenv = max(k+1,2)
-
+            
             mlsh = imenv
             mlp1 = mlp
             rco = (xsp(neff,ic12)+xsp(neff,ic13)+xsp(neff,ic14))/
@@ -213,7 +202,7 @@ c     endif
                if (mlp.eq.4) mlp = 2
             endif
 ***   change in mass-loss rate beyond the main sequence for B type stars
-
+            
             if (mtini.ge.7.d0.and.mtini.le.12.d0.and.nphase.gt.2) then
                if (mlp.eq.15) mlp = 1
                if (mlp.eq.16) mlp = 2
@@ -221,7 +210,7 @@ c     endif
 
 ***	switch to de Jager et al 1988 when Vink et al. 2000,2001 is not valid
 
-c            if (tteff.le.3.9d0.and.(mlp.eq.15.or.mlp.eq.16)) then
+c     if (tteff.le.3.9d0.and.(mlp.eq.15.or.mlp.eq.16)) then
             if (tteff.le.4.0969d0.and.(mlp.eq.15.or.mlp.eq.16)) then
                if (tteff.gt.3.7d0) then
                   write (nout,200)
@@ -245,9 +234,6 @@ c            if (tteff.le.3.9d0.and.(mlp.eq.15.or.mlp.eq.16)) then
                if (mlp.eq.8.and..not.blocker) mlp = 2
                if (mlp.eq.1.or.(mlp.eq.3.and..not.superagb)) mlp = 5
                if (mlp.eq.2.or.(mlp.eq.4.and..not.superagb)) mlp = 6
-c..   thibaut
-c            if (mlp.eq.1.or.mlp.eq.3) mlp = 7
-c            if (mlp.eq.2.or.mlp.eq.4) mlp = 8
                if ((mlp.eq.5.or.mlp.eq.55.or.mlp.eq.7).and.arndt) then
                   mlp = 9
                endif
@@ -262,13 +248,13 @@ c            if (mlp.eq.2.or.mlp.eq.4) mlp = 8
             wood = mlp.eq.5.or.mlp.eq.6.or.mlp.eq.55.or.mlp.eq.56
 
 
+               
 *_________________________________
 ***   mass-loss rate prescriptions
 *---------------------------------
 
 ***   Reimers (1975) prescription (MS and RGB phases)
 
-c        if (mlp.eq.1.or.mlp.eq.2.and.limit) dms = min(etapar*3.98d-13*
             if (mlp.eq.1.or.mlp.eq.2) then
                dms = min(etapar*3.98d-13*soll*solr/totm,1.d-4)
                print *,'Reimers mass loss',dms,'solar masses / year'
@@ -392,51 +378,99 @@ c..   Lamers & Leitherer (1993), ApJ 412, p771, eq. 2
                   else
                      qsig = 1.d0
                   endif
-                  sigmae = 0.401d0*(1.d0+qsig*HeH)/(1.d0+3.d0*HeH)
+c                  sigmae = 0.401d0*(1.d0+qsig*HeH)/(1.d0+3.d0*HeH)
+                  sigmae = 0.325d0
                   gammae = 7.66d-5*sigmae*soll/totm
-                  brackro = -14.94d0+3.2d0*gammae+0.85d0*
-     &                 log10(zeff/zsol)
-c     teffjump1 = 1.d3*(49.1d0+1.68d0*brackro)
+                  brackro = -14.94d0+3.1857d0*gammae+0.85d0*
+     &                 log10(zeff/0.019d0)
+c     &                 log10(zeff/zsol)
                   teffjump1 = 1.d3*(61.2d0+2.59d0*brackro)
-                  teffjump2 = 1.d3*(43.d0+1.9d0*brackro)
+                  teffjump2 = 1.d3*(1.d2+6.d0*brackro)
                   print *,'teffjump1',teffjump1,'teffjump2',teffjump2
                   if (teffjump1.le.teffjump2) then
                      write (nout,'("unrealistic stellar parameters")')
                      stop 'mchange'
                   endif
-                  if (teff.le.teffjump1) then
-                     if (teff.lt.teffjump2) then
-                        ratio = 0.7d0
-                        logdms = -5.99d0+2.210d0*log10(soll*1.d-5)
-     &                       -1.339d0*log10(totm/30.d0)
-     &                       -1.601d0*log10(ratio*0.5d0)
-     &                       +1.07d0*log10(teff/2.d4)
-     &                       +0.85d0*log10(zeff/zsol)
-                     else
-                        ratio = 1.3d0
-                        logdms = -6.688d0+2.210d0*log10(soll*1.d-5)
-     &                       -1.339d0*log10(totm/30.d0)
-     &                       -1.601d0*log10(ratio*0.5d0)
-     &                       +1.07d0*log10(teff/2.d4)
-     &                       +0.85d0*log10(zeff/zsol)
-                     endif
-                  else
+c..   Smoothing the transitions following the eval_Vink_wind routine from MESA
+                  if (teff.ge.27500.d0) then
                      ratio = 2.6d0
-                     logdms = -6.697d0+2.194d0*log10(soll*1.d-5)
+                     logdms1 = -6.697d0+2.194d0*log10(soll*1.d-5)
      &                    -1.313d0*log10(totm/30.d0)
      &                    -1.226d0*log10(ratio*0.5d0)
      &                    +9.33d-1*log10(teff/4.d4)
      &                    -10.92d0*(log10(teff/4.d4))**2
-     &                    +0.85d0*log10(zeff/zsol)
+     &                    +0.85d0*log10(zeff/0.019d0)
+                        dms = 10.d0**logdms1
+                  else if (teff.le.22500.d0.and.teff.ge.12500.d0) then
+                     if (teff.ge.teffjump2) then
+                        ratio = 1.3d0
+                        logdms2 = -6.688d0+2.210d0*log10(soll*1.d-5)
+     &                       -1.339d0*log10(totm/30.d0)
+     &                       -1.601d0*log10(ratio*0.5d0)
+     &                       +1.07d0*log10(teff/2.d4)
+     &                       +0.85d0*log10(zeff/0.019d0)
+                        dms = 10.d0**logdms2
+                     else
+                        ratio = 0.7d0
+                        logdms2 = -5.99d0+2.210d0*log10(soll*1.d-5)
+     &                       -1.339d0*log10(totm/30.d0)
+     &                       -1.601d0*log10(ratio*0.5d0)
+     &                       +1.07d0*log10(teff/2.d4)
+     &                       +0.85d0*log10(zeff/0.019d0)
+                        dms = 10.d0**logdms2
+                     endif
+                  else if (teff.gt.22500.d0.and.teff.lt.27500.d0) then
+                     alfa = (teff-22500.d0)/(5.d3)
+                     logdms1 = -6.697d0+2.194d0*log10(soll*1.d-5)
+     &                    -1.313d0*log10(totm/30.d0)
+     &                    -1.226d0*log10(2.6d0*0.5d0)
+     &                    +9.33d-1*log10(teff/4.d4)
+     &                    -10.92d0*(log10(teff/4.d4))**2
+     &                    +0.85d0*log10(zeff/0.019d0)
+                     logdms2 = -6.688d0+2.210d0*log10(soll*1.d-5)
+     &                    -1.339d0*log10(totm/30.d0)
+     &                    -1.601d0*log10(1.3d0*0.5d0)
+     &                    +1.07d0*log10(teff/2.d4)
+     &                    +0.85d0*log10(zeff/0.019d0)
+                     dms1 = 10.d0**logdms1
+                     dms2 = 10.d0**logdms2
+                     dms =  (1-alfa)*dms2 + alfa*dms1
                   endif
-                  dms = 10.d0**logdms
-                  print *,'dms',dms
+c$$$                   if (teff.le.teffjump1) then
+c$$$                     if (teff.lt.teffjump2) then
+c$$$                        ratio = 0.7d0
+c$$$                        logdms = -5.99d0+2.210d0*log10(soll*1.d-5)
+c$$$     &                       -1.339d0*log10(totm/30.d0)
+c$$$     &                       -1.601d0*log10(ratio*0.5d0)
+c$$$     &                       +1.07d0*log10(teff/2.d4)
+c$$$     &                       +0.85d0*log10(zeff/0.019d0)
+c$$$                     else
+c$$$                        ratio = 1.3d0
+c$$$                        logdms = -6.688d0+2.210d0*log10(soll*1.d-5)
+c$$$     &                       -1.339d0*log10(totm/30.d0)
+c$$$     &                       -1.601d0*log10(ratio*0.5d0)
+c$$$     &                       +1.07d0*log10(teff/2.d4)
+c$$$     &                       +0.85d0*log10(zeff/0.019d0)
+c$$$                     endif
+c$$$                  else
+c$$$                     ratio = 2.6d0
+c$$$                     logdms = -6.697d0+2.194d0*log10(soll*1.d-5)
+c$$$     &                    -1.313d0*log10(totm/30.d0)
+c$$$     &                    -1.226d0*log10(ratio*0.5d0)
+c$$$     &                    +9.33d-1*log10(teff/4.d4)
+c$$$     &                    -10.92d0*(log10(teff/4.d4))**2
+c$$$     &                    +0.85d0*log10(zeff/zsol)
+c$$$                  endif
+c$$$                  
+c$$$                  dms = 10.d0**logdms
 c Mass loss rate from Vink et al 2000 modified to account for the
 c effects of rotation (factor 0.85)
 c                  dms = 0.8d0*dms
 cc Mass loss rate modified to account for the effect of clumping!
 cc (reduction by a factor of 3 ; see Smith 2014 ARA&A)
-**                  dms = dms*pw13
+c     dms = dms*pw13
+                  print*,'clumpfac in mchange',clumpfac
+                  dms = dms*clumpfac
                endif
             endif
 
@@ -460,6 +494,126 @@ cc (reduction by a factor of 3 ; see Smith 2014 ARA&A)
                dmlinc = 1.d0
             endif
 
+***   Gräfener (2021, A&A 647, A13) : for Very Massive Stars (VMS)
+            if (mlp.eq.25.or.mlp.eq.26) then
+             if (mtini.le.100.d0) then
+                 if (mlp.eq.25) mlp = 15
+                 if (mlp.eq.26) mlp = 16
+              else
+               tau1 = pw23
+               tau2 = 1.d0
+               gammae = 10.d0**(-4.813)*(1.d0+xsp(nmod,ih1))*lum(nmod)
+     $              /(lsun*totm)
+               if (hydrorot) then
+                  gammarot = vomega(neff)**2*Rp2(neff)**3/(g*m(neff))
+                  gammaeff = gammae + 0.5d0*gammarot
+               else
+                  gammaeff = gammae
+               endif
+               Dclump = 10.d0
+               vesceff = dsqrt(2.d0*g*m(nmod)*(1.d0-gammae)/reff)
+               vinf = 2.51d0 * vesceff
+               dmsthick = 5.22d0*log10(gammaeff)-0.5d0*log10(Dclump)
+     $              -2.6d0
+               dmsthick = 10.d0**dmsthick
+               etawind = dmsthick*vinf/(lum(nmod)/c)
+               taus = dmsthick*msun*seci*vinf*c/lum(nmod)*(1.d0+1.d0
+     $              /(2.51d0**2))
+***   switch to WNh type mass loss for VMS on main sequence according to
+***   their sonic point optical depth - Graefener2021 and Bestenlehner+2014
+c               ratio = 2.6d0
+               ratio = 2.51d0
+               logdms1 = -6.697d0+2.194d0*log10(soll*1.d-5)
+     &              -1.313d0*log10(totm/30.d0)
+     &              -1.226d0*log10(ratio*0.5d0)
+     &              +9.33d-1*log10(teff/4.d4)
+     &              -10.92d0*(log10(teff/4.d4))**2
+     &              +0.85d0*log10(zeff/0.019d0)
+c               dms1 = 0.8d0*10.d0**logdms1
+               dms1 = pw13*10.d0**logdms1
+               dms2 = dmsthick
+               if (taus.lt.tau1) then
+                  write(90,*)'Modified Vink+01 mass loss for OB VMS ' ,
+     &                 'according to Graefener21'
+                  dms = dms1
+               else if (taus.gt.tau2) then
+                write(90,*) 'WNh type mass loss for optically thick',
+     $                 ' winds according to Graefener21'
+                   dms = dms2
+                else
+                 write(90,*) 'Intermediate regime: interpolation btw',
+     $                 ' thin and thick winds according to Graefener21'
+                  
+                  alfa = (taus-pw23)*3.d0
+                  dms =  (1-alfa)*dms1 + alfa*dms2 
+               endif
+            endif
+         endif
+***   Mass loss recipe combining Vink for OB stars and Sander et Vink 2020 for VMS in a similar way as done by Grafener
+***   Mass loss for VMS from Sander & Vink 2020, MNRAS 499, vol 1 p 873-892, Eqs (28) to (32)
+            if (mlp.eq.27.or.mlp.eq.28) then
+               if (mtini.le.100.d0) then
+                  if (mlp.eq.27) mlp = 15
+                  if (mlp.eq.28) mlp = 16
+               else
+                  tau1 = pw23
+                  tau2 = 1.d0
+                  gammae = 10.d0**(-4.813)*(1.d0+xsp(nmod,ih1))
+     $                 *lum(nmod)/(lsun*totm)
+                  if (hydrorot) then
+                     gammarot = vomega(neff)**2*Rp2(neff)**3/(g*m(neff))
+                     gammaeff = gammae + 0.5d0*gammarot
+                  else
+                     gammaeff = gammae
+                  endif
+                  Dclump = 10.d0
+                  gammaeb = -0.324d0*log10(zeff/zsol)+0.244
+                  logmdotoff = 0.23d0**log10(zeff/zsol)-2.61
+                  cbd = -0.44d0*log10(zeff/zsol)+9.15
+                  acoeff = 2.932d0
+                  logdmsvms = acoeff*log10(-log10(1-gammae))-log10(2.d0)
+     $                 *(gammaeb/gammae)**cbd+logmdotoff-0.5d0
+     $                 *log10(Dclump)
+                  vesceff = dsqrt(2.d0*g*m(nmod)*(1.d0-gammae)/reff)
+                  vinf = 2.51d0 * vesceff
+                  taus = 10.d0**(logdmsvms)*msun*seci*vinf*c/lum(nmod)
+     $                 *(1.d0+1.d0/(2.51d0**2))
+                  print *,'taus',taus, logdmsvms,vinf*c/lum(nmod)
+     $                 ,gammae, gammaeb,logmdotoff
+***   switch to WNh type mass loss for VMS on main sequence according to
+***   their sonic point optical depth - Graefener2021 and Bestenlehner+2014
+c     ratio = 2.6d0
+                  ratio = 2.51d0
+                  logdms1 = -6.697d0+2.194d0*log10(soll*1.d-5)
+     &                 -1.313d0*log10(totm/30.d0)
+     &                 -1.226d0*log10(ratio*0.5d0)
+     &                 +9.33d-1*log10(teff/4.d4)
+     &                 -10.92d0*(log10(teff/4.d4))**2
+     &                 +0.85d0*log10(zeff/0.019d0)
+c     dms1 = 0.8d0*10.d0**logdms1
+                  dms1 = pw13*10.d0**logdms1
+                  dms2 = 10**logdmsvms
+                  if (taus.lt.tau1) then
+                     write(90,*)'Modified Vink+01 mass loss for OB ',
+     &                    'VMS according to Graefener21'
+                     dms = dms1
+                  else if (taus.gt.tau2) then
+                     write(90,*) 'He VMS mass loss according to Sander & 
+     &Vink 2020'
+                     dms = dms2
+                  else
+                     write(90,*) 'Intermediate regime: interpolation',
+     $' btw thin and He rich WR winds as in Graefener 2021'
+                     
+                     alfa = (taus-pw23)*3.d0
+                     dms =  (1-alfa)*dms1 + alfa*dms2 
+                  endif
+            endif
+            
+         endif
+         print *,'dms Sander and Vink 2020',dms,dms1,dms2,taus,tau1,tau2
+        
+            
 ***   Correction for rotating stars : Maeder & Meynet, 2001, A&A 373, 555
 ***   New version : Georgy et al. 2011 A&A 527, A52, Eq. (4)
             if (irotbin.eq.1) then
@@ -480,7 +634,6 @@ c                  ledd = pim4*c*g*m(neff)/kap(neff)
                else
                   mgammaedd = mgamma
                endif
-               print *,'mgamma',mgamma,'mgammaedd',mgammaedd
                mrom = m(nmod)*pw34/(pi*r(nmod)**3)
                if (tteff.ge.4.35d0) malpha = 0.52d0
                if (tteff.ge.4.30d0.and.tteff.lt.4.35d0)
@@ -490,11 +643,6 @@ c                  ledd = pim4*c*g*m(neff)/kap(neff)
                if (tteff.ge.3.9d0.and.tteff.lt.4.d0)
      &              malpha = 0.15d0
                mexp = 1.d0/malpha-1.d0
-c               if (vsurf.eq.0.d0) then
-c                  vsurf = r(nmod)*vomega(nmod)
-c               else
-c                  vsurf = vsurf*1.d5
-c               endif
                vsurf = r(nmod)*vomega(nmod)
                mfac1 = vomega(nmod)**2*2.384989d6/mrom
 c               omegacrit = dsqrt(g*m(nmod)/(1.5d0*r(nmod))**3)
@@ -518,17 +666,14 @@ c..   mass loss by a factor of 3 whenever mgamma > 5 and M > 15 Msun
             endif
          endif
 
-         print *,'dms 2',dms
+         
 *_____________________________________________________
 ***   change shells mass distribution due to mass-loss
 *-----------------------------------------------------
 
 ***   Metallicity dependence
          zdep = ' '
-c         if (zscaling.and.((mlp.ge.11.and.mlp.ne.17.and.mlp.ne.18)
-c     &        .or.mlp.le.4.or.mlp.eq.7.or.mlp.eq.8)) then
          if (zscaling) then
-C           dms = dms*dsqrt(zeff*5.d1)
 C     Mokiem et al 2007
 C            dms = dms*dsqrt(zeff/zsol)
             dms = dms*(zeff/zsol)**0.8d0
@@ -553,7 +698,6 @@ C            dms = dms*dsqrt(zeff/zsol)
             prescrip = trim(prescrip) // zdep
             write (90,700) prescrip
          endif
-         print *,'dms 3',dms,zscaling,(zeff/zsol)**0.8d0
 
  3       dms = dms*dmlinc
          dma = dms*dtn*seci
@@ -1041,9 +1185,6 @@ c..   j = cst in the convective envelope
             endif
          enddo
 
-c         print *,'omegasurf',vomega(nmod),'omegacrit',dsqrt(g*m(nmod)
-c     $        /(1.5d0*rtot)**3), 'rapport',vomega(nmod)/dsqrt(g*m(nmod)
-c     $        /(1.5d0*rtot)**3)
 
 c..   Total AM after mass loss
          do j = 2,nmod1

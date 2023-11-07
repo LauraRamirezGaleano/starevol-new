@@ -117,10 +117,10 @@ c..   Diffusion "Chapman & Cowling"
          if (lmicro.eq.2) then
             call diffmic (ij,ndt,ndb,vdiff,d12,anuc,znuc)
 c..   Diffusion "Paquette et al. (1986)"
-         else if (lmicro.eq.3) then
+         else if (lmicro.eq.3.or.lmicro.eq.5) then
             call diffpaq (ij,ndt,ndb,vdiff,d12,abond,ratneh)
 c..   Diffusion "Thoul et al. (1994)"
-         else if (lmicro.eq.4) then
+         else if (lmicro.eq.4.or.lmicro.eq.6) then
             do i = 2,nmod1            
                if (crz(i).gt.0) then
                   cd(i) = dmix(i)
@@ -135,7 +135,7 @@ c..   Diffusion "Thoul et al. (1994)"
          endif
          Dmicro(1:nsh) = d12(1:nsh)
          vmicro(1:nsh) = vdiff(1:nsh)
-         if (lmicro.eq.2.or.lmicro.eq.3) then
+         if (lmicro.eq.2.or.lmicro.eq.3.or.lmicro.eq.5) then
             do i = 2,nmod1
                if (crz(i).gt.0) then
                   cd(i) = dmix(i)+d12(i)*dmdr(i)*dmdr(i)

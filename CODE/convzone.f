@@ -90,9 +90,6 @@ C...fin modif
      &                   and.xsp(i,ihe3).ge.1.d-08 !thermohaline
      
      
-c	 write(150,2000) i,gradledoux(i),abmu(i)
-C	if (isconvTnuc(i)) write(*,*), i,gradledoux(i),abmu(i),xsp(i,ihe3)
-
       enddo
       isconv(nmod) = .false.
       isconvS(nmod) = .false.
@@ -140,7 +137,6 @@ C	if (isconvTnuc(i)) write(*,*), i,gradledoux(i),abmu(i),xsp(i,ihe3)
             ttop = crz(k).eq.-2.and.crz(k+1).ne.-2
             if (tbot) novlim(kl,jl) = k+1
             if (ttop.and.k-novlim(kl,jl).gt.nczm) then
-c            if (ttop) then
                novlim(kl,jl+1) = k
                kl = kl+1
                if (kl.gt.nmaxconv) then
@@ -197,20 +193,16 @@ C... modif NL
       do i= 2,nmod 
          if (.not.isconvTnuc(i-1).and.isconvTnuc(i)) then 
 	     novlim(1,11)= i
-C	     write(*,*) i
          goto 22 
 	 endif 
       enddo
  22   do i= 1,nmod-1 
 	 if (.not.isconvTnuc(i+1).and.isconvTnuc(i)) then 
 	     novlim(1,12)= i
-C	     write(*,*) i
          goto 25 
 	 endif
       enddo       
  
-c 25   write(*,*) novlim(1,11),novlim(1,12)
-C      stop 
 
 *___________________________________________________________________
 ***   suppress convective zones whose width is less than nczm shells

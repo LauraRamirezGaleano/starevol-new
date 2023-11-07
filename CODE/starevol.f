@@ -1,4 +1,4 @@
-                        PROGRAM   starevol
+                        SUBROUTINE   starevol
 *                                                                      *
 *                       Version 3.30   (Mars 2012)                     *
 *                                                                      *
@@ -120,7 +120,6 @@ c#endif
       integer n1,n2,n3,i,j,k,ij
       integer mlth,nlth,itlth
       integer filesize
-c      integer Ttabeff
 
       double precision rklth,tklth,opaclth
       double precision rklth_as05,tklth_as05,opaclth_as05
@@ -132,7 +131,6 @@ c      integer Ttabeff
      &     ,lgdmic
       double precision rtau,rT,rhotab,Fconvtab
       double precision Ttabeff,gtabeff,Ztabeff
-c      double precision gtabeff,Ztabeff
       double precision FeH
       double precision T_Zeff(6),rho_Zeff(6),Fconv_Zeff(6)
       double precision tableTZ(128,59,12),tablerhoZ(128,59,12),
@@ -164,10 +162,10 @@ c      double precision gtabeff,Ztabeff
       common /metal/ FeH
 
 
-      common /lthopac/ opaclth(19,85,155),tklth(85),rklth(19),
+       common /lthopac/ opaclth(19,85,155),tklth(85),rklth(19),
      &     mlth,nlth,itlth
-c      common /lthopac/ opaclth(19,81,155),tklth(81),rklth(19),
-c     &     mlth,nlth,itlth                                      ! TD 01/2020
+c     common /lthopac/ opaclth(19,81,155),tklth(81),rklth(19),
+c    &     mlth,nlth,itlth                                      ! TD pour Opacité Fergu 01/2020
       common /lthopac_as05/ rklth_as05(19),tklth_as05(85),
      &     opaclth_as05(19,85,155)
       common /lthopac_as09/ rklth_as09(19),tklth_as09(85),
@@ -176,94 +174,29 @@ c     &     mlth,nlth,itlth                                      ! TD 01/2020
      &     opaclth_gn93(19,85,120)
       common /lthopac_grid/ rklth_grid(19),tklth_grid(63),
      &     opaclth_grid(19,63,104)
-      common /lthopac_ay18/ rklth_ay18(19),tklth_ay18(85),  ! TD 12/2019
-     &     opaclth_ay18(19,85,155)
-c      common /lthopac_ay18/ rklth_ay18(19),tklth_ay18(81),  ! TD 01/2020
-c     &     opaclth_ay18(19,81,155)
+c      common /lthopac_ay18/ rklth_ay18(19),tklth_ay18(85),  ! TD 12/2019
+c     &     opaclth_ay18(19,85,155)
+      common /lthopac_ay18/ rklth_ay18(19),tklth_ay18(81),  !  TD pour Opacité Fergu 01/2020
+     &     opaclth_ay18(19,81,155)
       common /disclocking/ disctime
-!      common /atmospheres/ rtau(127,76,10),rT(127,76,10),
-!     &     rhotab(127,76,10),Fconvtab(127,76,10),Ttabeff(76),
-!     &     gtabeff(10),Ztabeff(1),nb_geff,nb_Teff,nb_Zeff,filesize
-
-c      common /atmospheres/ rtau(127,10,60,6),rT(127,10,60,6),
-c     &     rhotab(127,10,60,6),Fconvtab(127,10,60,6),Ttabeff(60),
-c     &     gtabeff(10),Ztabeff(6),taumin,taumax,filesize
       common /atmospheres/ rtau(127,12,59,6),rT(127,12,59,6),
      &     rhotab(127,12,59,6),Fconvtab(127,12,59,6),Ttabeff(59),
      &     gtabeff(12),Ztabeff(6),filesize,taumin,taumax
-c      common /atmospheres/ rtau(127,60,10,6),rT(127,60,10,6),
-c     &     rhotab(127,60,10,6),Fconvtab(127,60,10,6),Ttabeff(60),
-c     &     gtabeff(10),Ztabeff(6),filesize
 
 
 
 
-***   define STAREVOL version number
-      code_version = 3.30d0
+***   Define STAREVOL version number
+      code_version = 4.00d0
       file_output='00_run.out'
 
-      call getenv('SOLCOMP',refsolar)
-      print *, 'refsolar starevol.f', refsolar
-** Modif Calib sun - read xspsol from zini.out of previous model - LA 0919         
-c$$$      call getenv('CALSOL',calib)
-c$$$      if (calib.eq.'Y') then
-c$$$         print *,'SOLAR CALIBRATION : XSPSOL FROM ZINI.OUT'
-c$$$         open (unit = 31,file = 'zini.out',status = 'old')
-c$$$         read (31,9002) xspsol(1)
-c$$$         do i=2,nis
-c$$$            read (31,9003) xspsol(i)
-c$$$         enddo
-c$$$         xspsol(54) = 5.652d-2*xspsol(53) ! Ar
-c$$$         xspsol(55) = 4.197d-2* xspsol(53) ! Ca
-c$$$         xspsol(56) = 0.204d-2*xspsol(53) ! Ti
-c$$$         xspsol(57) = 1.087d-2*xspsol(53) ! Cr 
-c$$$         xspsol(58) = 0.708d-2*xspsol(53) ! Mn
-c$$$         xspsol(59) = 8.4143d-1*xspsol(53) ! Fe 
-c$$$         xspsol(60) = 4.664d-2*xspsol(53) ! Ni
-c$$$         close (31)         
-c$$$ 9002    format (/////////,28x,1pe11.5)
-c$$$ 9003    format (28x,1pe11.5)
-c$$$      else
-***   define reference solar composition
-c$$$cAP      call getenv('STAR_COMPO',refsolar)        
-c$$$         refsolar = trim(refsolar)
-c$$$         print *,'refsolar',refsolar
-c$$$cAP      if (refsolar.eq.'AC06') then
-c$$$         if (refsolar.eq.'AGS05') then
-c$$$            do i = 1,nis+6
-c$$$               xspsol(i) = xspref(2,i)
-c$$$            enddo
-c$$$** Modif Asplund 2009 - AP feb 2012 -->
-c$$$         elseif (refsolar.eq.'AGSS09') then
-c$$$            do i = 1,nis+6
-c$$$               xspsol(i) = xspref(3,i)
-c$$$            enddo
-c$$$**  Modif Asplund 2009 - AP feb 2012 <--
-c$$$         elseif (refsolar.eq.'GRID') then
-c$$$            do i = 1,nis+6
-c$$$               xspsol(i) = xspref(4,i)
-c$$$            enddo
-c$$$**  Modif Young 2018 - TD Dec 2019 <--
-c$$$         elseif (refsolar.eq.'AY18') then
-c$$$            do i = 1,nis+6
-c$$$               xspsol(i) = xspref(5,i)
-c$$$            enddo   
-c$$$         elseif (refsolar.eq.'GN93') then
-c$$$            refsolar = 'GN93'
-c$$$            do i = 1,nis+6
-c$$$               xspsol(i) = xspref(1,i)
-c$$$            enddo
-c$$$         else
-c$$$            stop 'Wrong solar composition, check $SOLCOMP variable'
-c$$$         endif
-c$$$      endif
-*** Define model atmospheres
+***   Define model atmospheres
       call getenv ('STAR_ATM',atmtype)
       atmtype = trim(atmtype)
       if (atmtype.eq.'none') write(6,*) ' No model atmospheres used'
         print *,atmtype
 
-***   standard output unit
+***   Standard output unit
 c..   6 screen else file
       call getenv('STAR_STDOUT',stdout)
       if (stdout.ne.'96') then
@@ -274,7 +207,7 @@ c..   6 screen else file
          write (6,*) 'output re-directed to file ',file_output
       endif
 
-      open (unit = 99,err = 20,file = 'starevol.par',status = 'old',
+      open (unit = 99,file = 'network.par',status = 'old',
      &     action='read')
       open (unit = 90,file = 'evoldisp',status = 'unknown')
       open (unit = 91,file = 'modini.bin',form = 'unformatted',
@@ -284,9 +217,9 @@ c..   6 screen else file
       if (nout.ne.6) open (unit = nout,file = file_output,
      &     status = 'unknown')
 
-*** units 93 and 94 used for modang and nextang
-*** units between 50 and 55 used by opacity tables
-*** units between 70 and 78 used by paquette data files
+***   units 93 and 94 used for modang and nextang
+***   units between 50 and 55 used by opacity tables
+***   units between 70 and 78 used by paquette data files
       open (unit = 10,file = 'evolhr',status = 'unknown')
       open (unit = 11,file = 'evolvar1',status = 'unknown')
       open (unit = 12,file = 'evolvar2',status = 'unknown')
@@ -315,9 +248,9 @@ c      open (unit = 25,file = 'evolchc5',status = 'unknown')
 
 
 
-**************************
-*  definition of constants
-**************************
+************************************************************************
+*  Definition of constants                                             *
+************************************************************************
 
       pi = 3.1415926535d0
       pim2 = 2.d0*pi
@@ -375,319 +308,128 @@ c      arad = 4.d0*sig/c  ! radiative density cst : a=7.5659122d-15
       cphase(9) = "Si  "
 
 ************************************************************************
-*  setting the directory where the opacity tables are to be read       *
-*  and reading low-temperature opacity tables                          *
+*  Setting the directory where the opacity tables are to be read       *
+*  and reading low-temperature opacity tables -> moved to starevol_init*
 ************************************************************************
 
-      if (refsolar.eq.'AGS05') then
-         call getenv('DIR_OPAAGS05',opalib)
-         mlth = 19
-         nlth = 85
-         itlth = 155
-         print *,'opalib',opalib,mlth,rklth_as05(1)
-         do i = 1,mlth
-            rklth(i) = rklth_as05(i)
-         enddo
-         do i = 1,nlth
-            tklth(i) = tklth_as05(i)
-         enddo
-         do i = 1,mlth
-            do j = 1,nlth
-               do k = 1,itlth
-                  opaclth(i,j,k) = opaclth_as05(i,j,k)
-               enddo
-            enddo
-         enddo
-
-**  Modif Asplund 2009 - AP feb 2012 -->
-      elseif (refsolar.eq.'AGSS09') then
-         call getenv('DIR_OPAAGSS09',opalib) !LIB_AGSS09
-         print *,'use new opacity'
-         mlth = 19
-         nlth = 85
-         itlth = 155
-         do i = 1,mlth
-            rklth(i) = rklth_as09(i)
-         enddo
-         do i = 1,nlth
-            tklth(i) = tklth_as09(i)
-         enddo
-         do i = 1,mlth
-            do j = 1,nlth
-               do k = 1,itlth
-                  opaclth(i,j,k) = opaclth_as09(i,j,k)
-               enddo
-            enddo
-         enddo
-
-**  Modif Young 2018 - TD Dec 2019 -->
-      elseif (refsolar.eq.'AY18') then
-         call getenv('DIR_OPAAY18',opalib) !LIB_AY18
-         print *,'use new opacity'
-         mlth = 19
-         nlth = 85
-c         nlth = 81   ! modif TD 30/01/2020 pour opacite Ferguson
-         itlth = 155
-         do i = 1,mlth
-            rklth(i) = rklth_ay18(i)
-         enddo
-         do i = 1,nlth
-            tklth(i) = tklth_ay18(i)
-         enddo
-         do i = 1,mlth
-            do j = 1,nlth
-               do k = 1,itlth
-                  opaclth(i,j,k) = opaclth_ay18(i,j,k)
-               enddo
-            enddo
-         enddo         
-
-      elseif (refsolar.eq.'GRID') then
-         call getenv('DIR_OPAGRID',opalib) !LIB_GRID
-
-         mlth = 19
-         nlth = 63
-         itlth = 104
-         do i = 1,mlth
-            rklth(i) = rklth_grid(i)
-         enddo
-         do i = 1,nlth
-            tklth(i) = tklth_grid(i)
-         enddo
-         do i = 1,mlth
-            do j = 1,nlth
-               do k = 1,itlth
-                  opaclth(i,j,k) = opaclth_grid(i,j,k)
-               enddo
-            enddo
-         enddo
-
-      else
-c..   Opacities for the Grevesse & Noels 1993 solar chemical composition
-         call getenv('DIR_OPA',opalib)     !LIB_EXT
-
-         mlth = 19
-         nlth = 85
-         itlth = 120
-         do i = 1,mlth
-            rklth(i) = rklth_gn93(i)
-         enddo
-         do i = 1,nlth
-            tklth(i) = tklth_gn93(i)
-         enddo
-         do i = 1,mlth
-            do j = 1,nlth
-               do k = 1,itlth
-                  opaclth(i,j,k) = opaclth_gn93(i,j,k)
-               enddo
-            enddo
-         enddo
-
-      endif
-
-      print *,'opalib',opalib
-      call set_opal_dir(opalib)
-
-
 ************************************************************************
-*     Atmospheric table                                                *
-************************************************************************
-
-      nameinit = "Ms02500_g+2.00_z+0.00"
-      fmt_lect1 = "(2x,1pe11.5,2x,1pe11.5,2x,1pe11.5,1x,1pe12.5)"
-      fmt_lect2 = "(1x,1pe11.5,1x,1pe11.5,1x,1pe11.5,1x,1pe12.5)"
-      fmt_init = "(2(/))"
-      name = nameinit
-      
-*** PHOENIX ATMOSPHERES
-      if (atmtype.eq.'PHOENIX') then
-         nameinit = "Ms02500_g+2.00_z-0.00"
-         name = nameinit
-         call getenv ('DIR_ATMP',atmlib)
-         name(1:1) = "P"
-         nameg = name
-         nb_geff = 12
-         nb_Teff = 59
-         nb_Zeff = 6
-         filesize = 127
-
-         gtabeff(1:nb_geff) = [(i,i=1,nb_geff)]
-         gtabeff = gtabeff/2. - 1.
-         Ttabeff(1:45) = [(i,i=2600,7000,100)]
-         Ttabeff(46:nb_Teff) = [(i,i=7200,9800,200)]
-
-         Ztabeff(1:nb_Zeff) = [-2.d0,-1.5d0,-1.d0,0.d0
-     &        ,0.3d0,0.5d0]
-         do ij = 1,nb_Zeff
-            name = nameg
-            write(charZ,'(f3.1)') abs(Ztabeff(ij))
-            if (ij.eq.nb_Zeff.or.(ij.eq.(nb_Zeff-1))) name(17:17)='+'
-            name(18:20)=charZ
-            nameZ = name
-            do j = 1,nb_geff
-               name = nameZ
-               if (j.eq.1) name(10:10)='-'
-               write(charg,'(f3.1)') abs(gtabeff(j))
-               name(11:13)=charg
-               do i = 1,nb_Teff
-                  if (i.gt.45.and.gtabeff(j).eq.-0.5d0) then
-                     rtau(:,j,i,ij) = 0.d0
-                     rT(:,j,i,ij) = 0.d0
-                     rhotab(:,j,i,ij) = 0.d0
-                     Fconvtab(:,j,i,ij) = 0.d0
-                     exit
-                  endif
-                  if ((Ttabeff(i).eq.10000.d0.and.gtabeff(j).eq.2.d0
-     &                 .and.Ztabeff(ij).eq.0.d0).or.
-     &                 (Ttabeff(i).eq.10000.d0.and.gtabeff(j).eq.2.d0
-     &                 .and.Ztabeff(ij).eq.-2.d0).or.
-     &                 (Ttabeff(i).eq.10000.d0.and.gtabeff(j).eq.4.d0
-     &                 .and.Ztabeff(ij).eq.-2.d0).or.
-     &                 (Ttabeff(i).eq.3000.d0.and.gtabeff(j).eq.3.5d0
-     &                 .and.Ztabeff(ij).eq.-3.5d0).or.
-     &                 (Ttabeff(i).eq.4000.d0.and.gtabeff(j).eq.4.5d0
-     &                 .and.Ztabeff(ij).eq.-3.5d0).or.
-     &                 (Ttabeff(i).eq.3900.d0.and.gtabeff(j).eq.4.5d0
-     &                 .and.Ztabeff(ij).eq.-3.5d0).or.
-     &                 (Ttabeff(i).eq.10000.d0.and.gtabeff(j).eq.2.d0
-     &                 .and.Ztabeff(ij).eq.-4.d0).or.
-     &                 (Ttabeff(i).eq.10000.d0.and.gtabeff(j).eq.4.d0
-     &                 .and.Ztabeff(ij).eq.-4.d0))  then
-                     rtau(:,j,i,ij) = 0.d0
-                     rT(:,j,i,ij) = 0.d0
-                     rhotab(:,j,i,ij) = 0.d0
-                     Fconvtab(:,j,i,ij) = 0.d0
-                     stop 'Reading wrong tables' 
-                  else
-                     if (Ttabeff(i).lt.10000.d0) then
-                        write(charT,'(i4)') int(Ttabeff(i))
-                        name(4:7)=charT
-                     else
-                        write(charT,'(i5)') int(Ttabeff(i))
-                        name(3:7)=charT
-                     endif
-                     ref = trim(atmlib)//trim(name)
-                     open(unit = 701,file=ref,
-     &                    form="formatted", action="read")
-                     read (unit = 701,fmt=fmt_init)
-                     do k=1,filesize
-                        if (ij.eq.nb_Zeff-1) then
-                           read (unit = 701,fmt=fmt_lect1)
-     &                          rtau(k,j,i,ij),rT(k,j,i,ij),
-     &                          rhotab(k,j,i,ij),Fconvtab(k,j,i,ij)
-                        else
-                           read (unit = 701,fmt=fmt_lect2)
-     &                          rtau(k,j,i,ij),rT(k,j,i,ij),
-     &                          rhotab(k,j,i,ij),Fconvtab(k,j,i,ij)
-                        endif
-                     enddo
-                     close(unit = 701)
-                  endif
-               enddo
-            enddo
-         enddo
-
-*** MARCS ATMOSPHERES
-
-      else if (atmtype.eq.'MARCS') then
-         call getenv ('DIR_ATMM',atmlib)
-         name(1:1) = "M"
-         nameg = name
-
-         nb_geff = 8
-!         nb_Teff = 32
-         nb_Teff = 23
-         filesize = 55
-
-         gtabeff(1:nb_geff) = [(i,i=20,55,5)] ! 8 values of log g
-         gtabeff=gtabeff*0.1d0
-         do i = 1,nb_Teff ! 32 values of Teff
-            if (i.le.16) then
-               Ttabeff(i) = 2500+(i-1)*100
-            else
-               Ttabeff(i) = Ttabeff(i-1)+250
-            endif
-         enddo
-
-
-       do j = 1,nb_geff
-            name = nameg
-            if (gtabeff(j).gt.3.5) name(2:2) = "p"
-            do i = 1,nb_Teff
-               if ((Ttabeff(i).ge.6000.and.gtabeff(j).lt.3.00).or.
-     &              (Ttabeff(i).ge.7000.and.gtabeff(j).lt.4.00).or.
-     &              (Ttabeff(i).lt.3000.and.gtabeff(j).ge.5.50)) exit
-               write(charg,'(f3.1)') gtabeff(j)
-               if (Ttabeff(i).lt.10000) then
-                  write(charT,'(i4)') int(Ttabeff(i))
-                  name(4:7)=charT
-               else
-                  write(charT,'(i5)') int(Ttabeff(i))
-                  name(3:7)=charT
-               endif
-               name(11:13)=charg
-               ref = trim(atmlib)//trim(name)
-               open(unit = 701,file=ref,
-     &              form="formatted", action="read")
-               read (unit = 701,fmt=fmt_init)
-               do k=1,filesize
-                  read (unit = 701,fmt=fmt_lect1) rtau(k,j,i,ij)
-     &                 ,rT(k,j,i,ij),rhotab(k,j,i,ij),Fconvtab(k,j,i,ij)
-               enddo
-               close(unit = 701)
-            enddo
-         enddo
-c$$$
-c$$$         do j=1,nb_geff
-c$$$!            if (gtabeff(i).gt.3.5) then
-c$$$!               ref(53:53) = "p"
-c$$$!               ref(66:66) = "0"
-c$$$!            endif
-c$$$            do i=1,nb_Teff
-c$$$               write(charg,'(f3.1)') gtabeff(j)
-c$$$               write(charT,'(i4)') int(Ttabeff(i))
-c$$$               ref(54:57)=charT
-c$$$               ref(61:63)=charg
-c$$$               open(unit = 701,file=ref,
-c$$$     &              form="formatted", action="read")
-c$$$               read (unit = 701,fmt=fmt_init)
-c$$$               do k=1,filesize
-c$$$                  read (unit = 701,fmt=fmt_lect) rtau(k,i,j)
-c$$$     &                 ,rT(k,i,j),rhotab(k,i,j),Fconvtab(k,i,j)
-c$$$               enddo
-c$$$               close(unit = 701)
-c$$$            enddo
-c$$$         enddo
-
-      endif
-
-!      do j=1,nb_geff
-!         do i=1,nb_Teff
-!            close(unit = unite(j,i))
-!         enddo
-!      enddo
-
-
-************************************************************************
-*  read parameter card                                                 *
+*  Read parameter card                                                 *
 ************************************************************************
 
       call rmodpar
 
+
 ************************************************************************
-*     read initial model                                               *
+*  Choice of solar reference and input physics (blockdata evodat.f)    *
+************************************************************************
+
+      call getenv('SOLCOMP',refsolar)
+      print *, 'refsolar starevol.f', refsolar
+      
+      refsolar = trim(refsolar)
+      print *,'refsolar',refsolar
+      if (refsolar.eq.'GN93') then
+         do i = 1,nis+6
+            xspsol(i) = xspref(1,i)
+         enddo
+cAP      if (refsolar.eq.'AC06') then
+      elseif (refsolar.eq.'AGS05') then
+         do i = 1,nis+6
+            xspsol(i) = xspref(2,i)
+         enddo
+c$$$** Modif Asplund 2009 - AP feb 2012 - TD July 2021 -->
+      elseif (refsolar.eq.'AGSS09'.and..not.idiffcc.and.ntprof.eq.0
+     $        ) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(3,i)
+         enddo
+      elseif (refsolar.eq.'AGSS09'.and..not.idiffcc.and.ntprof.eq.4
+     $        .and.idiffty.eq.0) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(5,i)
+         enddo
+      elseif (refsolar.eq.'AGSS09'.and..not.idiffcc.and.ntprof.eq.5
+     $        ) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(6,i)
+         enddo
+      elseif (refsolar.eq.'AGSS09'.and..not.idiffcc.and.ntprof.eq.6
+     $        ) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(6,i)
+         enddo
+      elseif (refsolar.eq.'AGSS09'.and..not.idiffcc.and.ntprof.eq.7
+     $        ) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(6,i)
+         enddo
+      elseif (refsolar.eq.'AGSS09'.and.microdiffus.and.ntprof.
+     $        eq.0) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(7,i)
+         enddo
+      elseif (refsolar.eq.'AGSS09'.and.microdiffus.and.ntprof
+     $        .eq.5.and.idiffty.eq.0) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(8,i)
+         enddo
+      elseif (refsolar.eq.'AGSS09'.and.microdiffus.and.ntprof
+     $        .eq.0.and.idiffty.gt.0) then
+         print *, 'Warning ! This block data does not exist.'
+         stop
+c            do i = 1,nis+6
+c               xspsol(i) = xspref(9,i)
+c            enddo
+      elseif (refsolar.eq.'AGSS09'.and.microdiffus.and.ntprof
+     $        .eq.4.and.idiffty.gt.0) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(10,i)
+         enddo
+      elseif (refsolar.eq.'AGSS09'.and.microdiffus.and.ntprof
+     $        .eq.5.and.idiffty.gt.0) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(11,i)
+         enddo
+**  Modif Asplund 2009 - AP feb 2012 <--
+      elseif (refsolar.eq.'GRID') then
+         do i = 1,nis+6
+            xspsol(i) = xspref(4,i)
+         enddo
+**  Modif Young 2018 - TD Dec 2019 - TD July 2021 <--
+      elseif (refsolar.eq.'AY18'.and..not.idiffcc.and.ntprof.eq.5
+     $        ) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(12,i)
+         enddo
+      elseif (refsolar.eq.'AY18'.and.microdiffus.and.ntprof.eq.5
+     $        .and.idiffty.eq.0) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(13,i)
+         enddo
+      elseif (refsolar.eq.'AY18'.and.microdiffus.and.ntprof.eq.5
+     $        .and.idiffty.gt.0) then
+         do i = 1,nis+6
+            xspsol(i) = xspref(14,i)
+         enddo  
+      else
+         stop 'Wrong solar composition, check $SOLCOMP variable'
+      endif
+c$$$      endif
+         
+************************************************************************
+*  Read initial model                                                  *
 ************************************************************************
 
       call rinimod (91,93,92,94,0)
 
 ************************************************************************
-*     Selection of metallicity table
+*  Selection of metallicity table                                      *
 ************************************************************************
 
       if (ntprof.eq.4) call interpZ
 
 ************************************************************************
-*     determination of time-step, mesh law and mass change             *
+*  Determination of time-step, mesh law and mass change                *
 ************************************************************************
 
       if (imodpr.eq.11.or.imodpr.eq.12) call myflamespeed(.true.,imodpr)
@@ -703,11 +445,11 @@ c.. mass loss
       call mchange
 
 ************************************************************************
-*      calculation of the stellar structure at the next time-step      *
+*  Calculation of the stellar structure at the next time-step          *
 ************************************************************************
 
       if (imodpr.eq.11.or.imodpr.eq.12) call myflamespeed(.true.,imodpr)
-
+      
       call calcevo (*10)
 
 
@@ -715,7 +457,6 @@ c.. mass loss
       write (GetDateTimeStr,FMT) itime(5),':',itime(6),itime(3),
      &     month(3*itime(2)-2:3*itime(2)),itime(1)
       write (90,'("job ended  : ",a15)') GetDateTimeStr
-c      print *,'Dondeschim = ',Dondeschim(nmod)
       close (90)  !  evoldisp
       close (91)  !  modini.bin
       close (92)  !  nextini.bin
@@ -750,18 +491,13 @@ c      close (25)  !  evolchc5
       close (42)  !  evoltc2
       close (43)  !  evolas
 
-      if (astero) close (86)
       if (irotbin.ne.0.or.microdiffus.or.thermohaline.or.igw) close (85) ! evolvarang
-c      close(81)                 ! evoldiff
-c      close (85) ! evolvarang
 
-      if (ifail.gt.0) then
-         stop 'failed'
-      else
-         stop 'normal'
-      endif
+c$$$      if (ifail.gt.0) then
+c$$$         stop 'failed'
+c$$$      else
+c$$$         stop 'normal'
+c$$$      endif
 
- 20   print *,'error in opening starevol.par'
-      stop
-
+      return
       end

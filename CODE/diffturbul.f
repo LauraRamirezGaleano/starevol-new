@@ -51,8 +51,10 @@ c         DHE1(j) = 3.3e-15*t(j)**(2.5)/(4*ro(j)*log(1
 c     $        +1.125e-16*t(j)**3/ro(j)))
       enddo
       
-      Tfix = 10**(6.41)               ! test 30/01/2020
-c      Tfix = 10**(6.4125)                  ! fixation point of the turbulence function of temperature
+      Tfix = 10**(6.42)         ! test 30/01/2020 - > solar twins
+c      Tfix = 10**(6.50)
+c       Tfix = 10**(6.60)
+c     Tfix = 10**(6.425)                  ! fixation point of the turbulence function of temperature -> Soleil
       do jshell = 1,nmod
          if (t(jshell).le.Tfix) then
             if (fix_layer.ne.0) exit
@@ -79,7 +81,7 @@ c      stop
 c     Dturbul1(jshell) = om_turbul*DHE1(jshell)*(rho0/ro(jshell))**n
          Dturbul1(jshell) = om_turbul*DHE10*(rho0/ro(jshell))**n ! formule à partir DHE analytique
 c         Dturbul2(jshell) = 12500*(rho_bcz/ro(jshell))**n ! eq.3 Richard et al. 2005
-         Dturbul2(jshell) = 10000*(rho_bcz/ro(jshell))**n ! test 04/02/2020
+         Dturbul2(jshell) = 5000*(rho_bcz/ro(jshell))**n ! test 04/02/2020
          Dturbul3(jshell) = om_turbul*DHE(jshell)*(rho0/ro(jshell))**n ! formule à partir profil DHE Thoul
 c     print *, 'jshell',jshell,'Dturbul',log(abs(Dturbul(jshell)))
 c$$$         write(550,'(1x,i4,11(1x,1pe11.4))'),jshell,r(jshell),t(jshell)
@@ -87,9 +89,9 @@ c$$$     $        ,log10(abs(Dturbul(jshell))),log10(abs(Dturbul1(jshell)))
 c$$$     $        ,log10(abs(Dturbul2(jshell))) ,DHE(jshell),DHE0
 c$$$     $        ,DHE1(jshell) ,log10(abs(Dturbul3(jshell))),DHE10
 c$$$  $        ,ro(jshell)
-         if (lover.eq.60.or.lover.eq.62.or.lover.eq.37) then
+         if (lover.eq.60.or.lover.eq.70.or.lover.eq.72) then
             Dturbul(jshell) = Dturbul1(jshell)
-         else if (lover.eq.61.or.lover.eq.38) then
+         else if (lover.eq.61.or.lover.eq.71.or.lover.eq.73) then
             Dturbul(jshell) = Dturbul2(jshell)
          endif
 c$$$         write(550,'(1x,i4,11(1x,1pe11.4))'),jshell,r(jshell),t(jshell)

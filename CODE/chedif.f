@@ -53,7 +53,7 @@
      &     ,lgdmic(nsh)
       common /overshoot/ klcore,klenv,klpulse
 
-
+      print*,""
       if (t(1).eq.t(2)) then
          error = 4
          return

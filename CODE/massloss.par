@@ -1,0 +1,10 @@
+! Define parameters for massive stars mass loss in STAREVOL
+! Created by AP - 30/08/2021
+
+! Clumping and metallicity dependance
+&MassiveMloss
+  	     clumpfac = 0.3333333333333333d0	        ! reduction by a factor of 2 ; see Smith 2014 ARA&A
+  	     !clumpfac = 1.d0	        !no clumping
+             zscaling = .true.       ! No scaling when using Vink et al mass loss recipes (already incl.)
+/
+	     

@@ -171,7 +171,6 @@ c         x(l) = xi(l)
             do l = 1,nsp
                y0(l) = ysav(l)
             enddo
-c            write (nout,1000) kl,sen,dnucc,ytminc,tk*1.d-9,ytminc*1.d2
             ytminc = ytminc*1.d2
             dnucc = dnucc*1.d1
             error = -1

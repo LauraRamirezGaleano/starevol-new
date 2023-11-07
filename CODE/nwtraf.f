@@ -31,6 +31,8 @@
       include 'evolcom.teq'
       include 'evolcom.therm'
 
+      include 'evolcom.grad'
+
       integer iiter
       integer ncm(neq)
       integer neq2
@@ -60,7 +62,7 @@
       common /varrvr/ r(nsh),vr(nsh)
 
       common /hydrodyn/ Lmax,tmax,mackmax,enucmax,itmax,ishockb,ishockt
-
+      
       iitmax = itermax
 
       corrmax = .true.
@@ -80,14 +82,14 @@
             alpha1(i) = alpha
          enddo
       endif
-
+c      print *, 'dtn nwtraf',dtn*seci
 *________________________________________________
 ***   calculation of all the constitutive physics
 *------------------------------------------------
-
+      
       call thermo (error)
       if (error.gt.0) return 1
-
+      
 *___________________________________________________
 ***   application of the central boundary conditions
 *---------------------------------------------------
@@ -181,9 +183,9 @@ c         enddo
 
       ish = nmod
       i1 = ish-1
-
+      
       call surfeq
-
+      
       do j = 1,neq
          do l = 1,neq
             a(j,l) = eq(j,neq+l)
@@ -211,7 +213,6 @@ c         enddo
             dv(j) = dv(j)+eq(j,k)*w(i1,k)
          enddo
       enddo
-
 *_______________________________________________________________
 ***   determination of the evolved structure (iterative process)
 *---------------------------------------------------------------
@@ -262,6 +263,7 @@ cccc---------------------------------------------
                dv(k) = dv(k)-v(ish,k,l)*dx(l)
             enddo
          enddo
+         
          do k = 1,neq
             dx(k) = dv(k)
             xishk = xmod(ish,k)
@@ -274,6 +276,7 @@ cccc---------------------------------------------
             ncm(k) = ish
  20         xmod(ish,k) = xmod(ish,k)+alpha1(k)*dx(k)
          enddo
+         
       enddo
       
       xmod(1,2) = max(xmod(1,2),log(1.d-99))
@@ -282,6 +285,8 @@ cccc---------------------------------------------
       do ish = 2,nmod
          t(ish) = exp(min(xmod(ish,4),23.d0))
          r(ish) = exp(min(xmod(ish,2),50.d0))
+c$$$         !Debugging 
+c$$$         write(*,*) ish, r(ish), t(ish), abla(ish)
       enddo
       if (icorr.eq.'t') then
          do ish = neff,2,-1
@@ -328,6 +333,7 @@ c     &           xmod(ish-1,1)))/dtn
      &        corm(i),i = 1,neq),((novlim(kl,i),i = 3,4),kl = 1,4),
      &        max(nsconv,1),scr
       endif
+      
 c.... NEW
       do i = 1,5
          corm(i) = abs(corm(i))
@@ -343,7 +349,6 @@ c.... NEW
       corrmax = abs(corm(2)).gt.eps(2)*1.d2.or.abs(corm(3)).gt.
      &     eps(3)*10.d0.or.abs(corm(4)).gt.eps(4)*10.d0.or.
      &     abs(corm(5)).gt.eps(5)*1.d5.or.abs(corm(1)).gt.eps(1)
-
 *___________________________________________________________________
 ***   calculation of the associated nucleosynthesis and diffusion,
 ***   if required at each Newton-Raphson iteration for the structure
@@ -396,7 +401,6 @@ c..   in case nmixd > 0, diffusion treated independently in netdiff
             if (error.gt.0) return 1
          endif
       endif
-
       if (iter.gt.iitmax) then
          error = 99
          return 1
@@ -406,13 +410,14 @@ c..   if lmix (convective boundaries have moved and mixing has been performed)
 c..   do another iteration
       if (iter.lt.itmin.or.lmix) goto 10
 
+      
       imerk = 0
       do i = 1,neq
          if (abs(corm(i)).gt.eps(i)) imerk = imerk+1
       enddo
       if (imerk.gt.0) goto 10
 
- 1000 format (1x,'#','|',3x,'Variable u(m)',4x,'|',3x,'Variable r(m)',
+ 1000 format (/,1x,'#','|',3x,'Variable u(m)',4x,'|',3x,'Variable r(m)',
      &     4x,'|',2x,'Variable lnf(m)',3x,'|',2x,'Variable lnT(m)',3x,
      &     '|',3x,'Variable l(m)',4x,'|',1x,'first conv. zones',/)
  1001 format (i2,5('|',0pf5.3,1x,i4,1x,1pe9.2),'|',(1x,i4,'-',i4),1x,

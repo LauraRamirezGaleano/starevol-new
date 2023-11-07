@@ -75,6 +75,7 @@ c      dtipsi = 0.d0
 c      dtipsi1 = 0.d0
 
 ***   equation of motion
+************************************************************************
 !!! xsitau corrections not implemented !!!!
 
 c      dvfacc = u(i)*facc(i)*dtninv*vro(i)/ro(i)
@@ -97,8 +98,8 @@ c     &     -dvfacc*drodt(i)/ro(i)
       eq(1,12) = sigvrm*dpvdr2(i)*r(ip)
       eq(1,13) = sigvrm*dpvdf2(i)
       eq(1,14) = sigvrm*dpvdt2(i)
-      if (tau(i).lt.taulim.and.(ntprof.eq.1.or.ntprof.ge.3.and.
-     &     .not.ntp2)) then
+      if (tau(i).lt.taulim.and.((ntprof.eq.1.or.ntprof.ge.3.and.
+     &     .not.ntp2).or.ntprof.eq.6.or.ntprof.eq.7)) then
          if (crz(im)*crz(i).lt.0.and.crz(i).lt.-1.and.nretry.eq.4) then
             kiminv = 0.d0
             kiinv = 1.d0/kap(i)
@@ -115,16 +116,25 @@ c     &     -dvfacc*drodt(i)/ro(i)
                kiminv = 1.d0/kap(im)
             endif
          endif
-         eq(1,16) = eq(1,16)+dptau(i)
-         eq(1,3) = eq(1,3)+dptau(i)*dkapdf(im)*kiminv
-         eq(1,4) = eq(1,4)+dptau(i)*dkapdt(im)*kiminv
-         eq(1,7) = eq(1,7)-2.d0*dptau(i)
-         eq(1,8) = eq(1,8)+dptau(i)*dkapdf(i)*kiinv
-         eq(1,9) = eq(1,9)+dptau(i)*dkapdt(i)*kiinv
-         eq(1,10) = eq(1,10)+dptau(i)/lum(i)
+!     .. spherical corrections
+         if ((ntprof.eq.4.or.ntprof.eq.6.or.ntprof.eq.7)
+     &        .and.abs(phitau(i)).gt.1.d-6) then
+            eq(1,16) = eq(1,16)+dptau(i)
+            eq(1,3) = eq(1,3)+dptau(i)*dkapdf(im)*kiminv
+            eq(1,4) = eq(1,4)+dptau(i)*dkapdt(im)*kiminv
+            eq(1,7) = eq(1,7)
+     &           -2.d0*gmr(i)*xsitau(i)
+     &           +gmr(i)*dxsitaudr(i)
+     &           !+pim4*r(i)**3*(gmr(i)+accel(i))*
+     &           !(1+xsitau(i))/dmk*ro(i)
+            eq(1,8) = eq(1,8)+gmr(i)*dxsitaudf(i)
+            eq(1,9) = eq(1,9)+gmr(i)*dxsitaudt(i)
+            eq(1,10) = eq(1,10)+gmr(i)*xsitau(i)/lum(i)
+         end if
       endif
 
 ***   definition of lagrangian velocity
+************************************************************************
 
       if (hydro) then
          eq(2,16) = (lnr(i)-vlnr(i)-psi(i)*(lnr(i)-lnr(i-1)))*dtninv-
@@ -137,26 +147,27 @@ c     &     -dvfacc*drodt(i)/ro(i)
       endif
 
 ***   mass conservation
+************************************************************************
 
       eq(3,16) = (r(ip)**3-r(i)**3)/dm(i)-sph
       eq(3,7) = -3.d0*r(i)*r(i)*r(i)/dm(i)
+c$$$      if (tau(i).lt.taulim.and.ntprof.eq.6) then
+c$$$         eq(3,7) = eq(3,7)
+c$$$     &        -sph*3*lum(i)*kapm(i)*(1+phitau(i))/(64*pi*sig*t(i)**2*
+c$$$     &        r(i))
+c$$$      end if 
       eq(3,8) = sph*drodf(i)/ro(i)
       eq(3,9) = sph*drodt(i)/ro(i)
       eq(3,12) = 3.d0*r(ip)*r(ip)*r(ip)/dm(i)
 
 ***   energy conservation
+************************************************************************
 
       if (lgrav.le.3) then
 c         efacc = u(im)**2*facc(im)*vro(im)*dtninv/ro(im)
          eq(4,16) = -egrav(im)-evisc(im)+sigma*((lum(i)-lum(im))/
      &        dm(im)-enucl(im))+sigma1*((vlum(i)-vlum(im))/dm(im)-
      &        venucl(im))-eloc(im)-egconv(im)
-C Modif CC-ST energie ondes soleil (5 octobre 2007)
-c     &        -eondes(im)
-c     &        +efacc
-C      print *,'i,egrav(i),enucl(i),eondes(i) ',im,egrav(im),
-C     &         enucl(im),eondes(im)
-C <--
          eq(4,1) = -devdu1(im)
 c     &        +2.d0*efacc/u(im)
          eq(4,2) = -devdr1(im)
@@ -221,6 +232,8 @@ c     &        -efacc*drodt(im)/ro(im)
       endif
 
 ***   equation of transport
+************************************************************************
+      
       if (crz(i)*crz(ip).lt.0.and.crz(ip).lt.-1) then
          kiinv = 0.d0
          kipinv = 1.d0/kap(ip)/wjp
@@ -256,47 +269,85 @@ c     &        -efacc*drodt(im)/ro(im)
 
 ***   version with xsitau and without psi and omi
 !!!  TO BE CHECKED !!!!!!!
-         if (tau(ip).lt.taulim.and.(ntprof.eq.1.or.ntprof.ge.3.and.
-     &        .not.ntp2)) then
-            dxsi = -xsitau(i)/(g*m(ip)+r(ip)*r(ip)*accel(ip))
-            ddtau = 0.d0
-            if (abs(dqdtau(i)).gt.1.d-6) ddtau = ddqtau(i)/dqdtau(i)
-c            plo = 3.d0*lum(ip)*kapm(ip)*dmkb/(64.d0*sig*pi*pim4*
+         if (tau(ip).lt.taulim.and.(ntprof.eq.1.or.(ntprof.ge.3.and.
+     &        .not.ntp2))) then
+            
+ !           if (abs(dqdtau(ip)).gt.1d-3) then
+               dxsi = -xsitau(i)/(g*m(ip)+r(ip)*r(ip)*accel(ip))
+               ddtau = 0.d0
+               if (abs(dqdtau(i)).gt.1.d-6) ddtau = ddqtau(i)/dqdtau(i)
+c     plo = 3.d0*lum(ip)*kapm(ip)*dmkb/(64.d0*sig*pi*pim4*
 c     &           (r(ip)*tm(ip))**4)*ft(ip)!/fp(ip)
-            gmrua1 = (gmr(ip)+accel(ip))*fp(ip)
-            ablainv = 1.d0/abla(ip)
-            sqrp = sqrt(p(i)*p(ip))
+!               write(*,*) ip, tau(ip), dqdtau(ip)
+               gmrua1 = (gmr(ip)+accel(ip))*fp(ip)
+               
+               ablainv = 1.d0/abla(ip)
+               sqrp = sqrt(p(i)*p(ip))
+               
+               plo = gmrua1*abla(ip)*dmkb/(pim4*r(ip)*r(ip)*sqrp)
 
-            plo = gmrua1*abla(ip)*dmkb/(pim4*r(ip)*r(ip)*sqrp)
-
-            eq(5,16) = dlnt1+plo*(1.d0+xsitau(ip))
-            eq(5,6) = plo*(abdu1(ip)*ablainv+dynfac*dtninv*psi(ip)/
-     &           gmrua1)*(1.d0+xsitau(ip))+plo*dxsi*r(ip)*r(ip)*dtninv*
-     &           psi(ip)
-            eq(5,7) = plo*xsitau(ip)*ddtau*kap(i)*ro(i)
-            eq(5,8) = plo*(abdf1(ip)*ablainv-wip*dpdf(i)/p(i))*(1.d0+
-     &           xsitau(ip))+plo*xsitau(ip)*(wip*dkapdf(i)*kiinv)
+               if ((ntprof.eq.4.or.ntprof.eq.6.or.ntprof.eq.7)
+     &              .and.abs(phitau(i)).gt.1.d-6) then
+                  
+                  eq(5,16) = dlnt1+plo*(1.d0+xsitau(ip))
+                  eq(5,6) = plo*(abdu1(ip)*ablainv+dynfac*dtninv
+     &                 *psi(ip)/gmrua1)*(1.d0+xsitau(ip))+plo*dxsi
+     &                 *r(ip)*r(ip)*dtninv*psi(ip)
+                  !eq(5,7) = plo*r(i)/p(i)*
+     &             !    gmrua1*(1+xsitau(i))*(1+xsitau(ip))*ro(i)
+                  eq(5,8) = plo*(abdf1(ip)*ablainv-wip*dpdf(i)/p(i))*
+     &                 (1.d0+xsitau(ip))
+                  eq(5,9) = plo*(abdt1(ip)*ablainv-wip*dpdt(i)/p(i))*
+     &                 (1.d0+xsitau(ip))-1.d0 
+                  eq(5,11) = plo*(abdu2(ip)*ablainv+dynfac*(dtninv-
+     &                 dtipsi1)/gmrua1)*(1.d0+xsitau(ip))
+     &                 +plo*dxsi*r(ip)*
+     &                 r(ip)*dtninv*(1.d0-psi(ip))
+                  eq(5,12) = plo*(1.d0+xsitau(ip))*(abdr(ip)*ablainv
+     &                 -2.d0*(1.d0+gmr(ip)/gmrua1))!+r(ip)/p(ip)*
+     &                 !gmrua1*(1+xsitau(ip)*ro(ip)))*plo*(1+xsitau(ip))
+     &                 +plo*dxsitaudr(ip)
+                  eq(5,13) = plo*(abdf2(ip)*ablainv-wjp*dpdf(ip)/p(ip))*
+     &                 (1.d0+xsitau(ip))+plo*dxsitaudf(ip)
+                  eq(5,14) = plo*(abdt2(ip)*ablainv-wjp*dpdt(ip)/p(ip))*
+     &                 (1.d0+xsitau(ip))+plo*dxsitaudt(ip)+1.d0
+                  eq(5,15) = plo*(abdl(ip)*ablainv*(1.d0+xsitau(ip))+
+     &                 xsitau(ip)/lum(ip))
+                  
+               else
+                  
+                  eq(5,16) = dlnt1+plo*(1.d0+xsitau(ip))
+                  eq(5,6) = plo*(abdu1(ip)*ablainv+dynfac*dtninv*
+     &                 psi(ip)/gmrua1)*(1.d0+xsitau(ip))+plo*dxsi*
+     &                 r(ip)*r(ip)*dtninv*psi(ip)
+                  eq(5,7) = plo*xsitau(ip)*ddtau*kap(i)*ro(i)
+                  eq(5,8) = plo*(abdf1(ip)*ablainv-wip*dpdf(i)/p(i))*
+     &                 (1.d0+xsitau(ip))+plo*xsitau(ip)*(wip*dkapdf(i)*
+     &                 kiinv)
 c     &           xsitau(ip))+plo*xsitau(ip)*(wip*dkapdf(i)*kiinv+ddtau*
 c     &           dtaudf(i))
-            eq(5,9) = plo*(abdt1(ip)/abla(ip)-wip*dpdt(i)/p(i))*(1.d0+
-     &           xsitau(ip))+plo*xsitau(ip)*(wip*dkapdt(i)*kiinv)!+ddtau*
+                  eq(5,9) = plo*(abdt1(ip)/abla(ip)-wip*dpdt(i)/p(i))*
+     &                 (1.d0+xsitau(ip))+plo*xsitau(ip)*(wip*dkapdt(i)*
+     &                 kiinv)  !+ddtau*
 c     &           xsitau(ip))+plo*xsitau(ip)*(wip*dkapdt(i)*kiinv+ddtau*
 c     &           dtaudt(i))
-     &           -1.d0
-            eq(5,11) = plo*(abdu2(ip)*ablainv+dynfac*(dtninv-dtipsi1)/
-     &           gmrua1)*(1.d0+xsitau(ip))+plo*dxsi*r(ip)*r(ip)*dtninv*
-     &           (1.d0-psi(ip))
-            eq(5,12) = plo*(abdr(ip)*ablainv-2.d0*(1.d0+gmr(ip)/gmrua1)/
-     &           r(ip))*(1.d0+xsitau(i))+plo*dxsi*2.d0*r(ip)*accel(ip)
-            eq(5,13) = plo*(abdf2(ip)*ablainv-wjp*dpdf(ip)/p(ip))*
-     &           (1.d0+xsitau(ip))+plo*xsitau(ip)*wjp*dkapdf(ip)*kipinv
-            eq(5,14) = plo*(abdt2(ip)/abla(ip)-wjp*dpdt(ip)/p(ip))*
-     &           (1.d0+xsitau(ip))+plo*xsitau(ip)*wjp*dkapdt(ip)*kipinv+
-     &           1.d0
-            eq(5,15) = plo*(abdl(ip)*ablainv*(1.d0+xsitau(ip))+
-     &           xsitau(ip)/lum(ip))
-
-
+     &                 -1.d0
+                  eq(5,11) = plo*(abdu2(ip)*ablainv+dynfac*(dtninv-
+     &                 dtipsi1)/gmrua1)*(1.d0+xsitau(ip))+plo*dxsi
+     &                 *r(ip)*r(ip)*dtninv*(1.d0-psi(ip))
+                  eq(5,12) = plo*(abdr(ip)*ablainv-2.d0*(1.d0+gmr(ip)/
+     &                 gmrua1)/r(ip))*(1.d0+xsitau(i))+plo*dxsi*2.d0*
+     &                 r(ip)*accel(ip)
+                  eq(5,13) = plo*(abdf2(ip)*ablainv-wjp*dpdf(ip)/p(ip))*
+     &                 (1.d0+xsitau(ip))+plo*xsitau(ip)*wjp*dkapdf(ip)
+     &                 *kipinv
+                  eq(5,14) = plo*(abdt2(ip)/abla(ip)-wjp*dpdt(ip)/p(ip))
+     &                 *(1.d0+xsitau(ip))+plo*xsitau(ip)*wjp*dkapdt(ip)
+     &                 *kipinv+1.d0
+                  eq(5,15) = plo*(abdl(ip)*ablainv*(1.d0+xsitau(ip))+
+     &                 xsitau(ip)/lum(ip))
+                  
+               end if
 
 ***   version without atmospheric corrections (xsitau)
          else

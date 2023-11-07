@@ -61,32 +61,22 @@ c      double precision fac2,dvfacc,efacc
       gmrua = gmr(nmod)+accel(nmod)
       if (ntprof.le.1.or.ntprof.ge.3) then
          dtau = (qtau0-tau0-qtaus)
-c         if (hydrorot.and.(time/sec.ge.disctime)) then
-c$$$         if (hydrorot) then
-c$$$*** Eq. A.40 Appendix in Meynet & Maeder 1997, A&A 321,465
-c$$$            tsurfr = (dabs(lum(nmod))/(sfequi(nmod)*sig))**0.25d0
-c$$$            tsf = (pw34*(sfequi(nmod)/(pim4*r(nmod)**2)*ft(nmod)*
-c$$$     &           tau0+qtaus*(gmrua-pw23*r(nmod)*omega(nmod)**2)
-c$$$     $           *sfequi(nmod)/(pim4*spgp(nmod))))**0.25d0
          if (hydrorot) then
 *** Eq. A.40 Appendix in Meynet & Maeder 1997, A&A 321,465
 	    tsurfr = teff
-!            tsurfr = (dabs(lum(neff))/(sfequi(neff)*sig))**0.25d0
             tsf = (pw34*(sfequi(nmod)/(pim4*r(nmod)**2)*ft(nmod)*
      &           tau0+qtaus*gmrua
      $           *sfequi(nmod)/(pim4*spgp(nmod))))**0.25d0
          else
             tsurfr = teff
-c            tsurfr = (lum(nmod)/(4*pi*sig*r(nmod)*r(nmod)))**0.25d0
-c     &           *sqrt(r(neff)/r(nmod)*sqrt(abs(lum(nmod)/lum(neff))))
             tsf = (pw34*(tau0+qtaus))**0.25d0
          endif
-c.. ori         tsurfr = teff
          vfac = 1.d0/(rk*tsurfr*tsf*muinv(nmod))
          rosurf1 = vfac*tau0*gmrua/kap(nmod)
          rosurf2 = vfac*sig/c*(tsurfr*tsf)**4*dtau
          rosurf = rosurf1+rosurf2
-         if (ntprof.eq.4.and..not.ntp2) then
+         if ((ntprof.eq.4.and..not.ntp2).or.ntprof.eq.6.or.
+     &        ntprof.eq.7) then
             rosurf = rhoat(nmod)
          endif
 
@@ -100,7 +90,8 @@ c.. ori         tsurfr = teff
          rosurf = vfac*pw23*(ledd-lum(nmod))*gmrua/(kap(nmod)*ledd)
 c     &        +rosurf2
       endif
-      if (ntprof.eq.1.or.(ntprof.ge.3.and..not.ntp2)) then
+      if (ntprof.eq.1.or.(ntprof.ge.3.and..not.ntp2).or.ntprof.eq.6
+     &     .or.ntprof.eq.7) then
          ddtau = 0.d0
          if (abs(dqdtau(nmod)).gt.1.d-6) ddtau = ddqtau(nmod)/
      &        dqdtau(nmod)
@@ -118,14 +109,9 @@ c      dtipsi = 0.d0
 
 
 ***   equation of motion
+************************************************************************
 
-c      dvfacc = u(nmod)*facc(nmod)*dtninv*vro(nmod)/ro(nmod)
       if (hydrorot) then
-c$$$         eq(1,16) = accel(nmod)+sigma*(vrm*dp+(gmr(nmod)-pw23*r(nmod)
-c$$$     $        *omega(nmod)**2)*fp(nmod))
-c$$$     &        +sigma1*(vrm*vdp+vgmr-pw23*vr(nmod)*vomega(nmod)**2)
-c$$$         eq(1,7) = 2.d0*sigma*(vrm*dp-(gmr(nmod)-pw23*r(nmod)
-c$$$     &        *omega(nmod)**2)*fp(nmod))
          eq(1,16) = accel(nmod)+sigma*(vrm*dp+gmr(nmod)*fp(nmod))
          eq(1,7) = 2.d0*sigma*(vrm*dp-gmr(nmod)*fp(nmod))
       else
@@ -133,18 +119,14 @@ c$$$     &        *omega(nmod)**2)*fp(nmod))
      &        +sigma1*(vrm*vdp+vgmr)
          eq(1,7) = 2.d0*sigma*(vrm*dp-gmr(nmod)*fp(nmod))
       endif
-c     &     +dvfacc
       eq(1,1) = dynfac*dtipsi
       eq(1,3) = -sigvrm*dpdf(nmod1)
       eq(1,4) = -sigvrm*dpdt(nmod1)
       eq(1,6) = dynfac*(dtninv-dtipsi)
-c     &     +dvfacc/u(nmod)
-
       eq(1,8) = sigvrm*dpdf(nmod)
-c     &     -dvfacc*drodf(nmod)/ro(nmod)
       eq(1,9) = sigvrm*dpdt(nmod)
-c     &     -dvfacc*drodt(nmod)/ro(nmod)
-      if (ntprof.eq.1.or.ntprof.ge.3.and..not.ntp2) then
+      if (ntprof.eq.1.or.(ntprof.ge.3.and..not.ntp2).or.ntprof.eq.6
+     &     .or.ntprof.eq.7) then
          if (numeric.eq.2.or.numeric.eq.4) then
             kiinv = kapm(nmod)/kap(nmod)**2
             kiminv = kapm(nmod)/kap(nmod1)**2
@@ -155,13 +137,18 @@ c     &     -dvfacc*drodt(nmod)/ro(nmod)
          eq(1,16) = eq(1,16)+dptau(nmod)
          eq(1,3) = eq(1,3)+dptau(nmod)*dkapdf(nmod1)*kiminv
          eq(1,4) = eq(1,4)+dptau(nmod)*dkapdt(nmod1)*kiminv
-         eq(1,7) = eq(1,7)-2.d0*dptau(nmod)
-         eq(1,8) = eq(1,8)+dptau(nmod)*dkapdf(nmod)*kiinv
-         eq(1,9) = eq(1,9)+dptau(nmod)*dkapdt(nmod)*kiinv
-         eq(1,10) = eq(1,10)+dptau(nmod)/lum(nmod)
+         eq(1,7) = eq(1,7)
+     &        -2.d0*sigma*gmr(nmod)*xsitau(nmod)
+     &        +gmr(nmod)*dxsitaudr(nmod)
+     &        !+pim4*r(nmod)**3*(gmr(nmod)+accel(nmod))*
+     &        !(1+xsitau(nmod))*ro(nmod)
+         eq(1,8) = eq(1,8)+gmr(nmod)*dxsitaudf(nmod)
+         eq(1,9) = eq(1,9)+gmr(nmod)*dxsitaudt(nmod)
+         eq(1,10) = eq(1,10)+gmr(nmod)*xsitau(nmod)/lum(nmod)
       endif
 
 ***   lagrangian velocity
+************************************************************************
 
       if (hydro) then
          eq(2,16) = (lnr(nmod)-vlnr(nmod)-psi(nmod)*(lnr(nmod)-
@@ -175,8 +162,10 @@ c     &     -dvfacc*drodt(nmod)/ro(nmod)
       endif
 
 ***   surface density
+************************************************************************
 
-      if (ntprof.le.1.or.ntprof.eq.3.or.ntprof.eq.5.or.ntp2) then
+      if
+     $     (ntprof.le.1.or.ntprof.eq.3.or.ntprof.eq.5.or.ntp2) then
 
          eq(3,16) = ro(nmod)-rosurf
          eq(3,1) = -rosurf1/gmrua*dynfac*dtipsi
@@ -203,27 +192,26 @@ c     &     -dvfacc*drodt(nmod)/ro(nmod)
      &        dkapdt(nmod)/kap(nmod)*ledd/(ledd-lum(nmod))
          eq(3,10) = rosurf/(ledd-lum(nmod))+0.25d0*rosurf/lum(nmod)
 
-      elseif (ntprof.eq.4) then
+      elseif (ntprof.eq.4.or.ntprof.eq.6.or.ntprof.eq.7) then
          eq(3,16) = ro(nmod)-rosurf
+         !eq(3,7) = 
+     &   !     -3*lum(nmod)*kapm(nmod)*(1+phitau(nmod))/
+     &   !     (64*pi*sig*t(nmod)**2*r(nmod))*ro(nmod)
          eq(3,8) = drodf(nmod)
          eq(3,9) = drodt(nmod)
       endif
 
 ***   energy conservation
+************************************************************************
 
       if (lgrav.le.3) then
-c         efacc = u(nmod1)**2*facc(nmod1)*vro(nmod1)*dtninv/ro(nmod1)
          eq(4,16) = -egrav(nmod1)-evisc(nmod1)+sigma*((lum(nmod)-
      &        lum(nmod1))/dm(nmod1)-enucl(nmod1))+sigma1*((vlum(nmod)-
      &        vlum(nmod1))/dm(nmod1)-venucl(nmod1))
-c     &        +efacc
          eq(4,1) = -devdu1(nmod1)
-c     &        +2.d0*efacc/u(nmod1)
          eq(4,2) = -devdr1(nmod1)*r(nmod1)
          eq(4,3) = -degdf1(nmod1)-devdf1(nmod1)-sigma*denucldf(nmod1)
-c     &        -efacc*drodf(nmod1)/ro(nmod1)
          eq(4,4) = -degdt1(nmod1)-devdt1(nmod1)-sigma*denucldt(nmod1)
-c     &        -efacc*drodf(nmod1)/ro(nmod1)
          eq(4,5) = -sigma/dm(nmod1)
          eq(4,6) = -devdu2(nmod1)
          eq(4,7) = -devdr2(nmod1)*r(nmod)
@@ -233,7 +221,6 @@ c     &        -efacc*drodf(nmod1)/ro(nmod1)
       endif
 
       if (lgrav.ge.4) then
-c         efacc = u(nmod1)**2*facc(nmod1)*vro(nmod1)*dtninv/ro(nmod1)
          drvfacc = facc(nmod1)*vro(nmod1)*dtninv/ro(nmod1)**2
 ***   case egrav = -dE/dt - 4*pi(P+Q)*d(r^2v)/dm
          eq(4,16) = (e(nmod1)-ve(nmod1)-omi(nmod)*(e(nmod)-e(nmod1)))*
@@ -242,11 +229,9 @@ c         efacc = u(nmod1)**2*facc(nmod1)*vro(nmod1)*dtninv/ro(nmod1)
      &        vdrvdm(nmod1)*vp(nmod1)+(vlum(nmod)-vlum(nmod1))/
      &        dm(nmod1)-venucl(nmod1))
      &        -(p(nmod1)+pvisc(nmod1))*drvfacc
-c     &        +efacc
          eq(4,1) = sigma*pim4*(drvdm(nmod)*dpvdu1(nmod1)-2.d0*(p(nmod1)+
      &        pvisc(nmod1))*r(nmod1)**2/dm(nmod1))
      &        -dpvdu1(nmod1)*drvfacc
-c     &        +2.d0*efacc/u(nmod1)
          eq(4,2) = sigma*pim4*(drvdm(nmod)*dpvdr1(nmod1)-(p(nmod1)+
      &        pvisc(nmod1))*2.d0*r(nmod1)*u(nmod1)/dm(nmod1))
      &        -dpvdr1(nmod1)*drvfacc
@@ -255,12 +240,10 @@ c     &        +2.d0*efacc/u(nmod1)
      &        (dpdf(nmod1)+dpvdf1(nmod1))-denucldf(nmod1))
      &        -(dpdf(nmod1)+dpvdf1(nmod1))*drvfacc+2.d0*(p(nmod1)+
      &        pvisc(nmod1))*drodf(nmod1)/ro(nmod1)
-c     &        -efacc*drodf(nmod1)/ro(nmod1)
          eq(4,4) = dedt(nmod1)*(dtninv+dtiomi)+sigma*(pim4*drvdm(nmod)*
      &        (dpdt(nmod1)+dpvdt1(nmod1))-denucldt(nmod1))
      &        -(dpdt(nmod1)+dpvdt1(nmod1))*drvfacc+2.d0*(p(nmod1)+
      &        pvisc(nmod1))*drodt(nmod1)/ro(nmod1)
-c     &        -efacc*drodt(nmod1)/ro(nmod1)
          eq(4,5) = -sigma/dm(nmod1)
          eq(4,6) = sigma*pim4*(p(nmod1)+pvisc(nmod1)*r(nmod)**2/
      &        dm(nmod1)+drvdm(nmod)*dpvdu2(nmod1))
@@ -279,6 +262,7 @@ c     &        -efacc*drodt(nmod1)/ro(nmod1)
       endif
 
 ***   surface temperature
+************************************************************************
 
       if (vlconv) then
          rrk = dsqrt(r(nmod)*r(nmod1))
@@ -320,17 +304,11 @@ c         eq(5,10) = 1.d0
 
       else if (ntprof.le.1.or.ntprof.ge.3) then
          eq(5,9) = t(nmod)
-
-!         if (ntprof.ne.4) then
-            eq(5,16) = t(nmod)-tsurfr*tsf
-!         else
-!!            eq(5,16) = t(nmod)-tatm(nmod)
-!         endif
+         eq(5,16) = t(nmod)-tsurfr*tsf
          if (tsurfr.ne.teff) then
             eq(5,7) = tsurfr*0.5d0*tsf
             eq(5,10) = -tsurfr*tsf*0.25d0/lum(nmod)
          endif
-
 
 ***   spherical case
 c      eq(5,7) = tsurfr*0.5d0
@@ -338,13 +316,10 @@ c      eq(5,10) = -tsurfr*0.25d0/lum(nmod)
 
       else if (ntprof.eq.2) then
          tsurfr = teff
-
          eq(5,16) = t(nmod)-tsurfr
          eq(5,7) = 0.5d0*tsurfr
          eq(5,9) = t(nmod)
          eq(5,10) = -tsurfr/(4.d0*lum(nmod))
-
-
       endif
 
       return

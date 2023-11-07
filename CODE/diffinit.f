@@ -58,32 +58,12 @@ c.. 20/10: Correction des expressions de khi_mu et epsimu
       do i = 1,nmod
          muizero(i) = 0.d0
          epsimu(i) = 0.d0
-c         muizero(i) = muizero(i)+xsp(i,2)/anuc(2)+xsp(i,5)/anuc(5) 
          do j = 1,nis   
-c           if (j.ne.io16) muizero(i) = muizero(i)+xsp(i,j)/anuc(j)
             muizero(i) = muizero(i)+xsp(i,j)/anuc(j)  ! 1 / mui physique
          enddo        
          muizero(i) = 1.d0/muizero(i)    ! mui
          khi(i) = 3.02427122d-4*t(i)**3/(kap(i)*ro(i))
       enddo
-c      write(286,*) model
-c      DO i = 1,nmod
-c         write(286,'(1x,i4,1x,1pe16.6,8(1x,1pe16.6))') i,r(i),
-c     &        muizero(i)
-c      ENDDO
-c      call sgsmooth (muizero,nmod,1,17,21)
-c     call sgsmooth (muizero,nmod,1,16,16)
-
-c      id = 5
-c      nmodmdix = nmod-10
-c      do k = 1,10
-c         call lissage (muizero,nmod-10,10,id)
-c      enddo
-c      write(287,*) model
-c      DO i = 1,nmod
-c         write(287,'(1x,i4,1x,1pe16.6,8(1x,1pe16.6))') i,r(i),
-c     &        muizero(i)
-c      ENDDO
       do i = 2,nmod
          phiKSm(i) = phiKS(i-1)*wi(i)+phiKS(i)*wj(i)
          khim(i) = khi(i-1)**wi(i)*khi(i)**wj(i)

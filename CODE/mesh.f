@@ -62,7 +62,7 @@ c..   05/10 : rewrite generalized logic
       logical flametest,incrHBS,incrIGW,incrATM
       logical addition,suppression,debug
       logical solmod, diffumod
-      logical maskGamma(nmod),masktaulim(nmod)
+      logical maskGamma(nmod)
 
       double precision tshock,Lmax,tmax,Mackmax
       double precision lntfreeze,lntmesh,meshcut
@@ -86,9 +86,9 @@ c      double precision dpvis,dmshock
       double precision menvconv,dmenvconv,mcore,dmcore,ddmcore,dmenv,
      &     ddmenv,dmcz,dmcz0,ddmcz,dmrcz
 
-c     Add by T.Dumont Jan. 2018 -> variations allow between two successives shells 
+c     Add by T.Dumont Jan. 2018 -> variations allowed between two successives shells 
       double precision drmax,dHmax,dHe4max,dO16max,dFemax,delemmax,
-     &     dPtotmax
+     &     dPtotmax,dTempmax
 
       double precision times,chronos ! Ajout chronos pour mesure du tps de calcul
       double precision disctime     ! modif TD Fev.2019
@@ -118,7 +118,7 @@ c      lntmax = log(tmax*ftacc)
       if (agbphase.and.enuclim.gt.1.d2) enuclim = 1.d2
       print *,'debut', 'dmrmax=',dmrmax, 'dmrmin=',dmrmin
 c      print *, 'tmax=', tmax, 'lntmax', lntmax
-c      print *, 'lumlim', lumlim, 'Lmax', Lmax, 'dlummax', dlummax
+      print *, 'lumlim', lumlim, 'Lmax', Lmax, 'dlummax', dlummax
 c     print *, 'nshock',nshock,'dtcourf',dtcourf,'dmnm',dmnm
 c     print *, 'enuclim', enuclim
 c      print *,'crz', crz
@@ -154,8 +154,6 @@ c..     is checked
       else
          dup3 = .false.
       endif
-c      print *, 'dup3', dup3
-c      print *,xsp(1,:)
 *----------------------------
 ***   HYDRODYNAMICS of SHOCKS
 *----------------------------
@@ -173,7 +171,6 @@ c      print *,xsp(1,:)
       shockdetect = .false.
       tshock = 5.d8
       nshock = nretry           ! number of shells in the shock neighborhood
-c      print *, 'nretry = nshock', nretry
       hydrotest = hydro.and.q0.gt.0.d0.and.ivisc.gt.0.and.tmax.gt.
      &     tshock
       if (hydrotest.and.maxsh.ne.0.and.ishockb.le.ishockt) then
@@ -308,7 +305,7 @@ c.. In case of rotation + igw : increase resolution in the core.
 c.. In case of atmospheric model, increase resolution in ionization region
 
       incrATM = ntprof.ne.0
-c      incrATM = .true.
+!      incrATM = .false.      ! Modif 17/04/2020
       if (incrATM) then
          facION = 3.d0
          maskGamma(1:nmod) = .false.
@@ -316,24 +313,12 @@ c      incrATM = .true.
             if (gamma1(k).lt.1.6d0) maskGamma(k) = .true.
          enddo
       endif
-c$$$
-c$$$!     ! Added to test increase of mesh around taulim
-c$$$      incrATM = ntprof.ne.0
-c$$$       if (incrATM) then
-c$$$         facION = 3.d0
-c$$$         masktaulim(1:nmod) = .false.
-c$$$         do k=1,nmod
-c$$$            if ((tau(k).lt.taulim+1).and.(tau(k).gt.taulim-1))
-c$$$     $           masktaulim(k) = .true.
-c$$$         enddo
-c$$$      endif
-     
+
 
 *-----------------------------
 ***   SOLAR MODEL
 *_____________________________
       solmod = totm.eq.1.d0.and.nphase.eq.2
-c      print *, 'totm',totm,'nphase',nphase
       iCEb = novlim(nsconv,3)
       iCEt = novlim(nsconv,4)
       k = 1
@@ -358,33 +343,11 @@ c      facCE = 5.d1
 ***   Part 1 : definition of the case       
 ***   January 2018 - Thibaut Dumont (Genève)
 *----------------------------------------------------------------------------------------------------------
-
-!     Tests activation diffusion atomique ou non (modif Td Fev.2019)
-c       times = time*seci
-       
-c$$$       if (nphase.eq.1.and.crz(1).eq.4.and.crz(30).eq.4) then
-c$$$          microdiffus = .true.
-c$$$          print *,'microdiffus true - radiative core'
-c$$$       else
-c$$$          microdiffus = .false.
-c$$$          print *,'microdiffus false - no radiative core'
-c$$$       endif
-c$$$       if (microdiffus.and.nphase.gt.5) then
-c$$$          microdiffus = .false.
-c$$$          print *, 'phase > 5 microdiffus false'
-c$$$       else if (nphase.eq.1.and.times.lt.disctime) then ! Ajout test TD AP Fev.2019
-c$$$          print *,'no diffusion this young star'
-c$$$          return
-c$$$       endif
-c$$$  print *, times,disctime
-! Fin test activation diffusion atomique    
-c     diffumod = microdiffus.AND.nphase.LE.2.AND.time*seci.gt.disctime   ! modif TD Fev.2019
+  
        diffumod = microdiffus.AND.nphase.EQ.2
 
        IF (diffumod) PRINT *,
      $      "mesh mode diffusion microscopique actif phase 2"
-c          print *, 'dm1', dm(1)
-c          print *, 'xsp1', xsp(1,ih1),'xsp2',xsp(2,ih1)
        
 
 *-----------------------------*
@@ -424,8 +387,6 @@ c..   central values
       lnroc = log(ro(1))+(m(2)/m(3))*(log(ro(1)/ro(2)))
       lnpc = log(p(1))+(m(2)/m(3))*(log(p(1)/p(2)))
       venuclc = venucl(1)+(m(2)/m(3))*(venucl(1)-venucl(2))
-c      print *,'lntc',lntc,'lnfc',lnfc,'lnroc',lnroc,'lnpc',lnpc
-c      print *,'venuclc',venuclc
 
 c..   width of shell 1 is contrained to be no more than 1/10 of the mass
 c..   between the center and the base of CB convective zone
@@ -506,6 +467,8 @@ c..   at least "natm" shells at the surface between taulim > tau > tau0
       else
          natm = 100
       endif
+
+      
       if (nretry.eq.1) then
          tdust = 1700.d0
 c..   verify if T is outside molecular opacity range T(tau0)>1700K
@@ -521,6 +484,7 @@ c..   verify if T is outside molecular opacity range T(tau0)>1700K
          endif
       endif
       if (ntprof.eq.1.or.ntprof.ge.3) natm = 150
+      
       tauinf = max(tau0,1.d-1)
       tausup = max(2.d0*taulim,tauinf,tau(neff-1),1.d1)
       dtaumesh = log(tausup/tauinf)/dble(natm)
@@ -536,7 +500,6 @@ c..   freeze CBS
 c      if (lntfreeze.gt.0.d0.and.tmax.gt.1.4d9) lntfreeze = log(1.d9)
 c..   freeze NeBS
 c      if (lntfreeze.gt.0.d0.and.tmax.gt.1.8d9) lntfreeze = log(1.5d9)
-
 
 
 *_____________________________________________________
@@ -569,12 +532,12 @@ c     &        (addition.and.io.ge.maxsh))) goto 300
          mm0 = max(mm-1,1)
          meshfrozen = .false.
 
-         IF (nphase.EQ.2) THEN
+c         IF (nphase.EQ.2) THEN
 c            print *,'mm =',mm, 'm(mm)',m(mm),'dm(mm)',dm(mm)
 c            print *, 'ie =',ie, 'io =', io
 c            print *, 'addition', addition
 c            print *, 'suppression', suppression
-         ENDIF
+c         ENDIF
          
          if (suppression) then
             is = ie
@@ -592,7 +555,8 @@ c            print *, 'suppression', suppression
 c..   if lnt < lntfreeze
 c      if (lnt(mm).lt.lntfreeze) meshfrozen = .true.
 c..   if m < meshcut
-c      if (m(mm).lt.meshcut) meshfrozen = .true.
+c     if (m(mm).lt.meshcut) meshfrozen = .true.
+         
          IF (meshfrozen) print *, 'goto 300'
          if (meshfrozen) goto 300
 
@@ -613,34 +577,28 @@ c            print *, 'goto 100 1'
          flametest = .true.
          shellcenter = .true.
 ***   initialize tolerances
-c         print *, 'dvmax',dvmax, 'drvmax',drvmax, 'dvmin',dvmin
-c         print *, 'dlnvma', dlnvma, 'dlnvmi', dlnvmi
          dvmax = dlnvma
          drvmax = dvmax
          dvmin = dlnvmi
-c     print *, 'initialize tolerances'
-c         IF (mm.eq.1) THEN
-c            print *, 'dvmax',dvmax, 'drvmax',drvmax,'dvmin',dvmin
-c         ENDIF
          
 c..   during core He burning stabilizes mesh by increasing dnucmax
          if (nphase.eq.4) then
-            print *, 'phase 4 reach -> increase dnucmax'
+            print *, 'phase 4 reached -> increase dnucmax'
             dnucmax = 1.d50
          else
             dnucmax = dlnenuc
          endif
 c increase resolution for H-gap and bottom of RGB
          if (nphase.eq.3) then
-            print *, 'increase resolution for H-gap and bot of RGB'
+c            print *, 'increase resolution for H-gap and bot of RGB'
             dvmax = dlog(0.5d0)+dlog(dexp(dvmax)+1.d0)
             dvmin = dlog(0.5d0)+dlog(dexp(dvmin)+1.d0)
          endif
          dmrmax = dmrma
          dmrmin = dmrmi
-c         print *,'vu dmrmax',dmrmax,'mm',mm
+
          if (mm.eq.1) then
-            print *, 'mm = 1 donc dvmax = dlnvmi et dmrmax = dmrmi'
+            print *, 'mm = 1 so dvmax = dlnvmi and dmrmax = dmrmi'
             dvmax = dlnvmi
             drvmax = dvmax
             dmrmax = dmrmi
@@ -649,7 +607,7 @@ c         print *,'vu dmrmax',dmrmax,'mm',mm
        
 ***   increase resolution in pre-sn stage
          if (lnt(mm).ge.lntmesh) then
-            print *, 'increase reso : pre-sn stage'
+            print *, 'increase resolution : pre-sn stage'
             dmrmax = dmrma*xmresol
             dmrmin = dmrmi*xmresol
          endif
@@ -669,7 +627,6 @@ c               drvmax = min(dvmax,log(1.05d0))
 c               dvmax = min(dvmax,0.0953d0)
                dmrmax = min(dmrma*xmresol,dmrenv)
                dmrmin = min(dmrmi*xmresol,dmrenv)
-c               print *, 'dmrmax l.581', dmrmax
             endif
          endif
          if (nconvsh.gt.0.and.nresol.ne.0) then
@@ -689,7 +646,6 @@ c               print *, 'increase because of conv zone large enough'
      &                 .and.mm.lt.iup+nresol) then
                      dmrmax = min(dmrma*xmresol,dmrcz)
                      dmrmin = min(dmrmi*xmresol,dmrcz)
-c                     print *,'goto 200'
                      goto 200
                   endif
                   if (idwn.gt.nrconv) then
@@ -703,7 +659,6 @@ c                     print *,'goto 200'
      &                 .and.mm.gt.idwn-nresol) then
                      dmrmax = min(dmrma*xmresol,dmrcz)
                      dmrmin = min(dmrmi*xmresol,dmrcz)
-c                     print *, 'goto 200 2'
                      goto 200
                   endif
                endif
@@ -712,7 +667,6 @@ c                     print *, 'goto 200 2'
 
 ***   increase resolution in HBS in case of rotational mixing
          if (incrHBS) then
-            print *, 'rot mix'
             if (mm.ge.iHBSb.and.mm.le.iHBSt) then
                dmrmax = dmrmax/facHBS
                dmrmin = dmrmin/facHBS
@@ -743,18 +697,10 @@ c            print *, 'case of atm'
                drvmax = dvmax
                dvmin = dvmin/facION
             endif
-c$$$            if (masktaulim(mm)) then
-c$$$               dmrmax = dmrmax/facION
-c$$$               dmrmin = dmrmin/facION
-c$$$               dvmax = dvmax/facION
-c$$$               drvmax = dvmax
-c$$$               dvmin = dvmin/facION
-c$$$            endif
          endif
 
 
 ***   increase resolution in CE in case of solar model
-c         print *, 'facCE', facCE
          if (solmod.AND..NOT.diffumod) then
 c            print *,'cas modèle solaire'
 c            print *,'solmod in newmesh',solmod,iCEb,iCEt,mm,iionHe-10
@@ -763,7 +709,6 @@ c     &           ,iionHe+10,iionH-10,iionH+10
      &           .lt.iionHe+10).or.(mm.gt.iionH-10.and.mm.lt.iionH+10)))
      &           then
 c            if (mm.ge.iCEb.and.mm.le.iCEt) then
-c               print*,'tutu'
                dmrmax = dmrmax/facCE
                dmrmin = dmrmin/facCE
                dvmax = dvmax/facCE
@@ -779,7 +724,7 @@ c               print*,'tutu'
 *----------------------------------------------------------------------------------------------------------
          IF (diffumod) THEN
 c     PRINT *,'cas diffusion atomique'
-c               IF (mm.EQ.1) print *,'dmrmin ini',dmrmin
+               IF (mm.EQ.1) print *,'dmrmin ini',dmrmin
                dmrmin = 5.d-3          ! Difference minimale de masse entre deux couches
                drmax = 1.d-2           ! Difference maximale de rayon entre deux couches
                dPtotmax = 2.d-2        ! Difference maximale de pression totale entre deux couches
@@ -792,7 +737,7 @@ c               dO16max = 1.d-6         ! Difference maximale d'abondance en O16
                delemmax = 3.d-1        ! list of element considered here : Ca, Ti, Cr, Mn, Ni -> Pb
                IF (mm.EQ.1.AND.xsp(mm,ih1).LT.1.d-3) dmrmin = 1.d-5 ! condition pour XH_centre 
          ENDIF      
-
+c         dTempmax = 10.d0   ! Difference minimale de température entre deux couches (TD 03/2020)
          
 ***   treatment of shock regions : impose 1.d-6 =< tcourant =< 1.d-4
  200     preshocktest = hydrotest.and.mr(mm).gt.mshockb.and.mr(mm).lt.
@@ -840,7 +785,7 @@ c         dmrmin = dmrmi
          denn = 0.d0                ! nuclear energy
          drr = 0.d0                 ! radius
          dfnf = 0.d0                ! e- degen (taux)
-         dtnt = 0.d0                ! temperature
+         dtnt = 0.d0                ! temps (?)
          dlmnm = 1.d-10             ! mass of a shell
          dtaur = -1.d99
          ddmnm = 0.d0
@@ -993,7 +938,6 @@ c..   add one under CO convective zone if necessary
          dlmnm = 0.d0
          dxmue = 0.d0
          fdm = 2.4d0
-c         print *, 'dmnm',dmnm,'dvmax',dvmax,'dvmin',dvmin, 'dm', dm
 c..  do not check mass distribution in uppermost atmospheric layers
          if (tau(mm).lt.tausup.and.tau(mm).gt.tau0) ddmnm = 0.d0
          center = dfnf.lt.dvmax.and.dpnp.lt.dvmax.and.dtnt.lt.dvmax
@@ -1001,23 +945,6 @@ c..  do not check mass distribution in uppermost atmospheric layers
      &        .and.ddmnm.lt.fdm.and.dxnx.lt.log(1.1d0)
      &        .and.dxmue.lt.dvmax*0.4d0
    
-***   Modif. TD - Jan 2018 ************************************************
-c      IF (diffumod.AND.crz(mm).EQ.4) THEN
-c         IF (diffumod.AND.mr(mm).GT.0.5) THEN
-c         IF (diffumod) THEN   
-c           IF (tau(mm).LT.tausup.AND.tau(mm).GT.tau0) ddmnm = 0.d0
-c           center = dfnf.LT.dvmax.AND.dpnp.LT.dPtotmax.AND.dtnt.LT.dvmax
-c     &          .AND.dror.LT.dvmax.AND.denn.LT.dnucmax.AND.pvistest
-c     &          .AND.ddmnm.LT.fdm.AND.dxnx.LT.log(1.1d0)
-c     &          .AND.dxmue.LT.dvmax*0.4d0
-c        ENDIF
-c          IF (mm.EQ.1) THEN
-c             print *, 'dpnp',dpnp,'dPtotmax', dPtotmax
-c             print *, 'dror',dror,'dxmue',dxmue
-c             print *, 'denn',denn,'dnucmax',dnucmax
-c             print *, 'ddmnm',ddmnm,'fdm',fdm,'dxnx',dxnx
-c          ENDIF   
-*** Fin Modif. TD - Jan 2018 ***********************************************
          
 c..  ddmnm impose that the ratio of the mass of 2 consecutive shells
 c..  does not differ by a more than a factor f=4 (1.61=ln(1+f))
@@ -1025,77 +952,28 @@ c..  does not differ by a more than a factor f=4 (1.61=ln(1+f))
      &        .and.dlmnm.lt.dvmax.and.domega.lt.dvmax.and.shellcenter
      &        .and.courantest
 
-*** Modif. TD - Jan 2018 **************************************************
          IF (diffumod.AND.crz(mm).EQ.4) THEN
-c         IF (diffumod.AND.mr(mm).GT.0.5) THEN   
-c         IF (diffumod) THEN   
-c            edge = dmnm.LT.dmrmax.AND.dlnl.LT.dlummax.AND.drr.LT.drmax
-c     &           .AND.dlmnm.LT.dvmax.AND.domega.LT.dvmax.AND.shellcenter
-c     &           .AND.courantest
-
-c            edge_bis = dmnm.GT.dmrmin
 
             chimi = ((xsp((mm+1),ih1)-xsp(mm,ih1)).LT.dHmax
      &           .AND.(xsp((mm+1),ihe4)-xsp(mm,ihe4)).LT.dHe4max
      &           .AND.(xsp((mm+1),20)-xsp(mm,20)).LT.dO16max
      &           .AND.(xsp((mm+1),53)-xsp(mm,53)).LT.dFemax)
          ENDIF
-c         IF (mm.EQ.1) THEN
-c            print *, 'dlnl',dlnl,'dlummax',dlummax
-c            print *,'drr',drr,'drmax',drmax
-c            print *, 'dmrmax',dmrmax,'dvmax',dvmax,'drvmax',drvmax
-c            print *, xsp(2,ih1)-xsp(1,ih1),xsp(2,ihe4)-xsp(1,ihe4)
-c            print *, xsp(2,20)-xsp(1,20),xsp(2,53)-xsp(1,53)
-c            print *, dHmax,dHe4max,dO16max,dFemax
-c            print *, 'chimie is',chimi,' edge, center',edge, center
-c         ENDIF
+
 
          IF (diffumod) structest = center.AND.edge.AND.chimi
          IF (.NOT.diffumod) structest = center.AND.edge
-c        structest = center.and.edge.and.chimi
-c         IF (structest) PRINT *,'structest on'
-c         IF (.NOT.structest) PRINT *,'structest off'
-c         IF (diffumod.AND..NOT.chimi) PRINT *,'et la c goutte...
-c     &    ah mince c etait une goutte...'
-c         IF (diffumod.AND.mr(mm).GT.0.5) PRINT *,'mr sup 0,5'
-c         IF (diffumod.AND.crz(mm).EQ.4) PRINT *, 'zone rad'
 
-         
-*** Fin Modif. TD - Jan 2018 ***********************************************
-         
+        
          if (tau(mm).lt.tausup.and.tau(mm).ge.tauinf)
-!            dtaumeshbis = dtaumesh
-!            dtauaccu = 1.d2
-!            if ((tau(mm)+qtau(mm)).lt.(pw43+3.d-1).and.((tau(mm)+
-!     &           qtau(mm)).gt.(pw43-3.d-1)).and.lntmax.gt.1.47d1) then
-!               dtaumeshbis = dtaumesh/dtauaccu
-!               print *,'hop!',tmax,lntmax
-!            endif
-     &              tautest = dtaur.lt.dtaumesh
-!     endif
-c         IF (nphase.EQ.2) THEN
-c            print *, tautest,duptest,zonetest,flametest,dmnm,meshfrozen
-c         ENDIF   
+     &        tautest = dtaur.lt.dtaumesh
          meshcrit = (structest.and.tautest.and.duptest.and.zonetest
      &        .and..not.meshfrozen.and.flametest).or.dmnm.lt.1.d-12
-         
+
 c     Si suppression, test contraintes et si respect on supprime une couche
 c     Si addition, test contraintes et si non respect on ajoute une couche
          if (addition) meshcrit = .not.meshcrit                  ! Inverse meshcrit (devient faux si était vraie et devient vraie si était faux)
-
-***   Modif. TD - Fév 2018 **************************************************
-c     A shell is added only if the mass diffence between two shells is sufficient
-c         IF (edge_bis) PRINT *,'edge_bis = ',edge_bis
-c         IF (addition.AND.edge_bis) THEN
-c            meshcrit = .TRUE.
-c         ELSEIF (addition.AND..NOT.edge_bis) THEN
-c            meshcrit = .FALSE.
-c         ENDIF
-***   Fin Modif. TD - Fév 2018 ***********************************************
          
-c         if (m(mm).gt.1.183d0*msun.and.m(mm).lt.1
-c      &        .1845d0*msun.and.mm.ge.1500.and.mm.le.1505) then
-c         if (mm.gt.530.and.mm.lt.540) then
          if (debug.and.mm.gt.960.and.mm.lt.980) then
             print *,mm,meshcrit,addition,structest,tautest,duptest
      &           ,zonetest
@@ -1123,13 +1001,11 @@ c..   split the most massive shell
                   if (kshell(mm-1).eq.-1.and.dm(mm-1).eq.dm(mm)) then
                      kshell(mm-1) = 0
                      kshell(mm) = 0
-c                     print *,'goto 300'
                      goto 300
                   endif
                endif
 	       if (nmod0-ie+io+2.gt.nsh) then
-		  mm = nsh
-c                  print *, 'goto 300 2' 
+		  mm = nsh 
 		  goto 300
  	       endif
                io = io+1
@@ -1150,10 +1026,7 @@ c     &        nmod0).and.mm+2.lt.nsh) print *, 'goto 100 3'
       if (icount.ne.2) print *,'WARNING : PROBLEM WITH IMESH'
 
       print *, 'ie',ie, 'io', io
-c      print *, 'kshell', kshell
-c      print *, 'nshdel', nshdel
-c      print *, 'nshad', nshad
-c      print *, 'nshadd', nshadd
+
 ***____________________________________
 ***
 ***          SHELL SUPPRESSION
@@ -1220,7 +1093,6 @@ c      io = iadd
          if (il.lt.kshockb) kshockb = kshockb-1
          if (il.lt.kshockt) kshockt = kshockt-1
 *     redefine convective borders
-c         print *,'nsconv', nsconv
          nconvsh = nsconv
          do k = 1,nconvsh
             if (il.le.novlim(k,3)) then
@@ -1230,7 +1102,6 @@ c         print *,'nsconv', nsconv
                   novlim(j,3) = novlim(j,3)-1
                   novlim(j,4) = novlim(j,4)-1
                enddo
-c               print *, 'goto 550'
                goto 550
             endif
             if (il.le.novlim(k,4)) then
@@ -1244,8 +1115,6 @@ c               print *, 'goto 550'
                      novlim(j,4) = novlim(j,4)-1
                   enddo
                endif
-c               print *, 'ie =',ie
-c               print *, 'goto 550 2'
                goto 550
             endif
          enddo
@@ -1253,9 +1122,6 @@ c               print *, 'goto 550 2'
          dm(nmod) = 0.d0
       enddo
       nmod1 = nmod-1     
-      print *, 'dmrmax fin', dmrmax
-      print *,'dmrmin fin',dmrmin
-      print *,'dlummax fin',dlummax
       
 ***---------------------------
 ***

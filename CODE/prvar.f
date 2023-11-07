@@ -97,13 +97,14 @@ C Modif CC energie ondes (11/10/07)
       double precision tauc
 
       character*2 cseq
-      logical diffzc,eq_thermique
+      logical diffzc,thermal_equilibrium
 
       common / rossby_number / tconv_midCE
       common /omega_convection/ omegaconv,omegaconv0
       common /overshoot/ klcore,klenv,klpulse
       common /momreel/ xmoment,momenvel,xmoment_vieux
-      common /turbulence/ diffst,diffcst,idiffex,diffzc,eq_thermique
+      common /turbulence/ diffst,diffcst,idiffex,diffzc,
+     &     thermal_equilibrium
       common /nucleaire/ tautime(nsh,nreac),Ereac(nsh,nreac),taureac(nsh
      $     ,nreac)
       common /envel/ ndtenv
@@ -180,7 +181,8 @@ c..   evolhr
      &              teffy,roeff,geff,dms,totm,dtn*seci,time*seci,
      &              min(iter,99),ireset,nmod,cputime,cseq
             else
-               write (10,1150) model,nphase,min(soll,9999999.d0),
+!               write (10,1150) model,nphase,min(soll,9999999.d0),
+               write (10,1150) model,nphase,soll,
      &              min(9999.d0,solr),r(nmod)/rsun,teffy,roeff,geff,
      &              dms,totm,dtn*seci,time*seci,min(iter,99),ireset,
      &              nmod,cputime,cseq
@@ -194,11 +196,13 @@ c..   evolhr
      &           ireset,nmod,cputime
          else
             if (r(nmod)/rsun.lt.9999.9d0) then
-               write (10,1300) model,nphase,min(soll,9999999.d0),solr,
+!               write (10,1300) model,nphase,min(soll,9999999.d0),solr,
+               write (10,1300) model,nphase,soll,solr,
      &              r(nmod)/rsun,teffy,roeff,geff,dms,totm,dtn*seci,
      &              time*seci,min(iter,99),ireset,nmod,cputime
             else
-               write (10,1350) model,nphase,min(soll,9999999.d0),
+!               write (10,1350) model,nphase,min(soll,9999999.d0),
+               write (10,1350) model,nphase,soll,
      &              min(9999.d0,solr),r(nmod)/rsun,teffy,roeff,geff,
      &              dms,totm,dtn*seci,time*seci,min(iter,99),ireset,
      &              nmod,cputime
@@ -1004,29 +1008,45 @@ c.. evolvar12
 ***   Computing the radius of gyration of the radiative zone (k2rad)
 ***   and of the convective envelope (k2conv) according to Rucinski 1988 (AJ 95)
 
-c      print *,'k2rad,k2conv',nsconv,ienv,icore,novlim(ienv,3)
-c      print *,'test',ienv
-
 c$$$      if (ienv.gt.0.and.(omegaconv.ne.'s')) then
       if (ienv.gt.0) then
          if (novlim(ienv,3).gt.0) then
+            print *, 'ienv',ienv,'novlim(ienv,3)',novlim(ienv,3)
+     $           ,'novlim(1,4)',novlim(1,4) 
             do i = novlim(ienv,3),novlim(ienv,4)
                i1 = i-1
                k2conv = k2conv+dm(i1)*(r(i)**2+r(i1)**2+r(i)*r(i1))
      &              /3.d0
             enddo
 
-            do i = 2,novlim(ienv,3)-1
-               i1 = i-1
-               k2rad = k2rad+dm(i1)*(r(i)**2+r(i1)**2+r(i)*r(i1))
-     &              /3.d0
-               jrad = jrad+dm(i1)*(r(i)**2+r(i1)**2+r(i)*r(i1))
-     &              /3.d0*0.5d0*(omega(i1)+omega(i))
-
-               omegacore = omegacore+omega(i1)+omega(i)
-            enddo
-            omegajrad = jrad/k2rad
-            omegacore = omegacore/(2*novlim(ienv,3)-1)
+            if (nsconv.eq.1) then
+               do i = 2,novlim(ienv,3)-1
+                  i1 = i-1
+                  k2rad = k2rad+dm(i1)*(r(i)**2+r(i1)**2+r(i)*r(i1))
+     &                 /3.d0
+                  jrad = jrad+dm(i1)*(r(i)**2+r(i1)**2+r(i)*r(i1))
+     &                 /3.d0*0.5d0*(omega(i1)+omega(i))
+                  omegacore = omegacore+omega(i1)+omega(i)
+               enddo
+               omegajrad = jrad/k2rad
+               omegacore = omegacore/(2*novlim(ienv,3)-1)
+               print *, 'nsconv',nsconv,'omegajrad',omegajrad
+     $              ,'omegacore',omegacore
+            else if (nsconv.ge.2) then
+               do i = novlim(1,4)+1,novlim(ienv,3)-1 ! Test TD pour prendre en compte la présence d'un coeur convectif 
+                  i1 = i-1
+                  k2rad = k2rad+dm(i1)*(r(i)**2+r(i1)**2+r(i)*r(i1))
+     &                 /3.d0
+                  jrad = jrad+dm(i1)*(r(i)**2+r(i1)**2+r(i)*r(i1))
+     &                 /3.d0*0.5d0*(omega(i1)+omega(i))
+                  omegacore = omegacore+omega(i1)+omega(i)
+               enddo
+               omegajrad = jrad/k2rad
+               omegacore = omegacore/(2*(novlim(ienv,3)-novlim(1,4)+1)
+     $              -1)
+               print *, 'nsconv',nsconv,'omegajrad',omegajrad
+     $              ,'omegacore',omegacore
+            endif
          else
             do i = 2,nmod
                i1 = i-1
@@ -1098,8 +1118,9 @@ c..   evolvar11
          Nu2(i) = gs*grav(i)*phiKS(i)*abmu(i)/(hp(i))
 
          bruntV2(i) = Nt2(i)+Nu2(i)
+          
       enddo
-
+     
       nshmax = 1
       do i=1,nmod
          if (i.lt.novlim(klenv,3).and.(Nu2(i).gt.Nu2max)) then
@@ -1232,13 +1253,6 @@ cc Coupling between envelope and radiative core Timescale
          taucirc = 0.d0
       endif
 
-!!      print *,'fcirc=',fcirc
-!!      print *,'fshear=',fshear
-!!      print *,'rho,r,omega',ro(ndt),r(ndt),omega(ndt)
-!!      print *,'tauJ=',tauJ
-!!      print *,'tautot=',tautot
-!!      print *,'taucirc=',taucirc
-!!      print *,'taushear=',taushear
 
 c      if (irotbin.eq.1) then
 c         omegacore = omega(irohalf)
@@ -1334,7 +1348,7 @@ C     turnover time at Hp/2 below top of CC
                tc = 0.d0
                rc = 0.d0
             else
-               tc_core = alphac*hp(k)/sconv(k)
+               tc_core = alpha_mlt_hp*hp(k)/sconv(k)
                rc_core = r(k)
             endif
 
@@ -1343,13 +1357,12 @@ c     turnover time at Hp below top of CC
             do while (r(k).gt.r(it)-hp(it).and.k.lt.nmod)
                k = k-1
             enddo
-!!            print *,'banane',k,ib,r(it),hp(it)
             if (k.eq.0) k = 1
             if (k.lt.ib.or.sconv(k).eq.0.d0) then
                tc_hp_core = 0.d0
                rc_hp_core = 0.d0
             else
-               tc_hp_core = alphac*hp(k)/sconv(k)
+               tc_hp_core = alpha_mlt_hp*hp(k)/sconv(k)
                rc_hp_core = r(k)
             endif
 
@@ -1366,7 +1379,7 @@ c     turnover time at 1/2R_cc
                tc_r_core = 0.d0
                rc_r_core = 0.d0
             else
-               tc_r_core = alphac*hp(k)/sconv(k)
+               tc_r_core = alpha_mlt_hp*hp(k)/sconv(k)
                rc_r_core = r(k)
             endif
 
@@ -1383,7 +1396,7 @@ c     turnover time at 1/2M_cc
                tc_m_core = 0.d0
                rc_m_core = 0.d0
             else
-               tc_m_core = alphac*hp(k)/sconv(k)
+               tc_m_core = alpha_mlt_hp*hp(k)/sconv(k)
                rc_m_core = r(k)
             endif
 
@@ -1391,8 +1404,8 @@ c     turnover time with maximal value (bottom and top layers are not taken into
             tc_max_core = -1.d0
             do k = ib+1,it-1
                if (sconv(k).gt.0.d0.and.
-     &              tc_max_core.lt.alphac*hp(k)/sconv(k)) then
-                  tc_max_core = alphac*hp(k)/sconv(k)
+     &              tc_max_core.lt.alpha_mlt_hp*hp(k)/sconv(k)) then
+                  tc_max_core = alpha_mlt_hp*hp(k)/sconv(k)
                   rc_max_core = r(k)
                endif
             enddo
@@ -1451,7 +1464,7 @@ C     turnover time at Hp/2 over bottom of CE
                tc = 0.d0
                rc = 0.d0
             else
-               tc = alphac*hp(k)/sconv(k)
+               tc = alpha_mlt_hp*hp(k)/sconv(k)
                rc = r(k)
             endif
 
@@ -1461,15 +1474,13 @@ c     turnover time at Hp over bottom of CE
      &           .and.k.lt.nmod)
                k = k+1
             enddo
-!!            print *,'banane',k,novlim(ienv,4),r(novlim(ienv,3))
-!!     &           ,hp(novlim(ienv,3))
-            if (k.eq.0) then
+           if (k.eq.0) then
                k = 1
             else if (k.ge.novlim(ienv,4).or.sconv(k).eq.0.d0) then
                tc_hp = 0.d0
                rc_Hp = 0.d0
             else
-               tc_hp = alphac*hp(k)/sconv(k)
+               tc_hp = alpha_mlt_hp*hp(k)/sconv(k)
                rc_hp = r(k)
             endif
 
@@ -1486,7 +1497,7 @@ c     turnover time at 1/2R_ce
                tc_r = 0.d0
                rc_r = 0.d0
             else
-               tc_r = alphac*hp(k)/sconv(k)
+               tc_r = alpha_mlt_hp*hp(k)/sconv(k)
                rc_r = r(k)
             endif
 
@@ -1503,7 +1514,7 @@ c     turnover time at 1/2M_ce
                tc_m = 0.d0
                rc_m = 0.d0
             else
-               tc_m = alphac*hp(k)/sconv(k)
+               tc_m = alpha_mlt_hp*hp(k)/sconv(k)
                rc_m = r(k)
             endif
 
@@ -1511,8 +1522,8 @@ c     turnover time with maximal value (bottom and top layers are not taken into
             tc_max = -1.d0
             do k = kbce,ktce
                if (sconv(k).gt.0.d0.and.
-     &              tc_max.lt.alphac*hp(k)/sconv(k)) then
-                  tc_max = alphac*hp(k)/sconv(k)
+     &              tc_max.lt.alpha_mlt_hp*hp(k)/sconv(k)) then
+                  tc_max = alpha_mlt_hp*hp(k)/sconv(k)
                   rc_max = r(k)
                endif
             enddo
@@ -1789,22 +1800,22 @@ c     &     'conv5_Rt',4x,'conv6_Rb',4x,'conv6_Rt',/,129('-'),/)
      &     5x,'k2conv',3x,'k2rad',3x,'Mrad/Msun',4x,'Rrad/Rsun',/,
      &     117('-'),/)
 
- 1000 format (i8,1x,i1,1x,0pf10.6,1x,0pf7.5,1x,0pf7.5,1x,0pf7.0,1x,
+ 1000 format (i8,1x,i1,1x,0pf11.6,1x,0pf7.5,1x,0pf7.5,1x,0pf7.0,1x,
      &     1pe9.3,1x,1pe9.2,1x,1pe10.4,1x,0pf12.8,1x,1pe9.3,1x,
      &     1pe16.10,1x,i2,1x,i2,1x,i4,1x,0pe8.2,' ####',a2)
- 1100 format (i8,1x,i1,1x,0pf10.2,1x,0pf7.2,1x,0pf7.2,1x,0pf7.0,1x,
+ 1100 format (i8,1x,i1,1x,0pf11.2,1x,0pf7.2,1x,0pf7.2,1x,0pf7.0,1x,
      &     1pe9.3,1x,1pe9.2,1x,1pe10.4,1x,0pf12.8,1x,1pe9.3,1x,
      &     1pe16.10,1x,i2,1x,i2,1x,i4,1x,0pe8.2,' ####',a2)
- 1150 format (i8,1x,i1,1x,0pf10.2,1x,0pf7.2,1x,0pf7.0,1x,0pf7.0,1x,
+ 1150 format (i8,1x,i1,1x,0pf11.2,1x,0pf7.2,1x,0pf7.0,1x,0pf7.0,1x,
      &     1pe9.3,1x,1pe9.2,1x,1pe10.4,1x,0pf12.8,1x,1pe9.3,1x,
      &     1pe16.10,1x,i2,1x,i2,1x,i4,1x,0pe8.2,' ####',a2)
- 1200 format (i8,1x,i1,1x,0pf10.6,1x,0pf7.5,1x,0pf7.5,1x,0pf7.0,1x,
+ 1200 format (i8,1x,i1,1x,0pf11.6,1x,0pf7.5,1x,0pf7.5,1x,0pf7.0,1x,
      &     1pe9.3,1x,1pe9.2,1x,1pe10.4,1x,0pf12.8,1x,1pe9.3,1x,
      &     1pe16.10,1x,i2,1x,i2,1x,i4,1x,0pe8.2)
- 1300 format (i8,1x,i1,1x,0pf10.2,1x,0pf7.2,1x,0pf7.2,1x,0pf7.0,1x,
+ 1300 format (i8,1x,i1,1x,0pf11.2,1x,0pf7.2,1x,0pf7.2,1x,0pf7.0,1x,
      &     1pe9.3,1x,1pe9.2,1x,1pe10.4,1x,0pf12.8,1x,1pe9.3,1x,
      &     1pe16.10,1x,i2,1x,i2,1x,i4,1x,0pe8.2)
- 1350 format (i8,1x,i1,1x,0pf10.2,1x,0pf7.2,1x,0pf7.0,1x,0pf7.0,1x,
+ 1350 format (i8,1x,i1,1x,0pf11.2,1x,0pf7.2,1x,0pf7.0,1x,0pf7.0,1x,
      &     1pe9.3,1x,1pe9.2,1x,1pe10.4,1x,0pf12.8,1x,1pe9.3,1x,
      &     1pe16.10,1x,i2,1x,i2,1x,i4,1x,0pe8.2)
  1400 format (i8,2x,2(1x,1pe9.3),1x,0pf9.6,3(1x,1pe9.3),1x,
@@ -1822,9 +1833,9 @@ c     &     'conv5_Rt',4x,'conv6_Rb',4x,'conv6_Rt',/,129('-'),/)
  1700 format (i8,2x,2(1x,0pf9.6,1x,1pe9.3,1x,1pe9.3,1x,1pe9.3),1x,
      &     0pf9.6,1x,1pe10.3,1x,1pe10.3,0pf8.3,a2)
  1900 format (i8,2x,1x,0pf10.7,1x,1pe9.3,1x,0pf7.4,1x,0pf8.4,1x,
-     &     f10.7,1x,1pe9.3,1x,0pf7.4,1x,0pf8.4,2x,1x,0pf10.7,1x,
+     &     f10.6,1x,1pe9.3,1x,0pf7.4,1x,0pf8.4,2x,1x,0pf10.6,1x,
      &     1pe9.3,1x,0pf9.5,1x,f9.5,a2)
- 2000 format (i8,2x,10(1x,0pf10.7),2x,1x,i2,a1,a2)
+ 2000 format (i8,2x,10(1x,0pf10.6),2x,1x,i2,a1,a2)
  2050 format (i8,2x,10(1x,1pe11.5),a2)
  2100 format (i8,2x,1x,1pe8.2,1x,1pe9.3,1x,0pf6.4,1x,1pe10.4,2(1x,
      &     1pe10.4),1x,1pe11.4,1x,1pe8.2,1x,1pe11.4,1x,1pe10.4,1x,

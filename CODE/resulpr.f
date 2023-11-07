@@ -1,3 +1,4 @@
+c$$$      end subroutine Quintic
       SUBROUTINE resulpr (error)
 
 ************************************************************************
@@ -105,11 +106,6 @@ c Ajout par TD (22/02/2018) + modif 25/04/2019
       double precision xvdiffne20,xvdiffne20noc
       common /coefdiffpaqna23/ xvdiffna23(nsh),xvdiffna23noc(nsh)
       double precision xvdiffna23,xvdiffna23noc
-c$$$      common /coefdiffpaqna23/ xvdiffna23(nsh),xvdna23(nsh),   
-c$$$     &     xvthermna23(nsh),xdmicna23(nsh),xvdiffna23noc(nsh)
-c$$$      double precision xvdiffna23,xvdna23,xvthermna23,xdmicna23
-c$$$     $     ,xvdiffna23noc
-c Fin ajout
       
       common /dturbulente/ nturb(0:nsh)
       common /nucleaire/ tautime(nsh,nreac),Ereac(nsh,nreac),taureac(nsh
@@ -120,18 +116,10 @@ c Fin ajout
 
       if (imodpr.eq.11.or.imodpr.eq.12)
      &     call myflamespeed (.false.,imodpr)
-
-c$$$      do k=1,nsp
-c$$$         do j = 1,nmod
-c$$$            write(666,'(1x,i4,1x,i4,9(1x,1pe11.4))') k,j,t(j)
-c$$$     $           ,zmean(j,k)
-c$$$         enddo
-c$$$      enddo
       
 *________________________________________________________
 ***   storage of the calculated models in the binary file
 *--------------------------------------------------------
-      print *,'In resulpr xsp 1',xsp(1420,2),xsp(1450,2)
 
       if (error.eq.-30) neff = -neff
 
@@ -166,9 +154,7 @@ c..   determine turnover timescale
      &     (xsp(k,l),l = 1,nis-1),k = 1,nmod),
      &     (mtotlos(j),j = 1,nis-1)
       close (92)
-
-      print *,'In resulpr xsp 2',xsp(1420,2),xsp(1450,2)
-
+      
       do k = 1,nmod
          venucl(k) = enucl(k)
          vsconv(k) = sconv(k)
@@ -204,58 +190,6 @@ C <--
       open (unit = 92,file = 'nextini.bin',form = 'unformatted',
      &     status = 'unknown')
 
-
-c      if (microdiffus.or.thermohaline.or.igw) then
-cc         write (81,8100)
-c         rewind(85)
-c         do k = 1,nmod
-c            if (dabs(Ereac(k,ibe7pg)).lt.1d-99) Ereac(k,ibe7pg) = 0.d0
-c            if (dabs(lumondestot(k)).lt.1d-99) lumondestot(k) = 0.d0
-c            if (dabs(lumondes_surf(k)).lt.1d-99) then
-c               lumondes_surf(k) = 0.d0
-c            endif
-c            if (dabs(lumondes_core(k)).lt.1d-99) then
-c               lumondes_core(k) = 0.d0
-c            endif
-c         enddo
-c         if (igw) then
-c            do k = 1,nmod
-c               depottotn(k) = depottot(k)/lsun
-c               depottot_surfn(k) = depottot_surf(k)/lsun
-c               depottot_coren(k) = depottot_core(k)/lsun
-c               depotondestotn(k) = depotondestot(k)/lsun
-c               vrn(k) = vr(k)/rsun
-c            enddo
-c            write (85) (lgdmic(k),lgdturb(k),vom(k),
-c     &           depottotn(k)/lsun,depottot_surfn(k)/lsun,
-c     &           depottot_coren(k)/lsun,
-c     &           depotondestotn(k)/lsun,Dondes(k),Dondeschim(k),
-c     &           lumwave(k),lumwave_core(k),
-c     &           lumondes_surf(k),lumondes_core(k),lumondestot(k),
-c     &           brunt_o(k),vrn(k)/rsun,vxpsi(k),Fenerg,
-c     &           Fenerg_core,
-c     &           Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
-c     &           deltaKS(k),tautime(k,ippg),Ereac(k,ippg),tautime(k
-c     &           ,ipdg), Ereac(k,ipdg),tautime(k,i2he3),Ereac(k
-c     &           ,i2he3),tautime(k,ihe3ag), Ereac(k,ihe3ag),tautime(k
-c     &           ,ibe7beta),Ereac(k,ibe7beta), tautime(k,ili7pa)
-c     &           ,Ereac(k,ili7pa),tautime(k,ibe7pg), Ereac(k,ibe7pg)
-c     &           ,tautime(k,ib8beta),Ereac(k,ib8beta), tautime(k
-c     &           ,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg), Ereac(k
-c     &           ,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1,nmod)
-c         else
-c            write (85) (Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
-c     &           deltaKS(k),tautime(k,ippg),Ereac(k,ippg),
-c     &           tautime(k,ipdg), Ereac(k,ipdg),tautime(k,i2he3),
-c     &           Ereac(k,i2he3),tautime(k,ihe3ag),Ereac(k,ihe3ag),
-c     &           tautime(k,ibe7beta),Ereac(k,ibe7beta),
-c     &           tautime(k,ili7pa),Ereac(k,ili7pa),tautime(k,ibe7pg),
-c     &           Ereac(k,ibe7pg),tautime(k,ib8beta),Ereac(k,ib8beta),
-c     &           tautime(k,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg),
-c     &           Ereac(k,in14pg),tautime(k,icpg),Ereac(k,icpg),
-c     &           k = 1,nmod)
-c         endif
-c      endif
 
 
 *_________________
@@ -353,9 +287,6 @@ c..   and prescription used for horizontal turbulent diffusion coefficient
 
       if (model.eq.(modeli+1).and.rotation) then
          write (90,1270) Dh_prescr
-c        do k = 1,nmod
-c           write(667,*),'nturb',k,nturb(k),xnum(k),xnuvv(k)
-c        enddo
       endif
 
 
@@ -363,17 +294,7 @@ c        enddo
 
 c     if (no.eq.maxmod.or.time.eq.4.6000000d9*sec) then
       if (no.eq.maxmod) then
-         if (microdiffus.or.thermohaline.or.igw) then
             if (igw) then
-
-C Modifs CC ondes (27/10/09)
-C depottot_surf(kk) est calcule dans ond_omega
-C                   apres appel de ond_int qui calcule depotondes(kk)
-C depottot_core(kk) est calcule dans ond_omega
-C                   apres appel de ond_int_core qui calcule depotondes(kk)
-C depottot(kk)=depottot_surf(kk)+depottot_core(kk) est calcule dans ond_omega
-C depotondestot(kk)=depottot(kk)/(rtot**2*omega_S) dans transport_ondes
-C depotwaves(k)=depotondestot(nmod-kk+1) dans transport_ondes
 
                do k = 1,nmod
                   if (dabs(lumondestot(k)).lt.1d-99)
@@ -424,91 +345,18 @@ C depotwaves(k)=depotondestot(nmod-kk+1) dans transport_ondes
      $              tautime(k,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg),
      $              Ereac(k,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1
      $              ,nmod)
-               print *,'Vmic He resultpr',xvdiffhe(1000)
-c               print *, xvdiffc12(k),xvdiffc12noc(k),xvdiffc13(k)
-c     $              ,xvdiffc13noc(k)
             endif
-         endif
-         if (astero) then
-            rewind(86)
-            write(86) (dkapdt(k),dkapdro(k),denucldt(k),denucldro(k),
-     &           k=1,nmod)
-         endif
       endif
-c$$$      if (time*seci/1e9.ge.4.565.and.time*seci/1e9.le.4.566) then
-c$$$         write(444,'()') 
-c$$$         write(444,'()')
-c$$$         write(444,'(6x,1pe12.6,11x,0pf7.0,9x,1pe16.6)')
-c$$$     &        time*seci/1e9, teff, r(nmod)/6.9551e10
-c$$$         write(444,'(8x,f8.4)') totm
-c$$$         write(444,'()') 
-c$$$         write(444,'()')
-c$$$         write(444,'()') 
-c$$$
-c$$$         write(444,44)
-c$$$         DO k = nmod,1,-1
-c$$$            write(444,'(1x,i4,2(1x,1pe16.6),30(1x,1pe10.4))')
-c$$$     &           abs(k-nmod-1),1-m(k)/m(nmod),r(k),xsp(k,ih1),
-c$$$     &           xsp(k,ihe3),xsp(k,ihe4),xsp(k,ic12),xsp(k,ic13),
-c$$$     &           xsp(k,in14),xsp(k,io16),xsp(k,ine20)+xsp(k,27)+
-c$$$     &           xsp(k,28),xsp(k,ina23),xsp(k,img24)+xsp(k,img25)+
-c$$$     &           xsp(k,36),xsp(k,ial27),xsp(k,isi28)+xsp(k,42)+
-c$$$     &           xsp(k,43),xsp(k,ip31),xsp(k,is32)+xsp(k,46)+xsp(k,47)
-c$$$     &           +xsp(k,50),
-c$$$     &           xsp(k,icl35)+xsp(k,icl36),0.d0,0.d0,0.d0,0.d0,0.d0,
-c$$$     &           0.d0,xsp(k,53),0.d0,0.d0,xsp(k,ih2),xsp(k,ili6),
-c$$$     &           xsp(k,ili7),xsp(k,ibe9),xsp(k,11),xsp(k,ib11)
-c$$$         ENDDO   
-c$$$
-c$$$ 44      format (2x,'mesh',3x,'dm/m',6x,'r(cm)',8x,'X(H)',6x,'X(3He)',
-c$$$     &        6x,'X(4He)',6x,'X(12C)',6x,
-c$$$     &        'X(13C)',5x,'X(14N)',5x,'X(16O)',5x,
-c$$$     &        'X(Ne)',5x,'X(Na)',5x,'X(Mg)',5x,'X(Al)',5x,'X(Si)',
-c$$$     &        5x,'X(P)',5x,'X(S)',5x,'X(Cl)',5x,'X(Ar)',5x,'X(K)',
-c$$$     &        5x,'X(Ca)',5x,'X(Ti)',5x,'X(Cr)',5x,'X(Mn)',5x,
-c$$$     &        'X(Fe) = Xheavy',5x,'X(Ni)',5x,'X(Cc)',5x,'X(2D)',5x,
-c$$$     &        'X(6Li)',5x,'X(7Li)',5x,'X(9Be)',5x,'X(10B)',5x,'X(11B)')
-c$$$      
-c$$$         write(555,'()') 
-c$$$         write(555,'()')
-c$$$         write(555,'(6x,1pe12.6,11x,0pf7.0,9x,1pe16.6)')
-c$$$     &        time*seci/1e9, teff, r(nmod)/6.9551e10
-c$$$         write(555,'(8x,f8.4)') totm
-c$$$         write(555,'()') 
-c$$$         write(555,'()')
-c$$$         write(555,'()') 
-c$$$
-c$$$         write(555,55)
-c$$$         DO k = nmod,1,-1
-c$$$            write(555,'(1x,i4,7(1x,1pe16.6),1x,1pe16.6,1x,1pe16.6,
-c$$$     &      1x,1pe16.6,1x,1pe16.6,1x,1pe16.6,1x,1pe16.6,
-c$$$     &      3(1x,1pe16.6),3(1x,1pe16.6),1x,1pe16.6,1x,i4)')
-c$$$     &      abs(k-nmod-1),1-m(k)/m(nmod),r(k),lum(k)/lsun,t(k),
-c$$$     &      P(k),lnf(k),ro(k),0.d0,abrad(k)-abad(k),abad(k),
-c$$$     &      kap(k),bruntV2(k),abla(k),Egrav(k),Enucl(k),mu(k),0.d0
-c$$$     &      ,0.d0,0.d0,gamma1(k),crz(k)
-c$$$         ENDDO
-c$$$          
-c$$$         print *,'k',k
-c$$$          
-c$$$ 55      format (2x,'mesh',6x,'dm/m',8x,'r(cm)',8x,'L',8x,'Teff',8x,
-c$$$     &        'P',8x,'lnf',8x,'rho',8x,'Ne',8x,'gr-ga',8x,
-c$$$     &        'dT_ad',8x,'kappa',8x,'N**2',8x,'dlnT/dlnP',8x,'e_grav',
-c$$$     &        8x,'e_nuc',8x,'mu',8x,'fHI',8x,'fHeI',8x,'fHeII',
-c$$$     &        8x,'Gamma1',8x,'crz')
-c$$$  endif
 
-c      print *, 'Vdiff He', xvdiffhe(0:100)
-c      stop
      
 c..   Storage of values for atomic diffusion (modif AP TD Jan.2019)
-c      if(model.eq.(modeli+1).and.microdiffus) then
-c         do k=1,nmod
-c            write(654,'(1x,i4,9(1x,1pe11.4))'),k,T(k),zmeanO16(k),xsp(k
-c     $           ,io16),dens_elec(k),coulomb(k),Zpaq(k),Zpaq1(k)
-c     $           ,Zpaq2(k),Kpaq(k)
-c         enddo
-c      endif
+      if(model.eq.(modeli+1).and.microdiffus) then
+         do k=1,nmod
+            write(654,'(1x,i4,9(1x,1pe11.4))'),k,T(k),zmeanO16(k),xsp(k
+     $           ,io16),dens_elec(k),coulomb(k),Zpaq(k),Zpaq1(k)
+     $           ,Zpaq2(k),Kpaq(k)
+         enddo
+      endif
       
       
  1000 format (' Final mass = ',f11.8,', dm = ',f11.9,', age = ',1pe12.6,
@@ -532,11 +380,6 @@ c      endif
      &     'Critical Richardson number Ric = 0.25',/,3x,
      &     'Prescription for horizontal turbulence diffusion',
      &     ' coefficient Dh : ',1x,a8,/)
-C Modifs CC ondes (2/04/07) -->
-c 8101 format (2x,i4,1x,3(1x,1pe17.10),2(1x,1pe11.4),(1x,1pe17.10),
-c     &      7(1x,1pe11.4),(1x,1pe17.10),3(1x,1pe11.4),(1x,1pe17.10),
-c     & 2(1x,1pe11.4),8(1x,1pe11.4),(1x,1pe17.10),(1x,1pe11.4))
-C <--
  8100 format('# nsh lgdmic lgdturb vomega depottot depottot_surf',
      &     'depottot_core depotwaves Dondes Dondeschim lumwave',
      &     'lumwave_core brunt_o lumondes vr vpsi',

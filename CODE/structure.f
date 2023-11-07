@@ -91,11 +91,6 @@ c      logical ecap
 ***   (eventually) and the radiative gradient
 *--------------------------------------------------------------------
 
-C Modif CC - ST energie ondes soleil (5 octobre 2007)
-C*      do i = 1,nmod1
-C*         eondes(i) = 0.d0
-C*      enddo
-C <--
 
       bp = nphase.eq.4.and.xsp(1,ihe4).lt.0.5d0.and.xsp(1
      $     ,ihe4).gt.0.003d0
@@ -546,52 +541,233 @@ c     &        abs(phiKS(ip)/deltaKS(ip))**wj(ip),phiKS(i)/deltaKS(i))
             kipinv = 1.d0/kap(ip)
          endif
 
-
 *________________________________________________________________________
-***   corrections to the radiative gradient in atmospheric layers
-***   when plan-parallel, grey and Eddington approximations are ruled out
+***   Corrections to the radiative gradient in atmospheric layers
+***   when plane-parallel, grey and Eddington approximations are ruled out
 *------------------------------------------------------------------------
 
          xsitau(ip) = 0.d0
+         phitau(ip) = dqdtau(ip)+2.d0*(qtau(ip)+
+     &        tau(ip))/(r(ip)*kapm(ip)*rom(ip))
+         
+         if (tau(ip).lt.taulim.and.((ntprof.eq.1.or.ntprof.ge.3.and.
+     &        .not.ntp2).or.ntprof.eq.6.or.ntprof.eq.7)) then
+            
+***   Plane-parallel corrections
+*************************************************************************
+            
+c$$$            dptau(ip) = -kapm(ip)*lum(ip)/(pim4*c*r(ip)**2)*dqdtau(ip)
+c$$$            xsitau(ip) = -dptau(ip)*r(ip)**2/gmrr2
+c$$$  xsitau(ip) = 0.d0   ! TEST 31/03/2020
+!            print*, dqdtau(ip), xsitau(ip)
 
-         if (tau(ip).lt.taulim.and.(ntprof.eq.1.or.ntprof.ge.3.and.
-     &        .not.ntp2)) then
-***   plan-parallel corrections
-            dptau(ip) = -kapm(ip)*lum(ip)*dqdtau(ip)/(pim4*c*r(ip)**2)
-            xsitau(ip) = -dptau(ip)*r(ip)**2/gmrr2
-            abrad(ip) = abrad(ip)*(1.d0+dqdtau(ip))/(1.d0+xsitau(ip))
-            abla(ip) = abrad(ip)
-***   spherical corrections
+***   
+c$$$            if (abs(dqdtau(ip)).gt.1d-1) then
+c$$$               abrad(ip) = abrad(ip)*(1.d0+dqdtau(ip))/(1.d0+xsitau(ip))
+c$$$               dxsitaudt(ip) = xsitau(ip)*(kipinv*dkapdt(ip)
+c$$$     &              + ddqdtaudt(ip)/dqdtau(ip))
+c$$$               abdt1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdt(i)+
+c$$$     &              piinv*dpdt(i)-4.d0 + ddqdtaudt(ip)/(1.d0+dqdtau(ip))
+c$$$     &              - dxsitaudt(ip)/(1.d0+xsitau(ip)))
+c$$$               abdt2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdt(ip)+pipinv*
+c$$$     &              dpdt(ip)-4.d0 + ddqdtaudt(ip)/(1.d0+dqdtau(ip))
+c$$$     &              - dxsitaudt(ip)/(1.d0+xsitau(ip)))
+c$$$            else
+c$$$               abdf1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdf(i)+
+c$$$     &              piinv*dpdf(i))
+c$$$               abdf2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdf(ip)+pipinv*
+c$$$     &              dpdf(ip))
+c$$$               abdt1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdt(i)+
+c$$$     &              piinv*dpdt(i)-4.d0)
+c$$$               abdt2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdt(ip)+pipinv*
+c$$$     &              dpdt(ip)-4.d0)
+c$$$            end if
+c$$$            abdl(ip) = abrad(ip)/lum(ip)
+c            write(555,'(2(1x,i4),7(1x,1pe11.4))'),i,crz(i)
+c     $        ,dqdtau(i),ddqtau(i),xsitau(i),abrad(i),tau(i),t(i)
+
+***   
+            if ((ntprof.eq.4.or.ntprof.eq.6.or.ntprof.eq.7)
+     &        .and.dqdtau(ip).gt.1.d-6) then
+
+               phitau(ip) = dqdtau(ip)
+               dptau(ip) = -kapm(ip)*lum(ip)/(pim4*c*r(ip)**2)*
+     &              phitau(ip)
+               xsitau(ip) = -dptau(ip)*r(ip)**2/gmrr2
+               dphitaudr(ip) = 0.d0 
+               dphitaudf(ip) = 0.d0 
+               dphitaudt(ip) = 0.d0 
+               dxsitaudr(ip) = xsitau(ip)*(dphitaudr(ip)/phitau(ip))
+               dxsitaudf(ip) = xsitau(ip)*(kipinv*dkapdf(ip)
+     &              +dphitaudf(ip)/phitau(ip))
+               dxsitaudt(ip) = xsitau(ip)*(kipinv*dkapdt(ip)
+     &              +dphitaudt(ip)/phitau(ip))
+            
+               abrad(ip) = abrad(ip)*(1.d0+phitau(ip))/(1.d0+xsitau(ip))
+               abdf1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdf(i)+
+     &              piinv*dpdf(i)+dphitaudf(ip)/(1.d0+phitau(ip))
+     &              -dxsitaudf(ip)/(1.d0+xsitau(ip)))
+               abdf2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdf(ip)+pipinv*
+     &              dpdf(ip)+dphitaudf(ip)/(1.d0+phitau(ip))
+     &              -dxsitaudf(ip)/(1.d0+xsitau(ip)))
+               abdt1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdt(i)+
+     &              piinv*dpdt(i)-4.d0+dphitaudt(ip)/(1.d0+phitau(ip))
+     &              -dxsitaudt(ip)/(1.d0+xsitau(ip)))
+               abdt2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdt(ip)+pipinv*
+     &              dpdt(ip)-4.d0+dphitaudt(ip)/(1.d0+phitau(ip))
+     &              -dxsitaudt(ip)/(1.d0+xsitau(ip)))
+               abdl(ip) = abrad(ip)/lum(ip)*(1.d0-xsitau(ip)/
+     &              (1.d0+xsitau(ip)))
+               abla(ip) = abrad(ip)
+           
+            
+***   Spherical corrections
+*************************************************************************
+
+c$$$            if ((ntprof.eq.4.or.ntprof.eq.6.or.ntprof.eq.7)
+c$$$     &           .and.abs((dqdtau(ip)+2.d0*(qtau(ip)+tau(ip))
+c$$$     &           /(r(ip)*kapm(ip)*rom(ip)))).gt.1.d-6) then
+c$$$
+c$$$               phitau(ip) = dqdtau(ip)+2.d0*(qtau(ip)+
+c$$$     &              tau(ip))/(r(ip)*kapm(ip)*rom(ip))
+c$$$               dptau(ip) = -kapm(ip)*lum(ip)/(pim4*c*r(ip)**2)*
+c$$$     &              phitau(ip)
+c$$$               xsitau(ip) = -dptau(ip)*r(ip)**2/gmrr2
+c$$$               dphitaudr(ip) = 
+c$$$     &              -2.d0*(qtau(ip)+tau(ip))/(r(ip)*kapm(ip)*rom(ip))
+c$$$     &              -2.d0*(1.d0+dqdtau(ip))
+c$$$               dphitaudf(ip) =
+c$$$     &              +2.d0/(r(ip)*kapm(ip)*rom(ip))*dtaudf(ip)*
+c$$$     &              (1.d0+dqdtau(ip))
+c$$$     &              -2.d0*(qtau(ip)+tau(ip))/(r(ip)*kapm(ip)*rom(ip))*
+c$$$     &              (kipinv*dkapdf(ip)+drodf(ip)/rom(ip))
+c$$$               dphitaudt(ip) = 
+c$$$     &              +2.d0/(r(ip)*kapm(ip)*rom(ip))*dtaudt(ip)*
+c$$$     &              (1.d0+dqdtau(ip))
+c$$$     &              -2.d0*(qtau(ip)+tau(ip))/(r(ip)*kapm(ip)*rom(ip))*
+c$$$     &              (kipinv*dkapdt(ip)+drodt(ip)/rom(ip))
+c$$$               dxsitaudr(ip) = xsitau(ip)*(dphitaudr(ip)/phitau(ip))
+c$$$               dxsitaudf(ip) = xsitau(ip)*(kipinv*dkapdf(ip)
+c$$$     &              +dphitaudf(ip)/phitau(ip))
+c$$$               dxsitaudt(ip) = xsitau(ip)*(kipinv*dkapdt(ip)
+c$$$     &              +dphitaudt(ip)/phitau(ip))
+c$$$            
+c$$$               abrad(ip) = abrad(ip)*(1.d0+phitau(ip))/(1.d0+xsitau(ip))
+c$$$               abdf1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdf(i)+
+c$$$     &              piinv*dpdf(i)+dphitaudf(ip)/(1.d0+phitau(ip))
+c$$$     &              -dxsitaudf(ip)/(1.d0+xsitau(ip)))
+c$$$               abdf2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdf(ip)+pipinv*
+c$$$     &              dpdf(ip)+dphitaudf(ip)/(1.d0+phitau(ip))
+c$$$     &              -dxsitaudf(ip)/(1.d0+xsitau(ip)))
+c$$$               abdt1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdt(i)+
+c$$$     &              piinv*dpdt(i)-4.d0+dphitaudt(ip)/(1.d0+phitau(ip))
+c$$$     &              -dxsitaudt(ip)/(1.d0+xsitau(ip)))
+c$$$               abdt2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdt(ip)+pipinv*
+c$$$     &              dpdt(ip)-4.d0+dphitaudt(ip)/(1.d0+phitau(ip))
+c$$$     &              -dxsitaudt(ip)/(1.d0+xsitau(ip)))
+c$$$               abdl(ip) = abrad(ip)/lum(ip)*(1.d0-xsitau(ip)/
+c$$$     &              (1.d0+xsitau(ip)))
+c$$$               abla(ip) = abrad(ip)
+               
 c            xsitau(ip) = lum(ip)/(pim2*gmrr2*c)*(kapm(ip)*dqdtau(ip)*
 c     &           0.5d0+(tau(ip)+qtau(ip))/(rom(ip)*r(ip)))
 c            abrad(ip) = abrad(ip)*(1.d0+dqdtau(ip)+2.d0*(tau(ip)+
 c     &           qtau(ip))/(kapm(ip)*rom(ip)*r(ip)))/(1.d0+xsitau(ip))
+            
 ***   P/T corrections
+*************************************************************************
+               
 c            cortau1 = ((tau(ip)+qtau(ip))/(tau(ip)+pw23))**0.25d0
 c            cortau2 = lum(ip)*(qtau(ip)-pw23)/(pim4*c*r(ip)*r(ip)*
 c     &           pm(ip))
 c            cortau2 = 1.d0/(1.d0-cortau2)
-c            abrad(ip) = abrad(ip)*cortau2/cortau1
-         endif
-         abdf1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdf(i)+piinv*dpdf(i))
-         abdf2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdf(ip)+pipinv*
-     &        dpdf(ip))
-         abdt1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdt(i)+piinv*dpdt(i)-
-     &        4.d0)
-         abdt2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdt(ip)+pipinv*dpdt(ip)
-     &        -4.d0)
-         abdl(ip) = abrad(ip)/lum(ip)
+c     abrad(ip) = abrad(ip)*cortau2/cortau1
+
+***   If not in the atmosphere, classical case
+*************************************************************************
+               
+            else
+               abdf1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdf(i)+
+     &              piinv*dpdf(i))
+               abdf2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdf(ip)+pipinv*
+     &              dpdf(ip))
+               abdt1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdt(i)+
+     &              piinv*dpdt(i)-4.d0)
+               abdt2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdt(ip)+pipinv*
+     &              dpdt(ip)-4.d0)
+               abdl(ip) = abrad(ip)/lum(ip)
+            end if
+         else
+            abla(ip) = abrad(ip)
+            abdf1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdf(i)+piinv*dpdf(i))
+            abdf2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdf(ip)+pipinv*
+     &           dpdf(ip))
+            abdt1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdt(i)+piinv*dpdt(i)-
+     &           4.d0)
+            abdt2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdt(ip)+pipinv*
+     &           dpdt(ip)-4.d0)
+            abdl(ip) = abrad(ip)/lum(ip)
+         end if
+
+***   Derivatives with respect to u and to lnr
+*************************************************************************
+         
          if (hydro) then
             abdr(ip) = -abrad(ip)/gmrr2*2.d0*r(ip)*accel(ip)
             abdu1(ip) = -abrad(ip)/gmrr2*r(ip)*r(ip)*dtipsi
             abdu2(ip) = -abrad(ip)/gmrr2*r(ip)*r(ip)*(dtninv-dtipsi)
+            if (tau(ip).lt.taulim) then
+               abdr(ip) = abdr(ip)
+     &              + abrad(ip)*(dphitaudr(ip)/(1.d0+phitau(ip))
+     &              - dxsitaudr(ip)/(1.d0+xsitau(ip)))
+            end if
          else
-            abdr(ip) = 0.d0
-            abdu1(ip) = 0.d0
-            abdu2(ip) = 0.d0
+            if (ntprof.eq.4.or.ntprof.eq.6.or.ntprof.eq.7) then
+               if (tau(ip).lt.taulim) then
+                  abdr(ip) = abrad(ip)*(dphitaudr(ip)/(1.d0+phitau(ip))
+     &                 - dxsitaudr(ip)/(1.d0+xsitau(ip)))
+                  abdu1(ip) = 0.d0
+                  abdu2(ip) = 0.d0
+               else
+                  abdr(ip) = 0.d0
+                  abdu1(ip) = 0.d0
+                  abdu2(ip) = 0.d0
+               end if
+            else
+               abdr(ip) = 0.d0
+               abdu1(ip) = 0.d0
+               abdu2(ip) = 0.d0
+            endif
          endif
-
       enddo
+
+
+c$$$         abla(ip) = abrad(ip)
+c$$$         if (numeric.eq.2.or.numeric.eq.4) then
+c$$$            kiinv = kapm(ip)/kap(i)**2
+c$$$            kipinv = kapm(ip)/kap(ip)**2
+c$$$         else
+c$$$            kiinv = 1.d0/kap(i)
+c$$$            kipinv = 1.d0/kap(ip)
+c$$$         endif
+c$$$
+c$$$         abdf1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdf(i)+piinv*dpdf(i))
+c$$$         abdf2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdf(ip)+pipinv*
+c$$$     &        dpdf(ip))
+c$$$         abdt1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdt(i)+piinv*dpdt(i)-
+c$$$     &        4.d0)
+c$$$         abdt2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdt(ip)+pipinv*dpdt(ip)
+c$$$     &        -4.d0)
+c$$$         abdl(ip) = abrad(ip)/lum(ip)
+c$$$         if (hydro) then
+c$$$            abdr(ip) = -abrad(ip)/gmrr2*2.d0*r(ip)*accel(ip)
+c$$$            abdu1(ip) = -abrad(ip)/gmrr2*r(ip)*r(ip)*dtipsi
+c$$$            abdu2(ip) = -abrad(ip)/gmrr2*r(ip)*r(ip)*(dtninv-dtipsi)
+c$$$         else
+c$$$            abdr(ip) = 0.d0
+c$$$            abdu1(ip) = 0.d0
+c$$$            abdu2(ip) = 0.d0
+c$$$         endif
 
 
 !$OMP END DO
@@ -643,7 +819,7 @@ c               if (abs(mue(j)-mue(j-1)).gt.1.d-1) exit
          imin = novlim(kl,3)
          imax = novlim(kl,4)
          if (imin.gt.0) then
-            call mlt (imin,imax,error)
+            call mlt (imin,imax,kl,error)
             if (error.gt.0) return
          endif
       enddo
@@ -653,58 +829,6 @@ c               if (abs(mue(j)-mue(j-1)).gt.1.d-1) exit
 ***   compute parametric overshoot (alpha * Hp)
       if (novopt.ge.1) call oversh
 
-C Modif CC - ST energie ondes soleil (5 octobre 2007) -->
-*____________________________________________________________________
-***   calculation of the energy deposited by IGWs
-C Only in the case of IGWs emitted from the convective envelope
-*--------------------------------------------------------------------
-c$$$      klenvstruc = 0
-c$$$      klcorestruc = 0
-
-c$$$      if (igwsurfenerg) then
-c$$$         if (novlim(1,3).eq.1) klcorestruc = 1
-c$$$         do kl = 1,nsconv
-c$$$            if ((tau(novlim(kl,4)).lt.1.d2.or.t(novlim(kl,4)).lt.1.d6)
-c$$$     &           .and.klenvstruc.eq.0) klenvstruc = kl
-c$$$         enddo
-c$$$         if (klcorestruc.eq.0) then
-c$$$             ndbstruc = 1
-c$$$         else
-c$$$             ndbstruc = novlim(klcorestruc,4)+1
-c$$$         endif
-c$$$         ndtstruc = novlim(klenvstruc,3)-1
-c$$$         renvconv = r(ndtstruc)
-c$$$C            print *,'ndbstruc, ndtstruc',ndbstruc,ndtstruc
-c$$$
-c$$$C        Energie deposee en chaque couche dans la zone radiative
-c$$$         do i = ndbstruc,ndtstruc
-c$$$C            eondes(i) = exp((1.d0/(abs(r(i)-renvconv) +0.16d0))-5.6d0)
-c$$$               den = (abs(r(i)-renvconv)/r(nmod))+0.16d0
-c$$$               eondes(i) = exp((1.d0/den)-5.6d0)
-c$$$C               print *,i,eondes(i),r(i)
-c$$$         enddo
-c$$$
-c$$$C       Energie retiree en chaque couche dans l'enveloppe convective
-c$$$        do i = ndtstruc+1,nmod
-c$$$               den = 0.3d0*(abs(renvconv-r(i))/r(nmod))+0.16d0
-c$$$               eondes(i) = -exp((1.d0/den)-8.1d0)
-c$$$        enddo
-c$$$        eondestot = 0.d0
-c$$$        eondestotzr = 0.d0
-c$$$        eondestotec = 0.d0
-c$$$        do i = 1,nmod
-c$$$               eondestot = eondestot+eondes(i)
-c$$$C               print *,i,eondes(i),r(i)
-c$$$        enddo
-c$$$         do i = ndbstruc,ndtstruc
-c$$$                eondestotzr = eondestotzr+eondes(i)
-c$$$         enddo
-c$$$         do i = ndtstruc+1,nmod
-c$$$                eondestotec = eondestotec+eondes(i)
-c$$$         enddo
-c$$$C        print *,"EONDESTOT, eondestotzr, eondestotec dans
-c$$$C     &           structure = ",eondestot,eondestotzr,eondestotec
-c$$$      endif
 
 *_______________________________________________________________________
 ***   mixing of convective (+overshoot) regions at each iteration
@@ -723,31 +847,18 @@ c..   restore initial abundances
                enddo
             enddo
 c$$$  !     Tests activation diffusion atomique ou non (modif Td Fev.2019)
-c     print *, 'first convective shell', novlim(1,3)
             if (microdiffus.and.nphase.gt.5) then
                microdiffus = .false.
-c               print *, 'phase after 5 microdiffus false'
-c            else if (nphase.eq.1.and.time*seci.lt.disctime) then ! Ajout test TD AP Fev.2019
+               print *, 'phase after 5 microdiffus false'
             else if (nphase.eq.1.and.time*seci.lt.2e7) then ! Ajout test TD Juillet.2019
-c            else if (nphase.eq.1.and.time*seci.lt.2e6) then ! Ajout test TD AP Fev.2019
                microdiffus = .false.
-c               print *,'no diffusion this young star'
+               print *,'no diffusion this young star'
             else if (nphase.eq.1.and.novlim(1,3).eq.1.and.nsconv.eq.1)
      $              then   
                microdiffus = .false.
-c               print *,'microdiffus false - no radiative core'
-c               print *, 'novlim(1,3)',novlim(1,3),'nsconv',nsconv
+               print *,'microdiffus false - no radiative core'
+               print *, 'novlim(1,3)',novlim(1,3),'nsconv',nsconv
             endif
-
-            
-c$$$            if (nphase.eq.1.and.novlim(1
-c$$$     $           ,3).eq.1.and.nsconv.eq.1) then   
-c$$$               microdiffus = .false.
-c$$$               print *,'microdiffus false - no radiative core'            
-c$$$            else
-c$$$               microdiffus = .true.
-c$$$               print *,'microdiffus true - radiative core' 
-c$$$            endif
             
 ! Fin test activation diffusion atomique 
             if (diffzc.or.nmixd.gt.0) then

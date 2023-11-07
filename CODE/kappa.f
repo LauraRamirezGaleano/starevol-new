@@ -37,9 +37,9 @@ c      include 'evolcom.kap'
       double precision rklth,tklth,opaclth
 C     Warning: dimensions of opacity tables change with solar comp.
 c..   Young+18 (TD: 30/01/2020)
-c      common /lthopac/ opaclth(19,81,155),tklth(81),rklth(19),
-c     &     mlth,nlth,itlth
-      common /lthopac/ opaclth(19,85,155),tklth(85),rklth(19),
+c     common /lthopac/ opaclth(19,81,155),tklth(81),rklth(19),
+c    &     mlth,nlth,itlth
+       common /lthopac/ opaclth(19,85,155),tklth(85),rklth(19),
      &     mlth,nlth,itlth
 c#ifdef GRID
 c      parameter (mlth = 19,nlth = 63,itlth = 104)
@@ -75,7 +75,6 @@ c#endif
       common /extopac/ opact,dopact,dopacr,dopactd,fedge,ftredge,fzedge
       common /solar/ xspsol(nis+6),zsol,refsolar
 
-c      print *, 'temp', tk
       mt = 0
       nt = 0
       dxy = 1.d-2
@@ -90,11 +89,9 @@ c      print *, 'temp', tk
       xx = x(ih1)+x(ih2)
       xy = x(ihe3)+x(ihe4)
       xsolc = zkint*(xspsol(ic12)+xspsol(ic13)+xspsol(ic14))/zsol
-c      print *, 'xsolc',xsolc
       xsoln = zkint*(xspsol(in13)+xspsol(in14)+xspsol(in15))/zsol
       xsolo = zkint*(xspsol(io16)+xspsol(io17)+xspsol(io18))/zsol
       xc = x(ic12)+x(ic13)+x(ic14)-xsolc
-c      print *, 'xc',xc,'c12',x(ic12),'c13',x(ic13),'c14',x(ic14)
       xn = x(in13)+x(in14)+x(in15)-xsoln
       xo = x(io16)+x(io17)+x(io18)-xsolo
       xc = max(0.d0,xc)
@@ -130,13 +127,12 @@ c      endif
          return
 
       endif
-
-
+      
 *------------------------------------------------------------------------
 ***   calculation of the opacity coefficient for H-rich and low-T regions
 ***   low temperature opacities : Ferguson et al. (2005)
 *------------------------------------------------------------------------
-
+      
       if (tk.le.tlhkap) then
          if (iopaf.eq.0) then 
             iopaf = ksh
@@ -158,7 +154,7 @@ c      endif
          uopa = (tk-tklth(nt))/(tklth(nt+1)-tklth(nt))
          d1opa = rklth(mt+1)-rklth(mt)
          d2opa = tklth(nt+1)-tklth(nt)
-
+         
          if (refsolar.eq.'GN93') then
             
             if (xz.le.1.d-5) then
@@ -321,7 +317,7 @@ c      endif
             kk(2) = kk(1)+1
             kk(3) = kk(1)+16
             kk(4) = kk(3)+1
-
+            
          elseif (refsolar.eq.'GRID') then
 C Warning: dimension of opacitiy tables changes for GRID version 
 C Indices for Asplund/Cunha solar comp.
@@ -427,13 +423,12 @@ C Indices for Asplund/Cunha solar comp.
          kapx1 = 0.d0
          kapy1 = 0.d0
          return
-
+         
 *-------------------------------------------------
 *** OPAL opacities for different Z and CO mixtures
 *-------------------------------------------------
 
       else
-c     print *, 'z av',xz,'x av',xx,'xci av',xc,'xoi av',xo
          call opac (xz,xx,xc,xo,til,rotil,error)
 
          if (opact.gt.1.d15.or.error.gt.0) then

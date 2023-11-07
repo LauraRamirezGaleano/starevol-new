@@ -26,6 +26,7 @@
       include 'evolcom.nuc'
       include 'evolcom.conv'
       include 'evolcom.spec'
+      include 'evolcom.surf'  ! TD 03/2020
       include 'evolcom.therm'
       include 'evolcom.var'
 
@@ -67,8 +68,6 @@
          ftsh0 = ftsh
       endif
       if (nphase.eq.4.or.thermalpulse) then
-c         ftshe0 = min(ftshe,1.d-2*abs(1.d0-4.d0*
-c     &        log10(0.02d0/(zkint+1.d-8))))
          ftshe0 = min(ftshe,5.d-2)
       else
          ftshe0 = ftshe
@@ -101,9 +100,7 @@ c     &        log10(0.02d0/(zkint+1.d-8))))
          enddo
          vdmean = vdmean/m(inuctop)
          dtnd = 2.d0/(vdmean*xsp(1,ih1))
-C         dtnd = ftsh/(vdmean*xsp(1,ih1))
          dtnd = max(dtnd,1.d3*sec/mtini,1.d3)
-C         dtnd = max(dtnd,5.d2*sec)
          if (dtnd.le.dtnx) then
             dtnx = dtnd
             iburning = 1
@@ -286,8 +283,8 @@ c            nphase = nphase0
       endif
       if (mtini.gt.12.d0) nphase = max(nphase0,nphase,1)
 
-      if (nphase.le.2.and.lmicro.ge.2.and.lmicro.le.4.and.idiffcc)         ! Modif AP TD 06/2018 puis TD 11/18
+      if (nphase.le.2.and.lmicro.ge.2.and.lmicro.le.6.and.idiffcc)         ! Modif AP TD 06/2018 puis TD 11/18 puis TD 07/21
      &     microdiffus = .true.
-
+      
       return
       end

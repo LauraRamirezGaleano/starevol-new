@@ -43,7 +43,7 @@
       double precision reffcorr,teffcorr,irrad
       double precision zzmean,amean,xamean
       double precision x(nsp),y(nsp)
-
+      
 *______________________________________________________________
 ***   calculation of the local metallicity and molar abundances
 *--------------------------------------------------------------
@@ -61,7 +61,7 @@
       
       call eos (1,error)
       if (error.gt.0) return
-      
+            
 *_________________________________________
 ***   calculation of the screening factors
 *-----------------------------------------
@@ -106,12 +106,8 @@
 ***   calculation of the total opacity coefficient
 *-------------------------------------------------
 
-c         if (k.gt.nmod-10) print *,'in thermo before calling kappa',k
-c     &        ,t(k),ro(k)
-
-         call kappa (t(k),ro(k),muiinv(k),x,ksh,kap1,kapr1,kapt1,kapx1
-     &        ,kapy1,nretry,iter,iopa,iopaf,error)
-
+         call kappa (t(k),ro(k),muiinv(k),x,ksh,kap1,kapr1,kapt1,
+     &        kapx1,kapy1,nretry,iter,iopa,iopaf,error)
 
          if (error.gt.0) return
          kap(k) = kap1
@@ -210,10 +206,20 @@ c$$$      endif
 *_____________________________________________
 ***   calculation of the optical depth profile
 *---------------------------------------------
-
+      
       tau(nmod) = tau0
       dtaudf(nmod) = 0.d0
       dtaudt(nmod) = 0.d0
+      l = nmod
+!     Comments : Printing tau profile for debugging (13/06/23)
+c$$$      write(*,*) ""
+c$$$      write(*,*) "Tau profile generation :"
+c$$$      write(*,"(1X,A,6X,6(A,9X))") "sh","tau","rst","kappa","rho","T",
+c$$$     &     "drl"
+c$$$      write(*,*) "--------------------------------------------------"//
+c$$$     &     "--------------------------"
+c$$$      write(*,"(1X,I4,6(1X,E11.5))") l, tau(l), rst, kap(l), ro(l), 
+c$$$     &        t(l), drl
       do l = nmod1,2,-1
          drl = abs(r(l+1)-r(l))
          rst = kap(l)*ro(l)*drl
@@ -222,10 +228,17 @@ c$$$      endif
          tau(l) = tau(l+1)+rst
          dtaudf(l) = dtaudf(l+1)+rstdf
          dtaudt(l) = dtaudt(l+1)+rstdt
+c$$$         write(*,"(1X,I4,6(1X,E11.5))") l, tau(l), rst, kap(l), ro(l), 
+c$$$     &        t(l), drl
       enddo
       tau(1) = tau(2)
       dtaudf(1) = dtaudf(2)
       dtaudt(1) = dtaudt(2)
+      l = 1
+c$$$      write(*,"(1X,I4,6(1X,E11.5))") l, tau(l), rst, kap(l), ro(l), 
+c$$$     &        t(l), drl
+c$$$      write(*,*) "--------------------------------------------------"//
+c$$$     &     "--------------------------"
 
 *____________________________________________
 ***   calculation of the effective quantities
@@ -261,24 +274,24 @@ c$$$      endif
          reff = r(neff)
       endif
       teff = (leff/(pim4*sig*reff*reff))**0.25d0
-
+      
 *_____________________________________________________________
 ***   corrected atmospheric temperature profile for optically
 ***   thick winds (WR phase)
 *-------------------------------------------------------------
 
-      if (xsp(nmod1,ih1).le.0.2d0.and.log10(teff).gt.4.d0.and.
-     &     m(nmod)/msun.gt.10.d0) then
-         call corrwind (teffcorr,reffcorr)
-         teff = 10.d0**teffcorr
-         reff = reffcorr
-      endif
-
+c      if (xsp(nmod1,ih1).le.0.2d0.and.log10(teff).gt.4.d0.and.
+c     &     m(nmod)/msun.gt.10.d0) then
+c         call corrwind (teffcorr,reffcorr)
+c         teff = 10.d0**teffcorr
+c         reff = reffcorr
+c      endif
+      
 *__________________________________________
 ***   calculation of the internal structure
 *------------------------------------------
 
       call structure (error)
-
+      
       return
       end

@@ -74,11 +74,6 @@
                   eerhocap = eerhocap+efn(mm)
                endif
             endif
-c            if (nflu.eq.1.and.ksh.ge.98.and.ksh.le.101.and.mm.eq.124)
-c            if (nflu.eq.-1.and.ksh.eq.1)
-c     &           write (nout,1) mm,i1,i2,i3,i4,y(i1),y(i3),vi(mm),
-c     &           flux(mm),efn(mm),ee*econv
-c 1          format(5(i4),6(1x,1pe11.4))
          enddo
 ***   rho dependence
       else

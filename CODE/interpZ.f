@@ -17,9 +17,9 @@
 
       dimension DT(512),DDT(512)
 
-      common /atmospheres/ rtau(127,10,59,6),rT(127,10,59,6),
-     &     rhotab(127,10,59,6),Fconvtab(127,10,59,6),Ttabeff(59),
-     &     gtabeff(10),Ztabeff(6),filesize
+      common /atmospheres/ rtau(127,12,59,6),rT(127,12,59,6),
+     &     rhotab(127,12,59,6),Fconvtab(127,12,59,6),Ttabeff(59),
+     &     gtabeff(12),Ztabeff(6),filesize
       common /atmospheres2/ tableTZ(127,59,10),tablerhoZ(127,59,10),
      &     tableFcZ(127,59,10)
       common /metal/ FeH

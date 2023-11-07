@@ -56,4 +56,3 @@
 
       return
       end
-c$$$      end subroutine Quintic

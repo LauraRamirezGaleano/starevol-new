@@ -21,11 +21,11 @@
       include 'evolcom.teq'
       include 'evolcom.var'
       include 'evolcom.therm'
-
       include 'evolcom.grad'
 
-      integer i,j,k
+      integer i,j,k,n
       integer hs,hhs
+      integer filesize
 
       double precision exv
       double precision loggs,ts,gs,gs1,ms,ms1
@@ -44,11 +44,12 @@
       double precision rhoatm(nmod),convatm(nmod)
       double precision rtau,rT,rhotab,Fconvtab
       double precision Ttabeff,gtabeff,Ztabeff
-      double precision FeH,taueffb
+      double precision FeH!,taueffb
       double precision dqtautemp(nmod),ddqtautemp(nmod)
       double precision Tatms(nmod),taumod(nmod)
-
-      integer filesize
+      double precision lnTatms(nmod)
+      double precision interp_T(nsh),interp_rho(nsh),interp_r(nsh),
+     &     interp_ne(nsh),interp_v(nsh)
 
       logical ntp,ntp2
 
@@ -63,19 +64,14 @@
      &     -1.316d-3,8.359776d0,1.30637215d2,-3.04d-3,-4.2022d-2 /
 
       common /interpatm/ rhoat(nsh),Tatm(nsh),ntp2
-!      common /atmospheres/ rtau(127,34,10),rT(127,34,10),
-!     &     rhotab(127,34,10),Fconvtab(127,34,10),Ttabeff(34),
-!     &     gtabeff(10),nb_geff,nb_Teff,filesize
-      common /atmospheres/ rtau(127,10,59,6),rT(127,10,59,6),
-     &     rhotab(127,10,59,6),Fconvtab(127,10,59,6),Ttabeff(59),
-     &     gtabeff(10),Ztabeff(6),filesize,taumin,taumax
-
-c$$$      common /atmospheres/ rtau(127,60,10,7),rT(127,60,10,7),
-c$$$     &     rhotab(127,60,10,7),Fconvtab(127,60,10,7),Ttabeff(60),
-c$$$     &     gtabeff(10),Ztabeff(7),filesize
+!      common /atmospheres/ rtau(127,12,59,6),rT(127,12,59,6),
+!     &     rhotab(127,12,59,6),Fconvtab(127,12,59,6),Ttabeff(59),
+!     &     gtabeff(12),Ztabeff(6),filesize,taumin,taumax
+      common /atmospheres/ rtau(120,3,17,3),rT(120,3,17,3),
+     &     rhotab(120,3,17,3),Fconvtab(120,3,17,3),Ttabeff(17),
+     &     gtabeff(3),Ztabeff(3),filesize,taumin,taumax
 
       common /metal/ FeH
-
 
       qtau(1:nmod) = 0.d0
       dqdtau(1:nmod) = 0.d0
@@ -86,14 +82,13 @@ c$$$     &     gtabeff(10),Ztabeff(7),filesize
      &     and.loggs.lt.1.5d0
 
       ntp2 = (teff.gt.7.2d3).and.(ntprof.eq.4)
-!!      ntp2 = .false.
+!      ntp2 = .false.
 
-*____________________________________________________________
+************************************************************************
 ***   Grey Atmosphere - Eddington approximation
-*------------------------------------------------------------
-
+************************************************************************
+      
       if (ntprof.eq.0.or.(ntprof.eq.1.and..not.ntp).or.ntp2) then
-c         print *,'entering ?'
          taueff = max(pw23,tau0)
          qtau0 = max(pw23,tau0)
          do i = nmod,1,-1
@@ -113,13 +108,14 @@ c$$$         call atmos(Tatmd,rhoatmd,Ratmd,Patmd,Reff,Leff)
 c$$$      endif
 c$$$***************************
 
-      if (ntprof.ne.1.and.ntprof.ne.3.and.ntprof.ne.4.and.ntprof.ne.5.
-     &     or.ntp2)
-     &     return
+      if (ntprof.ne.1.and.ntprof.ne.3.and.ntprof.ne.4.and.ntprof.ne.5
+     &     .and.ntprof.ne.6.and.ntprof.ne.7.or.ntp2) then
+         return
+      end if
 
-*____________________________________________________________
+************************************************************************
 ***   Atmosphere Models (Plez): analytic fits for cool giants
-*------------------------------------------------------------
+************************************************************************
 
       if (ntprof.eq.1.and.ntp) then
 
@@ -158,11 +154,10 @@ c$$$***************************
 
       endif
 
-
-*________________________________________________________________
+************************************************************************
 ***   Atmosphere Models (Kurucz + Eriksson + Plez): analytic fits
 ***   models used for PMS grid
-*----------------------------------------------------------------
+************************************************************************
 
       if (ntprof.eq.3) then
 
@@ -217,51 +212,38 @@ c         pwc3 = -0.12d0
             endif
          enddo
 
-c         write (850,2000) (qtau(i),tau(i),dqdtau(i),abrad(i), i=1,nmod)
 
 ! 20      qtaus = max(pw23,tau0)
  20      qtaus = qtau(nmod)
-!         if (no.eq.maxmod) then
-!            do i=1,nmod
-!               write (2000,2010) i,tau(i),qtau(i),dqdtau(i)
-!            enddo
-!         endif
 
       endif
 
-*********************************************************************************************
+************************************************************************
 ***   Atmosphere Models (PHOENIX): interpolation
 ***   models used for PMS grid 2016
-*----------------------------------------------------------------
-
-      if (ntprof==4.and..not.ntp2) then
+************************************************************************
+      
+      if (ntprof.eq.4.and..not.ntp2) then
+         
          gs = g*m(neff)/(reff*reff)
          ts = teff
          qtau = 0.d0
          Tatm = 0.d0
          convatm = 0.d0
          rhoatm = 0.d0
-!     print *,'## ATMOS : teff =',ts,' geff =',gs
-!     &           ,' Zeff=',FeH
-!     !            print *,tau(nmod-3),gs,taulim,nmod,ts,Tatm(nmod-3),
-!     !     &           rhoatm(nmod-3),convatm(nmod-3)
          call select_table(tau,gs,taulim
      &        ,nmod,ts,Tatm,rhoatm,convatm)
-!     !            print *,tau(nmod-3),gs,taulim,nmod,ts,Tatm(nmod-3),
-!     !     &           rhoatm(nmod-3),convatm(nmod-3)
-         
          k=nmod
-         do while (tau(k+10)<=taulim)
+         do while (tau(k)<=taulim)
             qtau(k) = pw43*(Tatm(k)/ts)**4.d0
      &           -tau(k)
             k=k-1
-!!!   print *,tau(k),qtau(k)
          enddo
          valmax = 0.d0
+         taueff = 0.d0
          
          dqtautemp = 0.d0
          ddqtautemp = 0.d0
-c     print *,(k,tau(k),Tatm(k),k=1,nsh)
          do i=1,k
             Tatms(i)=t(i)
             taumod(i)=tau(i)
@@ -270,21 +252,24 @@ c     print *,(k,tau(k),Tatm(k),k=1,nsh)
             Tatms(i)=Tatm(i)
             taumod(i)=tau(i)
          enddo
-c     print *,(k,taumod(k),Tatms(k),k=1,nmod)
-         taue = 0.d0
-         
-         call splineatmb (taumod,Tatms,nmod,1.d50,1.d50,ddqtautemp,
+
+         call splineatm (Tatms,taumod,nmod,1.d50,1.d50,ddqtautemp,
      &        dqtautemp)
-         call splintatmb (taumod,Tatms,ddqtautemp,nmod,pw23,taue)
-         
-!!!         print *,'qtaue=',taue
-         
-         call splineatmb (Tatms,taumod,nmod,1.d50,1.d50,ddqtautemp,
-     &        dqtautemp)
-         
-         call splintatmb (Tatms,taumod,ddqtautemp,nmod,ts,taueffb)
-!!!         print *,'taueffb=',taueffb,ts
+         call splintatmb (Tatms,taumod,ddqtautemp,nmod,ts,taueff)
+         write(*,*) "taueff = ", taueff
          call splineatm (tau,qtau,nmod,1.d50,1.d50,ddqtau,dqdtau)
+         do k=1,nmod1
+            if (qtau(k).eq.0.d0) then
+               dqdtau(k) = 0.d0
+               dqdtau(k+1) = 0.d0
+            end if
+         end do
+         call splineatm (r,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+     &        ddqdtaudr)
+         call splineatm (lnf,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+     &        ddqdtaudf)
+         call splineatm (lnT,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+     &        ddqdtaudt)
          
          qtaus = qtau(nmod)
          qtau0 = 1.d0/dsqrt(3.d0)
@@ -294,15 +279,12 @@ c     print *,(k,taumod(k),Tatms(k),k=1,nmod)
          dqdtausv(1:nmod) = dqdtau(1:nmod)
          rhoatmsv(1:nmod) = rhoatm(1:nmod)
          
-!     print *,ts,t(neff),tatm(neff)
-         
          ts = teff
 c     ts = (lum(nmod)/(pi*sig*r(nmod)*r(nmod)))**0.25d0
          gs = g*m(neff)/(r(nmod)*r(nmod))
 !         gs = g*m(neff)/(reff*reff)
 
          rhoat(1:nmod) = rhoatm(1:nmod)
-
 
          alpha20 = 0.065d0
          beta0 = 5.7d2
@@ -349,32 +331,24 @@ c         pwc3 = -0.12d0
             endif
          enddo
 
-
-
-
-c$$$         qtauKS(taulim:nmod) = 1.39d0 - 0.815d0 *exp(-2.54d0
-c$$$     $        *tau(taulim:nmod)) -0.025d0 * exp(-30.d0
-c$$$     $        *tau(taulim:nmod))
-c$$$         dqdtauKS(taulim:nmod) = 2.0701d0*exp(-2.54d0*tau(taulim:nmod))
-c$$$     &        + 0.75d0 * exp(-30.d0 *tau(taulim:nmod))
-c$$$         ddqtauKS(taulim:nmod) = -5.258054d0*exp(-2.54d0*
-c$$$     &        tau(taulim:nmod)) - 22.5d0 * exp(-30.d0 *tau(taulim:nmod))
-
+         do i=1,nmod
+            write(855,"(7(1X,E11.5))")
+     &           tau(i), Tatm(i), t(i), rhoat(i), ro(i), qtau(i),
+     &           dqdtau(i)
+         end do
+         stop
+         
          k=nmod
          do while (tau(k).lt.1.d3)
             k = k-1
          enddo
 
-C         rewind (2000)
-C         do i=k,nmod
-C            write (2000,2000) i,tau(i),T(i),Tatm(i),qtau(i),dqdtau(i)
-C!!!     &           ,qtauKS(i),dqdtauKS(i),qtauLS(i)
-C         enddo
       endif
-
-**************************************************
-c.. Atmosphere from Krishna Swamy (1966)
-*-------------------------------------------------
+        
+************************************************************************
+***   Atmosphere from Krishna Swamy (1966).
+************************************************************************
+      
       if (ntprof.eq.5) then
          ts = teff
          a1 = 1.39d0
@@ -391,7 +365,199 @@ c.. Atmosphere from Krishna Swamy (1966)
          qtaus = qtau(nmod)
       endif
 
+************************************************************************
+***   Atmosphere models (CMFGEN) :
+***   Interpolation inside the CMFGEN tables for massive stars.
+************************************************************************
+      
+      if (ntprof.eq.6) then
 
+***   1. Interpolate inside CMFGEN tables to compute atmospheric
+***   .. profiles in (Teff, log(Mdot), log(geff)).
+         ts = teff
+         gs = LOG10(g*m(neff)/(reff*reff))
+         Tatms = 0.d0
+         Tatm = 0.d0
+         rhoat = 0.d0
+         interp_T = 0.d0
+         interp_rho = 0.d0
+         call interp_CMFGEN(LOG10(dms),gs,interp_T,interp_rho,interp_r,
+     &        interp_ne,interp_v(nsh))
+
+***   2. Compute q(tau) profile.
+         k=nmod
+         do while (tau(k)<=taulim)
+            qtau(k) = pw43*(interp_T(k)/ts)**4.d0
+     &              -tau(k)
+            !write(*,*) tau(k), qtau(k)
+            k=k-1
+         enddo
+
+***   3. Save atmospheric profiles.
+         do i=1,k
+            taumod(i) = tau(i)
+            rhoat(i) = ro(i)
+            Tatms(i) = t(i)
+         enddo
+         do i=k+1,nmod
+            taumod(i) = tau(i)
+            rhoat(i) = interp_rho(i)
+            Tatms(i) = interp_T(i)
+         enddo
+         Tatm(1:nmod) = Tatms(1:nmod)
+         
+***   4. Interpolate to compute taueff. 
+         valmax = 0.d0
+         dqtautemp = 0.d0
+         ddqtautemp = 0.d0
+         taue = 0.d0
+         taueff = pw23
+         
+***   5. Compute limit values of q(tau).
+         qtaus = qtau(nmod)
+         qtau0 = 1.d0/dsqrt(3.d0)
+
+***   6. Interpolate to compute q(tau) derivatives.
+         call splineatm (tau,qtau,nmod,1.d50,1.d50,ddqtau,
+     &        dqdtau)
+         do k=1,nmod1
+            if (qtau(k).eq.0.d0) then
+               dqdtau(k) = 0.d0
+               dqdtau(k+1) = 0.d0
+            end if
+            !write(*,*) tau(k), qtau(k), dqdtau(k)
+         end do
+         call splineatm (r,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+     &        ddqdtaudr)
+         call splineatm (lnf,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+     &        ddqdtaudf)
+         call splineatm (lnT,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+     &        ddqdtaudt)
+
+***   7. Write atmospheric profiles into a file (debugging).
+         if (iter.le.1) then
+            write(855,"(1X,A)") "------------------------------------"//
+     &           "----------------------------------------------------"
+            write(855,"(1X,A,1X,7(A,6X))") "sh  ","tau   ","Tatm  ",
+     &           "T     ","rhoatm","ro    ","ratm  ","r     "
+            write(855,"(1X,A)") "------------------------------------"//
+     &           "----------------------------------------------------"
+            do i=1,nmod
+               write(855,"(1X,I4,7(1X,E11.5))")
+     &              i, tau(i), interp_T(i), t(i), interp_rho(i), ro(i),
+     &              interp_r(i), r(i)
+            end do
+         end if
+c$$$         write(*,"(1X,A)") "------------------------------------"//
+c$$$     &        "----------------------------------------------------"
+c$$$         write(*,"(1X,A,1X,7(A,6X))") "sh  ","tau   ","Tatm  ",
+c$$$     &        "T     ","rhoatm","ro    ","ratm  ","r     "
+c$$$         write(*,"(1X,A)") "------------------------------------"//
+c$$$     &        "----------------------------------------------------"
+c$$$         do i=1,nmod
+c$$$            write(*,"(1X,I4,7(1X,E11.5))")
+c$$$     &           i, tau(i), interp_T(i), t(i), interp_rho(i), ro(i),
+c$$$     &           interp_r(i), r(i)
+c$$$         end do
+c$$$         write(*,"(1X,A)") "------------------------------------"//
+c$$$     &        "----------------------------------------------------"
+         !stop
+      endif
+
+************************************************************************
+***   Atmosphere models (TLUSTY) :
+***   Interpolation inside the TLUSTY tables for massive stars.
+************************************************************************
+***   NOT WORKING
+      
+      if (ntprof.eq.7) then
+
+!     .. Interpolate inside TLUSTY tables 
+         ts = teff
+         gs = LOG(g*m(neff)/(reff*reff))/LOG(10.d0)
+         Tatms = 0.d0
+         Tatm = 0.d0
+         rhoat = 0.d0
+         call interp_TLUSTY(gs, interp_T, interp_rho, teff)
+
+!     .. Save atmospheric profiles
+         k=nmod
+         do while (tau(k)<=taulim)
+            k=k-1
+         enddo
+         do i=1,k
+            rhoat(i) = ro(i)
+            Tatms(i) = t(i)
+         enddo
+         do i=k+1,nmod
+            rhoat(i) = interp_rho(i)
+            Tatms(i) = interp_T(i)
+         enddo
+         taumod(1:nmod) = tau(1:nmod)
+         Tatm(1:nmod) = Tatms(1:nmod)
+
+!     .. Interpolate to compute derivative q(tau) profiles
+         valmax = 0.d0
+         dqtautemp = 0.d0
+         ddqtautemp = 0.d0
+         taue = 0.d0
+         call splineatm (Tatms,taumod,nmod,1.d50,1.d50,ddqtautemp,
+     &        dqtautemp)
+         if (teff.lt.5.d4.and.teff.gt.2.5d4) then
+            call splintatmb (Tatms,tau,ddqtautemp,nmod,teff,
+     &           taueff)
+         end if
+         write(*,*) "taueff =", taueff
+         neff = 0
+         do k = nmod-2,2,-1
+            if (tau(k).gt.taueff.and.tau(k+1).ge.taueff) exit
+         enddo
+         neff = k+2
+         reff = r(neff)
+
+!     .. Compute q(tau) profile
+         k=nmod
+         do while (tau(k)<=taulim)
+               qtau(k) = pw43*(interp_T(k)/teff*sqrt(r(k)/reff))**4.d0
+     &              -tau(k)
+c$$$               qtau(k) = pw43*(interp_T(k)/ts)**4.d0
+c$$$     &              -tau(k)
+c$$$               qtau(k) = pw23 + (qtau(k)-pw23)
+c$$$     &              *exp(-tau(k))
+            k=k-1
+         enddo
+         
+!     .. Compute limit values of q(tau)
+         qtaus = qtau(nmod)
+         qtau0 = 1.d0/dsqrt(3.d0)
+
+!     .. Interpolate to compute q(tau) derivatives
+         call splineatm (tau,qtau,nmod,1.d50,1.d50,ddqtau,
+     &        dqdtau)
+         do k=1,nmod1
+            if (qtau(k).eq.0.d0) then
+               dqdtau(k) = 0.d0
+               dqdtau(k+1) = 0.d0
+            end if
+         end do
+         call splineatm (r,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+     &        ddqdtaudr)
+         call splineatm (lnf,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+     &        ddqdtaudf)
+         call splineatm (lnT,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+     &        ddqdtaudt)
+
+!     .. Write atmospheric profiles into a file (debugging)
+         do i=1,nmod
+            write(855,"(E11.5,1X,E11.5,1X,E11.5,1X,E11.5,1X,E11.5,"//
+     &           "1X,E11.5)")
+     &           tau(i), Tatm(i), t(i), rhoat(i), ro(i), qtau(i)
+         end do
+
+!         stop
+         
+      endif
+      
  2000 format (i4,2x,5(1x,0pe12.5))
  2010 format (i4,2x,3(1x,0pe12.5))
  2020 format (i4,2x,8(1x,0pe12.5))

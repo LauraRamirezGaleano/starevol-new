@@ -333,9 +333,6 @@ c.. Modification according to Gallet & Bouvier 2013
 ***   Estimate the actual mass loss from both hot and cold processes.
 
       Mdot = Mdot_cold + (Mdot_hot*exp(-4.d0*MATR**2))
-c      print *,'Rossby,fstar,Mdot,Mdot_hot,Mdot_cold,MATR', Rossby
-c     $     ,log10(fstar),Bcrit,log10(FluxTR),Mdot_hot/Mdot_cold
-c     $     ,log10(MATR),log10(Mdot)
 
       return
       end

@@ -57,7 +57,7 @@ LD = $(FC)
 DD=off
 
 # parallelizing
-PAR=off
+PAR=on
 
 # define code version
 star_version = $(shell grep code_version starevol.f |cut -c 22-25)
@@ -104,13 +104,18 @@ ifeq ($(DD),on)
    ARCH=off
    PAR=off
 endif
+
 ifeq ($(PAR),on)
-   PARALLEL = -parallel
+   #PARALLEL = -parallel
+   PARALLEL=
    SFLAGS=
    #PARALLEL = -openmp -fpp
-   PARLINKS = -openmp -lpthread
+  # PARLINKS = -openmp -lpthread
+   PARLINKS = -qopenmp 
+#   PARLINKS = -fopenmp 
 #-lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lmkl_lapack -lguide -openmp -lpthread
 endif
+
 ifeq ($(ARCH),on)
    FARCH = -ipo
    ifeq ($(SUFF),Intelx32)
@@ -165,13 +170,6 @@ EXT = V${star_version}
 NAME = ${ROOT_NAME}_${EXT}
 NAME_EXEC = $(shell basename ${NAME} .e)
 
-
-# libraries, exple: -L/usr/local/lib -llapack -L$(HOME)/lib -lmypack
-#LIB = /usr/local/intel/mkl/10.0.1.014/lib/em64t/libmkl_intel_lp64.a /usr/local/intel/mkl/10.0.1.014/lib/em64t/libmkl_intel_thread.a /usr/local/intel/mkl/10.0.1.014/lib/em64t/libmkl_core.a -L/usr/local/intel/mkl/10.0.1.014/lib/em64t
-#LIB = -lmkl_lapack -lem64t -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lguide -lpthread
-#LIB = -lmkl_lapack -lmkl
-
-# linker flags, usually none, sometimes -static
 ifeq ($(FC),ifort)
     LDFLAGS = $(FFLAGS)
 else
@@ -183,13 +181,13 @@ else
 endif
 
 # Profiling options
-PROF =
+PROF = 
 
 # Profiling notice
 #  1 -  $(NAME).e
 #  2 -  gprof ./$(NAME).e gmon.out > log
 ifdef PROF
-	FFLAGS = -pg -O2 -W1 -w -Vaxlib -static -no-ipo
+	FFLAGS = -pg
 	LDFLAGS = -pg
 	SUFF:=${SUFF}_prof
 	SFLAGS =
@@ -204,15 +202,15 @@ DIR_EXEC = $(DIR_EXE)/
 DIR_BASE=$(shell basename ${PWD})
 
 # source directory repository
-DIR_SRC = /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/
+DIR_SRC = $(DIR_EXE)
 
 # Installation directories (default directories)
 IDIR_CODE = $(DIR_SRC)/CODE
 IDIR_INCL = $(DIR_SRC)/INCL
 IDIR_NUC = $(DIR_SRC)/LIBNUC
 IDIR_NUM = $(DIR_SRC)/LIBNUM
-IDIR_PACK = $(DIR_SRC)/PACKAGES
-IDIR_OPA = $(DIR_SRC)/OPACITY
+IDIR_PACK = $(DIR_SRC)/PACK
+IDIR_OPA = $(DIR_SRC)/LIB
 IDIR_FLAME = $(DIR_SRC)/FLAME
 IDIR_BATCH = $(DIR_BATCH)
 IDIR_SMPROG = $(DIR_SMONGO)/PROG
@@ -257,6 +255,38 @@ INCL_PATH = -I$(RDIR_INCL)
 # define date
 stardate = $(shell date +%d"_"%m"_"%Y)
 
+# Use MKL library
+#LIB = -mkl
+
+EVO_OBJ =
+EVO_SRC =
+
+# Compile with GYRE if decided
+ifeq ($(GYRE),on)
+
+   # add include directories containing GYRE modules
+   INCL_PATH = -I$(RDIR_INCL) -I$(GYRE_INC) -module $(IDIR_PACK) 
+
+   # link librairies for GYRE
+   # for gfortran with Linux use
+#   LIB = -L$(GYRE_INC) -lgyre -L$(MESASDK_ROOT)/bin `mesasdk_lapack95_link` `mesasdk_lapack_link` `mesasdk_blas_link` `mesasdk_hdf5_link` -lz
+   # for gfortran with MacOS use
+#   LIB = -L$(GYRE_INC) -lgyre -Wl,-rpath=$(MESASDK_ROOT) -L$(MESASDK_ROOT)/bin `mesasdk_lapack95_link` `mesasdk_lapack_link` `mesasdk_blas_link` `mesasdk_hdf5_link` -lz
+    # for ifort with Linux use
+#   LIB += $(GYRE_INC)/gyre_lib.a -L$(MESASDK_ROOT)/bin `mesasdk_lapack95_link` `mesasdk_lapack_link` `mesasdk_blas_link` -lz
+   # for ifort with MacOS use
+   LIB += $(GYRE_INC)/gyre_lib.a -Wl,-rpath,$(MESASDK_ROOT) -L$(MESASDK_ROOT)/bin `mesasdk_lapack95_link` `mesasdk_lapack_link` `mesasdk_blas_link` -lz
+    # for static compilation with ifort use
+#   LIB = -static -L$(GYRE_INC) -lgyre -L$(MESASDK_ROOT)/bin `mesasdk_lapack95_link` `mesasdk_lapack_link` `mesasdk_blas_link` -lz -lgfortran -lquadmath
+
+   # list modules that need to be recompiled
+   EVO_OBJ = $(RDIR_PACK)/evolstell_gyre.o
+   EVO_SRC = $(RDIR_PACK)/evolstell_gyre.f90
+   # add compilation flag for preprocessor
+   FFLAGS := $(FORTRAN_FLAGS) -DGYRE 
+endif
+
+
 ####### include files #######
 
 ###ATTENTION#####
@@ -282,34 +312,40 @@ EVOLINCL = $(patsubst %,$(RDIR_INCL)/%,$(SRC_INCL))
 
 ####### source files #######
 
-SRC_STAR = starevol.f accret.f atmtp.f boreas.f calcevo.f centeq.f \
-	chedif.f convzone.f denucl.f dfdr.f diffinit.f diffherwig.f \
-	diffsolve_OK.f diffusion.f diffkyle.f diffbaraffe.f diffturbul.f evodat.f fdiff.f freac.f fscreen.f \
-	guess.f init.f inteq.f interpmesh.f kappa.f mchange.f \
-	mesh.f mix.f mlt.f netdiff.f network.f neutri.f nuceng.f \
+SRC_STAR = runevol.f starevol_init.f starevol.f accret.f atmtp.f boreas.f calcevo.f centeq.f \
+	chedif.f convzone.f denucl.f dfdr.f diffinit.f \
+	diffsolve_OK.f diffturbul.f diffusion.f evodat.f fdiff.f freac.f fscreen.f \
+	guess.f init.f inteq.f interp_CMFGEN.f interp_TLUSTY.f interpmesh.f interpZ.f kappa.f \
+        load_CMFGEN.f load_TLUSTY.f mchange_Vink.f mesh.f mix.f mlt.f netdiff.f network.f neutri.f nuceng.f \
 	nucsolve.f nucprod.f nwracc.f nwtraf.f opa_co.f oversh.f \
-	pconv.f prvar.f quintic.f resulpr.f rinimod.f rininet.f rmodpar.f \
-	screen.f structure.f surfeq.f thermo.f tstep.f \
-	tstepx.f vit.f ydequil.f yequil.f yneutron.f \
-	interpZ.f select_table.f
+	pconv.f prvar.f quintic.f resulpr.f rinimod.f rininet.f rmodpar_nml.f \
+	screen.f select_table.f structure.f surfeq.f thermo.f tstep.f \
+	tstepx.f vit.f ydequil.f yequil.f yneutron.f
 
 SRC_NUC = nulosc.f vitsub_ce2_qinu.f vitsub_167_Nacre2.f
 #SRC_NUC = nulosc.f vitsub_ce2_qinu.f vitsub_167_Nacre1.f
 
-SRC_PACK = corrwind.f diffusc_ondes.f igw.f eosc.f jtranspc_ondesexcit.f rotation.f diffinitondesexcit.f
+SRC_PACK = corrwind.f diffusc_ondes.f overshootc.f igw.f eosc.f jtranspc_ondesexcit.f rotation.f diffinitondesexcit.f
+#endif
 
 SRC_FLAME = myengen.f myflamespeed.f mycompo.f
 
-#SRC_OPA = livopaint_opaext.f
-SRC_OPA = livopaint_opaAS09.f lthopa_155.f lthopa_155AS09.f lthopa_120.f
-#SRC_OPA = livopaint_new.f lthopa_155.f
-# hthopa.f  lthopa.f
+ifeq ($(SOLCOMP),AGSS09)
+	SRC_OPA = livopaint_opaAS09.f lthopa_155.f lthopa_155AS09.f lthopa_120.f
+endif
+ifeq ($(SOLCOMP),AY18)
+	SRC_OPA =  lthopa_155AY18.f livopaint_opaAY18.f
+endif
+ifeq ($(SOLCOMP),GN93)
+        SRC_OPA = livopaint_new.f lthopa_155.f
+endif
 
 SRC_NUM = exv.f fit.f nwrmat.f interlin.f shearnwt.f \
-	lubksb.f ludcmp.f savgol.f \
-	dgetrf.f dgetrs.f lsame.f dtrsm.f xerbla.f dlaswp.f dgetf2.f \
-	dswap.f dscal.f dger.f idamax.f ilaenv.f dgemm.f iparmq.f ieeeck.f \
-	nagmod_ok.f splineatm.f splineatmb.f splintatm.f splintatmb.f  
+	lubksb.f ludcmp.f savgol.f lsame.f xerbla.f idamax.f ilaenv.f \
+        iparmq.f ieeeck.f \
+        nagmod_ok.f sort.f splineatm.f splineatmb.f splintatm.f splintatmb.f \
+	dgetrf.f dgetrs.f dtrsm.f dlaswp.f dgetf2.f \
+	dswap.f dscal.f dger.f dgemm.f  
 #	gift_54.f leqs.f 
 #	##ma28ad.f ma28bc.f mc20ad.f ma30ad.f ma30dd.f \
 	##mc20ad.f mc24ad.f mc23ad.f mc22ad.f mc21a.f mc13d.f mc21b.f \
@@ -335,7 +371,6 @@ OBJ_FLAME = $(FOR_FLAME:.f=.o)
 OBJ_LIB = $(OBJ_NUM) $(OBJ_NUC) $(OBJ_PACK) $(OBJ_FLAME)
 OBJECTS = $(OBJ_STAR) $(OBJ_LIB)
 
-
 ######### listing files #############
 
 LST_OBJS = $(OBJECTS:.o=_mod.f90) $(OBJECTS:.o=_mod.mod)
@@ -345,10 +380,11 @@ LST_OPA = $(OBJ_OPA:.o=_mod.f90) $(OBJ_OPA:.o=_mod.mod)
 
 ######### batch files #############
 
-SRC_BATCH = runevol save nexte batche cpevol deline gensm fusevol \
+SRC_BATCH = runevol save nexte batche batchesun cpevol deline gensm fusevol \
         header restart renseq evolpar concatevol cgpar genkipsm \
         jcl jclb rcreate catpagb starevolnuc_${stype}$(star_step).par \
-	tcshrc ecut efuse ecutfinal mkdirevol lse esh
+	tcshrc ecut efuse ecutfinal mkdirevol lse esh \
+	bash_before bash_after bash_after_sun bash_evolfile
 
 
 ######### program files #############
@@ -356,7 +392,7 @@ SRC_BATCH = runevol save nexte batche cpevol deline gensm fusevol \
 SRC_UTILS = Make_binlist_${stype} binlist_${stype}.f Make_starevolman \
         starevolman.f Grevesse.dat transfomu.f transfomu.link \
         evoldeline.f evolcut.f evolstat.f \
-	GN93.dat AG89.dat GNS96.dat GS98.dat AGS05.dat
+	GN93.dat AG89.dat GNS96.dat GS98.dat AGS05.dat AGSS09.dat AY18.dat
 
 
 ######### headers files #############
@@ -456,12 +492,15 @@ LSR_ALL = `echo $(LSR_BAN1) $(IDIR_CODE) $(LSR_BAN1) $(LSR_STAR) $(LSR_BAN) $(ID
 # generate execution file
 #########################
 
-
 .f.o:
 	$(FC) $(INCL_PATH) -c $(FFLAGS) $(FARCH) $(PARALLEL) $(SFLAGS) -o $@ $<
 
-$(NAME_EXEC).e: $(OBJECTS) $(OBJ_OPA)
-	$(LD) $(SFLAGS) $(FARCH) -o  $(DIR_EXEC)/$(NAME_EXEC).e $(OBJECTS) $(OBJ_OPA) $(LDFLAGS) $(PARLINKS) $(LINKS) $(LIB)
+$(NAME_EXEC).e: $(EVO_OBJ) $(OBJECTS) $(OBJ_OPA)
+	$(LD) $(SFLAGS) $(FARCH) -o $(DIR_EXEC)/$(NAME_EXEC).e $(EVO_OBJ) $(OBJECTS) $(OBJ_OPA) $(LDFLAGS) $(PARLINKS) $(LINKS) $(LIB)
+
+$(EVO_OBJ): $(EVO_SRC)
+	$(FC) $(INCL_PATH) -c $(FFLAGS) $(EVO_SRC) $(PARALLEL) $(PARLINKS) -o $(EVO_OBJ)
+
 	@echo ; echo "$(DIR_EXEC)/$(NAME_EXEC).e generated" ; echo
 ifneq ($(star_version),$(star_banner))
 	@echo ; echo "WARNING : banner version ($(star_banner)) <> code version ($(star_version))"; echo
@@ -478,7 +517,6 @@ $(RDIR_OPA)/livopaint.o:  $(EVOLINCL)
 
 $(OBJECTS) : $(EVOLINCL)
 
-
 ##########
 # cleaning
 ##########
@@ -488,7 +526,8 @@ clean:
 
 cleanall:
 	rm -f $(OBJECTS) $(OBJ_OPA) $(LST_OBJS) $(LST_OPA) *.core fort.* \
-	starevol.e paq_* *.bin starevolmess
+	starevol.e paq_* *.bin starevolmess \
+	$(IDIR_PACK)/evolstell_gyre.mod $(IDIR_PACK)/evolstell_gyre.o
 
 cleancode:
 	rm -f $(SRC_STAR) $(OBJ_STAR) $(LST_STAR)
@@ -744,3 +783,4 @@ man:
 # dgbsv : dgbsv,dgbtrf,dgbtrs,xerbla,dgbtf2,dger,dlaswp,dtrsm,dgemm,dtbsv,
 #          dgemv + dswap,dcopy,dscal,idamax which have been removed
 # livopaint : contains spline and splint
+

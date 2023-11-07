@@ -1,4 +1,4 @@
-      subroutine select_table(tau,gstruc,taulim,nmod,tsurf,Tatm
+      subroutine select_table(tau,gstruc,taulim,nmod,t_eff,Tatm
      &     ,rhoecatm,Fcatm)
 ***********************************************************************************************
 
@@ -20,20 +20,25 @@
       double precision sum
       double precision DDT(nmod),DT(nmod)
       double precision DDT1(nmod),DDT2(nmod)
-      double precision tsurf,Tatm(nmod),Fcatm(nmod),rhoecatm(nmod)
+      double precision t_eff,Tatm(nmod),Fcatm(nmod),rhoecatm(nmod)
       double precision gstruc,lgstruc,FeH,FeHatm
       double precision rtau,rT,rhotab,Fconvtab
       double precision Ttabeff,gtabeff,Ztabeff
       double precision nouveauT(59),nouveauFc(59),nouveaurho(59)
+!      double precision nouveauT(17),nouveauFc(17),nouveaurho(17)
       double precision teffinterp(nmod)
       double precision bip
       double precision tableT(nmod,59),tableFc(nmod,59),
      &     tablerho(nmod,59)
+!      double precision tableT(nmod,17),tableFc(nmod,17),
+!     &     tablerho(nmod,17)
       double precision tableTZ,tableFcZ,tablerhoZ
       double precision Fc_atm,rho_atm,interpT
       double precision stau(127),sT(127),srhotab(127),sFconvtab(127)
+!      double precision stau(120),sT(120),srhotab(120),sFconvtab(120)
       double precision srhotabZ,sFconvtabZ,sTZ
-      double precision T_geff(10),rho_geff(10),Fconv_geff(10)
+      double precision T_geff(12),rho_geff(12),Fconv_geff(12)
+!      double precision T_geff(3),rho_geff(3),Fconv_geff(3)
       double precision T_Zeff(6),rho_Zeff(6),Fconv_Zeff(6)
 
       double precision taucoupleatm,rayenv
@@ -41,21 +46,27 @@
       dimension sum(59,10)
       dimension tau(nsh)
 
-      common /atmospheres/ rtau(127,10,59,6),rT(127,10,59,6),
-     &     rhotab(127,10,59,6),Fconvtab(127,10,59,6),Ttabeff(59),
-     &     gtabeff(10),Ztabeff(6),filesize,taumin,taumax
-      common /atmospheres2/ tableTZ(127,59,10),tablerhoZ(127,59,10),
-     &     tableFcZ(127,59,10)
-
+      common /atmospheres/ rtau(127,12,59,6),rT(127,12,59,6),
+     &     rhotab(127,12,59,6),Fconvtab(127,12,59,6),Ttabeff(59),
+     &     gtabeff(12),Ztabeff(6),filesize,taumin,taumax
+      common /atmospheres2/ tableTZ(127,59,12),tablerhoZ(127,59,12),
+     &     tableFcZ(127,59,12)
+c$$$      common /atmospheres/ rtau(120,3,17,3),rT(120,3,17,3),
+c$$$     &     rhotab(120,3,17,3),Fconvtab(120,3,17,3),Ttabeff(17),
+c$$$     &     gtabeff(3),Ztabeff(3),filesize,taumin,taumax
+c$$$      common /atmospheres2/ tableTZ(120,17,3),tablerhoZ(120,17,3),
+c$$$     &     tableFcZ(120,17,3)
+      
       common /metal/ FeH
       common /overshoot/ klcore,klenv,klpulse
-
+  
 
       lgstruc = LOG10(gstruc)
       stau(:) = rtau(:,1,1,1)
 
       taumax = 100!/mtini
       taumin = 10!/mtini
+!      taumin = 30
 
       taucoupleatm = taulim
 
@@ -67,12 +78,12 @@
       sFconvtabZ = 0.d0
 
 c      print *,'entree dans tableatm',nb_Teff
-
 !!!  2.  Interpolation in gravity
       do i = 1,nb_Teff
          do k=1,filesize
-
+           
             T_geff(:) = tableTZ(k,i,:)
+
             call splineatm (gtabeff,T_geff,nb_geff,1.d50,1.d50,DDT,DT)
             call splintatm (gtabeff,T_geff,DDT,nb_geff,lgstruc,sT(k))
 
@@ -112,16 +123,14 @@ c      print *,'entree dans tableatm',nb_Teff
             k=k-1
          enddo
       enddo
-
-
-!!!  3.  Selection of the closest temperature track for tau=[taumin;taumax] and mean it. => tsurf
+      
+!!!  3.  Selection of the closest temperature track for tau=[taumin;taumax] and mean it. => t_eff
       Teffinterp = 0.d0
-      tsurf = 0.d0
+      t_eff = 0.d0
       nb_elmt = 0
       do k=nmod,1,-1
          if (tau(k)>=taumin) exit
       enddo
-
       rayenv = r(novlim(klenv,4))-r(novlim(klenv,3))
 !!      print *,'rayenv=',rayenv/r(nmod)
       if (rayenv.gt.r(nmod)*1.d-2) then
@@ -130,11 +139,11 @@ c      print *,'entree dans tableatm',nb_Teff
             call splineatm (nouveauT,Ttabeff,nb_Teff,1.d50,1.d50,DDT,DT)
             call splintatm (nouveauT,Ttabeff,DDT,nb_Teff,t(k),
      &           Teffinterp(k))
-            tsurf = tsurf + Teffinterp(k)
+            t_eff = t_eff + Teffinterp(k)
             k = k-1
             nb_elmt = nb_elmt + 1
          enddo
-         tsurf = tsurf/(nb_elmt)
+         t_eff = t_eff/(nb_elmt)
       else
          do k=nmod,1,-1
             if (tau(k)>=taucoupleatm) exit
@@ -143,9 +152,10 @@ c      print *,'entree dans tableatm',nb_Teff
          call splineatm (nouveauT,Ttabeff,nb_Teff,1.d50,1.d50,DDT,DT)
          call splintatm (nouveauT,Ttabeff,DDT,nb_Teff,t(k),
      &        Teffinterp(k))
-         tsurf = Teffinterp(k)
+         t_eff = Teffinterp(k)
       endif
-
+      write(*,*) "Interpolating at Teff =", t_eff
+      
 !!!  4.  Creation of the effective T(tau) (and others) track(s) selected to determine q(tau)
       k = nmod
       do while (tau(k)<=taumax)
@@ -153,11 +163,11 @@ c      print *,'entree dans tableatm',nb_Teff
          nouveauFc(:) = tableFc(k,:)
          nouveaurho(:) = tablerho(k,:)
          call splineatm (Ttabeff,nouveauT,nb_Teff,1.d50,1.d50,DDT,DT)
-         call splintatm (Ttabeff,nouveauT,DDT,nb_Teff,tsurf,Tatm(k))
+         call splintatm (Ttabeff,nouveauT,DDT,nb_Teff,t_eff,Tatm(k))
          call splineatm (Ttabeff,nouveauFc,nb_Teff,1.d50,1.d50,DDT,DT)
-         call splintatm (Ttabeff,nouveauFc,DDT,nb_Teff,tsurf,Fcatm(k))
+         call splintatm (Ttabeff,nouveauFc,DDT,nb_Teff,t_eff,Fcatm(k))
          call splineatm (Ttabeff,nouveaurho,nb_Teff,1.d50,1.d50,DDT,DT)
-         call splintatm (Ttabeff,nouveaurho,DDT,nb_Teff,tsurf,
+         call splintatm (Ttabeff,nouveaurho,DDT,nb_Teff,t_eff,
      &        rhoecatm(k))
          k = k-1
       enddo
