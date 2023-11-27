@@ -131,7 +131,7 @@
 !    4 : \epsilon_{grav} = -De_{int}/Dt
 !        - 4\pi P\partial(r^2V)/\partial m_r
 
-      lgrav = 2
+      lgrav = 1
 
 ! lnucl
 ! -----
@@ -245,9 +245,9 @@
 !
 ! Treatment of the step overshooting (if != 0)
 !    1,3 : radial upward extension limited by aup times the
-!          density scale height
+!          pressure scale height
 !    2,4 : radial upward extension limited by the minimum 
-!          between aup times the density scale height and
+!          between aup times the pressure scale height and
 !          aup times r
 
       novopt = 3
@@ -424,7 +424,7 @@
 ! the energetics maximum authorized change in the nuclear
 ! luminosity |1 - L_{nuc}(X^{n+1}) / L_{nuc}(X^{n})| < ftnuc
 
-      ftnuc = 1.00D+03
+      ftnuc = 1.00D+00
 
 ! znetmax
 ! -------
