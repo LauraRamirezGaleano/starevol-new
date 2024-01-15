@@ -3,16 +3,20 @@
 ************************************************************************
 *     Read parameter card and models properties                        *
 *     Modifs CC ondes (23/11/07)                                       *
+*     Modification to read starevol.par under the namelist format      *
+*     (20/12/23)                                                       *
 * $LastChangedDate:: 2018-01-22 10:25:40 +0000 (Mon, 22 Jan 2018)    $ *
 * $Author:: amard                                                    $ *
 * $Rev:: 114                                                         $ *
 *                                                                      *
 ************************************************************************
-
+    
       implicit none
 
+************************************************************************
+    
       include 'evolpar.star'
-
+    
       include 'evolcom.acc'
       include 'evolcom.cons'
       include 'evolcom.conv'
@@ -33,6 +37,8 @@
 C     Modifs CC ondes (2/04/07)
       include 'evolcom.igw'
 
+************************************************************************
+      
       integer imerk,icrasht,ldum,ihydro
       integer i,j,k,l
 
@@ -42,14 +48,15 @@ C     Modifs CC ondes (2/04/07)
       double precision paq_c,paq_d
       double precision evolpar_version
 
-      character chydro*1
+      character hydrodynamics*1
       character cdiff*18
       character cover*36,machine*20
       character month*36,GetDateTimeStr*15,fmt*26
       parameter (month = 'JanFebMarAprMayJunJulAugSepOctNovDec')
       parameter (fmt = '(I2.2,A1,I2.2,I3,A3,I4)')
       integer itime(8), n_turbul(1)  ! modif TD AP
-      double precision Tfix, om_turbul, PM ! modif TD AP 
+      double precision Tfix, om_turbul, PM_turbul ! modif TD AP
+      double precision tol_u,tol_lnr,tol_lnf,tol_lnT,tol_l,tol_ang
 
       logical vlconv
       logical locconsAM
@@ -59,45 +66,68 @@ C     Modifs CC ondes (2/04/07)
       common /fitcd/ paq_c(3,8,50),paq_d(8,50)
       common /resolution/ vlconv
       common /convergence/ imerk,icrasht
-      common /turbulparam/ n_turbul,Tfix,om_turbul,PM
+      common /turbulparam/ n_turbul,Tfix,om_turbul,PM_turbul
 
-      namelist /RICHER/ Tfix, om_turbul, n_turbul
-      namelist /PROFITTMICHAUD/ PM
-      namelist /MassiveMloss / clumpfac,zscaling
+!     Commented out on 19/12/2023, parameters defined elsewhere or unused.
+c$$$      namelist /RICHER/ Tfix, om_turbul, n_turbul
+c$$$      namelist /PROFITTMICHAUD/ PM
 
-*__________________________________________
-***   read values for adjustable parameters
-*------------------------------------------
+      namelist /starevol_parameters/ evolpar_version,
+     &     maxmod,imodpr,mtini,zkint,
+     &     addH2,addHm,tmaxioH,tmaxioHe,
+     &     ionizHe,ionizC,ionizN,ionizO,ionizNe,
+     &     lgrav,lnucl,
+     &     alphac,dtnmix,mixopt,hpmlt,nczm,
+     &     ihro,iturb,etaturb,fover,alphatu,
+     &     novopt,aup,adwn,idup,
+     &     tau0,ntprof,taulim,
+     &     mlp,etapar,dmlinc,clumpfac,zscaling,
+     &     nucreg,nuclopt,tolnuc,ftnuc,znetmax,
+     &     idiffcc,idiffnuc,idiffty,diffzc,diffst,
+     &     zgradmu,nu_add,del_zc,ledouxmlt,
+     &     Tfix,om_turbul,n_turbul,PM_turbul,
+     &     omegaconv,Dh_prescr,dm_ext,
+     &     Dv_prescr,om_sat,D_zc,disctime,thermal_equilibrium,
+     &     diffvr,idiffvr,idiffex,diffcst,breaktime,
+     &     nmixd,itmind,itmaxd,rprecd,nretry,
+     &     lover,lthal,ltach,lmicro,
+     &     iaccr,accphase,itacc,massrate,massend,menv,
+     &     ric,prrc,xiaccr,fdtacc,alphaccr,
+     &     hydrodynamics,ivisc,q0,mcut,
+     &     maxsh,nresconv,
+     &     dlnvma,dlnvmi,dlnenuc,dmrma,dmrmi,
+     &     dtin,dtmin,dtmax,facdt,fkhdt,
+     &     ishtest,fts,ftsh,ftshe,ftsc,ftacc,ftst,
+     &     itermin,itermax,itermix,icrash,numeric,icorr,
+     &     tol_u,tol_lnr,tol_lnf,tol_lnT,tol_l,tol_ang,
+     &     phi,alpha,iacc,alphmin,alphmax,sigma,vlconv
 
-      read (99,900)  evolpar_version
-      read (99,1000) maxmod,imodpr,mtini,zkint
-      read (99,1100) addH2,addHm,tmaxioH,tmaxioHe
-      read (99,1200) ionizHe,ionizC,ionizN,ionizO,ionizNe
-      read (99,1300) lgrav,lnucl
-      read (99,1400) alphac,dtnmix,mixopt,hpmlt,nczm
-      read (99,1500) ihro,iturb,etaturby,alphatu
-      read (99,1600) novopt,aup,adwn,idup
-      read (99,1700) tau0,ntprof,taulim
-      read (99,1800) mlp0,etapar,dmlinc
-      read (99,1900) nucreg,nuclopt,tolnuc,ftnuc,znetmax
-      read (99,2000) idiffcc,idiffnuc,idiffty,diffzc,diffst
-      read (99,2100) zgradmu,grad_crit,del_zc,ledouxmlt
-      read (99,2110) omegaconv,Dh_prescr,dm_ext
-      read (99,2120) Dv_prescr,om_sat,D_zc,disctime,eq_thermique
-      read (99,2130) diffvr,idiffvr,idiffex,diffcst,breaktime
-      read (99,2200) nmixd,itmind,itmaxd,rprecd,nretry
-      read (99,2300) lover,lthal,ltach,lmicro
-      read (99,2400) iaccr,accphase,itacc,massrate0,massend0,menv
-      read (99,2500) ric,prrc,xiaccr,fdtacc,alphaccr
-      read (99,2600) chydro,ivisc,q0,mcut
-      read (99,2700) maxsh0,nresconv
-      read (99,2800) dlnvma0,dlnvmi0,dlnenuc0,dmrma,dmrmi
-      read (99,2900) dtiny,dtminy,dtmaxy,facdt,fkhdt
-      read (99,3000) ishtest,fts,ftsh,ftshe,ftsc,ftacc,ftst
-      read (99,3100) itmin,itermax,itermix,icrash0,numeric,icorr
-      read (99,3200) (eps(l),l = 1,5),epsa
-      read (99,3300) phi,alpha,iacc,alphmin,alphmax,sigma,vlconv
+************************************************************************
+      
+***   Read parameter card
+      
+      open(UNIT=79, FILE='starevol.par', STATUS='OLD')
+      rewind(79)
+      read(79, NML=starevol_parameters) 
+      close(79)
 
+      mlp0 = mlp
+      massrate0 = massrate
+      massend0 = massend
+      maxsh0 = maxsh
+      dlnvma0 = dlnvma
+      dlnvmi0 = dlnvmi
+      dlnenuc0 = dlnenuc
+      icrash0 = icrash
+      eps(1) = tol_u
+      eps(2) = tol_lnr
+      eps(3) = tol_lnf
+      eps(4) = tol_lnT
+      eps(5) = tol_l
+      epsa = tol_ang
+
+***   Checks
+      
       if (maxmod.eq.0) then
          write (nout,*) 'maxmod = 0 : program stopped'
          stop ' stop maxmod = 0'
@@ -114,16 +144,17 @@ C     Modifs CC ondes (2/04/07)
       if (mlp.gt.49) mlp = mlp-50
       om_sat=dble(om_sat)
 
-     
-***   check versions compatibility
-      if (code_version.lt.evolpar_version.and.evolpar_version.lt.2.1d0)
+***   Check versions compatibility
+
+      if(code_version.lt.evolpar_version.and.evolpar_version.lt.2.1d0)
      &     then
          write (nout,*) 'starevol.par not compatible with executable :',
      &        ' network problem ',code_version,evolpar_version
          stop ' stop rmodpar'
       endif
 
-***   check parameters
+***   Check parameters
+
       if (lgrav.lt.0.or.lgrav.gt.5) then
          write (nout,*) 'choose a correct value for lgrav (0-4) !'
          stop 'rmodpar : bad lgrav'
@@ -133,15 +164,17 @@ C     Modifs CC ondes (2/04/07)
          stop 'rmodpar : bad mlp/iaccr'
       endif
       if (hpmlt.lt.0.or.hpmlt.gt.6) then
-         write (nout,*) 'choose a correct value for hpmlt (1-5) !'
+         write (nout,*) 'choose a correct value for hpmlt (1-6) !'
          stop 'rmodpar : bad hpmlt'
       endif
       if (hpmlt.eq.5.and.alphatu.lt.alphac) then
-         write (nout,*) 'when HMLT = 5, alphatu MUST be > alphac !'
+         write (nout,*) 'when hpmlt = 5, alphatu MUST be > '//
+     &        'alphac !'
          stop 'rmodpar : bad alphatu and alphac'
       endif
       if (.not.(mlp.le.28.or.mlp.ne.55.or.mlp.ne.56)) then
-         write (nout,*) 'choose a correct value for mlp (0-22) !'
+         write (nout,*) 'choose a correct value for mlp (0-28 or '//
+     &        '55-56) !'
          stop 'rmodpar : bad mlp'
       endif
       if (ivisc.lt.0.or.ivisc.gt.3) then
@@ -168,16 +201,17 @@ c        if (idiffvr.eq.6..or.idiffvr.eq.7.and.omegaconv.ne.'f') then
          stop 'rmodpar : bad idiffvr'
       endif
 
+!     Commented out on 19/12/2023, massloss.par added to starevol.par.
+c$$$***   Read massloss.par
+c$$$
+c$$$      if (mlp.eq.15.or.mlp.eq.16) then
+c$$$        open(UNIT=79, FILE='massloss.par', STATUS='OLD')
+c$$$        rewind(79)
+c$$$        read(79, NML=MassiveMloss) 
+c$$$        close(79)
+c$$$      endif
 
-      if (mlp.eq.15.or.mlp.eq.16) then
-         print *,'Reading namelist massloss.par'
-         open(UNIT=79, FILE='massloss.par', STATUS='OLD')
-         rewind(79)
-         read(79, NML=MassiveMloss) 
-         close(79)
-         print *,'    clumpfac',clumpfac
-      endif
-
+      
 ***   define mixing type
 
 c..   if 0 < nmixd < 5, you take control of the treatment of the convective
@@ -196,17 +230,18 @@ c     &     lmicro = 0
      &        'treated EITHER by novopt OR by idiffty, make a choice !'
          stop
       endif
-      if (diffover.and.(lover.eq.60.or.lover.eq.61.or.lover.eq.70.or.
-     $     lover.eq.71)) then
-         open(UNIT=70, FILE='transport_param.par', STATUS='OLD')
-         rewind(70)
-         read(70, NML=Richer) 
-         read(70, NML=ProfittMichaud) 
-         close(70)
-      endif
+
+!     Commented out on 19/12/2023, parameters defined elsewhere or unused.
+c$$$      if (diffover.and.(lover.eq.60.or.lover.eq.61.or.lover.eq.70.or.
+c$$$     $     lover.eq.71)) then
+c$$$         open(UNIT=70, FILE='transport_param.par', STATUS='OLD')
+c$$$         rewind(70)
+c$$$         read(70, NML=Richer) 
+c$$$         read(70, NML=ProfittMichaud) 
+c$$$         close(70)
+c$$$      endif
       
       semiconv = idiffcc.and.ledouxmlt
-      write (nout,*)
       if (ledouxmlt.and..not.diffzc) then
          write (nout,7300)
          write (90,7300)
@@ -218,7 +253,7 @@ c     &     lmicro = 0
       diffusconv = diffzc.or.diffover.or.semiconv
       microdiffus = idiffcc.and.(lmicro.ge.2.and.lmicro.le.6) ! modif thoul = 4
       viscosityadd = idiffcc.and.idiffty.eq.15 ! TD pour nu_add (03/2020)
-      if (viscosityadd.and.grad_crit.lt.1) then ! TD pour nu_add (03/2020)
+      if (viscosityadd.and.nu_add.lt.1) then ! TD pour nu_add (03/2020)
          write (nout,*)
      $        'choose a correct value for additional viscosity'
          write (nout,*) 'nuadd = 3.5e4 is an exemple of possible value'
@@ -226,7 +261,7 @@ c     &     lmicro = 0
       endif
       if (idiffnuc.eq.3.and..not.diffusconv) then
          write (nout,*) 'choose a correct value for idiffnuc/diffusconv'
-         write (nout,*) 'idiffnuc.eq.3 not compatible with diffzc = f',
+         write (nout,*) 'idiffnuc = 3 not compatible with diffzc = f',
      &        ', semiconv = f and diffover = f'
          stop
       endif
@@ -239,7 +274,7 @@ c     &     lmicro = 0
       locconsAM = idiffcc.and.idiffty.eq.16
       if (locconsAM) rotation = .true.
 
-      if (rotation) eq_thermique = .true.
+      if (rotation) thermal_equilibrium = .true.
       thermohaline = idiffcc.and.(lthal.eq.1.or.lthal.eq.2.
      &   or.lthal.eq.3.or.lthal.eq.4)
 C Modifs CC ondes (12/10/07) -->
@@ -261,8 +296,8 @@ C      logicalondeschim = .true.
       igwsurfenerg = .false.
       igwcoreenerg = .false.
       igw = igwsurfchim.or.igwcorechim.or.igwrot
-      print *,'igw,igwsurfchim,igwrot,igwsurfenerg, = ',igw,igwsurfchim,
-     &         igwrot,igwsurfenerg
+c      print *,'igw,igwsurfchim,igwrot,igwsurfenerg, = ',igw,igwsurfchim,
+c     &         igwrot,igwsurfenerg
       if (igw.and.omegaconv.eq.'t') then
          write (nout,*) "Bad parameter choice: conflict omegaconv - igw"
 c         stop "Bad parameter choice: conflict omegaconv - igw"
@@ -274,7 +309,7 @@ C Check value for Dh (rotation mixing)
      &     Dh_prescr.eq.'Maeder03'.or.Dh_prescr.eq.'Maeder06'.or.
      &     Dh_prescr.eq.'Mathis16'.or.Dh_prescr.eq.'Mathis02'.or.
      &     Dh_prescr.eq.'Mathiepi'))
-     &     stop 'Bad value for Dh'
+     &     stop 'Bad value for Dh_prescr'
 
 ***   Initialize/setup parameters
 
@@ -282,22 +317,24 @@ C Check value for Dh (rotation mixing)
       if (ivisc.eq.0) mcut = 0.d0
       icrasht = 0
       mcut = mcut*msun
-c      etaturb = etaturby*dble(iturb)
-      etaturb = etaturby
-      dtin = dtiny*sec
-      dtmax = dtmaxy*sec
+c     etaturb = etaturby*dble(iturb)
+      dtiny = dtin
+      dtmaxy = dtmax
+      dtminy = dtmin
+      dtin = dtin*sec
+      dtmax = dtmax*sec
       dtmax0 = dtmax
-      dtmin = dtminy*sec
+      dtmin = dtmin*sec
       phi0 = phi
       nq0 = int(q0)+imodpr
       maxmod0 = maxmod
       alpha0 = alpha
-      imodpr0 = imodpr
       maxsh = abs(maxsh0)
       nmixd0 = nmixd
       mixopt0 = mixopt
       idiffcc0 = idiffcc
       nuclopt0 = nuclopt
+      
       if (dtnmix.eq.'g'.or.dtnmix.eq.'u') then
          chkmix = .true.
       else
@@ -309,6 +346,7 @@ c      etaturb = etaturby*dble(iturb)
       if (icorr.eq.'M') icorr = 'm'
       if (icorr.eq.'H') icorr = 'h'
       if (icorr.eq.'A') icorr = 'a'
+      if (icorr.eq.'B') icorr = 'b'
       if (nuclopt.eq.'u') then
          urca = .true.
       else
@@ -348,26 +386,26 @@ c     if (irotbin.eq.1) vsurf = diffvr*1.d5
       write (90,4400) ionizHe,ionizC,ionizN,ionizO,ionizNe
       write (90,4500) lgrav,lnucl
       write (90,4600) alphac,dtnmix,mixopt,hpmlt,nczm
-      write (90,4700) ihro,iturb,etaturby,alphatu
+      write (90,4700) ihro,iturb,etaturb,alphatu
       write (90,4800) novopt,aup,adwn,idup
       write (90,4900) tau0,ntprof,taulim
       write (90,5000) mlp0,etapar,dmlinc
       write (90,5100) nucreg,nuclopt,tolnuc,ftnuc,znetmax
       write (90,5200) idiffcc,idiffnuc,idiffty,diffzc,diffst
-      write (90,5300) zgradmu,grad_crit,del_zc,ledouxmlt
+      write (90,5300) zgradmu,nu_add,del_zc,ledouxmlt
       write (90,5310) omegaconv,Dh_prescr,dm_ext
-      write (90,5320) Dv_prescr,om_sat,D_zc,disctime,eq_thermique
+      write (90,5320) Dv_prescr,om_sat,D_zc,disctime,thermal_equilibrium
       write (90,5330) diffvr,idiffvr,idiffex,diffcst,breaktime
       write (90,5400) nmixd,itmind,itmaxd,rprecd,nretry
       write (90,5500) lover,lthal,ltach,lmicro
       write (90,5600) iaccr,accphase,itacc,massrate0,massend0,menv
       write (90,5700) abs(ric),prrc,xiaccr,fdtacc,alphaccr
-      write (90,5800) chydro,ivisc,q0,mcut/msun
+      write (90,5800) hydrodynamics,ivisc,q0,mcut/msun
       write (90,5900) maxsh0,nresconv
       write (90,6000) dlnvma0,dlnvmi0,dlnenuc0,dmrma,dmrmi
       write (90,6100) dtiny,dtminy,dtmaxy,facdt,fkhdt
       write (90,6200) ishtest,fts,ftsh,ftshe,ftsc,ftacc,ftst
-      write (90,6300) itmin,itermax,itermix,icrash0,numeric,icorr
+      write (90,6300) itermin,itermax,itermix,icrash0,numeric,icorr
       write (90,6400) (eps(l),l = 1,5),epsa
       write (90,6500) phi,alpha,iacc,alphmin,alphmax,sigma,vlconv
 
@@ -479,15 +517,17 @@ c      nczm = max(1,nczm)
       ihydro = 0
       hydro = .false.
       hydrorot = .false.
-      if (chydro.eq.'t'.or.chydro.eq.'T'.or.chydro.eq.'1') ihydro = 1
-      if (chydro.eq.'2') ihydro = 2
-      if (chydro.eq.'3') ihydro = 3
+      if (hydrodynamics.eq.'t'.or.hydrodynamics.eq.'T'.or.
+     &     hydrodynamics.eq.'1') ihydro = 1
+      if (hydrodynamics.eq.'2') ihydro = 2
+      if (hydrodynamics.eq.'3') ihydro = 3
       if (ihydro.eq.1.or.ihydro.eq.3) hydro = .true.
       if (hydro) dynfac = 1.d0
       if (rotation.and.hydro) hydrorot = .true.            ! Correction 17/04/2020
       if (lgrav.eq.4.and..not.hydro) then
-         write (nout,*) 'if you use lgrav = 4, hydro MUST be on !'
-         stop 'rmodpar : bad combination of lgrav-hydro'
+         write (nout,*) 'if you use lgrav = 4,'//
+     &        ' hydrodynamics MUST be on !'
+         stop 'rmodpar : bad combination of lgrav-hydrodynamics'
       endif
       hydro0 = hydro
       if (hydro.and.ivisc.gt.0) write (90,6700) nq0,nretry
@@ -577,7 +617,8 @@ c    &        status = 'unknown',convert = 'big_endian')
          close (77)
          close (78)
       endif
-      
+
+************************************************************************
 
  900  format (/,43x,f4.2)
  1000 format (/,25x,i4,11x,i3,10x,f6.2,10x,f8.6)
@@ -618,8 +659,8 @@ c    &        status = 'unknown',convert = 'big_endian')
  4400 format (17x,'ionizHe = ',l1,', ionizC = ',l1,', ionizN = ',l1,
      &     ', ionizO = ',l1,', ionizNe = ',l1)
  4500 format (1x,'gravitation   : lgrav = ',i1,', lnucl = ',l1)
- 4600 format (1x,'convection    : alphac = ',0pf6.4,', dtnmix = ',a1,
-     &     ', mixopt = ',l1,', hpmlt = ',i1,', nczm =',i3)
+ 4600 format (1x,'convection    : alphac = ',0pf6.4,', dtnmix = ',
+     &     a1,', mixopt = ',l1,', hpmlt = ',i1,', nczm =',i3)
  4700 format (17x,'ihro = ',l1,', iturb = ',i1,', etaturb = ',1pd9.3,
      &     ', alphatu = ',0pf6.4)
  4800 format (17x,'novopt = ',i1,', aup = ',f4.2,', adwn = ',f4.2,
@@ -637,7 +678,7 @@ c    &        status = 'unknown',convert = 'big_endian')
  5310 format (1x,'rotation      : omegaconv = ',a1,', Dh_prescr = ',a8,
      &     ', dm_ext = ',0pf5.2)
  5320 format (17x,'Dv =  ',a4,', om_sat = ',0pf4.1,', D_zc = ',
-     &     1pd8.2,', disctime = ',1pd8.2,', eq_thermique = ',l1)
+     &     1pd8.2,', disctime = ',1pd8.2,', thermal_equilibrium = ',l1)
  5330 format (17x,'diffvr = ',1pd8.2,', idiffvr = ',i1,', idiffex = ',
      &     i1,', diffcst = ',1pd9.3,', breaktime = ',1pd8.2)
  5400 format (1x,'time-dep conv.: nmixd = ',i1,', itmind = ',i2,
@@ -695,7 +736,9 @@ c     &     ' convective zones treated as homogeneous (change diffzc ?)')
  8650 format (3x,'overshooting           : ',l1)
  8700 format (3x,'thermohaline mixing    : ',l1)
  8800 format (3x,'gradiant neutrality    : T')
-
+      
+************************************************************************
 
       return
       end
+

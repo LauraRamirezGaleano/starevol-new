@@ -1,5 +1,8 @@
+  ****************************************************************
+   NUCLEAR NETWORK PARAMETER CARD for STAREVOL : version AGB 4.00
+  ****************************************************************
 
- nuclides and nuclear network: T = stable, F = unstable, U : URCA pair
+ Nuclides and nuclear network: T = stable, F = unstable, U : URCA pair
  
    1 NEUT    1.00000   0.   1.00000D-50  T   1.00000D-50
    2 PROT    1.00000   1.   1.00000D-50  T   7.10847D-01
@@ -237,7 +240,7 @@
  178    1 AL 27 ( 0 CATPE, 0 NUTRI)  1 MG 27 : Q =  -2.611 MeV     40  55   0  39  QINU =  0.000 MeV
  179    1 MG 27 ( 0 BETAM, 0 NUTRI)  1 AL 27 : Q =   2.611 MeV     39   0   0  40  QINU =  0.000 MeV
 
-nuclear network references:
+ Nuclear network references:
 
     1  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch     
     2  Nacre reaction rates 280399  ppnu     (nominal)                  

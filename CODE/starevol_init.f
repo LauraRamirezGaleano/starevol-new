@@ -365,9 +365,9 @@ c$$$cAP      call getenv('STAR_COMPO',refsolar)
 cAP      if (refsolar.eq.'AC06') then
       elseif (refsolar.eq.'AGS05') then
          alpharefcalib = 1.6046d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -377,23 +377,23 @@ cAP      if (refsolar.eq.'AC06') then
       elseif (refsolar.eq.'AGSS09'.and..not.idiffcc.and.ntprof.eq.0
      $        ) then
          alpharefcalib = 1.6602d0
-         if (alpha_mlt_hp.ne.alpharefcalib) alpharefcalib = 1.6267
-c         if (alpha_mlt_hp.ne.alpharefcalib) alpharefcalib = 1.7020
-c         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) alpharefcalib = 1.6267
+c         if (alphac.ne.alpharefcalib) alpharefcalib = 1.7020
+c         if (alphac.ne.alpharefcalib) then
 c            write (nout,*) 'choose the correct value
-c     $for alpha_mlt_hp in parameter card !'
+c     $for alphac in parameter card !'
 c            stop 'starevol.f : bad alpha'
 c         endif
-         if (alpha_mlt_hp.ne.alpharefcalib) alpharefcalib = 1.6304
+         if (alphac.ne.alpharefcalib) alpharefcalib = 1.6304
          do i = 1,nis+6
             xspsol(i) = xspref(3,i)
          enddo
       elseif (refsolar.eq.'AGSS09'.and..not.idiffcc.and.ntprof.eq.4
      $        .and.idiffty.eq.0) then
          alpharefcalib = 1.9730d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -402,9 +402,9 @@ c         endif
       elseif (refsolar.eq.'AGSS09'.and..not.idiffcc.and.ntprof.eq.5
      $        ) then
          alpharefcalib = 2.1069d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -414,9 +414,9 @@ c         endif
       elseif (refsolar.eq.'AGSS09'.and.ntprof.eq.6
      $        ) then
          alpharefcalib = 1.9730d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -426,9 +426,9 @@ c         endif
       elseif (refsolar.eq.'AGSS09'.and..not.idiffcc.and.ntprof.eq.7
      $        ) then
          alpharefcalib = 1.9730d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -438,10 +438,10 @@ c         endif
       elseif (refsolar.eq.'AGSS09'.and.microdiffus.and.ntprof.
      $        eq.0) then
          alpharefcalib = 1.7936d0
-         if (alpha_mlt_hp.ne.alpharefcalib) alpharefcalib = 1.7727d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) alpharefcalib = 1.7727d0
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -450,9 +450,9 @@ c         endif
       elseif (refsolar.eq.'AGSS09'.and.microdiffus.and.ntprof
      $        .eq.5.and.idiffty.eq.0) then
          alpharefcalib = 2.2573d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -468,9 +468,9 @@ c            enddo
       elseif (refsolar.eq.'AGSS09'.and.microdiffus.and.ntprof
      $        .eq.4.and.idiffty.gt.0) then
          alpharefcalib = 2.1954d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -479,9 +479,9 @@ c            enddo
       elseif (refsolar.eq.'AGSS09'.and.microdiffus.and.ntprof
      $        .eq.5.and.idiffty.gt.0) then
          alpharefcalib = 2.1987d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -498,9 +498,9 @@ c     $        ) then
       elseif (refsolar.eq.'AY18'.and.idiffty.eq.0.and.ntprof.eq.5
      $        ) then
          alpharefcalib = 2.1100d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -509,9 +509,9 @@ c     $        ) then
       elseif (refsolar.eq.'AY18'.and.microdiffus.and.ntprof.eq.5
      $        .and.idiffty.eq.0) then
          alpharefcalib = 2.2600d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6
@@ -520,9 +520,9 @@ c     $        ) then
       elseif (refsolar.eq.'AY18'.and.microdiffus.and.ntprof.eq.5
      $        .and.idiffty.gt.0) then
          alpharefcalib = 2.2236d0
-         if (alpha_mlt_hp.ne.alpharefcalib) then
+         if (alphac.ne.alpharefcalib) then
             write (nout,*) 'choose the correct value
-     $for alpha_mlt_hp in parameter card !'
+     $for alphac in parameter card !'
             stop 'starevol.f : bad alpha'
          endif
          do i = 1,nis+6

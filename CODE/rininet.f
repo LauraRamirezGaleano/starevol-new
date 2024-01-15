@@ -70,7 +70,7 @@ c      common /nuc_matrix/ jna(nz),ina(lirn)
       ial26g = -1
       ial26m = -1
       ndecay = 0
-      do i = 1,3
+      do i = 1,6
          read (99,*)
       end do
       do i = 1,nsp

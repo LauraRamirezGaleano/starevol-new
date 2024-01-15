@@ -1,0 +1,827 @@
+\documentclass[10pt]{article}
+\usepackage{colordvi,psfig,subfigure,amssymb,picinpar,ulem,longtable}
+\usepackage[dvips]{graphics,color}
+\usepackage{makeidx}
+\usepackage[a4paper]{hyperref}
+\usepackage{soul}
+
+\makeindex
+\textwidth 200mm
+\hoffset -42mm
+\textheight 275mm
+\voffset -30mm
+
+\def\dive{{\rm div}}
+\def\ga{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+$\displaystyle##$\hfil\cr>\cr\sim\cr}}}
+{\vcenter{\offinterlineskip\halign{\hfil$\textstyle##$\hfil\cr>\cr\sim\cr}}}
+{\vcenter{\offinterlineskip\halign{\hfil$\scriptstyle##$\hfil\cr>\cr\sim\cr}}}
+{\vcenter{\offinterlineskip\halign{\hfil$\scriptscriptstyle##$\hfil
+\cr>\cr\sim\cr}}}}}
+
+\def\la{\mathrel{\mathchoice {\vcenter{\offinterlineskip\halign{\hfil
+$\displaystyle##$\hfil\cr<\cr\sim\cr}}}
+{\vcenter{\offinterlineskip\halign{\hfil$\textstyle##$\hfil\cr<\cr\sim\cr}}}
+{\vcenter{\offinterlineskip\halign{\hfil$\scriptstyle##$\hfil\cr<\cr\sim\cr}}}
+{\vcenter{\offinterlineskip\halign{\hfil$\scriptscriptstyle##$\hfil
+\cr<\cr\sim\cr}}}}}
+
+
+%\newcommand{\WPREF}[1]{\hyperlink{#1}{\texttt{#1}\index{\texttt{#1}|hyperpage}}}
+%\newcommand{\XREF}[2]{\WPREF{#2} (\texttt{#1}\index{#1|hyperpage})}
+
+\newcommand{\HPTO}[1]{\hypertarget{#1}{\sout{\texttt{#1}} \index{\texttt{#1}}}}
+\newcommand{\HPT}[1]{\hypertarget{#1}{\texttt{#1} \index{\texttt{#1}}}}
+\newcommand{\HPL}[1]{\hyperlink{#1}{\texttt{#1}}}
+\newcommand{\LA}[1]{\textcolor{red}{#1}}
+
+\begin{document}
+
+
+\begin{center}
+{\Large \sf \textbf{PARAMETER CARD}}
+
+{\sf starevol4.00 - Jan 2023}
+\end{center}
+
+\vspace*{-0.5cm}
+
+\begin{center}
+\begin{longtable}{|p {2.2cm}|p {2.35cm}|p {12.5cm}|}\hline
+\texttt{variable} & \textbf{values} & meaning\\  \hline\hline
+
+\multicolumn{3}{|c|}{\sf evolutionary sequences} \\ \hline\hline
+\HPT{maxmod} & 0 $\rightarrow  n $  &
+Number of models in the current sequence, (0) stops the calculation. \\ 
+\hline
+{\HPT{imodpr}} & 11, 12, 33
+& Activate flame routines (12 no printings), (33) save more models during.
+pulse/DUP  \\ \hline 
+\HPT{mtinit} & $M_\odot$ & Initial stellar mass.
+\\ \hline 
+\HPT{zkint} & $Z_{\mathrm{tab}}$ & Metallicity to
+be selected in the Livermore opacity tables \LA{, to be selected accordingly to the chosen solar calibration.} \\ \hline\hline
+\multicolumn{3}{|c|}{\sf equation of state} \\ \hline\hline
+\HPT{addH2} & f, t & Inclusion of $\mathrm{H}_{2}$.
+\\ \hline 
+\HPT{addHm} & f, t & Inclusion of $\mathrm{H}^{-}$.
+\\ \hline 
+\HPT{Tmaxioh} & $\sim 1 \times 10^5$ &
+Temperature above which H is considered completely ionized (if ionizHe = f).
+\\ \hline 
+\HPT{Tmaxiohe} & $\sim 5 \times 10^5$ &  Temperature
+above which He is considered completely ionized (if ionizHe = f). \\ \hline
+\HPT{ionizHe} & f, t & Inclusion of He partial
+ionization (should put t if atomic diffusion active). \\ \hline 
+\HPT{ionizC} & f, t & Inclusion of C partial
+ionization (should put t if atomic diffusion active). \\ \hline 
+\HPT{ionizN} & f, t & Inclusion of N partial
+ionization (should put t if atomic diffusion active). \\ \hline 
+\HPT{ionizO} & f, t & Inclusion of O partial
+ionization (should put t if atomic diffusion active). \\ \hline 
+\HPT{ionizNe} & f, t & Inclusion of Ne partial
+ionization (should put t if atomic diffusion active). \\ \hline\hline 
+
+\multicolumn{3}{|c|}{\sf gravitation} \\ \hline\hline
+\HPT{lgrav} & 1, 2, 3, 4 & 
+\begin{tabular}{l}
+\hspace{-0.25cm}Different prescriptions for $\varepsilon_{\rm grav}$. \\ 
+1 : $\varepsilon_{\rm grav} = - D e_{\rm int}/D t - P D(1/\rho)/Dt$ \\
+2 : $\varepsilon_{\rm grav} = -c_P D T/D t + Q/\rho \, (D P/D t)$ \\
+4 : $\varepsilon_{\rm grav} = - D e_{\rm int}/D t - 4 \pi P\, \partial (r^2 V )/\partial m_r$ \\
+\end{tabular}
+\\ \hline
+\HPT{lnucl} & t, f &  $\varepsilon_{\rm nuc}$
+calculated at each iteration (t) or only once the model has converged (f).\\
+\hline\hline 
+
+\multicolumn{3}{|c|}{\sf convection} \\ \hline\hline
+\HPT{alphac} & $\alpha _{c}$ & 
+$\alpha _{c} = \Lambda /H_{P}$ classical MLT free parameter with the pressure scale height (obtained from solar calibration, check "How to Starevol" document). \\
+\hline
+{\HPT{dtnmix}} & f, t, g, u & 
+\begin{tabular}{ll}
+f : & instantaneous mixing, {\sf lmix NOT activated} \\
+t : & time-dependent convective mixing {\sf lmix NOT activated} \\ 
+g : & idem f but {\sf \HPT{lmix} activated} \\
+u : & idem t but {\sf lmix activated} \\  \hline
+\end{tabular} \\ \hline
+\HPT{mixopt} & f, t & Convective zone homogenized at each iteration
+during the convergence (t) 
+or only when the structure has converged (f). \\ \hline
+{\HPT{hpmlt}} & 1 $\rightarrow$ 6 & 
+\begin{tabular}{ll}
+\multicolumn{2}{l}{\hspace{-0.3cm} Different MLT formalisms with the pressure scale height.} \\
+1 &: Cox \& Guili formalism (sometimes more stable; first sequence) \\
+3 &: Kippenhahn formalism (usually used) \\
+2 $\rightarrow$ 4 &: idem (1 $\rightarrow$ 3) but using time dependent MLT \\
+5 &: Convection model with compression effects \\
+  &\hspace{0.2cm} Forestini, Lumer, Arnould (1991,A\&A,252,127) \\
+6 &: Rotationally modified convection following \\
+  &\hspace{0.2cm} Augustson \& Mathis (2019) \\
+  &\hspace{0.2cm} Currently not used !
+\end{tabular}
+\\ \hline
+{\HPT{nczm}} & $-9 \rightarrow 99$ & Merge (remove) convective
+zones that are separated by less (which extent is less) than \HPL{nczm}
+shells. If \HPL{nczm} $ <0$ the procedure applies only in the envelope.
+\\ \hline
+\HPT{ihro} & f, t & MLT with $H_{P}$ (f) or $H_{\rho }$ (t) prescription.
+\\ \hline
+\HPT{\sout{iturb}} & 0, 1 & 
+\begin{tabular}{l}
+Inclusion (1) or not (0) of a turbulent flux in the convective energy balance. \\ 
+(with the $H_{\rho }$ MLT prescription only) \\
+Currently not used !
+\end{tabular}
+\\ \hline
+{\HPT{etaturb}} & $\eta _{\rm turb}$ & 
+\begin{tabular}{l}
+Parameter to compute the turbulent flux of the convective cells. \\ 
+(with the $H_{\rho}$ MLT prescription only) \\
+According to Maeder (1987), \HPL{etaturb} should be of the order of 1000.
+\end{tabular}
+\\ \hline
+{\HPT{fover}} & $f_{\rm over}$ & 
+\begin{tabular}{l}
+With \HPL{lover}$\in [23,32]$, corresponds to Herwig's overshoot parameter $f_{\rm over}$. \\
+With \HPL{lover}$\in [33,39]$ or $\in [70-73]$, corresponds to the penetration depth $d_{\rm ov}$ \\
+for Baraffe 2017, Augustson \& Mathis 2019, Korre 2019. \\
+(0.0325: Li Cluster PMS)
+\end{tabular}
+\\ \hline
+
+\newpage
+\hline \textbf{variable} & \textbf{values} & meaning \\ \hline\hline \hline
+
+\HPT{alphatu} & $\alpha _{\rm turb}$ & $\alpha _{\rm turb} = \Lambda /H_{\rho}$ classical MLT free parameter with the density scale height or free parameter for convective cells with $H_{P}$ and hpmlt=5 (check "How to Starevol" document for $\alpha_{\rm MLT}$ values).\\ \hline
+\HPT{novopt} & 0, 1, 2 & 
+\begin{tabular}{l}
+Treatment of the step overshooting (if $\neq 0$); radial upward extension
+limited by \\ 
+$\alpha _{\rm over,up}H_{P}$ (1) or the minimum of $\alpha _{\rm over,up}H_{P}$ and $%
+\alpha _{\rm over,up}r$ (2).
+\end{tabular}
+\\ \hline
+\HPT{aup} & $\alpha _{\rm over,up}$ & Radial downward extension in case of step
+overshooting, 
+characterizes core overshooting. \\ \hline
+\HPT{adwn} & $\alpha _{\rm over,down}$ & Radial upward extension in case of step
+overshooting, 
+characterizes envelope undershooting.  \\ \hline
+{\HPT{idup}} & 0, 1, 2, 3 & (1) find neutrality of the
+gradients (AGB phase only), (2) call to convzone stopped after
+ iterations, (3) : (1) + (2), (5) : overshoot below envelope (\LA{\HPL{lover} = 23})
+activated during AGB phase only. \\ \hline
+
+\multicolumn{3}{|c|}{\sf atmosphere} \\ \hline\hline
+\HPT{tau0} & $\tau _{0} \la 0.1$ & Fixed optical
+depth of the last numerical shell (to set when starting a model). \\ \hline
+{\HPT{ntprof}} & 0, 1 $\rightarrow$ 8 &
+\begin{tabular}{ll}
+\multicolumn{2}{l}{\hspace{-0.3cm} Boundary condition :}  \\
+(0) & grey atmosphere  \\
+(1) & analytic fit \\
+(2) & no atmosphere \\
+(3) & \LA{Siess et al. 2000 fit} \\
+(4) & \LA{PHOENIX realistic atmosphere model} \\
+(5) & \LA{Krishna-Swami 1966 fit} \\ 
+(6) & CMFGEN atmosphere models (massive stars) \\
+    & Currently not used ! \\
+(7) & TLUSTY atmosphere models (massive stars) \\
+    & Currently not used ! \\
+(8) & Vernazza et al. (1981) analytic fit as quoted in Spnoi et al. (2019) \\
+    & Currently not used !
+\end{tabular}
+\\ \hline 
+\HPT{taulim} & $> \tau _{0}$ & Optical depth
+above which the Eddington (grey) approximation is used (to set when starting a model).\\ \hline 
+\multicolumn{3}{|c|}{\sf mass loss} \\ \hline\hline
+\HPT{mlp} & $0,$ $1\rightarrow 30$ & 
+\begin{tabular}{ll}
+\multicolumn{2}{l}{\hspace{-0.3cm} Mass loss prescription (if $\neq 0$)}. \\
+ 1,2   & : Reimers (1975) : RGB\\
+ 3,4   & : de Jager (1988 A\&AS, 72, 259) for log(Teff)$>$3.7, \\
+       & \hspace{0.2cm} Crowther (2001) for log(Teff)$<$3.7. \\
+       & \hspace{0.2cm} Massive stars \\
+ 5,6   & : Vassiliadis \& Wood (1993, ApJ 413, 641) : AGB, no delay of the onset \\
+       & \hspace{0.2cm} of the super-wind phase\\
+ 55,56   & : Vassiliadis \& Wood (1993, ApJ 413, 641) : AGB, original prescription\\
+ 7,8   & : Blocker (1995, A\&A 297, 727) : AGB\\
+ 9,10  & : Arndt (1997, A\&A 327, 614) : AGB \\
+ 11,12 & : Schaller et al. (1992) : Massive stars and WR phase \\
+ 13,14 & : Chiosi (1981, A\&A 93, 163) : Massive O stars \\
+ 15,16 & : Vink et al. (2001) for log(Teff)$>$4.0969, \\
+       & \hspace{0.2cm} de Jager (1988,A\&A,72,259) for 4.0969$>$log(Teff)$>$3.7, \\
+       & \hspace{0.2cm} Crowther (2001) for log(Teff)$<$3.7, \\
+       & \hspace{0.2cm} Nugis \& Lamers (2000) for $H_{\rm surf}<$0.4 and log(Teff)$>$4.0. \\
+       & \hspace{0.2cm} Massive stars, MS, post-MS, RSG and WR phase \\
+ 17,18 & : user defined, equal to \HPL{massrate} \LA{(Accretion)} \\
+ 19,20 & : Crowther (2000) : for RSG \\
+ 21,22 & : Van Loon et al. (2005) : for AGB and RSG \\
+ 23,24 & : Cranmer \& Saar (2011) : for cool PMS (23 only), MS and RGB stars \\
+       & \hspace{0.2cm} (if rotation and a convective envelope) \\
+ 25,26 & : Graefener (2021) : VMS at LMC metallicity \\
+ 27,28 & : Sanders \& Vink (2022) : VMS stars \\
+ 29,30 & : Sabhahit et al. (2023) : VMS stars at low Z \\
+\end{tabular}
+ If mlp is odd, mass is removed in shells above m=0.95*mtot.
+ If mlp is even, shells are removed.
+\\ \hline
+
+\newpage
+\hline \textbf{variable} & \textbf{values} & meaning \\ \hline\hline \hline
+
+\HPT{etapar}$^\dag$ & $\eta _{\mathrm{Reimers}}$ & Free parameter of the
+Reimers (1975) mass loss prescription. \\ \hline
+\HPT{dmlinc}$^\dag$ & $>1$ or $<1$ & Factor by which the mass loss rate is 
+artificially multiplied. \\ \hline
+\HPT{clumpfac} & $<$ 1 & Factor by which the Vink et al. (2001) mass loss is artificially multiplied to take into account the effects of clumping. \\ \hline
+\HPT{zscaling} & f, t & If t, multiply the mass loss rate by a factor $(Z/Z_\odot)^{0.8}$, where $Z_\odot$ is the solar metallicity. \\ \hline\hline
+
+\multicolumn{3}{|c|}{\sf nuclear} \\ \hline\hline
+{\HPT{nucreg}} &
+$0\rightarrow 3$ & 
+\begin{tabular}{l}
+\hspace{-0.25cm}Treatment of the nucleosynthesis.  \\ 
+0 : no nucleosynthesis (nuclear energy production $\varepsilon_{\rm nuc}$
+calculated) \\  
+1 : nucleosynthesis calculated after convergence \\
+2 : idem 1 but convective zones treated radiatively \\
+3 : nucleosynthesis calculated at each iteration during the convergence
+process  
+\end{tabular}
+\\ \hline
+{\HPT{nuclopt}} & \begin{tabular}{l}\hspace{-0.25cm}i,j,h,n,m,c,l,\\\hspace{-0.25cm}u,p,f\end{tabular} & 
+\begin{tabular}{l}
+i : mix unstable nuclei inside convective zones even if $\tau_{\rm decay}
+\ll \tau_{\rm conv}$ \\
+j : i + deactivate special treatment of Li, Be and B during HBB \\ (see diffusion.f) \\
+h : deactivate processes linked to HBB \\
+n : compute neutron equilibrium abundance after nucleosynthesis \\
+m : homogenize neutron abundances in the convective zones \\
+c : authorize coupled resolution of mixing and nucleosynthesis if the
+luminosity \\variation is $>$ \HPL{ftnuc} and the star is not undergoing
+a TP (for p injection)\\
+l : if decoupling hypothesis not satisfied (see \HPL{ftnuc}), model
+is recomputed \\with a smaller timestep else time step is not allowed to
+increase \\
+u : active URCA terms (Eloc and Econv) \\
+p : if \HPL{diffzc} = f, convection zone can be treated as
+  radiative (\HPT{partialmix} on) \\
+f : do none of the above
+\end{tabular}
+\\ \hline
+\HPT{tolnuc} & $>0$ & 
+\hspace{-0.25cm}\begin{tabular}{l}
+Tolerance on mass fraction conservation in the nuclear subroutine \\ 
+tolerance = $10^{-10} \times$ \HPL{tolnuc}.
+\end{tabular}
+\\ \hline
+{\HPT{ftnuc}$^\dag$} & $< 1 $ & Check that the nucleosynthesis
+does not modify too much the energetics. \\
+& &  Maximum authorized change in
+the nuclear luminosity :
+$\Bigl|1-\frac{L_{\rm nuc}(X^{n+1})}{L_{\rm nuc}(X^n)}\Bigr| < $
+\HPL{ftnuc}\\ \hline 
+\HPT{Znetmax} & $>0$ & 
+Nuclear charge (Z) of the last considered species (only for large networks).
+\\ \hline\hline
+
+\multicolumn{3}{|c|}{\sf diffusion} \\ \hline\hline
+\HPT{idiffcc} & f, t & Computation of slow
+particle transport processes (diffusion). \\ \hline
+{\HPT{diffnuc}} & 1,
+       {2}, 3  &  
+\hspace{-0.25cm}\begin{tabular}{l}
+Computation of slow particle transport processes (if $\neq 0$, default :
+2), \\  
+before (1), after (2) or before and after (3) the nucleosynthesis.
+\end{tabular}
+\\ \hline
+{\HPT{idiffty}} & $4,8 \rightarrow 15$ & 
+\begin{tabular}{l}
+\hspace{-0.3cm} Rotational mixing. \\
+4   : mixing recipe used in Charbonnel ApJ 1995 \\
+8   : chemical mixing + AM transport Talon 1997 \\
+9   : AM transport only, Talon 1997 \\
+10  : (8)+(\HPL{lmicro} = 2) \\
+11  : (\HPL{lmicro} = 3) + chemical mixing +  AM transport Maeder,Zahn 1998 \\
+13  : (11) + non stationary terms in for AM transport (include everything) \\
+14  : $\Omega$ evolves as a results of structural changes, evolution with
+$j_k  = cste$ \\
+15  : (13) + additional viscosity \HPT{nu$\_$add} \\
+\end{tabular}
+\\ \hline
+\HPT{diffzc} & f, t & Compute convective mixing as a diffusive process
+(implies radiative nucleosynthesis).\\ \hline
+\HPT{diffst} & $>1$ & Factor by which the evolution timestep is reduced
+to compute the diffusion. \\ \hline
+\HPT{zgradmu} & f, t & Computation of angular momentum
+  and chemical transports including the feedback on molecular weight when
+\HPL{idiffty} = 8,9 or 11. \\ \hline
+\HPT{nu$\_$add} & $\nu_{\rm add}$ & Additional viscosity in cm$^2$/s (\HPL{idiffty}=15). \\ \hline
+\HPT{del$\_$zc} & $< 1$ & Minimum value allowed for $\nabla_{\rm RAD}$. \\ \hline
+{\HPT{ledouxmlt}} & f,t & Use Ledoux criterion. In the
+semiconvective zone mixing is treated diffusively. \\ \hline
+{\HPT{Tfix}} & $T_{\rm fix}$ & Fixation point of the turbulence function of temperature. \\ \hline
+
+\newpage
+\hline \textbf{variable} & \textbf{values} & meaning \\ \hline\hline \hline
+
+{\HPT{om\_turbul}} & $\Omega_{\rm turbul}$ & Coefficient entering the expression of the turbulent diffusion coefficient for chemicals according to Richard et al. 2005, ApJ 619, 538, Equation 2. Multiplicative factor compared to the He atomic diffusion
+coefficient.
+Dturbul is proportional to om\_turbul*DHe0. \\ \hline
+{\HPT{n\_turbul}} & $n_{\rm turbul}$ & Exponent indicating the density dependence of the turbulent diffusion coefficient for chemicals according to Richard et al. 2005, ApJ 619, 538, Equation 2. Dturbul is proportional to $1/\rho^{\rm n\_turbul}$. \\ \hline
+{\HPT{PM\_turbul}} & $PM_{\rm turbul}$ & Coefficient entering the turbulent diffusion coefficient expression according to Proffitt \& Michaud (1991a) as expressed in  Richard et al. 2005, ApJ 619, 538, Equation 3. Dturbul2 is proportional to PM\_turbul*$\rho^{-3}$. \\ \hline
+
+\hline\multicolumn{3}{|c|}{\sf rotation} \\ \hline\hline
+{\HPT{omegaconv}} & f,t,s,m & Treatment of AM transport in convective zone
+(f=exclude convective core and envelope ONLY - t=include ALL
+conv. zones, s = solid-body rotation in the entire star (routine {\sf
+  rot\_sol} - m = no AM transport but chemical mixing). \\ \hline
+
+{\HPT{Dh\_prescr}} & name & \begin{tabular}{l}
+\hspace{-0.3cm} Prescription for horizontal diffusion coefficient Dh. \\
+Zahn1992 : Zahn 1992 \\
+Maeder03 : Maeder 2003 \\
+MPZ\_2004 : Mathis, Palacios \& Zahn 2004 \\
+Maeder06 : Maeder 2006 \\
+Mathis16 : Mathis 2017, $\tau = 1/S$ \\
+Mathis02 : Mathis 2017, $\tau = 1/(2\Omega + S)$ \\
+Mathiepi : Mathis 2017, $\tau = 1/N_\Omega$
+\end{tabular}
+\\ \hline
+\HPT{dm$\_$ext} & $> 1$ & Parameter used to smooth the diffusion
+  coefficient at the limit of the convective core. \\ \hline
+\HPT{Dv\_prescr} & name & \begin{tabular}{l}
+\hspace{-0.3cm} Prescription for vertical diffusion coefficient Dv. \\
+Za92 : Zahn 1992 \\
+TZ97 : Talon \& Zahn 1997 (do not use with \HPL{Dh\_prescr}=Mathis16) \\
+Ma97 : Maeder 1997 \\
+Pr16 : Mathis et al. 2018 (TB updated - not fully functional yet) \\
+\end{tabular}
+\\ \hline
+\HPT{om$\_$sat} & 08-15 & Saturation value for the dynamo-generated magnetic field
+(in solar angular velocity). \\ \hline
+\HPT{D$\_$zc} & &  Diffusion coefficient in the convective zone. \\ \hline
+{\HPT{disctime}} & & Defines the duration of the
+  disk-locking phase during the pre-main sequence. Expressed in years. (usually 2.5$\times10^6$ for rapid rotation and 5$\times10^6$ for median and slow rotation) \\
+  \hline
+\HPT{\begin{tabular}{l}\hspace{-0.25cm}thermal$\_$\\\hspace{-0.25cm}equilibrium \end{tabular}} & f,t & Starting from thermal equilibrium in the
+ computation of angular momentum transport. \\ \hline
+\HPT{diffvr} & ${\rm V}_{\rm init}$ & Initial velocity in km.${\rm
+    s}^{-1}$ (if no magnetic braking). \\ \hline
+\HPT{idiffvr} & 0 $\rightarrow$ 9 & \begin{tabular}{ll}
+\hline\multicolumn{2}{c}{\hspace{-0.3cm} Prescription for braking at the stellar surface.} \\
+(0) & no torque applied \\
+(1) & constant rotation speed\\
+(2) & power law for breaking~: $\Omega = \Omega_0
+  (t/t_0)^n$ \\
+(3) & Skumanich breaking law~: $\Omega =
+(p\, \Omega_0^{-1} + \rm cte)^{-1/(p-1)}$ \\
+(4) & constant angular velocity\\
+(5) & torque applied $\alpha$ ${\Omega_S}^3$ \\
+(6) & constant specific angular momentum \\
+(7) & gfdsf \\
+(8) & Matt et al. 2012 (with \HPL{mlp} = 23,24)\\
+(9) & Matt et al. 2015 \\
+\end{tabular}
+\\ \hline
+\HPT{idiffex} &  & Exponent intervening in
+the breaking law (if \HPL{idiffvr}=2,3).\\ \hline
+\HPT{diffcst} & & Constant intervening in the different braking laws. Examples : (a) 4e47 with \HPL{idiffvr} = 5 for a solid body rotating 1M$_\odot$ model, (b) $\simeq$ 2e48 for a differentially rotating model. (c) $\simeq$ 3e30 with \HPL{idiffvr} = 9. (Hardcoded for \HPL{idiffvr} = 8). (corresponds to the value of K*2/3 if Matt 2015 is used, solar case : 5$\times$10$^{30}$erg)\\ \hline
+\HPT{breaktime} & & \begin{tabular}{l}
+If idiffvr = 3 date in years from which the breaking of the star starts \\ when Skumanich braking law
+is used.  \\
+If idiffvr $\ne$ 3 corresponds to the angular velocity of the disk (and thus the \\ stellar surface) during the disc-locking phase on the PMS. Expressed in s$^{-1}$.\\
+\end{tabular} 
+\\ \hline
+
+\newpage
+\hline \textbf{variable} & \textbf{values} & meaning \\ \hline\hline \hline
+
+\multicolumn{3}{|c|}{\sf time-dependent convection}
+\\ \hline \hline
+{\HPT{nmixd}} & 0, $1
+\rightarrow 5$ &  
+\begin{tabular}{l}
+\hspace{-0.25cm}Computation of time-dependent mixing (tdm) and
+nucleosynthesis (if $\neq 0$).
+\\ (1)  core only \\(2) envelope only \\ (3) core \& envelope \\ (4) all
+convective zones \\ (5) through all the star
+\end{tabular}
+\\ \hline
+\HPT{itmind} & $>1$ & Minimum number of
+iterations for tdm computations. \\ \hline
+\HPT{itmaxd} & $<99$ & Maximum number of
+iterations for tdm computations. \\ \hline
+\HPT{rprecd} & $\epsilon _{\rm diff}$ & Precision to be reached on the abundances for the solution to converge. \\
+\hline {\HPT{nretry}} & various &
+\begin{tabular}{ll}
+\multicolumn{2}{l}{\hspace{-0.3cm}Parameter used in different contexts according to the
+selected values.} \\
+ 1     & : used in the call of the opacity routine kappa to
+         include the \\
+       & \hspace{0.2cm} computation of molecular opacities
+         (= opamol in kappa.f)\\
+ 4     & : used in structure to redefine thermodynamic quantities at convective \\
+       & \hspace{0.2cm} boundaries in case of rotating models where the effective gravity \\
+       & \hspace{0.2cm} accounts for centrifugal forces \\
+ other & : number of shells in the shock neighbourhood \\
+       & \hspace{0.2cm} (in case of Super AGB stars) \\
+\end{tabular}\\ \hline \hline
+
+\multicolumn{3}{|c|}{\sf extra mixing} \\ \hline\hline
+{\HPT{lover}}  & 23 - 71 & 
+\begin{tabular}{ll}
+\multicolumn{2}{l}{\hspace{-0.3cm} Overshoot prescription.} \\
+23    & : below convective envelope \\
+24    & : above core\\
+25    & : below pulse\\
+26    & : above pulse\\
+27    & : above core and below envelope (=23+24)\\
+28    & : below and above pulse (=25+26)\\
+29    & : treat all cases (=27+28)\\
+30    & : overshoot below all convective zones\\
+31    & : overshoot above all convective zones\\
+32    & : overshoot everywhere (=30+31)\\
+33    & : overshoot Baraffe 2017 \\
+34-36 & : overshoot dependent of rotation Augustson \& Mathis 2019 below the \\
+      & \hspace{0.2cm} base of the CZ (34), above the base of the CZ (35), or both (36) \\
+37-39 & : overshoot dependent of rotation Korre 2019 below the base of the CZ \\
+      & \hspace{0.2cm} (37), above the base of the CZ \\
+      & \hspace{0.2cm} (38), or both (39) \\
+41-43 & : IGW from the envelope only (41), from the core (42), \\
+      & \hspace{0.2cm} or from both (43) \\
+60,61 & : parametric turbulence Richard 2005 set at a temperature threshold \\
+      & \hspace{0.2cm} (60), or at the base of the CZ (61) \\
+70    & : 34 + 60 \\
+71    & : 34 + 61 \\
+\end{tabular}
+\\ \hline
+\HPT{lthal} & 0 - 1 &  Thermohaline mixing (0 = off, 1 = on). \\ \hline
+{\HPT{ltach}} & 41 - 44 &
+\begin{tabular}{l}
+\hspace{-0.3cm} Tachocline mixing. \\
+41 : independent of time Brun 1999 \\
+43 : dependent of time Brun 1999
+\end{tabular} \\ \hline
+\HPT{lmicro} & 2 - 6 & 
+\begin{tabular}{l}
+\hspace{-0.3cm} Atomic diffusion. \\
+2 : Chapman \& Cowling \\
+3 : Montmerle \& Michaud 1976, Paquette 1986, partial ionization \\
+4 : Thoul 1994, Paquette 1986, partial ionization \\
+5 : Montmerle \& Michaud 1976, Paquette 1986, total ionization \\
+6 : Thoul 1994, Paquette 1986, total ionization \\
+\end{tabular}
+\\ \hline
+\multicolumn{3}{|c|}{\sf accretion} \\ \hline\hline
+\HPT{iaccr} & $0$, $1\rightarrow 4$ & 
+\begin{tabular}{l}
+\hspace{-0.25cm}Computation of the accreted matter profile (if $\neq 0$) \\ 
+without (1, 2) or with (3, 4) shear energy production rate $\varepsilon
+_{\rm shr}$ \\ 
+with two different normalizations : \\
+1 or 3 : $\rm M_{acc} = \int \frac{facc}{1+facc}\ d m$ \\
+2 or 4  : $\rm M_{acc} = \int facc \ d m$  (reference)
+\smallskip
+\end{tabular}
+\\ \hline
+
+\newpage
+\hline \textbf{variable} & \textbf{values} & meaning \\ \hline\hline \hline
+
+\HPT{accphase} & $0$, $1\rightarrow 8$ & 
+\begin{tabular}{l}
+\hspace{-0.25cm}Different computations of the accreted matter profile. \\ 
+if $0$ : accretion model, including D burning (suited for PMS phase) \\
+if $[1,4]$ :  accretion inside the star (planet accretion)\\
+if $5$ : uniform accretion from the surface with $\rm facc =
+$\HPL{ric} (\HPL{menv} unknown) \\ 
+if $6$ :  uniform accretion from the surface $M_\star$ to \HPL{menv} ($\rm
+facc$ unknown)\\
+if $7$ :  uniform accretion from the surface $M_\star$  to $M_\star
+-\HPL{menv}$  ($\rm facc$ unknown)\\
+if $8$ :  uniform accretion from the surface $M_\star$  to
+\HPL{menv}$\times M_\star$  ($\rm facc$ unknown)\\
+\end{tabular}
+\\ \hline
+\HPT{itacc} & $0\rightarrow 4$ &
+\begin{tabular}{l} If \HPL{accphase} = 0, 
+ different prescriptions for $^2$H mixing in
+case of accretion. \\ 
+If \HPL{itacc} = 0, matter pills up at the surface of the star. \\
+If \HPL{itacc} $>$ 0, matter mixing with the surface layers. \\
+\end{tabular}
+\\ \hline
+\HPT{massrate} & $\ge 0$ & Mass accretion rate in M$_\odot$\,yr$^{-1}$.\\ \hline
+\HPT{massend} & $M_{\star ,\max }$ & Accretion is stopped when $M >$ \HPL{massend}. \\ \hline
+\HPT{menv} & $M_{\star ,\max }$ & Mass is deposited from \HPL{menv}
+to the surface (works with \HPL{accphase} = 6). \\ \hline
+\HPT{ric} & $\mathcal{R}i_{\rm conv}$ & Richardson number for convective
+regions. \\ \hline
+\HPT{prrc} & $\mathcal{P}e$ & Peclet number characterizing the thermal
+behavior of the accreted matter. \\ \hline
+\HPT{xiaccr} & $0 \le \xi \le 1$ & Angular momentum
+fraction actually accreted inside the star. \\ \hline
+\HPT{fdtacc} & $\ge 1$ & 
+Factor by which the evolution timestep is modified
+in case of non-convergence of the accretion procedure (case
+\HPL{accphase}=0).
+\\ \hline
+\HPT{alphaccr} & $0 \le \alpha_{\rm acc} \le 1 $ & Fraction of the
+accretion luminosity deposited in the star. \\ \hline\hline
+\multicolumn{3}{|c|}{\sf hydrodynamics} \\ \hline\hline
+{\HPT{hydrodynamics}} & 0, 1, 2, 3  & Hydrodynamics off (0) on (1), (2) and (3)
+idem but with rotational forces included. \\
+\hline
+\HPT{ivisc} & 0, 1, 2 &
+Prescriptions for the artificial viscosity.\ \ 
+\hspace{-0.25cm}\begin{tabular}{l}
+0 : no artificial viscosity \\
+1 : $P_{\rm visc} = q_0 \, l^2 \rho \,(D\ln \rho/D t)^2 $\\
+2 : $P_{\rm visc} = q_0 \, l^2 \rho^3 \,(4 \pi \, \partial (r^2 v)/\partial
+m_r)^2$ \\
+3 : $P_{\rm visc} = q_0 \, l^2 \rho \,|\dive\,v| (dv/dr-1/3\,\dive\,v)$
+\end{tabular}
+\\ \hline
+\HPT{q0}$^\dag$ & $q_0 \simeq 1-2$ & Parameter of the artificial viscosity. \\
+\hline
+\HPT{mcut} & $0 \le m_{\rm cut} \le M_{\star}$ & Mass cut above which
+artificial viscosity is activated. \\
+\hline\hline
+
+\multicolumn{3}{|c|}{\sf shell masses}\\\hline\hline
+\HPT{maxsh} & $0\, ...\, n$ & Maximum number of shells that can be changed by
+the mesh laws. \\ \hline
+{\HPT{nresconv}} & $ -9 \rightarrow 99$ & 
+\begin{tabular}{l}
+Spatial resolution increased in at least {\HPL{nresconv}} shells
+around a convective \\
+boundary - if $\HPL{nresconv} <0$ zonetest {NOT} activated {\sf else} zonetest
+activated \\
+(better to put at 0 if atomic diffusion active). 
+\end{tabular}
+\\ \hline 
+\HPT{dlnvma} & $\displaystyle \Bigl\{\frac{\Delta X}{X}\Bigl\}_{\max} < 1$ & 
+\hspace{-0.25cm}\begin{tabular}{l} Spatial resolution : maximum relative variation in \{X\}=\{$u, r, \ln
+    f, T, L_r, P, \varrho$, $M_r$\}\\ between 2 adjacent shells.
+\end{tabular}
+\\ \hline
+\HPT{dlnvmi} & $\displaystyle \Bigl\{\frac{\Delta T}{T}\Bigl\}_{\min}$ &
+\hspace{-0.25cm}\begin{tabular}{l} Luminosity profile constrain if $\Delta
+  T/T$ is larger than \HPL{dlnvmi}.
+\end{tabular}
+\\ \hline
+\HPT{dlnenuc}$^\dag$ & $\triangle \varepsilon _{\rm nuc,\max }$ &
+Equivalent to  
+\HPL{dmrma}, but for $\varepsilon _{\rm nuc}$ specifically. \\ \hline
+\HPT{dmrma} & $\triangle m_{\max }$ & Maximum increase of relative mass
+allowed between adjacent shells. \\ \hline
+\HPT{dmrmi} & $\triangle m_{\min }$ & Minimum increase of relative mass
+allowed between adjacent shells. \\ \hline \hline
+
+\multicolumn{3}{|c|}{\sf time-step} \\ \hline\hline
+\HPT{dtin} & $\triangle t_{\rm in}$ & 
+\begin{tabular}{l}
+Initial evolution timestep of a model sequence. \\
+(if zero, use previous evolution time step)
+\end{tabular}
+\\ \hline
+\HPT{dtmin} & $\triangle t_{\min }$ & Minimum evolution timestep allowed.
+\\ \hline
+\HPT{dtmax} & $\triangle t_{\max }$ & Maximum evolution timestep allowed.
+\\ \hline
+\HPT{facdt} & $>1$ & 
+\begin{tabular}{l}
+Factor by which the evolution timestep is increased (in case of convergence)
+\\ 
+or reduced (by 2, in case of crash).
+\end{tabular}
+\\ \hline
+\HPT{fkhdt}$^\dag$ & $\leq 1$ & 
+\begin{tabular}{l}
+Fraction of the Kelvin-Helmholtz timescale considered as maximum evolution
+\\ 
+timestep allowed, only for contracting phases (i.e. nphase = 1, 3, 5 and 7).
+\end{tabular}
+\\ \hline
+\HPT{ishtest} & f, t & 
+\begin{tabular}{l}
+Next evolution timestep estimated by the dependent variable evolution rate
+\\ 
+in all the shells (f) or just in shells where nuclear burning occurs (t).
+\end{tabular}
+\\ \hline
+\HPT{fts}$^\dag$ & $<1$ & 
+\begin{tabular}{l}
+Relative maximum change of dependent variable values allowed in each shell
+\\ 
+between two consecutive models (to estimate the evolution timestep).
+\end{tabular}
+\\ \hline
+\HPT{ftsh}$^\dag$ & $<1$ & 
+\begin{tabular}{l}
+The evolution timestep is not allowed to be larger than \HPL{ftsh} times
+\\ 
+the nuclear timescale corresponding to H burning (where $\varepsilon _{\rm nuc}$
+is maximum).\\
+When {\sf nphase=7}, \HPL{ftsh} controls {Ne burning}.
+\end{tabular}
+\\ \hline
+
+\newpage\hline \textbf{{variable}} & \textbf{values} &
+meaning \\ \hline\hline \hline
+
+\HPT{ftshe}$^\dag$ & $<1$ & Same as \HPL{ftsh}, but corresponding to He
+burning. \\ \hline
+\HPT{ftsc}$^\dag$ & $<1$ & Same as \HPL{ftsh}, but corresponding to C
+burning. \\ \hline
+{\HPT{ftst}$^\dag$} & $<1$ & - Controls the max. temperature
+increase allowed between 2 consecutive models. \\ 
+& $<1$ & - Controls the increase in nuclear luminosities associated with
+the different burning modes (H,He and C).\\ \hline
+\HPT{ftacc}$^\dag$ & $<1$ & Same as \HPL{ftsh}, but corresponding to the
+accretion timescale (if \HPL{iaccr}$>$0). \\
+& $<1$ & Also controls the flame speed (activated if \HPL{imodpr}=11). \\
+\hline 
+
+\multicolumn{3}{|c|}{\sf iterations} \\ \hline\hline
+\HPT{itermin} & $>2$ & Minimum number of iterations to converge a model. \\ 
+\hline
+\HPT{itermax} & $<999$ & Maximum number of iterations to converge a model.
+\\ \hline
+\HPT{itermix} & $-99 \rightarrow 99$ & 
+\begin{tabular}{l}
+Maximum number of iterations over which mixing procedure is applied \\ 
+at each iteration (if \HPL{mixopt} is true).\\
+If \HPL{itermix}$<0$ initial abundances  restored after the \HPL{itermix}
+iterations.
+\end{tabular}
+\\ \hline
+\HPT{icrash} & \begin{tabular}{l} $<10$ \\ \smallskip $-10<$ \end{tabular}& 
+\begin{tabular}{l}
+In case of crash, the evolution timestep is reduced \HPL{icrash} times \\ 
+and increased 9$-$\HPL{icrash} times. \\
+Negative values of \HPL{icrash} force the time step to increase $|$\HPL{icrash}$|$ times \\ 
+and then decreased 9$-|$\HPL{icrash}$|$ times.
+\end{tabular}
+\\ \hline
+{\HPT{numeric}} & 1 $\rightarrow$ 4 & 1 : convergence not followed in
+the surface layers where $T <$ \HPL{tmaxioHe}  \\
+& & 2-3 : first order spatial derivatives ({\sf zi}=$\frac{1}{2}$, {\sf zj}=$\frac{1}{2}$) \\ 
+& & 2-4 : $1/\kappa_i = {\sf zi}/\kappa_{i-\frac{1}{2}}+{\sf zj}/\kappa_{i+\frac{1}{2}}$ \\
+& & other values : second order spatial derivatives and $\kappa_i =
+\kappa_{i-\frac{1}{2}}^{{\sf zi}} \kappa_{i+\frac{1}{2}}^{{\sf zj}}$\smallskip \\
+\hline\hline
+{\HPT{icorr}} & f,i,m,h,a,b,t & \begin{tabular}{ll}
+f & : do not activate parameter adjustments in case of crash \\
+i & : f + increase tolerance on velocity \\
+m & : f + mesh disabled after 1 crash \\
+h & : f + deactivate acceleration routine after 2 crashes (iacc=f) \\
+a & : f + constraint time-step during third dredge-up and set egrav and its \\
+  & \hspace{0.2cm} derivatives at 0 in the atmosphere \\
+b & : set egrav and its derivatives at 0 in the atmosphere \\
+t & : constraint time-step during third dredge-up and check that pressure is a \\
+  & \hspace{0.2cm} decreasing function of mass
+\end{tabular} \\ \hline\hline
+
+\multicolumn{3}{|c|}{\sf tolerances} \\ \hline\hline
+\HPT{tol\_u} & $\epsilon \left( u\right) $ & Tolerance to be reached by the
+dependent variable $u$ for the model to converge. \\ \hline 
+\HPT{tol\_lnr} & $\epsilon \left( \ln r\right) $ & Same as \HPL{tol\_u}, but for
+dependent variable $\ln r$. \\ \hline
+\HPT{tol\_lnf} & $\epsilon \left( \ln f\right) $ & Same as \HPL{tol\_u}, but
+for dependent variable $\ln f$. \\ \hline
+\HPT{tol\_lnT} & $\epsilon \left( \ln T\right) $ & Same as \HPL{tol\_u}, but
+for dependent variable $\ln T$. \\ \hline
+\HPT{tol\_l} & $\epsilon \left( l\right) $ & Same as \HPL{tol\_u}, but for
+dependent variable $l$. \\ \hline\hline
+
+\multicolumn{3}{|c|}{\sf convergence} \\ \hline\hline
+\HPT{phi} & $0 \le \varphi \le 1$ & 
+\begin{tabular}{l}
+Correction apply to the linear extrapolation to determine the initial guess\\
+structure ($x^{n+1} = x^n + \HPL{phi} \times [x^n-x^{n-1}] \times
+\Delta t^{n+1}/\Delta t^n$).
+\end{tabular}
+\\ \hline
+\HPT{alpha} & $0\rightarrow 1$ & 
+\begin{tabular}{l}
+Fraction of the Newton-Raphson correction actually applied in all the shells
+\\ 
+for each dependent variable that is considered for the first four iterations.
+\end{tabular}
+\\ \hline
+\HPT{iacc} & f, t & 
+\begin{tabular}{l}
+Allow or not the current \HPL{alpha} value to be modified for all the \\
+dependent variables
+every four iterations (after the first four ones).
+\end{tabular}
+\\ \hline
+\HPT{alphmin} & $0\rightarrow 1$ & Minimum value allowed for \HPL{alpha}
+(if \HPL{iacc} is true). \\ \hline
+\HPT{alphmax} & $0\rightarrow 1$ & Maximum value allowed for \HPL{alpha}
+(if \HPL{iacc} is true). \\ \hline
+\HPT{sigma} & $0\le \sigma \le 1$ & Numerical scheme.
+\begin{tabular}{l}
+0 : explicit scheme \\ $0 < \sigma < 1$ semi-implicit \\ 1 : implicit scheme
+\end{tabular}
+\\ \hline
+\HPT{vlconv} & f,t & Treatment of equation of transport.
+\begin{tabular}{l}
+f :  $\rm \partial \ln T/\partial \ln P= \nabla_{conv} \ or\ \nabla_{rad} $ \\
+t :  $L = L_{\rm rad} + L_{\rm conv}$
+\end{tabular}
+\\ \hline
+\end{longtable}
+\end{center}
+\vspace{-1cm}
+$^\dag$ if set to zero, not accounted for \\
+\sout{word} : parameter not used (i.e. should be removed) \\
+\HPL{partialmix} : convective zone treated as radiative if $\tau_{\rm conv}
+\gg \texttt{dtn}$ (see \HPL{nuclopt}) \\
+\HPL{lmix} : solution accepted only if during the last 2 iterations the
+convective boundaries have NOT changed (and the tolerance fulfilled) (see
+\HPL{dtnmix}) 
+
+\newpage
+
+\begin{center}
+{\Large \sf \textbf{VARIABLES NAMES}}
+\renewcommand{\baselinestretch}{1.05}
+\vspace{1.0cm}
+%\large
+
+\begin{tabular}[@{\renewcommand{\baselinestretch}{5}}]{|l| lr|}
+%\begin{tabular}{|l| lr|}
+
+\hline
+{\bf \sf variable name} & {\bf \sf Centered variables shell [i+1/2] } &
+{\bf \sf symbol }\\\hline \hline
+rho & density & $\rho$ \\
+T & temperature  &T \\
+P & pressure  &P \\
+eint & internal energy & $E_{\rm int}$ \\
+abad & adiabatic gradient & $\nabla_{\rm ad}$ \\
+cp & specific heat a constant P & $\rm c_P$ \\
+enupla & plasma neutrino energy loss rate & $\varepsilon_\nu$ \\
+enucl & nuclear energy production rate & $\varepsilon_{\rm nuc}$ \\
+egrav & gravothermal energy production rate & $\varepsilon_{\rm grav}$ \\ 
+khimu & $\chi_\mu =  \frac{\partial \ln P }{\partial \ln \mu}\big|_{\rho,T}$ &
+$\chi_\mu$ \\
+khirho & $\chi_\rho = \frac{\partial \ln P }{\partial \ln
+  \rho}\big|_{\mu,T}$ &$\chi_\rho$  \\
+khit & $\chi_T =  \frac{\partial \ln P }{\partial \ln T}\big|_{\mu,\rho}$
+& $\chi_\rho$   \\
+ksirho & $\xi_\rho = \frac{\partial \ln P }{\partial \ln
+  \rho}\big|_{T}$ & $\xi_\rho$  \\
+phiKS & $\varphi = \frac{\partial \ln \rho }{\partial \ln
+  \mu}\big|_{P,T} = - \frac{\chi_\mu}{\zeta_\rho} = - \phi$  & $\varphi$ \\
+deltaKS & $\delta = -\frac{\partial \ln \rho }{\partial \ln
+ T}\big|_{P,\mu}= \frac{\zeta_T}{\zeta_\rho}$  & $\delta$ \\
+ksiT & $\xi_T = \frac{\partial \ln P }{\partial \ln
+  T}\big|_{\rho}$ & $\xi_T$  \\
+zrho & $\zeta_\rho = \chi_{\rho}+ \chi_\mu \xi_\rho$ & $\zeta_\rho$ \\
+zt & $\zeta_T = \chi_T+ \chi_\mu \xi_\rho$ & $\zeta_T$ \\
+V\_circ & horizontal component of the meridional circulation & $V_{\rm circ}$ \\
+xKt & thermal diffusivity : $\mathrm{Flux} = -K_T \rho c_P \displaystyle \frac{\partial 
+  T}{\partial r} $ & $K_T$  \\
+rhmoy & average density $\frac{1}{M} \int \varrho\, \mathrm{d} m$ &
+$\varrho_m$  \\\hline 
+\hline
+ & {\bf \sf Edge/interface  variables shell [i]}  &  \\ \hline\hline
+ m & mass  & $M_r$ \\
+ u & velocity  & $u_r$ \\
+ r & radius  & r \\
+ lum & luminosity  & $L_r$\\
+ gmr & gravitational field & $\displaystyle \frac{{\cal G} M_r}{r^2}$  \\
+ hp & pressure scale height & $\rm H_P$ \\
+ ht & temperature scale height & $\rm H_T$ \\
+ crzc & shell type (radiative, conv., semi, thermohaline, ...) &  \\
+ abrad & radiative gradient & $\nabla_{\rm rad}$  \\ 
+ abla & effective temperature gradient & $\nabla_*$  \\
+ abel & temperature gradient of the convective cell & $\nabla_{el}$  \\ \hline
+ & {\sf rotation - mixing - diffusion variables [i]}  & \\ \hline
+ omega & rotation rate  & $\Omega$ \\
+ theta & derivative of rotational rate  & $\theta$ \\
+ ur & vertical component of the meridional circulation  & $U_r$ \\
+ lambda & integration variable   & $\Lambda$ \\
+ aux & integration variable  & $\cal{A}$    \\ 
+ grav & normalized gravitational field & $g$ \\
+epsmoy & average nuclear energy production $\frac{1}{M} \int
+\varepsilon_{\rm nuc} \mathrm{d} m$ & $\varepsilon_m$ \\ 
+D & all diffusion coefficients : cd, Dconv, Dsc, Dherw, coefDtacho,
+    Dhd, Dthc, & \\
+ & xNt, xNu, xNr, Dhold, Dh  & D \\ 
+viscosity & xnum, xnuvv, xnumol, xnurad & $\nu$ \\ \hline 
+\end{tabular}
+
+\end{center}
+\printindex 
+
+\end{document}
+
