@@ -1348,7 +1348,7 @@ C     turnover time at Hp/2 below top of CC
                tc = 0.d0
                rc = 0.d0
             else
-               tc_core = alpha_mlt_hp*hp(k)/sconv(k)
+               tc_core = alphac*hp(k)/sconv(k)
                rc_core = r(k)
             endif
 
@@ -1362,7 +1362,7 @@ c     turnover time at Hp below top of CC
                tc_hp_core = 0.d0
                rc_hp_core = 0.d0
             else
-               tc_hp_core = alpha_mlt_hp*hp(k)/sconv(k)
+               tc_hp_core = alphac*hp(k)/sconv(k)
                rc_hp_core = r(k)
             endif
 
@@ -1379,7 +1379,7 @@ c     turnover time at 1/2R_cc
                tc_r_core = 0.d0
                rc_r_core = 0.d0
             else
-               tc_r_core = alpha_mlt_hp*hp(k)/sconv(k)
+               tc_r_core = alphac*hp(k)/sconv(k)
                rc_r_core = r(k)
             endif
 
@@ -1396,7 +1396,7 @@ c     turnover time at 1/2M_cc
                tc_m_core = 0.d0
                rc_m_core = 0.d0
             else
-               tc_m_core = alpha_mlt_hp*hp(k)/sconv(k)
+               tc_m_core = alphac*hp(k)/sconv(k)
                rc_m_core = r(k)
             endif
 
@@ -1404,8 +1404,8 @@ c     turnover time with maximal value (bottom and top layers are not taken into
             tc_max_core = -1.d0
             do k = ib+1,it-1
                if (sconv(k).gt.0.d0.and.
-     &              tc_max_core.lt.alpha_mlt_hp*hp(k)/sconv(k)) then
-                  tc_max_core = alpha_mlt_hp*hp(k)/sconv(k)
+     &              tc_max_core.lt.alphac*hp(k)/sconv(k)) then
+                  tc_max_core = alphac*hp(k)/sconv(k)
                   rc_max_core = r(k)
                endif
             enddo
@@ -1464,7 +1464,7 @@ C     turnover time at Hp/2 over bottom of CE
                tc = 0.d0
                rc = 0.d0
             else
-               tc = alpha_mlt_hp*hp(k)/sconv(k)
+               tc = alphac*hp(k)/sconv(k)
                rc = r(k)
             endif
 
@@ -1480,7 +1480,7 @@ c     turnover time at Hp over bottom of CE
                tc_hp = 0.d0
                rc_Hp = 0.d0
             else
-               tc_hp = alpha_mlt_hp*hp(k)/sconv(k)
+               tc_hp = alphac*hp(k)/sconv(k)
                rc_hp = r(k)
             endif
 
@@ -1497,7 +1497,7 @@ c     turnover time at 1/2R_ce
                tc_r = 0.d0
                rc_r = 0.d0
             else
-               tc_r = alpha_mlt_hp*hp(k)/sconv(k)
+               tc_r = alphac*hp(k)/sconv(k)
                rc_r = r(k)
             endif
 
@@ -1514,7 +1514,7 @@ c     turnover time at 1/2M_ce
                tc_m = 0.d0
                rc_m = 0.d0
             else
-               tc_m = alpha_mlt_hp*hp(k)/sconv(k)
+               tc_m = alphac*hp(k)/sconv(k)
                rc_m = r(k)
             endif
 
@@ -1522,8 +1522,8 @@ c     turnover time with maximal value (bottom and top layers are not taken into
             tc_max = -1.d0
             do k = kbce,ktce
                if (sconv(k).gt.0.d0.and.
-     &              tc_max.lt.alpha_mlt_hp*hp(k)/sconv(k)) then
-                  tc_max = alpha_mlt_hp*hp(k)/sconv(k)
+     &              tc_max.lt.alphac*hp(k)/sconv(k)) then
+                  tc_max = alphac*hp(k)/sconv(k)
                   rc_max = r(k)
                endif
             enddo

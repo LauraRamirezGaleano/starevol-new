@@ -306,8 +306,8 @@ c                  abrad(k) = max(abrad(k),abm(k)*1.001d0)
 ***   boundaries during the first itermix iterations
 *--------------------------------------------------------------------
 
-c      neutrality = idup.eq.1.or.idup.eq.3  
-      if (nphase.eq.2) neutrality = .true. ! modif Ana Palacios 09/2018
+      neutrality = idup.eq.1.or.idup.eq.3  
+c      if (nphase.eq.2) neutrality = .true. ! modif Ana Palacios 09/2018
       if (nsconv.gt.0.and.neutrality.and.iter.le.abs(itermix)) then
          do kl = 3,4
             if (kl.eq.3) then
@@ -333,7 +333,7 @@ c     &                 then
 	          if (extabrad.gt.abm(kc0)) then
                      novlim(k,kl) = kc0
                      novlim(k,kl-2) = novlim(k,kl)
-                     abrad(kc0) = extabrad
+                     !abrad(kc0) = extabrad
                      crz(kc0) = -2
                   endif
                endif

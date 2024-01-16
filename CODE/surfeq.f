@@ -18,6 +18,7 @@
 
       include 'evolcom.acc'
       include 'evolcom.cons'
+      include 'evolcom.conv'
       include 'evolcom.eng'
       include 'evolcom.eos'
       include 'evolcom.mass'
@@ -56,6 +57,7 @@ c      double precision fac2,dvfacc,efacc
 
 
       dtninv = 1.d0/dtn
+ !     p(nmod) = p(nmod) + ro(nmod)*(sconv(nmod)**2.d0)/3.d0
       dp = p(nmod)-p(nmod1)
       vdp = vp(nmod)-vp(nmod1)
       gmrua = gmr(nmod)+accel(nmod)

@@ -20,7 +20,7 @@ c -*-FORTRAN-*-
       double precision epsimu,khi_mu,epsimum,khi_mum,khim
       double precision xKt
       double precision rro,vrro
-      double precision grad_crit
+      double precision nu_add
       double precision diffvr,breaktime
 C Modifs CC ondes (2/04/07)
       double precision Dondes,Dondeschim,epx
@@ -33,7 +33,7 @@ C Modifs CC ondes (2/04/07)
  
       common /comp_chim/ vxspd(nsh,nsp),xspd(nsh,nsp)
       common /rotlaw/ diffvr,breaktime,idiffvr,idiffvr0
-      common /limitemu/ grad_crit,zgradmu
+      common /limitemu/ nu_add,zgradmu
       common /comomega/ hhp(nsh),hht(nsh),khi(nsh),khit(nsh),
      &     epsit(nsh),grav(nsh),xi(nsh),xnum(nsh),rtot,gs,
      &     omega_S,ur_S

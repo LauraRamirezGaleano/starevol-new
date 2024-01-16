@@ -107,7 +107,7 @@ c      include 'evolcom.transpondesexcit'
 
       double precision rho_bcz   ! dturbul TD 09/19
       double precision times,chronos      ! Ajout chronos pour mesure du tps de calcul
-      double precision fover,pwi,f1,f2,f3
+      double precision pwi,f1,f2,f3
       double precision abond,summx,xm_sum,anucni
       double precision cd,cd0,dd,dd0,dd1,dmdr
       double precision Dmicro_He,Dmicro_O,Vmicro_He,Vmicro_O ! maj TD Jan.2018
@@ -483,9 +483,8 @@ C Version utilisee pour RGB :
             klenv0 = klenv
             istart = novlim(klenv,3)
             if (klenv0.ne.0.and.istart.gt.1) then
-               fover = etaturb
                cd0 = Dconv(istart)
-               call diffbaraffe (istart,iend,cd0,Dbar,fover)
+               call diffbaraffe (istart,iend,cd0,Dbar)
             endif
             novlim(klenv,7) = iend
          endif
@@ -497,14 +496,13 @@ c..   Diffusion below a convection zone
             klenv0 = klenv
             istart = novlim(klenv,3)
             if (klenv0.ne.0.and.istart.gt.1) then
-               fover = etaturb
                cd0 = Dconv(istart)
                if (lover.eq.34.or.lover.eq.36.or.lover.eq.70.or.
-     $              lover.eq.71) call diffkyle (istart,1,iend,cd0,fover
-     $              ,Dkyle,1)
+     $              lover.eq.71) call diffkyle (istart,1,iend,cd0,
+     $              Dkyle,1)
                if (lover.eq.37.or.lover.eq.39.or.lover.eq.72.or.
      $              lover.eq.73)
-     $              call diffkyle (istart,1,iend,cd0,fover,Dkyle,2)
+     $              call diffkyle (istart,1,iend,cd0,Dkyle,2)
             endif
             novlim(klenv,7) = iend
             do i = 1,nmod
@@ -520,12 +518,11 @@ c..   Diffusion above a convection zone
             klenv0 = klenv
             istart = novlim(klenv,4)
             if (klenv0.ne.0.and.istart.gt.1) then
-               fover = etaturb
                cd0 = Dconv(istart)
                if (lover.eq.35.or.lover.eq.36) 
-     $              call diffkyle (istart,-1,iend,cd0,fover,Dkyle,1)
+     $              call diffkyle (istart,-1,iend,cd0,Dkyle,1)
                if (lover.eq.38.or.lover.eq.39) 
-     $              call diffkyle (istart,-1,iend,cd0,fover,Dkyle,2)
+     $              call diffkyle (istart,-1,iend,cd0,Dkyle,2)
             endif
             novlim(klenv,8) = iend
          endif
@@ -537,9 +534,8 @@ c..   overshooting below ALL convective zones
                do k = 1,nsconv
                   istart = novlim(k,3)
                   if (istart.gt.1) then
-                     fover = etaturb
                      cd0 = Dconv(istart)
-                     call diffherwig (istart,iend,cd0,Dherw,fover,pwi,1)
+                     call diffherwig (istart,iend,cd0,Dherw,pwi,1)
                      novlim(k,7) = iend
                      if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
                         write (nout,200) istart,iend,t(iend),
@@ -552,9 +548,8 @@ c..   overshooting above ALL convective zones
             if (lover.eq.31.or.lover.eq.32) then
                do k = 1,nsconv
                   istart = novlim(k,4)
-                  fover = etaturb
                   cd0 = Dconv(istart)
-                  call diffherwig (istart,iend,cd0,Dherw,fover,pwi,-1)
+                  call diffherwig (istart,iend,cd0,Dherw,pwi,-1)
                   novlim(k,8) = iend
                   if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
                      write (nout,200) istart,iend,t(iend),abs(m(istart)-
@@ -575,12 +570,11 @@ c..   overshooting above ALL convective zones
 c..   overshooting below convective envelope
          if (klenv0.ne.0) then
             istart = novlim(klenv,3)
-            fover = etaturb
             cd0 = Dconv(istart)
             if (lover.eq.22) then
-               call diffherwig (istart,iend,cd0,Dherw,fover,pwi,2)
+               call diffherwig (istart,iend,cd0,Dherw,pwi,2)
             else
-               call diffherwig (istart,iend,cd0,Dherw,fover,pwi,1)
+               call diffherwig (istart,iend,cd0,Dherw,pwi,1)
             endif
             novlim(klenv,7) = iend
             if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
@@ -592,9 +586,8 @@ c..   overshooting above pulse
          if (klpulse0.gt.0) then
             if (lover.eq.26.or.lover.eq.28.or.lover.eq.29) then
                istart = novlim(klpulse,4)
-               fover = etaturb
                cd0 = Dconv(istart)
-               call diffherwig (istart,iend,cd0,Dherw,fover,pwi,-1)
+               call diffherwig (istart,iend,cd0,Dherw,pwi,-1)
                novlim(klpulse,8) = iend
                if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
                   write (nout,200) istart,iend,t(iend),abs(m(istart)-
@@ -604,9 +597,8 @@ c..   overshooting above pulse
 c..   overshooting below pulse
             if (lover.eq.25.or.lover.eq.28.or.lover.eq.29) then
                istart = novlim(klpulse,3)
-               fover = 1.d-4
                cd0 = Dconv(istart)
-               call diffherwig (istart,iend,cd0,Dherw,fover,pwi,1)
+               call diffherwig (istart,iend,cd0,Dherw,pwi,1)
                novlim(klpulse,7) = iend
                if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
                   write (nout,200) istart,iend,t(iend),abs(m(istart)-
@@ -617,9 +609,8 @@ c..   overshooting below pulse
 c..   overshooting above core
          if (klcore0.ne.0) then
             istart = novlim(klcore,4)
-            fover = etaturb
             cd0 = Dconv(istart)
-            call diffherwig (istart,iend,cd0,Dherw,fover,pwi,-1)
+            call diffherwig (istart,iend,cd0,Dherw,pwi,-1)
             novlim(klcore,8) = iend
             if (icall.eq.1.and.istart.ne.0.and.iend.ne.0) then
                write (nout,200) istart,iend,t(iend),
@@ -747,10 +738,11 @@ c.. diffusion at the center
 ***   Parametric mixing for giant stars
 
       if (idiffcc.and.ndt.gt.1) then
-         if (idiffty.eq.21) then
-            call zonedeltaxrgb (ndt,ndb,ndbmel)
-            call dturburgb (ndbmel,ndt,diffst,cd)
-         endif
+!     Commented out on 21/12/2023, unused
+c$$$         if (idiffty.eq.21) then
+c$$$            call zonedeltaxrgb (ndt,ndb,ndbmel)
+c$$$            call dturburgb (ndbmel,ndt,diffst,cd)
+c$$$         endif
 
          if (zgradmu.and.idiffty.eq.31) then
 c            call zonemucarbon (ndb,ibottom)

@@ -270,6 +270,13 @@ c     endif
 ***   test temperature increase
 *------------------------------
 
+!     Setting unused values of T to zero to avoid bugs (06/12/2023)
+      do i=1,nsh
+         if (i.gt.nmod) then
+            t(i) = 0.d0
+         endif
+      enddo
+
       if (ftst.gt.0.d0.and.model.gt.10) then
          mask(:)=m.gt.mcut     
 c..   Apply mask for t corresponding to m(i)<mcut except for t(1)
@@ -1078,8 +1085,8 @@ c..   NUCLEAR problem
             adapt = .true.
          endif
 
-c..   after 2 crashes, mesh is frozen
-         if (ireset.ge.1.and.(icorr.eq.'m'.or.icorr.eq.'b'.or.adapt))
+c..   after 1 crash, mesh is frozen
+         if (ireset.ge.1.and.(icorr.eq.'m'.or.adapt))
      &        then
             maxsh = 0
 c     if (ireset.eq.1) dtn = dtn0

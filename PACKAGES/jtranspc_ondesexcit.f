@@ -1212,7 +1212,7 @@ c     &        Dhold(j) = Dh_max*xKtm(j)
 ** ---------------------------------------------------------------------
 * Calcule la vitesse angulaire de rotation a l'instant considere.
 *
-* Lois possibles :                      IDIFVR :
+* Lois possibles :                      IDIFFVR :
 *   Vitesse de rotation constante          1
 *   Loi de puissance                       2
 *   Loi de Skumanich                       3
@@ -2590,7 +2590,7 @@ c$$$     $                 6250.d0)**18)+2.d-3
                   if (k.ge.novlim(klenv,4).or.sconv(k).eq.0.d0) then
                      tauc = tg
                   else
-                     tc_hp = alpha_mlt_hp*hp(k)/sconv(k)
+                     tc_hp = alphac*hp(k)/sconv(k)
                      rc_hp = r(k)
                   endif
                      
@@ -4476,7 +4476,7 @@ c                  B = Bcrit!*fstar
               if (k.ge.novlim(klenv,4).or.sconv(k).eq.0.d0) then
                  tauc = tg
               else
-                 tc_hp = alpha_mlt_hp*hp(k)/sconv(k)
+                 tc_hp = alphac*hp(k)/sconv(k)
                  rc_hp = r(k)
                  tauc = tc_hp
               endif

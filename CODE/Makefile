@@ -209,7 +209,7 @@ IDIR_CODE = $(DIR_SRC)/CODE
 IDIR_INCL = $(DIR_SRC)/INCL
 IDIR_NUC = $(DIR_SRC)/LIBNUC
 IDIR_NUM = $(DIR_SRC)/LIBNUM
-IDIR_PACK = $(DIR_SRC)/PACK
+IDIR_PACK = $(DIR_SRC)/PACKAGES
 IDIR_OPA = $(DIR_SRC)/LIB
 IDIR_FLAME = $(DIR_SRC)/FLAME
 IDIR_BATCH = $(DIR_BATCH)
@@ -315,10 +315,10 @@ EVOLINCL = $(patsubst %,$(RDIR_INCL)/%,$(SRC_INCL))
 SRC_STAR = runevol.f starevol_init.f starevol.f accret.f atmtp.f boreas.f calcevo.f centeq.f \
 	chedif.f convzone.f denucl.f dfdr.f diffinit.f \
 	diffsolve_OK.f diffturbul.f diffusion.f evodat.f fdiff.f freac.f fscreen.f \
-	guess.f init.f inteq.f interp_CMFGEN.f interp_TLUSTY.f interpmesh.f interpZ.f kappa.f \
+	guess.f init.f inteq.f interp_CMFGEN.f interpmesh.f interpZ.f kappa.f \
         load_CMFGEN.f load_TLUSTY.f mchange_Vink.f mesh.f mix.f mlt.f netdiff.f network.f neutri.f nuceng.f \
 	nucsolve.f nucprod.f nwracc.f nwtraf.f opa_co.f oversh.f \
-	pconv.f prvar.f quintic.f resulpr.f rinimod.f rininet.f rmodpar_nml.f \
+	pconv.f prvar.f quintic.f resulpr.f rinimod.f rininet.f rmodpar.f \
 	screen.f select_table.f structure.f surfeq.f thermo.f tstep.f \
 	tstepx.f vit.f ydequil.f yequil.f yneutron.f
 
@@ -343,7 +343,7 @@ endif
 SRC_NUM = exv.f fit.f nwrmat.f interlin.f shearnwt.f \
 	lubksb.f ludcmp.f savgol.f lsame.f xerbla.f idamax.f ilaenv.f \
         iparmq.f ieeeck.f \
-        nagmod_ok.f sort.f splineatm.f splineatmb.f splintatm.f splintatmb.f \
+        nagmod_ok.f sort.f spline_der.f spline_interp.f \
 	dgetrf.f dgetrs.f dtrsm.f dlaswp.f dgetf2.f \
 	dswap.f dscal.f dger.f dgemm.f  
 #	gift_54.f leqs.f 

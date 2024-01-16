@@ -2,7 +2,7 @@
 
 ************************************************************************
 
-      SUBROUTINE mlt (imin,imax,kl,error)
+      SUBROUTINE mlt (imin,imax,error)
 
 ************************************************************************
 * Calculate the MLT solution with or without compression               *
@@ -34,13 +34,12 @@ c temps. Wood 1974 ApJ 190, 609
       integer error,ibiff
       integer it,iross
       integer i,j,im,ip
-      integer kl
 
       double precision ca,cb,cg,y,sqrz,x4,x
       double precision lambdac,lambdaa,a0
       double precision dfzconv,fzconv,faccor,taumix,betacor
       double precision delroa,cua,adrad,cc,kiminv,kiinv
-      double precision con1,con2,con3,alpha_mlt_hp2,ut,ut2,ze,al,
+      double precision con1,con2,con3,alphac2,ut,ut2,ze,al,
      &     epsf,we,we2,dr1,dr2,dr3,dr4,dr5,dr6,dr7,dutdf1,dutdf2,
      &     dutdt1,dutdt2,dutrr,daldf1,daldf2,daldt1,daldt2,dalrr,daldl,
      &     dalu1,dalu2,wedf1,wedf2,wedt1,wedt2,werr,wedl,weu1,weu2,
@@ -68,7 +67,7 @@ c temps. Wood 1974 ApJ 190, 609
 C.. Modif TD 11/2019 - Ajout Penetration convective Kyle A.       
       double precision zz, omega
       common /rotvar/ omega(nsh)
-C.. Fin Modif 
+C.. Fin Modif
 
       external pconv
 
@@ -78,7 +77,7 @@ C.. Fin Modif
       con2 = 368.d0/729.d0
       con3 = 19.d0/27.d0
       fkcr(1:nmod1) = 0.d0
-      alpha_mlt_hp2 = alpha_mlt_hp*alpha_mlt_hp
+      alphac2 = alphac*alphac
 
       if (imin.gt.imax) return
       imin0 = max(imin,2)
@@ -87,7 +86,8 @@ C.. Fin Modif
 ***   MLT prescription with Hp
 *-----------------------------
 
-      if (.not.ihro.or.(ihro.and.(ro(imin).gt.1.d-3))) then
+!      if (.not.ihro.or.(ihro.and.(ro(imin).gt.1.d-3))) then
+      if (.not.ihro) then
 
 ***   with analytic (exact) root of the third order polynomial equation
 ***   following the Cox's formalism (1984)
@@ -96,10 +96,10 @@ C.. Fin Modif
             do 10 i = imin0,imax
 c               if (abm(i).gt.abrad(i)) goto 10
                im = i-1
-               lambdac(i) = hp(i)*alpha_mlt_hp
+               lambdac(i) = hp(i)*alphac
 c               if (r(imax+1).gt.r(i)) lambdac(i) = min(lambdac(i),
 c     &              r(imax+1)-r(i))
-               A = cpm(i)*kapm(i)*alpha_mlt_hp*lambdac(i)*dsqrt(0.5d0*
+               A = cpm(i)*kapm(i)*alphac*lambdac(i)*dsqrt(0.5d0*
      &              pm(i)*deltaKSm(i)*rom(i)**3)/(48.d0*sig*tm(i)**3)
                xconv = (A**2/a0*dabs(abrad(i)-abm(i)))**pw13
                a1conv = 1.d0/(a0*xconv)
@@ -119,18 +119,18 @@ c     &              r(imax+1)-r(i))
                eff(i) = abs(xconv*yconv)
                fconv(i) = xsiconv*(abrad(i)-abm(i))/abrad(i)*lum(i)
      &              /(pim4*r(i)**2)
-               sconv(i) = sign(alpha_mlt_hp*dsqrt(deltaKSm(i)*pm(i)/
+               sconv(i) = sign(alphac*dsqrt(deltaKSm(i)*pm(i)/
      &              (8.d0*rom(i)))*eff(i)/A,fconv(i))
                sconv(i) = dabs(sconv(i))
                abel(i) = (abla(i)+eff(i)*abm(i))/(1.d0+eff(i))
 
 ***   other formulations for the flux
-c               f1 = 0.5d0*rom(i)*cpm(i)*tm(i)*sconv(i)*alpha_mlt_hp*(eff(i)
+c               f1 = 0.5d0*rom(i)*cpm(i)*tm(i)*sconv(i)*alphac*(eff(i)
 c     &              /A)**2
-c               f2 = 4.d0*rom(i)**2*cpm(i)*tm(i)/(deltaKSm(i)*alpha_mlt_hp*
+c               f2 = 4.d0*rom(i)**2*cpm(i)*tm(i)/(deltaKSm(i)*alphac*
 c     &              pm(i))*sconv(i)**3
 c               f3 = 0.25d0*cpm(i)*tm(i)*dsqrt(0.5d0*deltaKSm(i)*rom(i)*
-c     &              pm(i))*alpha_mlt_hp2*(eff(i)/A)**3
+c     &              pm(i))*alphac2*(eff(i)/A)**3
 c               faccor = 2.25d0*eff(i)**2/(1.d0+eff(i))
 c               f4 = (abrad(i)-abm(i))/abrad(i)*lum(i)/(pim4*r(i)**2)*
 c     &              faccor/(1.d0+faccor)
@@ -171,8 +171,8 @@ c              tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
          if (hpmlt.eq.6) then
             do 11 i = imin0,imax
                im = i-1
-               lambdac(i) = hp(i)*alpha_mlt_hp
-               A = cpm(i)*kapm(i)*alpha_mlt_hp*lambdac(i)*dsqrt(0.5d0*
+               lambdac(i) = hp(i)*alphac
+               A = cpm(i)*kapm(i)*alphac*lambdac(i)*dsqrt(0.5d0*
      &              pm(i)*deltaKSm(i)*rom(i)**3)/(48.d0*sig*tm(i)**3)
                xconv = (A**2/a0*dabs(abrad(i)-abm(i)))**pw13
                a1conv = 1.d0/(a0*xconv)
@@ -191,12 +191,12 @@ c              tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
                eff(i) = abs(xconv*yconv)
                fconv(i) = xsiconv*(abrad(i)-abm(i))/abrad(i)*lum(i)
      &              /(pim4*r(i)**2)
-               sconv(i) = sign(alpha_mlt_hp*dsqrt(deltaKSm(i)*pm(i)/
+               sconv(i) = sign(alphac*dsqrt(deltaKSm(i)*pm(i)/
      &              (8.d0*rom(i)))*eff(i)/A,fconv(i))
                sconv(i) = dabs(sconv(i))
 
 !     Rotational modification
-               Call Quintic(omega(i),sconv(i),alpha_mlt_hp*hp(i),zz)
+               Call Quintic(omega(i),sconv(i),alphac*hp(i),zz)
 
                yconv = ((2.5d0)**(1d0/6d0))*yconv/dsqrt(zz)
                xsiconv = yconv**3
@@ -206,7 +206,7 @@ c              tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
 !     do change to compensate for a lower velocity
 !     fconv(i) = xsiconv*(abrad(i)-abm(i))/abrad(i)*lum(i)
 !     &              /(pim4*r(i)**2)
-               sconv(i) = sign(alpha_mlt_hp*dsqrt(deltaKSm(i)*pm(i)/
+               sconv(i) = sign(alphac*dsqrt(deltaKSm(i)*pm(i)/
      &              (8.d0*rom(i)))*eff(i)/A,fconv(i))
                sconv(i) = dabs(sconv(i))
                abla(i) = max(abm(i),xsiconv1*abrad(i)+xsiconv*abm(i))
@@ -243,12 +243,12 @@ c              tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
             do 20 i = imin0,imax
                if (abm(i).gt.abrad(i)) goto 20
                im = i-1
-               lambdac(i) = hp(i)*alpha_mlt_hp
+               lambdac(i) = hp(i)*alphac
 c               if (lambdac(i).gt.(r(imax+1)-r(i))) then
 c                  lambdac(i) = min(lambdac(i),r(imax+1)-r(i))
 c               endif
                ut = 24.d0*sig*tm(i)**3/(kapm(i)*cpm(i)*lambdac(i)*
-     &              alpha_mlt_hp*dsqrt(0.5d0*deltaKSm(i)*pm(i)*
+     &              alphac*dsqrt(0.5d0*deltaKSm(i)*pm(i)*
      &              rom(i)**3))
                if (ut.lt.1.d-12) then
                   ut = 0.d0
@@ -269,9 +269,9 @@ c               endif
                   abla(i) = abm(i)
                   fconv(i) = (abrad(i)-abla(i))/abrad(i)*lum(i)/(pim4*
      &                 r(i)*r(i))
-                  sconv(i) = sign((0.25d0*alpha_mlt_hp*dabs(fconv(i))*
-     &                 pm(i)*deltaKSm(i)/(cpm(i)*rom(i)**2*tm(i)))
-     &                 **pw13,fconv(i))
+                  sconv(i) = sign((0.25d0*alphac*dabs(fconv(i))*
+     &                 pm(i)*deltaKSm(i)/(cpm(i)*rom(i)**2*tm(i)))**pw13
+     &                 ,fconv(i))
                   sconv(i) = dabs(sconv(i))
                   eff(i) = cpm(i)*kapm(i)*rom(i)**2*lambdac(i)*sconv(i)/
      &                 (24.d0*sig*tm(i)**3)
@@ -289,7 +289,7 @@ c                 tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
                epsf = dsqrt(al*al+(con2*ut2)**3)
                we = (dabs(al+epsf))**pw13
                ze = we+con3*ut-con2*ut2/we
-               A1 = alpha_mlt_hp*dsqrt(deltaKSm(i)*pm(i)/(8.d0*rom(i)))
+               A1 = alphac*dsqrt(deltaKSm(i)*pm(i)/(8.d0*rom(i)))
                sconv(i) = A1*(ze-ut)+1.d-10
                sconv(i) = dabs(sconv(i))
 c..   impose convective cells to be sub-sonic
@@ -298,7 +298,7 @@ c                  sconv(i) = 0.8d0*cs(i)
 c                  ze = sconv(i)/A1+ut
 c               endif
                fconv(i) = 0.25d0*cpm(i)*tm(i)*dsqrt(0.5d0*deltaKSm(i)*
-     &              rom(i)*pm(i))*alpha_mlt_hp2*(ze-ut)**3
+     &              rom(i)*pm(i))*alphac2*(ze-ut)**3
                eff(i) = 0.5d0*(ze/ut-1.d0)
                abla(i) = max(abm(i),abm(i)+ze*ze-ut2)
 
@@ -390,7 +390,7 @@ c              tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
 
          if (hpmlt.eq.5) then
 
-            alphat = alpha_mlt_hp
+            alphat = alphac
             alphab = alphatu
             alphab2 = alphab*alphab
             ralpha = alphab/alphat
@@ -505,7 +505,7 @@ c              tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
             csm = dabs(cs(i-1))**wi(i)*dabs(cs(i))**wj(i)
             delroa = 1.d0/ztm-abm(i)
             adrad = abrad(i)-abm(i)
-            lambdaa(i) = alpha_mlt_hrho*hp(i)/(deltaKSm(i)*delroa)
+            lambdaa(i) = alphatu*hp(i)/(deltaKSm(i)*delroa)
 c            if (r(imax+1).gt.r(i))  lambdaa(i) = min(lambdaa(i),
 c     &           r(imax+1)-r(i))
             cua = 12.d0*sig*tm(i)**3/(cpm(i)*rom(i)*rom(i)*kapm(i)*
@@ -549,10 +549,12 @@ c     &           r(imax+1)-r(i))
 *     Check for infinite loop (19/10/2023)
             j = j+1
             if (j.eq.1000000000) then
-               write (*,"(A,I4)") "Error in mlt : Infinite loop "//
+               write (*,"(A,I4)") " Error in mlt : Infinite loop "//
      &              "at shell ", i
                write(*,*) adrad, cb
-               write(*,*) ro(i)
+               write(*,*) ro(i),tm(i),cpm(i),rom(i)
+     &           ,kapm(i),gmr(i),deltaKSm(i),
+     &           hp(i),csm
                error = 2
                return
             endif
@@ -600,9 +602,13 @@ c     &           r(imax+1)-r(i))
             abel(i) = (abla(i)+eff(i)*abm(i))/(eff(i)+1.d0)
             fconv(i) = lambdac(i)*cpm(i)*rom(i)*tm(i)*sconv(i)/
      &           (2.d0*hp(i))*(abla(i)-abel(i))
-            fkin(i) = etaturb*rom(i)*sconv(i)**8/csm**5/lambdac(i) ! Eq 1 Maeder 1987 A&A 173 : etaturb = 1e3 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Non utilisés dans le code => revoir !
+            fkin(i) = etaturb*rom(i)*sconv(i)**8/csm**5  !/lambdac(i) ! Eq 1 Maeder 1987 A&A 173 : etaturb = 1e3 
             fkcr(i) = fkin(i)/fconv(i)
             frad(i) = lum(i)/(pim4*r(i)*r(i))-fconv(i)-fkin(i)
+            frad(i) = 16.d0*sig*g/3.d0*tm(i)**4*m(i)*abla(i)/
+     &           (kapm(i)*pm(i)*r(i)*r(i))
+            
             Dconv(i) = sconv(i)*lambdac(i)/3.d0
 c     tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
             tconv(i) = lambdac(i)/sconv(i)
@@ -644,21 +650,21 @@ c     tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
             eff(i) = eff(i)*sconv(i)/sconv0
             faccor = 2.25d0*eff(i)**2/(1.d0+eff(i))
             fconv(i) = 4.d0*rom(i)**2*cpm(i)*tm(i)/(deltaKSm(i)*
-     &           alpha_mlt_hp*pm(i))*sconv(i)**3
+     &           alphac*pm(i))*sconv(i)**3
             abla(i) = (abrad(i)+faccor*abm(i))/(1.d0+faccor)
 
-c            A = cpm(i)*kapm(i)*alpha_mlt_hp*lambdac(i)*dsqrt(0.5d0*
+c            A = cpm(i)*kapm(i)*alphac*lambdac(i)*dsqrt(0.5d0*
 c     &           pm(i)*deltaKSm(i)*rom(i)**3)/(48.d0*sig*tm(i)**3)
-c            f2 = 0.5d0*rom(i)*cpm(i)*tm(i)*sconv(i)*alpha_mlt_hp*(eff(i)
+c            f2 = 0.5d0*rom(i)*cpm(i)*tm(i)*sconv(i)*alphac*(eff(i)
 c     &           /A)**2
 c            f3 = sign(0.25d0*cpm(i)*tm(i)*dsqrt(0.5d0*deltaKSm(i)*
-c     &           rom(i)*pm(i))*alpha_mlt_hp2*(eff(i)/A)**3,fconv(i))
+c     &           rom(i)*pm(i))*alphac2*(eff(i)/A)**3,fconv(i))
 c            faccor = 2.25d0*eff(i)**2/(1.d0+eff(i))
 c            f4 = (abrad(i)-abm(i))/abrad(i)*lum(i)/(pim4*r(i)**2)*
 c     &           faccor/(1.d0+faccor)
 c            f5 =  (abrad(i)-abla(i))/abrad(i)*lum(i)/(pim4*r(i)*r(i))
 c            faccor = eff(i)/(1.d0+eff(i))
-c            f6 = 0.5d0*rom(i)*cpm(i)*tm(i)*sconv(i)*alpha_mlt_hp*(abla(i)
+c            f6 = 0.5d0*rom(i)*cpm(i)*tm(i)*sconv(i)*alphac*(abla(i)
 c     &           -abm(i))*faccor
 c            write (nout,*) i,f1/fconv(i),f2/fconv(i),f3/fconv(i),
 c                 f4/fconv(i),f5/fconv(i),f6/fconv(i),sconv(i)/sconv0
@@ -692,9 +698,9 @@ c                 f4/fconv(i),f5/fconv(i),f6/fconv(i),sconv(i)/sconv0
          Dconv(1) = Dconv(2)
          eff(1) = eff(2)
          abla(1) = abla(2)
-         taumix(1) = 2.d0*dtn*(sconv(1)+vsconv(1))/(hp(1)*alpha_mlt_hp)
+         taumix(1) = 2.d0*dtn*(sconv(1)+vsconv(1))/(hp(1)*alphac)
          if (sconv(1).ne.0.d0) then
-            tconv(1) = hp(1)*alpha_mlt_hp/dabs(sconv(1))
+            tconv(1) = hp(1)*alphac/dabs(sconv(1))
 	 else
             tconv(1) = 1.d99 
          endif

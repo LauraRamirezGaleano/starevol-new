@@ -15,42 +15,42 @@
 *                                                                      *
 ************************************************************************
 * All the subroutine parameters are written explicitly except the four *
-*  "include" described below:                                          *
-*  eoscom.math     :  number of calculated derivatives                 *
-*  eoscom.ion      :  maximum characteristics of ionic component of the*
-*                     plasma (limited by some datas: energy levels,...)*
-*  eoscom.phys     :  physical characteristics (E and g0)              *
-*  eoscom.cons     :  local physical and mathematical constants        *
-*  eoscom.par      :  somes parameters of EOS                          *
+* "include" described below:                                           *
+* eoscom.math     :  number of calculated derivatives                  *
+* eoscom.ion      :  maximum characteristics of ionic component of the *
+*                    plasma (limited by some datas: energy levels,...) *
+* eoscom.phys     :  physical characteristics (E and g0)               *
+* eoscom.cons     :  local physical and mathematical constants         *
+* eoscom.par      :  somes parameters of EOS                           *
 ************************************************************************
 *                                                                      *
 *                  Characteristics of this eos :                       *
 *                                                                      *
-*  NBZ is the maximum number of a set of integers {1...nbz}. These     *
-*   numbers are the index of the nbz chemical species composing the    *
-*   plasma: N1..Ni..Nnbz.                                              *
-*  The first Z found in znuc at index nspmin is refered to N1 and must *
-*  be Hydrogen. The last Z found in znuc at index nspmax is refered to *
-*  Nnbz and must be heavy.                                             *
-*  For each Ni, you choose to compute ionization or not: ionized(nbz)  *
-*  If totioniz or not , the others are considered always totaly        *
-*  ionized or always neutral.                                          *
-*  The caracteristics of each species are Z(nbz), X(nbz), Y(nbz) plus  *
-*  lnmH, lnmZ(nbz-2), lnmheavy and are deduced from xsp, ysp, anuc,    *
-*  and znuc.                                                           *
-*  To check these datas, assign true to checkcomposition in the        *
-*  parameter card.                                                     *
-*  For computed ionization species you need partition function and     *
-*  energy levels. The partition functions are often approximated to be *
-*  the fundamental energy level degeneracy, except for H2 whose        *
-*  rotational and vibrationnal partition function are always taken into*
-*  account. If boolean compZspecie is true eos will use a more complete*
-*  partition function for specie too. Energy level degeneracy and      *
-*  energy levels are stored in lng0H(4), lng0Z(nbzmax-2), lng0heavy,   *
-*  enerlevelH(4) enerlevelZ(nbionZmax). The number of datas wich have  *
-*  been stored allow you to compute ionization for elements from He to *
-*  Ca. If not totioniz, for not computed ionization species, you need  *
-*  lng0 too, so you can not choose not totioniz if Z>Ca exist.         *
+* NBZ is the maximum number of a set of integers {1...nbz}. These      *
+* numbers are the index of the nbz chemical species composing the      *
+* plasma: N1..Ni..Nnbz.                                                *
+* The first Z found in znuc at index nspmin is refered to N1 and must  *
+* be Hydrogen. The last Z found in znuc at index nspmax is refered to  *
+* Nnbz and must be heavy.                                              *
+* For each Ni, you choose to compute ionization or not: ionized(nbz)   *
+* If totioniz or not , the others are considered always totaly         * 
+* ionized or always neutral.                                           *
+* The caracteristics of each species are Z(nbz), X(nbz), Y(nbz) plus   *
+* lnmH, lnmZ(nbz-2), lnmheavy and are deduced from xsp, ysp, anuc,     *
+* and znuc.                                                            *
+* To check these datas, assign true to checkcomposition in the         *
+* parameter card.                                                      *
+* For computed ionization species you need partition function and      *
+* energy levels. The partition functions are often approximated to be  *
+* the fundamental energy level degeneracy, except for H2 whose         *
+* rotational and vibrationnal partition function are always taken into *
+* account. If boolean compZspecie is true eos will use a more complete *
+* partition function for specie too. Energy level degeneracy and       *
+* energy levels are stored in lng0H(4), lng0Z(nbzmax-2), lng0heavy,    *
+* enerlevelH(4) enerlevelZ(nbionZmax). The number of datas wich have   *
+* been stored allow you to compute ionization for elements from He to  *
+* Ca. If not totioniz, for not computed ionization species, you need   *
+* lng0 too, so you can not choose not totioniz if Z>Ca exist.          *
 *                                                                      *
 *                 Furthermore, It's quite easy to add                  *
 *                                                                      *
@@ -401,7 +401,7 @@ c..   if H and He fully ionized, do not compute pressure ionization
          Tnodim = mc2inv * boltz * Tsh
 *
 ************************************************************************
-*               II - ADIMENSIONNAL ELECTRONIC COMPONENT COMPUTATION    *
+*        II - ADIMENSIONNAL ELECTRONIC COMPONENT COMPUTATION           *
 ************************************************************************
 *
          etash(1) = degen(lnfsh,rootf)
@@ -414,7 +414,7 @@ c..   if H and He fully ionized, do not compute pressure ionization
      &fadd1inv,ine,ipe,ise,iue)
 *
 ************************************************************************
-*        III - GAZEOUS COMPONENT COMPUTATION                           *
+*               III - GAZEOUS COMPONENT COMPUTATION                    *
 ************************************************************************
 *
 *        ---------- Computation of <Z>, sum(Y)... ----------
@@ -939,8 +939,8 @@ c     END IF
 ************************************************************************
 * Choose the right solution among H1 and H2 with the two constraints:  *
 *         (1) 0<H<Yh          (2) 0<H<lim                              *
-* lim is choosen among limem (which ensure the charge conservation) and*
-*  limH2 (which ensures the proton conservation) depending on diff     *
+* lim is choosen among limem (which ensure the charge conservation)    *
+* and limH2 (which ensures the proton conservation) depending on diff  *
 * One indicates if the first solution has been choosen                 *
 ************************************************************************
       SUBROUTINE choice(shell,H1,H2,limH2,limem,diff,Yh,H,lim,one,a,b,

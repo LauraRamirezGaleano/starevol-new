@@ -79,7 +79,7 @@
                sconv(j) = sconv(imin)
                tconv(j) = tconv(imin)
                fconv(j) = lum(j)/(pim4*r(j)*r(j))
-               lambdac(j) = hp(j)*alpha_mlt_hp
+               lambdac(j) = hp(j)*alphac
                Dconv(j) = sconv(j)*lambdac(j)/3.d0
                crz(j) = 1
             enddo
@@ -89,7 +89,7 @@
                sconv(j) = sconv(imax)
                tconv(j) = tconv(imax)
                fconv(j) = lum(j)/(pim4*r(j)*r(j))
-               lambdac(j) = hp(j)*alpha_mlt_hp
+               lambdac(j) = hp(j)*alphac
                Dconv(j) = sconv(j)*lambdac(j)/3.d0
                crz(j) = 1
             enddo

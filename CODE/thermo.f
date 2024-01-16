@@ -214,12 +214,12 @@ c$$$      endif
 !     Comments : Printing tau profile for debugging (13/06/23)
 c$$$      write(*,*) ""
 c$$$      write(*,*) "Tau profile generation :"
-c$$$      write(*,"(1X,A,6X,6(A,9X))") "sh","tau","rst","kappa","rho","T",
-c$$$     &     "drl"
-c$$$      write(*,*) "--------------------------------------------------"//
-c$$$     &     "--------------------------"
-c$$$      write(*,"(1X,I4,6(1X,E11.5))") l, tau(l), rst, kap(l), ro(l), 
-c$$$     &        t(l), drl
+c$$$      write(*,"(1X,A,6X,7(A,9X))") "sh","tau","rst","kappa","rho","T",
+c$$$     &     "drl","mass"
+c$$$      write(*,"(A)") " -----------------------------------------"//
+c$$$     &     "-----------------------------------------------"
+c$$$      write(*,"(1X,I4,7(1X,E11.5))") l, tau(l), rst, kap(l), ro(l), 
+c$$$     &        t(l), drl, m(l)/1.988d33
       do l = nmod1,2,-1
          drl = abs(r(l+1)-r(l))
          rst = kap(l)*ro(l)*drl
@@ -228,17 +228,17 @@ c$$$     &        t(l), drl
          tau(l) = tau(l+1)+rst
          dtaudf(l) = dtaudf(l+1)+rstdf
          dtaudt(l) = dtaudt(l+1)+rstdt
-c$$$         write(*,"(1X,I4,6(1X,E11.5))") l, tau(l), rst, kap(l), ro(l), 
-c$$$     &        t(l), drl
+c$$$         write(*,"(1X,I4,7(1X,E11.5))") l, tau(l), rst, kap(l), ro(l), 
+c$$$     &        t(l), drl, m(l)/1.988d33
       enddo
       tau(1) = tau(2)
       dtaudf(1) = dtaudf(2)
       dtaudt(1) = dtaudt(2)
       l = 1
-c$$$      write(*,"(1X,I4,6(1X,E11.5))") l, tau(l), rst, kap(l), ro(l), 
-c$$$     &        t(l), drl
-c$$$      write(*,*) "--------------------------------------------------"//
-c$$$     &     "--------------------------"
+c$$$      write(*,"(1X,I4,7(1X,E11.5))") l, tau(l), rst, kap(l), ro(l), 
+c$$$     &        t(l), drl, m(l)/1.988d33
+c$$$      write(*,"(A)") " -----------------------------------------"//
+c$$$     &     "-----------------------------------------------"
 
 *____________________________________________
 ***   calculation of the effective quantities

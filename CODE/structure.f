@@ -36,7 +36,7 @@
 
       integer error,jpass
       integer imin,imax
-      integer i,j,k,l,ip,kl
+      integer i,j,k,l,ip,kl, im
       integer itmax,ishockb,ishockt
       integer kc,kc1,kc2,iedge,imid
       integer fcs         ! first convective shell
@@ -66,6 +66,11 @@ C <--
       double precision geffrot,Rp2
       double precision disctime   ! ajout TD Fev 2019
 
+      double precision dddd(nsh),pturb(nsh),dpturbdf,dpturbdt,
+     &     deturbdf,deturbdt,
+     &     csm,sconvm2(nsh),eturb(nsh),dsconvm2df(nsh),dsconvm2dt(nsh)
+
+      
       logical vlconv,lvisc,lshock
       logical partialmix,neutrality,bp
       logical ntp2
@@ -91,7 +96,74 @@ c      logical ecap
 ***   (eventually) and the radiative gradient
 *--------------------------------------------------------------------
 
+c$$$      do i=1,nmod
+c$$$         csm = dabs(cs(i-1))**wi(i)*dabs(cs(i))**wj(i)
+c$$$         write(1023,"(1X,I4,10(1X,E11.4E3))")
+c$$$     &        i,ro(i)*sconv(i)**2/3,p(i),g*m(i)/(r(i)*r(i)),m(i),
+c$$$     &        -g*m(i)/(r(i)*r(i))-1/ro(i)*(p(i)-p(i-1))/
+c$$$     &        (r(i)-r(i-1)),
+c$$$     &        -g*m(i)/(r(i)*r(i))-1/ro(i)*(p(i)-p(i-1))/
+c$$$     &        (r(i)-r(i-1))-1/ro(i)*(ro(i)*sconv(i)**2/3-
+c$$$     &        ro(i-1)*sconv(i-1)**2/3)/(r(i)-r(i-1)),
+c$$$     &        sconv(i),csm,t(i),kap(i)
+c$$$      enddo
+c$$$      stop
 
+
+c$$$      pturb(1:nmod) = 0.d0
+c$$$      eturb(1:nmod) = 0.d0
+c$$$      dsconvm2df(1:nmod) = 0.d0
+c$$$      dsconvm2dt(1:nmod) = 0.d0
+c$$$      do i=1,nmod
+c$$$         ip = i+1
+c$$$         sconvm2(i) = (sconv(i)**wi(ip)*sconv(ip)**wj(ip))**2
+c$$$         pturb(i) = ro(i)*sconvm2(i)*pw13
+c$$$         eturb(i) = 0.5d0*sconvm2(i)
+c$$$      enddo
+c$$$         
+c$$$      call spline_der (lnf,sconvm2,nmod,1.d50,1.d50,dddd,
+c$$$     &     dsconvm2df)
+c$$$      call spline_der (lnt,sconvm2,nmod,1.d50,1.d50,dddd,
+c$$$     &     dsconvm2dt)
+c$$$      
+c$$$      do kl = 1,nsconv
+c$$$         imin = novlim(kl,3)
+c$$$         imax = novlim(kl,4)
+c$$$         do i=imin+1,imax-1
+c$$$            ip = i+1
+c$$$            im = i-1
+c$$$            if (dsconvm2df(i)/dsconvm2df(i).ne.1.d0) then
+c$$$               !dpturbdf(i) = 0.d0
+c$$$               dsconvm2df(i) = (sconvm2(ip)-sconvm2(im))/
+c$$$     &           (lnf(ip)-lnf(im))
+c$$$            endif
+c$$$            if (dsconvm2dt(i)/dsconvm2dt(i).ne.1.d0) then
+c$$$               !dpturbdt(i) = 0.d0
+c$$$               dsconvm2dt(i) = (sconvm2(ip)-sconvm2(im))/
+c$$$     &           (lnt(ip)-lnt(im))
+c$$$            endif
+c$$$            dpturbdf = pw13*(drodf(i)*sconvm2(i)+ro(i)*dsconvm2df(i))
+c$$$            dpturbdt = pw13*(drodt(i)*sconvm2(i)+ro(i)*dsconvm2dt(i))
+c$$$            deturbdf = 0.5d0*dsconvm2df(i)
+c$$$            deturbdt = 0.5d0*dsconvm2dt(i)
+c$$$            p(i) = p(i) + pturb(i)
+c$$$     &           !(dble(model)-150.d0)/50.d0*pturb(i)
+c$$$            dpdf(i) = dpdf(i) + dpturbdf
+c$$$     &           !(dble(model)-150.d0)/50.d0*dpturbdf
+c$$$            dpdt(i) = dpdt(i) + dpturbdt
+c$$$     &           !(dble(model)-150.d0)/50.d0*dpturbdt
+c$$$            e(i) = e(i) + eturb(i)
+c$$$     &           !(dble(model)-150.d0)/50.d0*eturb(i)
+c$$$            dedf(i) = dedf(i) + deturbdf
+c$$$     &           !(dble(model)-150.d0)/50.d0*deturbdf
+c$$$            dedt(i) = dedt(i) + deturbdt
+c$$$     &           !(dble(model)-150.d0)/50.d0*deturbdt
+c$$$            !print*, pturb(i), dpturbdf(i), dpturbdt(i)
+c$$$         end do
+c$$$      enddo
+c$$$      !print*, (dble(model)-150.d0)/100.d0
+      
+      
       bp = nphase.eq.4.and.xsp(1,ihe4).lt.0.5d0.and.xsp(1
      $     ,ihe4).gt.0.003d0
 
@@ -280,6 +352,7 @@ c         dtipsi = 0.d0
      &        -1.d0/ro(i)))*dtninv
 
 ***   Egrav = -P D(1/ro)/Dt-De/Dt
+!         if (lgrav.le.1) then
          if (lgrav.le.1.and..not.bp) then
             pvp = p(i)
 c1            pvp = 0.5d0*(vp(i)+p(i))
@@ -298,12 +371,14 @@ c1     &           -0.5d0*dpdt(i)*dvdti(i)
 c2     &          -0.5d0*pvp*piinv*dpdt(i)*dvdti(i)
             degdf2(i) = dtiomi*(dedf(ip)-pro2ipinv*drodf(ip))
             degdt2(i) = dtiomi*(dedt(ip)-pro2ipinv*drodt(ip))
+            
          elseif (lgrav.le.1.and.bp) then
             egrav(i) = 0.d0
             degdf1(i) = 0.d0
             degdt1(i) = 0.d0
             degdf2(i) = 0.d0
             degdt2(i) = 0.d0
+            
 ***   Egrav = -cp DT/Dt + (cp*T*abad)/P * DP/Dt
          elseif (lgrav.eq.2) then
             dpdti(i) = (p(i)-vp(i)-omi(ip)*(p(ip)-p(i)))*dtninv
@@ -554,7 +629,7 @@ c     &        abs(phiKS(ip)/deltaKS(ip))**wj(ip),phiKS(i)/deltaKS(i))
      &        .not.ntp2).or.ntprof.eq.6.or.ntprof.eq.7)) then
             
 ***   Plane-parallel corrections
-*************************************************************************
+*-------------------------------
             
 c$$$            dptau(ip) = -kapm(ip)*lum(ip)/(pim4*c*r(ip)**2)*dqdtau(ip)
 c$$$            xsitau(ip) = -dptau(ip)*r(ip)**2/gmrr2
@@ -622,7 +697,7 @@ c     $        ,dqdtau(i),ddqtau(i),xsitau(i),abrad(i),tau(i),t(i)
            
             
 ***   Spherical corrections
-*************************************************************************
+*--------------------------
 
 c$$$            if ((ntprof.eq.4.or.ntprof.eq.6.or.ntprof.eq.7)
 c$$$     &           .and.abs((dqdtau(ip)+2.d0*(qtau(ip)+tau(ip))
@@ -675,7 +750,7 @@ c            abrad(ip) = abrad(ip)*(1.d0+dqdtau(ip)+2.d0*(tau(ip)+
 c     &           qtau(ip))/(kapm(ip)*rom(ip)*r(ip)))/(1.d0+xsitau(ip))
             
 ***   P/T corrections
-*************************************************************************
+*--------------------
                
 c            cortau1 = ((tau(ip)+qtau(ip))/(tau(ip)+pw23))**0.25d0
 c            cortau2 = lum(ip)*(qtau(ip)-pw23)/(pim4*c*r(ip)*r(ip)*
@@ -684,7 +759,7 @@ c            cortau2 = 1.d0/(1.d0-cortau2)
 c     abrad(ip) = abrad(ip)*cortau2/cortau1
 
 ***   If not in the atmosphere, classical case
-*************************************************************************
+*---------------------------------------------
                
             else
                abdf1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdf(i)+
@@ -698,7 +773,6 @@ c     abrad(ip) = abrad(ip)*cortau2/cortau1
                abdl(ip) = abrad(ip)/lum(ip)
             end if
          else
-            abla(ip) = abrad(ip)
             abdf1(ip) = abrad(ip)*wi(ip)*(kiinv*dkapdf(i)+piinv*dpdf(i))
             abdf2(ip) = abrad(ip)*wj(ip)*(kipinv*dkapdf(ip)+pipinv*
      &           dpdf(ip))
@@ -710,7 +784,7 @@ c     abrad(ip) = abrad(ip)*cortau2/cortau1
          end if
 
 ***   Derivatives with respect to u and to lnr
-*************************************************************************
+*---------------------------------------------
          
          if (hydro) then
             abdr(ip) = -abrad(ip)/gmrr2*2.d0*r(ip)*accel(ip)
@@ -819,17 +893,39 @@ c               if (abs(mue(j)-mue(j-1)).gt.1.d-1) exit
          imin = novlim(kl,3)
          imax = novlim(kl,4)
          if (imin.gt.0) then
-            call mlt (imin,imax,kl,error)
+            call mlt (imin,imax,error)
             if (error.gt.0) return
          endif
       enddo
 
-
-
+c$$$      do i=1,nmod
+c$$$         write(*,"(1X,I4,14(1X,E11.5))") i,m(i),tm(i),kapm(i),tau(i),
+c$$$     &        fkin(i), fconv(i), frad(i),
+c$$$     &        lum(i)/(pim4*r(i)*r(i)),
+c$$$     &        lum(i),rom(i),r(i),sconv(i),
+c$$$     &        dabs(cs(i-1))**wi(i)*dabs(cs(i))**wj(i),pm(i)
+c$$$      enddo
+c$$$      
+c$$$      stop
+      
 ***   compute parametric overshoot (alpha * Hp)
       if (novopt.ge.1) call oversh
+      
 
-
+c$$$      do i=1,nmod
+c$$$         csm = dabs(cs(i-1))**wi(i)*dabs(cs(i))**wj(i)
+c$$$         write(1023,"(1X,I4,10(1X,E11.4E3))")
+c$$$     &        i,ro(i)*sconv(i)**2/3,p(i),g*m(i)/(r(i)*r(i)),m(i),
+c$$$     &        -g*m(i)/(r(i)*r(i))-1/ro(i)*(p(i)-p(i-1))/
+c$$$     &        (r(i)-r(i-1)),
+c$$$     &        -g*m(i)/(r(i)*r(i))-1/ro(i)*(p(i)-p(i-1))/
+c$$$     &        (r(i)-r(i-1))-1/ro(i)*(ro(i)*sconv(i)**2/3-
+c$$$     &        ro(i-1)*sconv(i-1)**2/3)/(r(i)-r(i-1)),
+c$$$     &        sconv(i),csm,t(i),kap(i)
+c$$$      enddo
+c$$$      stop
+            
+      
 *_______________________________________________________________________
 ***   mixing of convective (+overshoot) regions at each iteration
 ***   if nmixd.gt.0, diffusion only, no nucleosynthesis

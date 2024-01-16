@@ -262,10 +262,11 @@ c..   initializations and variables definition
          enucl(k) = venucl(k)
       enddo
 
-      write(899,*)'IN RINIMOD'
-      do i = 1,nmod
-         write(899,*) i,vomega(i)
-      enddo
+!      Commented on 05/12/2023, debugging
+c$$$      write(899,*)'IN RINIMOD'
+c$$$      do i = 1,nmod
+c$$$         write(899,*) i,vomega(i)
+c$$$      enddo
 
       if (flag.eq.0) then
          rewind (uwrite)

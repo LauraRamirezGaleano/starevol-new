@@ -121,7 +121,7 @@ c Ajout par TD (22/02/2018) + modif 25/04/2019
 ***   storage of the calculated models in the binary file
 *--------------------------------------------------------
 
-      if (error.eq.-30) neff = -neff
+!      if (error.eq.-30) neff = -neff
 
       if (nsconv.gt.0.and.turnover(1).eq.0.d0) then
 c..   determine turnover timescale
@@ -362,19 +362,19 @@ c..   Storage of values for atomic diffusion (modif AP TD Jan.2019)
  1000 format (' Final mass = ',f11.8,', dm = ',f11.9,', age = ',1pe12.6,
      &     ' yr, dt = ',1pe13.7,' yr, Teff = ',0pf7.0,', L = ',1pe10.4)
  1100 format (5x,'convective limits:')
- 1200 format (2x,'Schwar.: ',i4,' -->',i4,' (',1pe9.3,',',1pe9.3,
-     &     ')   turnover: ',1pe9.3,'yr   Overshoot (dm): ',i4,' -->',i4,
+ 1200 format (2x,'Schwar.: ',i4,' --> ',i4,' (',1pe9.3,',',1pe9.3,
+     &     ')   turnover: ',1pe9.3,' yr   Overshoot (dm): ',i4,' -->',i4,
      &     ' (',1pe9.3,',',1pe9.3,')')
- 1210 format (2x,'Schwar.: ',i4,' -->',i4,' (',1pe9.3,',',1pe9.3,
-     &     ')   turnover: ',1pe9.3,'yr')
- 1230 format (2x,'Ledoux : ',i4,' -->',i4,' (',1pe9.3,',',1pe9.3,
-     &     ')   turnover: ',1pe9.3,'yr')
- 1240 format (2x,'Ledoux : ',i4,' -->',i4,' (',1pe9.3,',',1pe9.3,
-     &     ')   turnover: ',1pe9.3,'yr   Overshoot (dm): ',i4,' -->',i4,
+ 1210 format (2x,'Schwar.: ',i4,' --> ',i4,' (',1pe9.3,',',1pe9.3,
+     &     ')   turnover: ',1pe9.3,' yr')
+ 1230 format (2x,'Ledoux : ',i4,' --> ',i4,' (',1pe9.3,',',1pe9.3,
+     &     ')   turnover: ',1pe9.3,' yr')
+ 1240 format (2x,'Ledoux : ',i4,' --> ',i4,' (',1pe9.3,',',1pe9.3,
+     &     ')   turnover: ',1pe9.3,' yr   Overshoot (dm): ',i4,' -->',i4,
      &     ' (',1pe9.3,',',1pe9.3,')')
- 1250 format (2x,'semiconvection : ',i4,' -->',i4,' (',1pe9.3,',',
+ 1250 format (2x,'semiconvection : ',i4,' --> ',i4,' (',1pe9.3,',',
      &     1pe9.3,')')
- 1260 format (2x,'Thermohaline : ',i4,' -->',i4,' (',1pe9.3,',',
+ 1260 format (2x,'Thermohaline : ',i4,' --> ',i4,' (',1pe9.3,',',
      &     1pe9.3,')')
  1270 format (//,'o PRESCRIPTIONS FOR ROTATIONNAL MIXING',/,3x,
      &     'Critical Richardson number Ric = 0.25',/,3x,

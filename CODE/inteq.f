@@ -15,6 +15,7 @@
 
       include 'evolcom.acc'
       include 'evolcom.cons'
+    !  include 'evolcom.conv'
       include 'evolcom.therm2'
       include 'evolcom.eng'
       include 'evolcom.eos'

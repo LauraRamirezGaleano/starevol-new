@@ -52,6 +52,7 @@
       double precision Lmax,tmax,mackmax,enucmax
       double precision dp,ag
 
+
       logical corrmax
 
       common /calcul/ iiter
@@ -89,6 +90,7 @@ c      print *, 'dtn nwtraf',dtn*seci
       
       call thermo (error)
       if (error.gt.0) return 1
+
       
 *___________________________________________________
 ***   application of the central boundary conditions
@@ -285,8 +287,9 @@ cccc---------------------------------------------
       do ish = 2,nmod
          t(ish) = exp(min(xmod(ish,4),23.d0))
          r(ish) = exp(min(xmod(ish,2),50.d0))
-c$$$         !Debugging 
-c$$$         write(*,*) ish, r(ish), t(ish), abla(ish)
+         !Debugging 
+c$$$         write(1023,"(1X,I4,4(1X,E13.6E3))") ish, r(ish), t(ish),
+c$$$     &        xmod(ish,3), m(ish)
       enddo
       if (icorr.eq.'t') then
          do ish = neff,2,-1
@@ -355,7 +358,7 @@ c.... NEW
 ***   case : nucreg = 3
 *-------------------------------------------------------------------
 
-      if (nucreg.eq.3.and.iter.ge.(itmin-1).and..not.corrmax) then
+      if (nucreg.eq.3.and.iter.ge.(itermin-1).and..not.corrmax) then
          klcore = 0
          klpulse = 0
          klenv = 0
@@ -408,7 +411,7 @@ c..   in case nmixd > 0, diffusion treated independently in netdiff
       if (iacc) call nwracc (corm,iter,alpha1)
 c..   if lmix (convective boundaries have moved and mixing has been performed) 
 c..   do another iteration
-      if (iter.lt.itmin.or.lmix) goto 10
+      if (iter.lt.itermin.or.lmix) goto 10
 
       
       imerk = 0

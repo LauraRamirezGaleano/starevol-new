@@ -507,6 +507,14 @@ c      if (lntfreeze.gt.0.d0.and.tmax.gt.1.8d9) lntfreeze = log(1.5d9)
 ***  DEFINE WHERE THE SHELLS MUST BE ADDED AND DELETED
 ***
 *-----------------------------------------------------
+      
+c..   during core He burning stabilizes mesh by increasing dnucmax
+      if (nphase.eq.4) then
+         print *, 'phase 4 reached -> increase dnucmax'
+         dnucmax = 1.d50
+      else
+         dnucmax = dlnenuc
+      endif
 
       do imesh = 1,2
          icount = icount+1
@@ -581,13 +589,6 @@ c            print *, 'goto 100 1'
          drvmax = dvmax
          dvmin = dlnvmi
          
-c..   during core He burning stabilizes mesh by increasing dnucmax
-         if (nphase.eq.4) then
-            print *, 'phase 4 reached -> increase dnucmax'
-            dnucmax = 1.d50
-         else
-            dnucmax = dlnenuc
-         endif
 c increase resolution for H-gap and bottom of RGB
          if (nphase.eq.3) then
 c            print *, 'increase resolution for H-gap and bot of RGB'

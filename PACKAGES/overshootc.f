@@ -6,9 +6,9 @@
 *  Korre et al. 2019
 *  Version 1.0 (July 2021)
 *  Thibaut Dumont
-*******************************************************************************
+******************************************************************************
 
-      SUBROUTINE diffherwig (istart,iend,Dmlt,Dherw,fover,pwi,icz)
+      SUBROUTINE diffherwig (istart,iend,Dmlt,Dherw,pwi,icz)
 
 ************************************************************************
 *   Compute the diffusion coefficient associated with diffusive        *
@@ -38,7 +38,7 @@
       include 'evolcom.var'
 
       double precision tnuc9,vrate,fscr,t9
-      double precision hvcd,factor,fover,hv,redge,zover,fcross
+      double precision hvcd,factor,hv,redge,zover,fcross
       double precision Dmlt,cd0,cd1,cd01,Dherw,pwi
       double precision dt9l,weight,tdest,vdest,drdiff,tdiffus,rtau
 
@@ -227,7 +227,7 @@ c        print *,i,tdest/3.1557807d7,drdiff/Dherw(i)/3.1557807d7
 
 ************************************************************************
 
-      SUBROUTINE diffbaraffe (istart,iend,Dmlt,Dbar,fover)
+      SUBROUTINE diffbaraffe (istart,iend,Dmlt,Dbar)
 
 ************************************************************************
 *   Compute the diffusion coefficient associated with penetrative      *
@@ -257,7 +257,7 @@ c        print *,i,tdest/3.1557807d7,drdiff/Dherw(i)/3.1557807d7
       include 'evolcom.therm'
       include 'evolcom.var'
 
-      double precision depth,fover,hv,redge,zover
+      double precision depth,hv,redge,zover
       double precision Dmlt,Dbar,muBa,lamBa
 
       integer jvit
@@ -308,7 +308,7 @@ c         crz(i) = 1   ! Modif TD 09/12/2019
       
 ************************************************************************
 
-      SUBROUTINE DiffKyle(istart,icz,iend,Dmlt,fover,Dkyle,itype)
+      SUBROUTINE diffkyle(istart,icz,iend,Dmlt,Dkyle,itype)
 
 ************************************************************************
 *   Weibel distribution from Augustson & Mathis 2019                   *
@@ -343,7 +343,7 @@ c         crz(i) = 1   ! Modif TD 09/12/2019
       Integer, Intent(In) :: istart,icz,itype
       Integer, Intent(InOut) :: iend
       Integer :: i
-      Real*8, Intent(In) :: Dmlt, fover
+      Real*8, Intent(In) :: Dmlt
       Real*8, Intent(InOut) :: Dkyle(nsh)
       Real*8 :: hv,redge,factor,zz,eps_kyle
 
@@ -357,7 +357,7 @@ c         crz(i) = 1   ! Modif TD 09/12/2019
       endif
       
 !     Weibel double exponential diffusion coefficient
-      call Quintic(omega(istart),sconv(istart),alpha_mlt_hp*hp(istart),
+      call Quintic(omega(istart),sconv(istart),alphac*hp(istart),
      &     zz)
       factor = (5d0/2d0)**(0.25d0)
       redge = r(istart)

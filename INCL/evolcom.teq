@@ -4,7 +4,7 @@
 * $Author:: decress1                                                 $ *
 * $Rev:: 7                                                           $ *
 *                                                                      *
-      integer ish,iter,itermax,itermix,itmin,nmod,nmod1
+      integer ish,iter,itermax,itermix,itermin,nmod,nmod1
 
       character ishtest*1
 
@@ -12,5 +12,5 @@
       double precision dtin,dtn,dtn0,time,tkh
 
       common /equat/ eq(neq,neq1)
-      common /model/ ish,iter,itermax,itermix,itmin,nmod,nmod1
+      common /model/ ish,iter,itermax,itermix,itermin,nmod,nmod1
       common /tempus/ dtin,dtn,dtn0,time,tkh,ishtest

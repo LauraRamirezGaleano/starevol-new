@@ -1,29 +1,32 @@
       SUBROUTINE mchange
 
 ************************************************************************
-*     Modify the mass distribution due to mass-loss and/or accretion   *
-*     WARNING : never use t it is not defined yet, use lnt !
-*     mlp = 1,2   : Reimers
-*     mlp = 3,4   : de Jager
-*     mlp = 5,6   : Vassiliadis & Wood without delaying the onset of super-wind
-*     mlp = 55,56 : Vassiliadis & Wood original prescription
-*     mlp = 7,8   : Blocker
-*     mlp = 9,10  : Arndt
-*     mlp = 11,12 : Schaller et al.
-*     mlp = 13,14 : Chiosi
-*     mlp = 15,16 : Vink et al.
-*     mlp = 17,18 : massrate, specified in starevol.par
-*     mlp = 19,20 : Crowther
-*     mlp = 21,22 : Van loon et al (2005)
-*     mlp = 23,24 : Cranmer & Saar (2011)
-*     mlp = 25,26 : Graefener (2021) -> VMS at LMC metallicity
-*     mlp = 27,28 : Sanders & Vink (2022) -> VMS stars
-*     mlp = 29,30 : Sabhahit et al. (2023) -> VMS stars at low Z
+* Modify the mass distribution due to mass-loss and/or accretion   
+* WARNING : never use t it is not defined yet, use lnt !
+* mlp = 1,2   : Reimers
+* mlp = 3,4   : de Jager
+* mlp = 5,6   : Vassiliadis & Wood without delaying the onset of
+*               super-wind
+* mlp = 55,56 : Vassiliadis & Wood original prescription
+* mlp = 7,8   : Blocker
+* mlp = 9,10  : Arndt
+* mlp = 11,12 : Schaller et al.
+* mlp = 13,14 : Chiosi
+* mlp = 15,16 : Vink et al.
+* mlp = 17,18 : massrate, specified in starevol.par
+* mlp = 19,20 : Crowther
+* mlp = 21,22 : Van loon et al (2005)
+* mlp = 23,24 : Cranmer & Saar (2011)
+* mlp = 25,26 : Graefener (2021) -> VMS at LMC metallicity
+* mlp = 27,28 : Sanders & Vink (2022) -> VMS stars
+* mlp = 29,30 : Sabhahit et al. (2023) -> VMS stars at low Z
 ************************************************************************
 
       implicit none
 
       include 'evolpar.star'
+
+      include 'evolcom.ion'
 
       include 'evolcom.acc'
       include 'evolcom.cons'
@@ -213,6 +216,7 @@ c..   second order accuracy in the spatial deriatives
                if (mlp.eq.3) mlp = 1
                if (mlp.eq.4) mlp = 2
             endif
+            
 ***   change in mass-loss rate beyond the main sequence for B type stars
             
             if (mtini.ge.7.d0.and.mtini.le.12.d0.and.nphase.gt.2) then
@@ -222,8 +226,8 @@ c..   second order accuracy in the spatial deriatives
 
 ***	switch to de Jager et al 1988 when Vink et al. 2000,2001 is not valid
 
-c     if (tteff.le.3.9d0.and.(mlp.eq.15.or.mlp.eq.16)) then
-            if (tteff.le.4.0969d0.and.(mlp.eq.15.or.mlp.eq.16)) then
+            if (tteff.le.3.9d0.and.(mlp.eq.15.or.mlp.eq.16)) then
+   !         if (tteff.le.4.0969d0.and.(mlp.eq.15.or.mlp.eq.16)) then
                if (tteff.gt.3.7d0) then
                   write (nout,200)
                   if (mlp.eq.15) then
@@ -272,7 +276,7 @@ c     if (tteff.le.3.9d0.and.(mlp.eq.15.or.mlp.eq.16)) then
             endif
 
 
-***   de Jager etal. (1988 A&AS,72,259) (RGB phase + massive stars)
+***   de Jager et al. (1988 A&AS,72,259) (RGB phase + massive stars)
 
             if (mlp.eq.3.or.mlp.eq.4) then
                if (tteff.gt.3.7d0) then
@@ -296,7 +300,8 @@ c     if (tteff.le.3.9d0.and.(mlp.eq.15.or.mlp.eq.16)) then
                      enddo
                   enddo
                else
-*    Mass loss rate for RSG based on Sylvester+1998 and van Loon+99 (LMC)
+***   Mass loss rate for RSG based on Sylvester+1998 and van Loon+99 (LMC)
+***   Crowther (2001) : for red-super giants
                   dms = -(1.7d0*lleff-13.83d0)
                endif
                dms = 10.d0**(-dms)
@@ -365,7 +370,7 @@ c     &           totm**(-2.25d0)
                dms=2.6d-10*soll**0.72d0*(solr/(fedd*totm))**2.5d0
             endif
 
-***   Vink et al. (2000) (massive stars with log Teff > 3.9) then
+***   Vink et al. (2001) (massive stars with log Teff > 3.9) then
 ***   Nugis & Lamers (2000) for the WR phase , i.e. H_surf < 0.4 and
 ***   log Teff > 4.0
 
@@ -412,7 +417,8 @@ c..   Smoothing the transitions following the eval_Vink_wind routine from MESA
      &                    -10.92d0*(log10(teff/4.d4))**2
      &                    +0.85d0*log10(zeff/0.019d0)
                         dms = 10.d0**logdms1
-                  else if (teff.le.22500.d0.and.teff.ge.12500.d0) then
+!     else if (teff.le.22500.d0.and.teff.ge.12500.d0) then
+                  else if (teff.le.22500.d0) then
                      if (teff.ge.teffjump2) then
                         ratio = 1.3d0
                         logdms2 = -6.688d0+2.210d0*log10(soll*1.d-5)
@@ -431,6 +437,34 @@ c..   Smoothing the transitions following the eval_Vink_wind routine from MESA
                         dms = 10.d0**logdms2
                      endif
                   else if (teff.gt.22500.d0.and.teff.lt.27500.d0) then
+
+c$$$                     if (teff.le.teffjump1) then
+c$$$                        if (teff.lt.teffjump2) then
+c$$$                           ratio = 0.7d0
+c$$$                           logdms = -5.99d0+2.210d0*log10(soll*1.d-5)
+c$$$     &                          -1.339d0*log10(totm/30.d0)
+c$$$     &                          -1.601d0*log10(ratio*0.5d0)
+c$$$     &                          +1.07d0*log10(teff/2.d4)
+c$$$     &                          +0.85d0*log10(zeff/0.019d0)
+c$$$                        else
+c$$$                           ratio = 1.3d0
+c$$$                           logdms = -6.688d0+2.210d0*log10(soll*1.d-5)
+c$$$     &                          -1.339d0*log10(totm/30.d0)
+c$$$     &                          -1.601d0*log10(ratio*0.5d0)
+c$$$     &                          +1.07d0*log10(teff/2.d4)
+c$$$     &                          +0.85d0*log10(zeff/0.019d0)
+c$$$                        endif
+c$$$                     else
+c$$$                        ratio = 2.6d0
+c$$$                        logdms = -6.697d0+2.194d0*log10(soll*1.d-5)
+c$$$     &                       -1.313d0*log10(totm/30.d0)
+c$$$     &                       -1.226d0*log10(ratio*0.5d0)
+c$$$     &                       +9.33d-1*log10(teff/4.d4)
+c$$$     &                       -10.92d0*(log10(teff/4.d4))**2
+c$$$     &                       +0.85d0*log10(zeff/0.019d0)
+c$$$                     endif
+c$$$                     dms = 10.d0**logdms
+                     
                      alfa = (teff-22500.d0)/(5.d3)
                      logdms1 = -6.697d0+2.194d0*log10(soll*1.d-5)
      &                    -1.313d0*log10(totm/30.d0)
@@ -446,27 +480,9 @@ c..   Smoothing the transitions following the eval_Vink_wind routine from MESA
                      dms1 = 10.d0**logdms1
                      dms2 = 10.d0**logdms2
                      dms =  (1-alfa)*dms2 + alfa*dms1
-                     
-c$$$                  else if (teff.lt.12500.d0) then
-c$$$                     if (teff.ge.teffjump2) then
-c$$$                        ratio = 1.3d0
-c$$$                        logdms2 = -6.688d0+2.210d0*log10(soll*1.d-5)
-c$$$     &                       -1.339d0*log10(totm/30.d0)
-c$$$     &                       -1.601d0*log10(ratio*0.5d0)
-c$$$     &                       +1.07d0*log10(teff/2.d4)
-c$$$     &                       +0.85d0*log10(zeff/0.019d0)
-c$$$                        dms = 10.d0**logdms2
-c$$$                     else
-c$$$                        ratio = 0.7d0
-c$$$                        logdms2 = -5.99d0+2.210d0*log10(soll*1.d-5)
-c$$$     &                       -1.339d0*log10(totm/30.d0)
-c$$$     &                       -1.601d0*log10(ratio*0.5d0)
-c$$$     &                       +1.07d0*log10(teff/2.d4)
-c$$$     &                       +0.85d0*log10(zeff/0.019d0)
-c$$$                        dms = 10.d0**logdms2
-c$$$                     endif
       
                   endif
+                  print*, soll, totm, ratio, teff, zeff
                   print *,'dms',dms,alfa,dms1,dms2,teff
 c$$$                   if (teff.le.teffjump1) then
 c$$$                     if (teff.lt.teffjump2) then
@@ -504,6 +520,7 @@ c     dms = dms*pw13
                   print*,'clumpfac in mchange',clumpfac
                   dms = dms*clumpfac
                endif
+               
             endif
 
 ***   Crowther (2000) : for red-super giants
@@ -519,7 +536,9 @@ c     dms = dms*pw13
                dms = 10.d0**logdms
             endif
 
+
             if (mlp1.eq.15.or.mlp1.eq.16) mlp = mlp1
+
 
             if (mlp.eq.17.or.mlp.eq.18) then
                dms = massrate
@@ -643,26 +662,35 @@ c     dms1 = 0.8d0*10.d0**logdms1
             endif
             
          endif
-         print *,'dms Sander and Vink 2020',dms,dms1,dms2,taus,tau1,tau2
+
+
+c$$$         msigmae = 0.401d0*(zeff*0.5d0+xsp(neff,ih1)+xsp(neff,ih2)
+c$$$     &        +(xsp(neff,ihe3)+xsp(neff,ihe4))*0.5d0)
+c$$$         mgamma = msigmae*lum(nmod)/(4*pi*g*c*m(nmod))
+c$$$         dms = dms * 1.d0/(1.d0-mgamma)
+!         print *,'dms Sander and Vink 2020',dms,dms1,dms2,taus,tau1,tau2
 
 ***   Eddington limit correction (Ekstrom et al. 2012) (17/10/2023)
          
-         if (irotbin.eq.0.and.nphase.gt.2) then
-            i = nmod
-            do while (tau(i).lt.taulim)
-               if (lum(i).gt.pim4*c*g*m(i)/kap(i)*5) then
-                  dms = dms*3
-                  write(1023,*) "Applying Ekstrom et al. 2012"
-                  write(1023,*) teff, dms
-                  write(1023,*) i, lum(i), pim4*c*g*m(i)/kap(i)
-                  write(1023,*) m(i), kap(i)
-                  
-                  i = 1
-               end if
-               i = i-1
-            end do
-         end if
-           
+c$$$         if (irotbin.eq.0.and.mtini.gt.15.d0) then
+c$$$c$$$               msigmae = 0.401d0*(zeff*0.5d0+xsp(neff,ih1)+xsp(neff,ih2)
+c$$$c$$$  &              +(xsp(neff,ihe3)+xsp(neff,ihe4))*0.5d0)
+c$$$            i=nmod
+c$$$            do while (tau(i).gt.taulim)
+c$$$               k=i
+c$$$               i=i-1
+c$$$            end do
+c$$$            !write(*,*) tau(k), taulim
+c$$$            do i=nmod,k,-1
+c$$$               msigmae = 0.401d0/2.d0*(1.d0+xsp(i,ih1)+xsp(i,ih2))
+c$$$               mgamma = kapm(i)*lum(i)/(4*pi*g*c*m(i))
+c$$$               if (mgamma.gt.1.d0) then
+c$$$                  dms = 8.d0*dms
+c$$$                  print*," Applying enhanced mass loss", mgamma, dms
+c$$$                  goto 1230
+c$$$               endif
+c$$$            end do
+c$$$ 1230    end if
             
 ***   Correction for rotating stars : Maeder & Meynet, 2001, A&A 373, 555
 ***   New version : Georgy et al. 2011 A&A 527, A52, Eq. (4)
@@ -722,10 +750,8 @@ c..   mass loss by a factor of 3 whenever mgamma > 5 and M > 15 Msun
             endif
          endif
 
-
-         
-         
 !         print *,'dms 2',dms
+         
 *_____________________________________________________
 ***   change shells mass distribution due to mass-loss
 *-----------------------------------------------------
@@ -835,8 +861,8 @@ c$$$
                enddo
                mtotlos(j) = mtotlos(j)+xtot/msun
             enddo
-!***   if mlp odd : mass removed in shells above m = m(mlsh)
 
+***   if mlp odd : mass removed in shells above m = m(mlsh)
          else
             if (nmod0.ne.0) then
                if (dma*msun.gt.(m(nmod)-m(nmod0))) then

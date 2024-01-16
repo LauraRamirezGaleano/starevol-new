@@ -2056,32 +2056,32 @@ c      dtacho = 0.2d0*r(nmod)
       return
       end
 
-
-      SUBROUTINE ZONEDELTAXRGB (ndt,ndb,ndbmel)
-
-      implicit none
-
-      include 'evolpar.star'
-
-      include 'evolcom.spec'
-      include 'evolcom.teq'
-      include 'evolcom.transp'
-
-      integer ndt,ndb,ndbmel
-      integer j
-
-      double precision xlim
-
-      xlim = xsp(nmod,2)-grad_crit
-      do j = ndt,ndb,-1
-         if (xsp(j,2).le.xlim) then
-            ndbmel = j
-            goto 11
-         endif
-      enddo
-
- 11   return
-      end
+!     Commented out on 21/12/2023.
+c$$$      SUBROUTINE ZONEDELTAXRGB (ndt,ndb,ndbmel)
+c$$$
+c$$$      implicit none
+c$$$
+c$$$      include 'evolpar.star'
+c$$$
+c$$$      include 'evolcom.spec'
+c$$$      include 'evolcom.teq'
+c$$$      include 'evolcom.transp'
+c$$$
+c$$$      integer ndt,ndb,ndbmel
+c$$$      integer j
+c$$$
+c$$$      double precision xlim
+c$$$
+c$$$      xlim = xsp(nmod,2)-grad_crit
+c$$$      do j = ndt,ndb,-1
+c$$$         if (xsp(j,2).le.xlim) then
+c$$$            ndbmel = j
+c$$$            goto 11
+c$$$         endif
+c$$$      enddo
+c$$$
+c$$$ 11   return
+c$$$      end
 
 
 

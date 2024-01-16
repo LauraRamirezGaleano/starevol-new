@@ -7,8 +7,6 @@
 * From Press, W.H. et al. (1992). Numerical recipes in FORTRAN. The    *
 * art of scientific computing. ISBN : 0-521-43064-X                    *
 *                                                                      *
-************************************************************************
-*                                                                      *
 * Note : If this algorithm is too slow you might want to consider      *
 *        using the Heapsort algorithm described in the same source.    *
 *                                                                      *
@@ -20,11 +18,13 @@
 *                             DEFINITIONS                              *
 ************************************************************************
       
-      INTEGER n,M,NSTACK
-      PARAMETER (M=7,NSTACK=50)
-      INTEGER i,ir,j,jstack,k,l,istack(NSTACK)
-      DOUBLE PRECISION arr(n)
-      DOUBLE PRECISION a,temp
+      integer, intent(in) :: n
+      double precision, intent(out) :: arr(n)
+      
+      integer M,NSTACK
+      parameter (M=7,NSTACK=50)
+      integer i,ir,j,jstack,k,l,istack(NSTACK)
+      double precision a,temp
 
 ************************************************************************
 *                         QUICKSORT ALGORITHM                          *

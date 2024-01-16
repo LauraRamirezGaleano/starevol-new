@@ -8,30 +8,6 @@
 * atmospheric profiles used in the computation of the internal         *
 * structure for massive stars.                                         *
 *                                                                      *
-************************************************************************
-*                                                                      *
-* Inputs/outputs                                                       *
-* --------------                                                       *
-*                                                                      *
-* Mdot : DOUBLE PRECISION                                              *
-*    Value of log(Mdot) (mass loss) at the current time-step           *
-*                                                                      *
-* gs : DOUBLE PRECISION                                                *
-*    Value of log(gs) (effective gravity) at the current time-step     *
-*                                                                      *   
-* interp_T : DOUBLE PRECISION (nsh)                                    *
-*    Interpolated T profile                                            *
-*                                                                      *
-* interp_rho : DOUBLE PRECISION (nsh)                                  *
-*    Interpolated rho profile                                          *
-*                                                                      *
-* interp_r : DOUBLE PRECISION (nsh)                                    *
-*    Interpolated r profile                                            *
-*                                                                      *
-* interp_ne : DOUBLE PRECISION (nsh)                                   *
-*    Interpolated ne profile                                           *
-*                                                                      *
-************************************************************************
 *                                                                      *
 * References                                                           *
 * ----------                                                           *
@@ -49,16 +25,16 @@
 *                                                                      *
 ************************************************************************
 
-      IMPLICIT NONE
+      implicit none
 
 ************************************************************************
 *                              INCLUDES                                *
 ************************************************************************
 
-      INCLUDE 'evolpar.star'
-      INCLUDE 'evolcom.atm'
-      INCLUDE 'evolcom.surf'
-      INCLUDE 'evolcom.teq'
+      include 'evolpar.star'
+      include 'evolcom.atm'
+      include 'evolcom.surf'
+      include 'evolcom.teq'
 
 ************************************************************************
 *                             DEFINITIONS                              *
@@ -67,22 +43,31 @@
 ***   Inputs/outputs.
 ************************************************************************
       
-      DOUBLE PRECISION, INTENT(IN) :: Mdot, gs
-      DOUBLE PRECISION, INTENT(OUT) :: interp_T(nsh), interp_rho(nsh),
+***   Mdot : Value of log(Mdot) (mass loss) at the current time-step.
+***   gs   : Value of log(gs) (effective gravity) at the current
+***          time-step.
+      double precision, intent(in) :: Mdot, gs
+
+***   interp_T   : Interpolated T profile.
+***   interp_rho : Interpolated rho profile.
+***   interp_r   : Interpolated r profile.
+***   interp_ne  : Interpolated ne profile.
+***   interp_v   : Interpolated v profile.
+      double precision, intent(out) :: interp_T(nsh), interp_rho(nsh),
      &     interp_r(nsh), interp_ne(nsh), interp_v(nsh)
 
 ***   Temporary variables.
 ************************************************************************
       
-      INTEGER :: i, j, k, l, n, o, nlines, id, stat
-      DOUBLE PRECISION :: i_int, j_int, k_int
-      DOUBLE PRECISION :: wn, sum_wn, wn_arr(100), used_CMFGEN(8,4),
+      integer :: i, j, k, l, n, o, nlines, id, stat
+      double precision :: i_int, j_int, k_int
+      double precision :: wn, sum_wn, wn_arr(100), used_CMFGEN(8,4),
      &     pp
-      DOUBLE PRECISION :: tmp_tau_C(100), tmp_T_C(100), tmp_rho_C(100),
+      double precision :: tmp_tau_C(100), tmp_T_C(100), tmp_rho_C(100),
      &     tmp_r_C(100), tmp_ne_C(100), tmp_v_C(100)
-      DOUBLE PRECISION :: DDT(100), DT(100), DDrho(100), Drho(100),
+      double precision :: DDT(100), DT(100), DDrho(100), Drho(100),
      &     DDr(100), Dr(100), DDne(100), Dne(100), DDv(100), Dv(100)
-      DOUBLE PRECISION, ALLOCATABLE :: tmp_T(:,:,:,:),
+      double precision, allocatable :: tmp_T(:,:,:,:),
      &     tmp_rho(:,:,:,:), tmp_r(:,:,:,:), tmp_ne(:,:,:,:),
      &     tmp_v(:,:,:,:)
 
@@ -93,16 +78,16 @@
 ***   1. Allocate arrays.
 ************************************************************************
       
-      ALLOCATE(tmp_T(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
-      ALLOCATE(tmp_rho(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
-      ALLOCATE(tmp_r(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
-      ALLOCATE(tmp_ne(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
-      ALLOCATE(tmp_v(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
+      allocate(tmp_T(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
+      allocate(tmp_rho(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
+      allocate(tmp_r(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
+      allocate(tmp_ne(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
+      allocate(tmp_v(nb_Teff_CMFGEN,nb_Mdot_CMFGEN,nb_gs_CMFGEN,nsh))
       
 ***   2. Put everything on the same grid.
 ************************************************************************
       
-      DO id=1,max_id
+      do id=1,max_id
          i = avail_CMFGEN(id,1)
          j = avail_CMFGEN(id,2)
          k = avail_CMFGEN(id,3)
@@ -113,37 +98,37 @@
          tmp_r_C(:) = r_CMFGEN(i,j,k,:)
          tmp_ne_C(:) = ne_CMFGEN(i,j,k,:)
          tmp_v_C(:) = v_CMFGEN(i,j,k,:)
-         CALL splineatm (tmp_tau_C,tmp_T_C,nlines,1.d50,
+         call spline_der (tmp_tau_C,tmp_T_C,nlines,1.d50,
      &        1.d50,DDT,DT)
-         CALL splineatm (tmp_tau_C,tmp_rho_C,nlines,1.d50,
+         call spline_der (tmp_tau_C,tmp_rho_C,nlines,1.d50,
      &        1.d50,DDrho,Drho)
-         CALL splineatm (tmp_tau_C,tmp_r_C,nlines,1.d50,
+         call spline_der (tmp_tau_C,tmp_r_C,nlines,1.d50,
      &        1.d50,DDr,Dr)
-         CALL splineatm (tmp_tau_C,tmp_ne_C,nlines,1.d50,
+         call spline_der (tmp_tau_C,tmp_ne_C,nlines,1.d50,
      &        1.d50,DDne,Dne)
-         CALL splineatm (tmp_tau_C,tmp_v_C,nlines,1.d50,
+         call spline_der (tmp_tau_C,tmp_v_C,nlines,1.d50,
      &        1.d50,DDv,Dv)
          l = nmod
-         DO WHILE(tau(l).LT.100)
+         do while(tau(l).lt.100)
             n = nmod-l+1
-            CALL splintatm (tmp_tau_C,
+            call spline_interp (tmp_tau_C,
      &           tmp_T_C,DDT,nlines,
      &           tau(l),tmp_T(i,j,k,n))
-            CALL splintatm (tmp_tau_C,
+            call spline_interp (tmp_tau_C,
      &           tmp_rho_C,DDrho,nlines,
      &           tau(l),tmp_rho(i,j,k,n))
-            CALL splintatm (tmp_tau_C,
+            call spline_interp (tmp_tau_C,
      &           tmp_r_C,DDr,nlines,
      &           tau(l),tmp_r(i,j,k,n))
-            CALL splintatm (tmp_tau_C,
+            call spline_interp (tmp_tau_C,
      &           tmp_ne_C,DDne,nlines,
      &           tau(l),tmp_ne(i,j,k,n))
-            CALL splintatm (tmp_tau_C,
+            call spline_interp (tmp_tau_C,
      &           tmp_v_C,DDv,nlines,
      &           tau(l),tmp_v(i,j,k,n))
             l = l-1
-         END DO
-      END DO
+         end do
+      end do
 
 ***   3. Interpolate in (Teff, Mdot, gs) using an IDW interpolation
 ***   .. method [Shepard, 1968].
@@ -156,35 +141,35 @@
 
 ***   3.1 Select the 8 nearest neighbours.
       wn_arr = 0.d0
-      DO id=1,max_id
+      do id=1,max_id
          i = avail_CMFGEN(id,1)
          j = avail_CMFGEN(id,2)
          k = avail_CMFGEN(id,3)
          wn = ((i-i_int)*(i-i_int) + (j-j_int)*(j-j_int) +
      &        (k-k_int)*(k-k_int))**-pp/2.d0
          wn_arr(id) = wn
-      END DO
-      CALL sort(100,wn_arr)
-      DO id=1,max_id
+      end do
+      call sort(100,wn_arr)
+      do id=1,max_id
          i = avail_CMFGEN(id,1)
          j = avail_CMFGEN(id,2)
          k = avail_CMFGEN(id,3)
          wn = ((i-i_int)*(i-i_int) + (j-j_int)*(j-j_int) +
      &        (k-k_int)*(k-k_int))**-pp/2.d0
-         DO o=1,8
-            IF (ABS(wn-wn_arr(92+o))/wn.LT.1d-3) THEN
+         do o=1,8
+            if (ABS(wn-wn_arr(92+o))/wn.lt.1d-3) then
                used_CMFGEN(o,1) = i
                used_CMFGEN(o,2) = j
                used_CMFGEN(o,3) = k
                used_CMFGEN(o,4) = wn
-            END IF
-         END DO
-      END DO
+            end if
+         end do
+      end do
 
 ***   3.2 Apply the IDW algorithm considering only the 8 nearest
 ***   ... neighbours.
       l = nmod
-      DO WHILE (tau(l).LT.100)
+      do while (tau(l).lt.100)
          n = nmod-l+1
          sum_wn = 0.d0
          interp_T(l) = 0.d0
@@ -192,7 +177,7 @@
          interp_r(l) = 0.d0
          interp_ne(l) = 0.d0
          interp_v(l) = 0.d0
-         DO o=1,8
+         do o=1,8
             i = used_CMFGEN(o,1)
             j = used_CMFGEN(o,2) 
             k = used_CMFGEN(o,3)
@@ -203,14 +188,14 @@
             interp_r(l) = interp_r(l) + wn*tmp_r(i,j,k,n)
             interp_ne(l) = interp_ne(l) + wn*tmp_ne(i,j,k,n)
             interp_v(l) = interp_v(l) + wn*tmp_v(i,j,k,n)
-         END DO
+         end do
          interp_T(l) = interp_T(l)/sum_wn
          interp_rho(l) = interp_rho(l)/sum_wn
          interp_r(l) = interp_r(l)/sum_wn
          interp_ne(l) = interp_ne(l)/sum_wn
          interp_v(l) = interp_v(l)/sum_wn
          l = l-1
-      END DO
+      end do
 
 ************************************************************************
 *                               END                                    *

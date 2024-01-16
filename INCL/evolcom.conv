@@ -17,22 +17,23 @@
       logical ledouxmlt,semiconv,mixopt,mixopt0
       logical ihro,lmix,chkmix
 
-      double precision etaturb,alphatu,alpha_mlt_hrho
+      double precision etaturb,alphatu
       double precision delmcz
-      double precision aup,adwn
+      double precision aup,adwn,fover
       double precision am,amacc
-      double precision turnover,turnenv,alpha_mlt_hp
+      double precision turnover,turnenv,alphac
       double precision sconv,eff,fconv,frad,fkin,fkcr
       double precision Dconv,tconv
       double precision delmc,delms,yconvlc,yconvls
 
-      common /convturb/ etaturb,alphatu,iturb,ihro,alpha_mlt_hrho
+      common /convturb/ etaturb,alphatu,iturb,ihro
       common /isconvz/ delmcz,nczm
       common /ovsh/ aup,adwn,novlim(nmaxconv,ntypeconv),nschwar,
-     &     nledoux,nsemiconv,nthermha,nsconv,novopt,idup,lmix,chkmix
+     &     nledoux,nsemiconv,nthermha,nsconv,novopt,idup,lmix,chkmix,
+     &	   fover
       common /nucmix/ am(nmaxconv),amacc(nmaxconv),mmin(nmaxconv),
      &     mmax(nmaxconv)
-      common /convp/ turnover(nmaxconv),turnenv,alpha_mlt_hp,hpmlt,
+      common /convp/ turnover(nmaxconv),turnenv,alphac,hpmlt,
      &     ledouxmlt,semiconv,mixopt,mixopt0,dtnmix
       common /conv/ sconv(nsh),eff(nsh),fconv(nsh),frad(nsh),
      &     fkin(nsh),fkcr(nsh)
