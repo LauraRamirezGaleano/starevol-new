@@ -1,0 +1,211 @@
+####################################################################################
+#
+#                makefile for STAREVOLMAN
+#    
+#	        Lionel Siess 01/03/2006
+#
+# commands :
+#
+#  make  generate execution file $(EXEC).e
+#
+####################################################################################
+
+# processor type
+PROC=$(shell cat /proc/cpuinfo | grep name | tail -1 | perl -n -e "s/(^model.*:(.*Mobile)?)(\s*)(\w*)(.*)/\4/g; print | cut" )
+
+#extension filename
+ifeq ($(PROC),Intel)
+	SUFF = Intel
+else
+  ifeq ($(PROC),Intel)
+	SUFF = Intel
+  else
+	SUFF = AMD
+  endif
+endif
+
+# execution filename
+NAME_EXEC = starevolman
+
+# fortran compiler
+#FC = ifort 
+FC = ${FORTRAN}
+
+# debugging option
+DD=off
+
+# compiler flags
+SFLAGS=${FORTRAN_SFLAGS}
+
+# compiler flags
+GRID = off
+AS09 = on
+SFLAGS=${FORTRAN_SFLAGS}
+ifeq ($(GRID),on)
+  FFLAGS=${FORTRAN_FLAGS} 
+else
+  ifeq ($(AS09),on)
+    FFLAGS=${FORTRAN_FLAGS} 
+  else
+    FFLAGS=${FORTRAN_FLAGS} 
+  endif
+endif
+
+# cpu architecture optimization
+ARCH=on
+ifeq ($(DD),on)
+   ARCH=off
+endif
+ifeq ($(ARCH),on)
+  ifeq ($(PROC),Intel)
+	ifeq ($(FC),f90)
+	   FARCH = --tp4
+	else
+	   FARCH = -tpp7
+	endif
+  endif
+endif
+
+# compiler debugging flags
+ifeq ($(DD),on)
+  FARCH =
+  FC=${FORTRAN}
+  FFLAGS = ${FORTRAN_DBFLAGS}
+  SUFF:=db_${SUFF}
+endif
+
+# libraries, exple: -L/usr/local/lib -llapack -L$(HOME)/lib -lmypack
+LIB =
+
+# linker flags, usually none, sometimes -static
+ifeq ($(FC),ifort)
+    LDFLAGS = $(FFLAGS)
+else
+    ifeq ($(FC),g95)
+	LDFLAGS =
+    else
+	LDFLAGS = ${SFLAGS}
+    endif
+endif
+
+# Profiling options
+PROF =
+
+# Profiling notice
+#  1 -  run $(NAME).e
+#  2 -  gprof ./$(NAME).e gmon.out > log
+ifdef PROF
+	FC = f77
+	FFLAGS = -pg
+	LDFLAGS = -pg
+	SUFF:=${SUFF}_prof
+	SFLAGS =
+	FARCH =
+endif
+
+# linker, is the same as the compiler
+LD = $(FC)
+
+# exec directory
+DIR_EXEC = $(DIR_BATCH)
+
+#code source directory (under $DIR_EXEC)
+#DIR_SRC=`echo ${SUFF} | tr "[[:lower:]]" "[[:upper:]]"`
+DIR_BASE=$(shell basename ${PWD})
+
+
+# Installation directories (default directories)
+IDIR_CODE = $(DIR_EVOL)/CODE
+DIR_NUC = $(IDIR_CODE)/../LIBNUC
+DIR_OPA = $(IDIR_CODE)/../LIB
+DIR_NUM = $(IDIR_CODE)/../LIBNUM
+DIR_PACK = $(IDIR_CODE)/../PACKAGES
+DIR_FLAME = $(IDIR_CODE)/../FLAME
+DIR_INCL = $(IDIR_CODE)/../INCL
+
+
+# path to the include files, example: -I../ -I$(HOME)/include
+INCLUDE = -I$(DIR_INCL)
+
+# define date
+stardate = $(shell date +%d"_"%m"_"%Y)
+
+####### include files #######
+
+INCL_FILE = eoscom.cons evolcom.const \
+	evolpar.star eoscom.fermi evolcom.conv evolcom.var \
+	eoscom.ion evolcom.data evolcom.mass eoscom.math \
+	evolcom.diff evolcom.spec eoscom.par \
+	evolcom.lum evolcom.mod evolcom.surf \
+	eoscom.phys evolcom.eng evolcom.acc evolcom.eos \
+	evolcom.nuc evolcom.therm evolcom.therm2 evolcom.grad \
+	evolcom.opa evolcom.cons evolcom.ion evolcom.rot \
+	evolcom.transp evolcom.teq
+
+EVOLINCL = $(patsubst %,$(DIR_INCL)/%,$(INCL_FILE))
+
+
+####### source files #######
+
+SRC_STAR = evodat.f rinimod.f rininet.f rmodpar.f 
+
+SRC_PACK = eosc.f
+
+SRC_FLAME = myflamespeed.f
+
+SRC_NUM = interlin.f
+
+
+######### object files #############
+
+FOR_STAR = $(NAME_EXEC).f $(patsubst %,$(IDIR_CODE)/%,$(SRC_STAR))
+FOR_NUM = $(patsubst %,$(DIR_NUM)/%,$(SRC_NUM))
+FOR_PACK = $(patsubst %,$(DIR_PACK)/%,$(SRC_PACK))
+FOR_FLAME = $(patsubst %,$(DIR_FLAME)/%,$(SRC_FLAME))
+
+OBJ_STAR = $(FOR_STAR:.f=.o)
+OBJ_NUM = $(FOR_NUM:.f=.o)
+OBJ_PACK = $(FOR_PACK:.f=.o)
+OBJ_FLAME = $(FOR_FLAME:.f=.o)
+
+OBJ_LIB = $(OBJ_NUM) $(OBJ_PACK) $(OBJ_FLAME)
+OBJECTS = $(OBJ_STAR) $(OBJ_LIB)
+
+LST_OBJS = $(OBJECTS:.o=.lst)
+
+#########################
+# generate execution file
+#########################
+
+
+.f.o:
+	$(FC) $(INCLUDE) -c $(FFLAGS) $(SFLAGS) $(FARCH) -o $@ $<
+
+$(NAME_EXEC).e: $(OBJECTS)
+	$(LD) $(LDFLAGS) $(SFLAGS) $(FARCH) $(OBJECTS) -o $(DIR_EXEC)/$(NAME_EXEC).e $(LIB)
+	rm $(NAME_EXEC).o
+
+$(OBJECTS) : $(EVOLINCL)
+
+##########
+# cleaning
+##########
+
+clean:
+	rm -f $(OBJECTS) $(LST_OBJS) *.core fort.*
+
+var:
+	@echo
+	@echo "processor type (PROC) : ${PROC}"
+	@echo "code version          : $(star_version)"
+	@echo "exectution filename   : $(NAME_EXEC).e"
+	@echo "fortran compiler      : $(FC)"
+	@echo "FLAGS :"
+	@echo "   compilation  (FFLAGS) : $(FFLAGS)"
+	@echo "   static       (SFLAGS) : $(SFLAGS)"
+	@echo "   architecture (FARCH)  : $(FARCH)"
+	@echo "   debugging    (DD)     : $(DD)"
+	@echo
+	@echo "compilation command : $(FC) -c $(FFLAGS)  $(SFLAGS) $(FARCH) "
+	@echo "linking     command : $(LD) $(LDFLAGS) $(SFLAGS) $(FARCH)"
+	@echo

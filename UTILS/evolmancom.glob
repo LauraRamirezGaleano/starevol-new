@@ -1,0 +1,52 @@
+      character crzc*1
+
+      double precision turnenv,vomega,vfacc,taccend
+      double precision times0,rayon0,feh,bin_version,teff
+      double precision fracxs,xsol,ysol,zsol,h2h1,he3he4
+      double precision pi,sec,c,g,boltz,h,sig,sigc,avn,rk,ech,econv,
+     &     emass,msun,rsun,lsun
+      double precision accel
+      double precision enucl,venucl
+      double precision hconv,vhconv,sconv,vsconv
+      double precision totm
+      double precision abrad,crz
+      double precision znew,mini,rini,zini,pindex
+      double precision tau
+      double precision dtn,time
+      double precision m,mr,dm,p,vp,mue,s,vs,e,ve,ro,vro
+      double precision u,r,lnf,lnt,t,lum,vu,vr,vlnf,vlnt,vt,vlum,eps
+      double precision pvisc,vpvisc
+      double precision mtotlos
+      double precision xsp,hxsp
+
+      integer nmod,nmod1
+      integer nphase
+      integer model
+      integer neff
+
+      common /accvar/ turnenv,vomega(nsh),vfacc(nsh),taccend
+      common /chefrac/ fracxs(nsp),xsol,ysol,zsol,h2h1,he3he4
+      common /cons/ pi,sec,c,g,boltz,h,sig,sigc,avn,rk,ech,econv,
+     &     emass,msun,rsun,lsun
+      common /diff/ times0,rayon0,feh
+      common /egrav/ accel(nsh)
+      common /epsnuc/ enucl(nsh),venucl(nsh)
+      common /equat/ nmod,nmod1
+      common /evopha/ nphase
+      common /lconv/ hconv(nsh),vhconv(nsh),sconv(nsh),vsconv(nsh)
+      common /mass/ totm
+      common /nabla/ abrad(nsh),crz(nsh),crzc(nsh)
+      common /outp/ model
+      common /param/ znew,mini,rini,zini,pindex
+      common /binaire/ bin_version
+      common /surface/ teff,neff
+      common /tauv/ tau(nsh)
+      common /tempus/ dtn,time
+      common /therm/ m(nsh),mr(nsh),dm(nsh),p(nsh),vp(nsh),mue(nsh),
+     &     s(nsh),vs(nsh),e(nsh),ve(nsh),ro(nsh),vro(nsh)
+      common /varia/ u(nsh),r(nsh),lnf(nsh),lnt(nsh),lum(nsh),vu(nsh),
+     &     vr(nsh),vlnf(nsh),vlnt(nsh),vlum(nsh),eps(neq)
+      common /vartvt/ t(nsh),vt(nsh)
+      common /viscosity/ pvisc(nsh),vpvisc(nsh)
+      common /xsplos/ mtotlos(nsp)
+      common /xspnuc/ xsp(nsh,nsp),hxsp(nsp)

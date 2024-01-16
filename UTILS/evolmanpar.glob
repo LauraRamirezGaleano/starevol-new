@@ -1,0 +1,6 @@
+      integer nsh,neq
+      integer nsp,nis
+
+      parameter (nsh = 4500,neq = 5)
+      parameter (nis = 54,nsp = 55)
+

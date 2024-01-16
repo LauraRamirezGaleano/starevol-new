@@ -1,0 +1,293 @@
+#E###################################################################################
+#
+#                makefile for BINLIST_EVOL      
+#    
+#	        Lionel Siess 20/11/2006
+#
+# commands :
+#
+#  make                  : generate execution file $(EXEC).e
+#  make clean            : remove .o files in the working directory $(DIR_CODE)
+#  make var              : display system information    
+#
+#####################################################################################
+
+# processor type
+PROC=$(shell cat /proc/cpuinfo | grep name | tail -1 | perl -n -e "s/(^model.*:(.*Mobile)?)(\s*)(\w*)(.*)/\4/g; print | cut" )
+
+#extension filename
+ifeq ($(PROC),Intel)
+	SUFF = Intel
+else
+  ifeq ($(PROC),Intel)
+	SUFF = Intel
+  else
+	SUFF = AMD
+  endif
+endif
+
+#Find which version of code will be generated (standard/GRID)
+GRID = off
+AS09 = on
+ifeq ($(GRID),on)
+   GRIDTXT = GRID
+else
+  ifeq ($(AS09),on)
+   GRIDTXT = AS09
+  else
+   GRIDTXT =
+  endif
+endif
+
+# execution filename
+NAME_EXEC = binlist_evol
+
+# fortran compiler
+#FC = ifort 
+FC = ${FORTRAN}
+
+# debugging option
+DD=off
+
+# compiler flags
+SFLAGS=${FORTRAN_SFLAGS}
+ifeq ($(GRID),on)
+  FFLAGS=${FORTRAN_FLAGS} 
+else
+  ifeq ($(AS09),on)
+    FFLAGS=${FORTRAN_FLAGS} 
+  else
+    FFLAGS=${FORTRAN_FLAGS} 
+  endif
+endif
+
+# cpu architecture optimization
+ARCH=off
+ifeq ($(DD),on)
+   ARCH=off
+endif
+ifeq ($(ARCH),on)
+  ifeq ($(PROC),Intel)
+	ifeq ($(FC),f90)
+	   FARCH = --tp4
+	else
+	   FARCH = -tpp7
+	endif
+  endif
+endif
+
+# compiler debugging flags
+ifeq ($(DD),on)
+  FARCH =
+  FC=${FORTRAN}
+  ifeq ($(FC),f90)
+    FFLAGS=${F90_DB}
+  else
+    FFLAGS=${FORTRAN_DBFLAGS}
+  endif
+  SUFF:=db_${SUFF}
+endif
+
+# libraries, exple: -L/usr/local/lib -llapack -L$(HOME)/lib -lmypack
+LIB =
+
+# linker flags, usually none, sometimes -static
+ifeq ($(FC),ifort)
+    LDFLAGS = $(FFLAGS)
+else
+    ifeq ($(FC),g95)
+	LDFLAGS =
+    else
+	LDFLAGS = ${SFLAGS}
+    endif
+endif
+
+# Profiling options
+PROF =
+
+# Profiling notice
+#  1 -  run $(NAME).e
+#  2 -  gprof ./$(NAME).e gmon.out > log
+ifdef PROF
+	FFLAGS = -pg
+	LDFLAGS = -pg
+	SUFF:=${SUFF}_prof
+	SFLAGS =
+	FARCH =
+endif
+
+# linker, is the same as the compiler
+LD = $(FC)
+
+# exec directory
+DIR_EXEC = $(DIR_BATCH)
+
+#code source directory (under $DIR_EXEC)
+#DIR_SRC=`echo ${SUFF} | tr "[[:lower:]]" "[[:upper:]]"`
+DIR_BASE=$(shell basename ${PWD})
+
+# source directory repository
+DIR_SRC = $(DIR_EVOL)
+
+# Installation directories (default directories)
+#IDIR_CODE = $(DIR_EVOL)/EXEC_2.92/CODE
+IDIR_CODE = $(DIR_SRC)/CODE
+IDIR_NUC = $(IDIR_CODE)/../LIBNUC
+IDIR_OPA = $(IDIR_CODE)/../LIB
+IDIR_NUM = $(IDIR_CODE)/../LIBNUM
+IDIR_PACK = $(IDIR_CODE)/../PACKAGES
+IDIR_FLAME = $(IDIR_CODE)/../FLAME
+IDIR_INCL = $(IDIR_CODE)/../INCL
+
+ifeq ($(DIR_BASE),tmp_CODEDIR)
+	RDIR_CODE = ../tmp_CODEDIR
+	RDIR_NUC = ../tmp_NUCDIR
+	RDIR_OPA = ../tmp_OPADIR
+	RDIR_NUM = ../tmp_NUMDIR
+	RDIR_PACK = ../tmp_PACKDIR
+	RDIR_FLAME = ../tmp_FLAMEDIR
+	RDIR_INCL = ../tmp_INCLDIR
+else
+	RDIR_CODE=$(IDIR_CODE)
+	RDIR_NUC = $(IDIR_NUC)
+	RDIR_OPA = $(IDIR_OPA)
+	RDIR_NUM = $(IDIR_NUM)
+	RDIR_PACK = $(IDIR_PACK)
+	RDIR_FLAME = $(IDIR_FLAME)
+	RDIR_INCL = $(IDIR_INCL)
+endif
+
+# path to the include files, example: -I../ -I$(HOME)/include
+INCLUDE = -I$(RDIR_INCL)
+
+# define date
+stardate = $(shell date +%d"_"%m"_"%Y)
+
+####### include files #######
+
+SRC_INCL = eoscom.cons evolcom.const \
+	evolpar.star eoscom.fermi evolcom.conv evolcom.var \
+	eoscom.ion evolcom.data evolcom.mass eoscom.math \
+	evolcom.diff evolcom.spec eoscom.par \
+	evolcom.lum evolcom.mod evolcom.surf \
+	eoscom.phys evolcom.eng evolcom.acc evolcom.eos \
+	evolcom.nuc evolcom.therm evolcom.therm2 evolcom.grad \
+	evolcom.opa evolcom.cons evolcom.ion evolcom.rot \
+	evolcom.transp evolcom.teq evolcom.igw evolcom.num \
+	evolcom.atm
+
+EVOLINCL = $(patsubst %,$(RDIR_INCL)/%,$(SRC_INCL))
+
+
+####### source files #######
+
+SRC_STAR = atmtp.f centeq.f convzone.f denucl.f diffinit.f \
+	diffusion.f diffsolve_OK.f diffturbul.f evodat.f fscreen.f \
+	inteq.f interp_CMFGEN.f interpZ.f kappa.f load_CMFGEN.f mix.f mlt.f nuceng.f neutri.f nwracc.f \
+	oversh.f opa_co.f quintic.f rinimod.f rininet.f rmodpar.f screen.f \
+	select_table.f structure.f surfeq.f thermo.f vit.f ydequil.f yneutron.f \
+	accret.f dfdr.f pconv.f 
+
+#SRC_NUC = nulosc.f vitsub_165${GRIDTXT}.f vitsub_ce2_qinu.f
+SRC_NUC = nulosc.f vitsub_167g.f vitsub_ce2_qinu.f
+
+SRC_PACK =  corrwind.f diffusc_ondes.f igw.f eosc.f jtranspc_ondesexcit.f overshootc.f rotation.f diffinitondesexcit.f 
+
+SRC_FLAME = myengen.f
+
+#ifeq ($(GRID),on)
+#  SRC_OPA = livopaint_opa${GRIDTXT}.f lthopa_120.f
+#else
+#  SRC_OPA = livopaint_opa${GRIDTXT}.f lthopa_155${GRIDTXT}.f
+#endif
+# hthopa.f  lthopa.f
+SRC_OPA = livopaint_opaAS09.f lthopa_155.f lthopa_155AS09.f lthopa_120.f
+
+SRC_NUM = exv.f fit.f nwrmat.f interlin.f shearnwt.f \
+	lubksb.f ludcmp.f savgol.f nagmod_ok.f\
+	dgetrf.f dgetrs.f lsame.f dtrsm.f xerbla.f dlaswp.f dgetf2.f \
+	dswap.f dscal.f dger.f idamax.f ilaenv.f dgemm.f iparmq.f ieeeck.f \
+	sort.f spline_der.f spline_interp.f 
+
+
+
+######### object files #############
+
+FOR_STAR = $(NAME_EXEC).f $(patsubst %,$(RDIR_CODE)/%,$(SRC_STAR))
+FOR_NUM = $(patsubst %,$(RDIR_NUM)/%,$(SRC_NUM))
+FOR_NUC = $(patsubst %,$(RDIR_NUC)/%,$(SRC_NUC))
+FOR_OPA = $(patsubst %,$(RDIR_OPA)/%,$(SRC_OPA))
+FOR_PACK = $(patsubst %,$(RDIR_PACK)/%,$(SRC_PACK))
+FOR_FLAME = $(patsubst %,$(RDIR_FLAME)/%,$(SRC_FLAME))
+
+OBJ_STAR = $(FOR_STAR:.f=.o)
+OBJ_NUM = $(FOR_NUM:.f=.o)
+OBJ_NUC = $(FOR_NUC:.f=.o)
+OBJ_OPA = $(FOR_OPA:.f=.o)
+OBJ_PACK = $(FOR_PACK:.f=.o)
+OBJ_FLAME = $(FOR_FLAME:.f=.o)
+
+OBJ_LIB = $(OBJ_NUM) $(OBJ_NUC) $(OBJ_PACK) $(OBJ_FLAME)
+OBJECTS = $(OBJ_STAR) $(OBJ_LIB)
+
+
+######### listing files #############
+
+LST_OBJS = $(OBJECTS:.o=.lst)
+LST_STAR = $(OBJ_STAR:.o=.lst)
+LST_OPA = $(OBJ_OPA:.o=.lst)
+
+#########################
+# generate execution file
+#########################
+
+
+.f.o:
+	$(FC) $(INCLUDE) -c $(FFLAGS) $(SFLAGS) $(FARCH) -o $@ $<
+
+$(NAME_EXEC).e: $(OBJECTS) $(OBJ_OPA)
+	@echo test
+	$(FC) $(INCLUDE) -c $(FFLAGS) $(SFLAGS) $(FARCH) -o $(RDIR_CODE)/kappa.o $(RDIR_CODE)/evodat.f
+	$(FC) $(INCLUDE) -c $(FFLAGS) $(SFLAGS) $(FARCH) -o $(RDIR_CODE)/kappa.o $(RDIR_CODE)/kappa.f
+	$(LD) $(LDFLAGS) $(SFLAGS) $(FARCH) $(OBJECTS) $(OBJ_OPA) -o $(DIR_EXEC)/$(NAME_EXEC).e $(LIB)
+	rm $(NAME_EXEC).o
+
+$(RDIR_OPA)/livopaint.o:  $(EVOLINCL)
+	$(FC) $(INCLUDE) -c $(FFLAGS) $(SFLAGS) $(FARCH) $(RDIR_OPA)/livopaint.f -o $(RDIR_OPA)/livopaint.o
+
+$(OBJECTS) : $(EVOLINCL)
+
+
+##########
+# cleaning
+##########
+
+clean:
+	rm -f $(OBJECTS) $(OBJ_OPA) $(LST_OBJS) $(LST_OPA) *.core fort.*
+
+var:
+	@echo
+	@echo "processor type (PROC) : ${PROC}"
+	@echo "code version          : $(star_version)"
+	@echo "exectution filename   : $(NAME_EXEC).e"
+	@echo "fortran compiler      : $(FC)"
+	@echo "FLAGS :"
+	@echo "   compilation  (FFLAGS) : $(FFLAGS)"
+	@echo "   static       (SFLAGS) : $(SFLAGS)"
+	@echo "   architecture (FARCH)  : $(FARCH)"
+	@echo "   debugging    (DD)     : $(DD)"
+	@echo
+	@echo "compilation command : $(FC) -c $(FFLAGS)  $(SFLAGS) $(FARCH) "
+	@echo "linking     command : $(LD) $(LDFLAGS) $(SFLAGS) $(FARCH)"
+	@echo
+
+
+man:
+	@echo 
+	@echo "      *************"
+	@echo "      *  MAN PAGE *"
+	@echo "      *************"
+	@echo
+	@echo "make                  : generate execution file $(NAME_EXEC).e"
+	@echo "make var              : display the current (machine dependant) option"
+	@echo "make clean            : remove .o files in the working directory $(RDIR_CODE)"
