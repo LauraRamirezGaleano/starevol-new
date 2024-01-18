@@ -333,7 +333,7 @@
 ! Mass loss prescription (if != 0).
 ! 1,2   : Reimers (1975).
 !         RGB
-! 3,4   : de Jager (1988,A&A,72,259) for log(Teff)>3.7,
+! 3,4   : de Jager et al. (1988) for log(Teff)>3.7,
 !         Crowther (2001) for log(Teff)<3.7.
 !         Massive stars
 ! 5,6   : Vassiliadis & Wood (1993,ApJ,413,641), no delay of
@@ -351,7 +351,7 @@
 ! 13,14 : Chiosi (1981,A&A,93,163).
 !         Massive O stars
 ! 15,16 : Vink et al. (2001) for log(Teff)>4.0969,
-!         de Jager (1988,A&A,72,259) for 4.0969>log(Teff)>3.7,
+!         de Jager et al. (1988) for 4.0969>log(Teff)>3.7,
 !         Crowther (2001) for log(Teff)<3.7,
 !         Nugis & Lamers (2000) for H_surf<0.4 and
 !         log(Teff)>4.0.
