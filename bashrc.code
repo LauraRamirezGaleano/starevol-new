@@ -61,7 +61,7 @@ export FORTRAN_FLAGS="-O2 -cpp -W1 -w -ipo"
 #export FORTRAN_FLAGS="-O2 -W1 -w -Vaxlib -static -no-ipo -qopt-report-phase=vec -qopt-report=5"
 
 # For gfortran sequential best
-#export FORTRAN_FLAGS="-O2 -Wall -fopt-info-all-vec -fno-lto"
+#export FORTRAN_FLAGS="-O2 -cpp -Wall -fopt-info-all-vec -fno-lto"
 
 # For mkl without ifort
 #export FORTRAN_FLAGS="-O2 -m64 -I$MKLROOT/include -static -fno-lto"
