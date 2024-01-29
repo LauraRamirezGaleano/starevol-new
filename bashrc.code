@@ -46,13 +46,13 @@ export BITSIZE="uname -p"
 #export FORTRAN32=/usr/bin/mpif77
 
 # For ifort use :
-export FORTRAN=ifort
-export FORTRAN32=ifort 
+export FORTRAN=ifx
+export FORTRAN32=ifort
 
 #................. FLAGS ................:
 
 # For regular compilation with ifort or MKL dynamic use on Linux and MacOS :
-export FORTRAN_FLAGS="-O2 -cpp -W1 -w -ipo"
+export FORTRAN_FLAGS="-O2 -cpp -W1 -w"
 #export FORTRAN_FLAGS="-g -O2 -cpp -W1 -w -Vaxlib -static -no-ipo"
 #export FORTRAN_FLAGS="-O2 -g -check bounds,arg_temp_created -fp-stack-check -gen-interfaces -warn interfaces -cpp -W1 -w -Vaxlib -static -no-ipo"
 #export FORTRAN_FLAGS="-O2 -g -traceback -cpp -check arg_temp_created -warn all -fp-stack-check -gen-interfaces -warn interfaces -W1 -w -Vaxlib -static -no-ipo"
