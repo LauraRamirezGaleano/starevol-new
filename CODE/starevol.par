@@ -45,10 +45,9 @@
 ! zkint
 ! -----
 !
-! Metallicity (to be selected in the Livermore opacity tables
-! according to the chosen solar calibration).
+! Initial metallicity.
 
-      zkint = 0.013452
+      zkint = 0.013446
 
 ! =============================================================
 !   EQUATION OF STATE 
@@ -134,6 +133,7 @@
 
 ! lnucl
 ! -----
+!
 ! Nuclear energy production computed
 ! f : only once the model has converged. 
 ! t : at each iteration.
@@ -194,7 +194,7 @@
 !
 ! Merge (remove) convective zones that are separated by less
 ! (which extend is less) than nczm shells.
-! If nczm < 0 the procedure applies only in the enveloppe.
+! If nczm < 0 the procedure applies only in the envelope.
 
       nczm = 10
 

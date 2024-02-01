@@ -57,10 +57,9 @@ Number of models in the current sequence, (0) stops the calculation. \\
 {\HPT{imodpr}} & 11, 12, 33
 & Activate flame routines (12 no printings), (33) save more models during.
 pulse/DUP  \\ \hline 
-\HPT{mtinit} & $M_\odot$ & Initial stellar mass.
+\HPT{mtinit} & $M_\odot$ & Initial stellar mass in solar masses.
 \\ \hline 
-\HPT{zkint} & $Z_{\mathrm{tab}}$ & Metallicity to
-be selected in the Livermore opacity tables \LA{, to be selected accordingly to the chosen solar calibration.} \\ \hline\hline
+\HPT{zkint} & $Z_{\mathrm{tab}}$ & Initial metallicity. \\ \hline\hline
 \multicolumn{3}{|c|}{\sf equation of state} \\ \hline\hline
 \HPT{addH2} & f, t & Inclusion of $\mathrm{H}_{2}$.
 \\ \hline 
@@ -83,7 +82,7 @@ ionization (should put t if atomic diffusion active). \\ \hline
 ionization (should put t if atomic diffusion active). \\ \hline\hline 
 
 \multicolumn{3}{|c|}{\sf gravitation} \\ \hline\hline
-\HPT{lgrav} & 1, 2, 3, 4 & 
+\HPT{lgrav} & 1, 2, 4 & 
 \begin{tabular}{l}
 \hspace{-0.25cm}Different prescriptions for $\varepsilon_{\rm grav}$. \\ 
 1 : $\varepsilon_{\rm grav} = - D e_{\rm int}/D t - P D(1/\rho)/Dt$ \\
@@ -169,7 +168,7 @@ characterizes core overshooting. \\ \hline
 \HPT{adwn} & $\alpha _{\rm over,down}$ & Radial upward extension in case of step
 overshooting, 
 characterizes envelope undershooting.  \\ \hline
-{\HPT{idup}} & 0, 1, 2, 3 & (1) find neutrality of the
+{\HPT{idup}} & 0, 1, 2, 3, 5 & (1) find neutrality of the
 gradients (AGB phase only), (2) call to convzone stopped after
  iterations, (3) : (1) + (2), (5) : overshoot below envelope (\LA{\HPL{lover} = 23})
 activated during AGB phase only. \\ \hline
