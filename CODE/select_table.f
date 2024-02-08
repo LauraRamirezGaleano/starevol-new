@@ -84,20 +84,20 @@ c      print *,'entree dans tableatm',nb_Teff
            
             T_geff(:) = tableTZ(k,i,:)
 
-            call spline_der (gtabeff,T_geff,nb_geff,1.d50,1.d50,DDT,DT)
-            call spline_interp (gtabeff,T_geff,DDT,nb_geff,lgstruc,
+            call splineatm (gtabeff,T_geff,nb_geff,1.d50,1.d50,DDT,DT)
+            call splintatm (gtabeff,T_geff,DDT,nb_geff,lgstruc,
      &           sT(k))
 
             rho_geff(:) = tablerhoZ(k,i,:)
-            call spline_der (gtabeff,rho_geff,nb_geff,1.d50,1.d50,DDT,
+            call splineatm (gtabeff,rho_geff,nb_geff,1.d50,1.d50,DDT,
      &           DT)
-            call spline_interp (gtabeff,rho_geff,DDT,nb_geff,lgstruc,
+            call splintatm (gtabeff,rho_geff,DDT,nb_geff,lgstruc,
      &           srhotab(k))
 
             Fconv_geff(:) = tableFcZ(k,i,:)
-            call spline_der (gtabeff,Fconv_geff,nb_geff,1.d50,1.d50,
+            call splineatm (gtabeff,Fconv_geff,nb_geff,1.d50,1.d50,
      &           DDT,DT)
-            call spline_interp (gtabeff,Fconv_geff,DDT,nb_geff,lgstruc,
+            call splintatm (gtabeff,Fconv_geff,DDT,nb_geff,lgstruc,
      &           sFconvtab(k))
 
          enddo
@@ -114,10 +114,10 @@ c      print *,'entree dans tableatm',nb_Teff
          k=nmod
 
          do while (tau(k)<=taumax)
-            call spline_interp (stau,sT,DDT,filesize,tau(k),interpT)
-            call spline_interp (stau,sFconvtab,DDT1,filesize,tau(k),
+            call splintatm (stau,sT,DDT,filesize,tau(k),interpT)
+            call splintatm (stau,sFconvtab,DDT1,filesize,tau(k),
      &           Fc_atm)
-            call spline_interp (stau,srhotab,DDT2,filesize,tau(k),
+            call splintatm (stau,srhotab,DDT2,filesize,tau(k),
      &           rho_atm)
             tableT(k,i) = interpT
             tablerho(k,i) = rho_atm
@@ -138,9 +138,9 @@ c      print *,'entree dans tableatm',nb_Teff
       if (rayenv.gt.r(nmod)*1.d-2) then
          do while (tau(k)<=taumax)
             nouveauT(:) = tableT(k,:)
-            call spline_der (nouveauT,Ttabeff,nb_Teff,1.d50,1.d50,DDT,
+            call splineatm (nouveauT,Ttabeff,nb_Teff,1.d50,1.d50,DDT,
      &           DT)
-            call spline_interp (nouveauT,Ttabeff,DDT,nb_Teff,t(k),
+            call splintatm (nouveauT,Ttabeff,DDT,nb_Teff,t(k),
      &           Teffinterp(k))
             t_eff = t_eff + Teffinterp(k)
             k = k-1
@@ -152,8 +152,8 @@ c      print *,'entree dans tableatm',nb_Teff
             if (tau(k)>=taucoupleatm) exit
          enddo
          nouveauT(:) = tableT(k,:)
-         call spline_der (nouveauT,Ttabeff,nb_Teff,1.d50,1.d50,DDT,DT)
-         call spline_interp (nouveauT,Ttabeff,DDT,nb_Teff,t(k),
+         call splineatm (nouveauT,Ttabeff,nb_Teff,1.d50,1.d50,DDT,DT)
+         call splintatm (nouveauT,Ttabeff,DDT,nb_Teff,t(k),
      &        Teffinterp(k))
          t_eff = Teffinterp(k)
       endif
@@ -165,13 +165,13 @@ c      print *,'entree dans tableatm',nb_Teff
          nouveauT(:) = tableT(k,:)
          nouveauFc(:) = tableFc(k,:)
          nouveaurho(:) = tablerho(k,:)
-         call spline_der (Ttabeff,nouveauT,nb_Teff,1.d50,1.d50,DDT,DT)
-         call spline_interp (Ttabeff,nouveauT,DDT,nb_Teff,t_eff,Tatm(k))
-         call spline_der (Ttabeff,nouveauFc,nb_Teff,1.d50,1.d50,DDT,DT)
-         call spline_interp (Ttabeff,nouveauFc,DDT,nb_Teff,t_eff,
+         call splineatm (Ttabeff,nouveauT,nb_Teff,1.d50,1.d50,DDT,DT)
+         call splintatm (Ttabeff,nouveauT,DDT,nb_Teff,t_eff,Tatm(k))
+         call splineatm (Ttabeff,nouveauFc,nb_Teff,1.d50,1.d50,DDT,DT)
+         call splintatm (Ttabeff,nouveauFc,DDT,nb_Teff,t_eff,
      &        Fcatm(k))
-         call spline_der (Ttabeff,nouveaurho,nb_Teff,1.d50,1.d50,DDT,DT)
-         call spline_interp (Ttabeff,nouveaurho,DDT,nb_Teff,t_eff,
+         call splineatm (Ttabeff,nouveaurho,nb_Teff,1.d50,1.d50,DDT,DT)
+         call splintatm (Ttabeff,nouveaurho,DDT,nb_Teff,t_eff,
      &        rhoecatm(k))
          k = k-1
       enddo

@@ -98,32 +98,32 @@
          tmp_r_C(:) = r_CMFGEN(i,j,k,:)
          tmp_ne_C(:) = ne_CMFGEN(i,j,k,:)
          tmp_v_C(:) = v_CMFGEN(i,j,k,:)
-         call spline_der (tmp_tau_C,tmp_T_C,nlines,1.d50,
+         call splineatm (tmp_tau_C,tmp_T_C,nlines,1.d50,
      &        1.d50,DDT,DT)
-         call spline_der (tmp_tau_C,tmp_rho_C,nlines,1.d50,
+         call splineatm (tmp_tau_C,tmp_rho_C,nlines,1.d50,
      &        1.d50,DDrho,Drho)
-         call spline_der (tmp_tau_C,tmp_r_C,nlines,1.d50,
+         call splineatm (tmp_tau_C,tmp_r_C,nlines,1.d50,
      &        1.d50,DDr,Dr)
-         call spline_der (tmp_tau_C,tmp_ne_C,nlines,1.d50,
+         call splineatm (tmp_tau_C,tmp_ne_C,nlines,1.d50,
      &        1.d50,DDne,Dne)
-         call spline_der (tmp_tau_C,tmp_v_C,nlines,1.d50,
+         call splineatm (tmp_tau_C,tmp_v_C,nlines,1.d50,
      &        1.d50,DDv,Dv)
          l = nmod
          do while(tau(l).lt.100)
             n = nmod-l+1
-            call spline_interp (tmp_tau_C,
+            call splintatm (tmp_tau_C,
      &           tmp_T_C,DDT,nlines,
      &           tau(l),tmp_T(i,j,k,n))
-            call spline_interp (tmp_tau_C,
+            call splintatm (tmp_tau_C,
      &           tmp_rho_C,DDrho,nlines,
      &           tau(l),tmp_rho(i,j,k,n))
-            call spline_interp (tmp_tau_C,
+            call splintatm (tmp_tau_C,
      &           tmp_r_C,DDr,nlines,
      &           tau(l),tmp_r(i,j,k,n))
-            call spline_interp (tmp_tau_C,
+            call splintatm (tmp_tau_C,
      &           tmp_ne_C,DDne,nlines,
      &           tau(l),tmp_ne(i,j,k,n))
-            call spline_interp (tmp_tau_C,
+            call splintatm (tmp_tau_C,
      &           tmp_v_C,DDv,nlines,
      &           tau(l),tmp_v(i,j,k,n))
             l = l-1

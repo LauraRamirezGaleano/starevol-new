@@ -343,7 +343,7 @@ endif
 SRC_NUM = exv.f fit.f nwrmat.f interlin.f shearnwt.f \
 	lubksb.f ludcmp.f savgol.f lsame.f xerbla.f idamax.f ilaenv.f \
         iparmq.f ieeeck.f \
-        nagmod_ok.f sort.f spline_der.f spline_interp.f \
+        nagmod_ok.f sort.f splineatm.f splintatm.f \
 	dgetrf.f dgetrs.f dtrsm.f dlaswp.f dgetf2.f \
 	dswap.f dscal.f dger.f dgemm.f  
 #	gift_54.f leqs.f 

@@ -36,22 +36,22 @@
             do k = 1,filesize
 
                T_Zeff(:) = rT(k,j,i,:)
-               call spline_der (Ztabeff,T_Zeff,nb_Zeff,1.d50,1.d50,
+               call splineatm (Ztabeff,T_Zeff,nb_Zeff,1.d50,1.d50,
      &              DDT,DT)
-               call spline_interp (Ztabeff,T_Zeff,DDT,nb_Zeff,FeH,sTZ)
+               call splintatm (Ztabeff,T_Zeff,DDT,nb_Zeff,FeH,sTZ)
                tableTZ(k,i,j) = sTZ
 
                rho_Zeff(:) = rhotab(k,j,i,:)
-               call spline_der (Ztabeff,rho_Zeff,nb_Zeff,1.d50,1.d50,
+               call splineatm (Ztabeff,rho_Zeff,nb_Zeff,1.d50,1.d50,
      &              DDT,DT)
-               call spline_interp (Ztabeff,rho_Zeff,DDT,nb_Zeff,FeH,
+               call splintatm (Ztabeff,rho_Zeff,DDT,nb_Zeff,FeH,
      &              srhotabZ)
                tablerhoZ(k,i,j) = srhotabZ
 
                Fconv_Zeff(:) = Fconvtab(k,j,i,:)
-               call spline_der (Ztabeff,Fconv_Zeff,nb_Zeff,1.d50,1.d50,
+               call splineatm (Ztabeff,Fconv_Zeff,nb_Zeff,1.d50,1.d50,
      &              DDT,DT)
-               call spline_interp (Ztabeff,Fconv_Zeff,DDT,nb_Zeff,FeH,
+               call splintatm (Ztabeff,Fconv_Zeff,DDT,nb_Zeff,FeH,
      &              sFconvtabZ)
                tableFcZ(k,i,j) = sFconvtabZ
 

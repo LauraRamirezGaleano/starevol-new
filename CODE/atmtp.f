@@ -249,22 +249,22 @@ c         pwc3 = -0.12d0
             taumod(i)=tau(i)
          enddo
 
-         call spline_der (Tatms,taumod,nmod,1.d50,1.d50,ddqtautemp,
+         call splineatm (Tatms,taumod,nmod,1.d50,1.d50,ddqtautemp,
      &        dqtautemp)
-         call spline_interp (Tatms,taumod,ddqtautemp,nmod,ts,taueff)
+         call splintatm (Tatms,taumod,ddqtautemp,nmod,ts,taueff)
          write(*,*) "taueff = ", taueff
-         call spline_der (tau,qtau,nmod,1.d50,1.d50,ddqtau,dqdtau)
+         call splineatm (tau,qtau,nmod,1.d50,1.d50,ddqtau,dqdtau)
          do k=1,nmod1
             if (qtau(k).eq.0.d0) then
                dqdtau(k) = 0.d0
                dqdtau(k+1) = 0.d0
             end if
          end do
-         call spline_der (r,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+         call splineatm (r,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
      &        ddqdtaudr)
-         call spline_der (lnf,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+         call splineatm (lnf,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
      &        ddqdtaudf)
-         call spline_der (lnT,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+         call splineatm (lnT,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
      &        ddqdtaudt)
          
          qtaus = qtau(nmod)
@@ -412,7 +412,7 @@ c         pwc3 = -0.12d0
          qtau0 = 1.d0/dsqrt(3.d0)
 
 ***   6. Interpolate to compute q(tau) derivatives.
-         call spline_der (tau,qtau,nmod,1.d50,1.d50,ddqtau,
+         call splineatm (tau,qtau,nmod,1.d50,1.d50,ddqtau,
      &        dqdtau)
          do k=1,nmod1
             if (qtau(k).eq.0.d0) then
@@ -421,11 +421,11 @@ c         pwc3 = -0.12d0
             end if
             !write(*,*) tau(k), qtau(k), dqdtau(k)
          end do
-         call spline_der (r,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+         call splineatm (r,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
      &        ddqdtaudr)
-         call spline_der (lnf,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+         call splineatm (lnf,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
      &        ddqdtaudf)
-         call spline_der (lnT,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+         call splineatm (lnT,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
      &        ddqdtaudt)
 
 ***   7. Write atmospheric profiles into a file (debugging).
@@ -494,10 +494,10 @@ c$$$         valmax = 0.d0
 c$$$         dqtautemp = 0.d0
 c$$$         ddqtautemp = 0.d0
 c$$$         taue = 0.d0
-c$$$         call spline_der (Tatms,taumod,nmod,1.d50,1.d50,ddqtautemp,
+c$$$         call splineatm (Tatms,taumod,nmod,1.d50,1.d50,ddqtautemp,
 c$$$     &        dqtautemp)
 c$$$         if (teff.lt.5.d4.and.teff.gt.2.5d4) then
-c$$$            call spline_interp (Tatms,tau,ddqtautemp,nmod,teff,
+c$$$            call splintatm (Tatms,tau,ddqtautemp,nmod,teff,
 c$$$     &           taueff)
 c$$$         end if
 c$$$         write(*,*) "taueff =", taueff
@@ -525,7 +525,7 @@ c$$$         qtaus = qtau(nmod)
 c$$$         qtau0 = 1.d0/dsqrt(3.d0)
 c$$$
 c$$$!     .. Interpolate to compute q(tau) derivatives
-c$$$         call spline_der (tau,qtau,nmod,1.d50,1.d50,ddqtau,
+c$$$         call splineatm (tau,qtau,nmod,1.d50,1.d50,ddqtau,
 c$$$     &        dqdtau)
 c$$$         do k=1,nmod1
 c$$$            if (qtau(k).eq.0.d0) then
@@ -533,11 +533,11 @@ c$$$               dqdtau(k) = 0.d0
 c$$$               dqdtau(k+1) = 0.d0
 c$$$            end if
 c$$$         end do
-c$$$         call spline_der (r,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+c$$$         call splineatm (r,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
 c$$$     &        ddqdtaudr)
-c$$$         call spline_der (lnf,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+c$$$         call splineatm (lnf,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
 c$$$     &        ddqdtaudf)
-c$$$         call spline_der (lnT,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
+c$$$         call splineatm (lnT,dqdtau,nmod,1.d50,1.d50,ddqtaudt,
 c$$$     &        ddqdtaudt)
 c$$$
 c$$$!     .. Write atmospheric profiles into a file (debugging)
