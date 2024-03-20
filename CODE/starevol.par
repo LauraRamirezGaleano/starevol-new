@@ -24,7 +24,7 @@
 !
 ! Number of models computed by sequence.
 
-      maxmod = 10
+      maxmod = 100
 
 ! imodpr
 ! ------
@@ -47,7 +47,7 @@
 !
 ! Initial metallicity.
 
-      zkint = 0.013446
+      zkint = 0.014
 
 ! =============================================================
 !   EQUATION OF STATE 
@@ -223,16 +223,16 @@
 !
 ! Turbulent viscosity to compute the turbulent flux in the
 ! convective energy balance.
-! According to Maeder (1987), etaturb should be of the 
-! order of 1000.
+! According to Maeder (1987,A&A,173,247), etaturb should be of
+! the order of 1000.
 
       etaturb = 1.000D+03
 
 ! fover
 ! -----
 !
-! Herwig's overshoot coefficient (lover=23-32) or penetration
-! depth (lover=33-39,70-73).
+! Herwig's overshoot coefficient (lover = 23-32) or penetration
+! depth (lover = 33-39,70-73).
 
       fover = 1.0d-02
 
@@ -240,19 +240,20 @@
 ! -------
 !
 ! Classical MLT alpha parameter (density scale height) or
-! parameter for compression effects with hpmlt=5.
+! parameter for compression effects with hpmlt = 5.
 
       alphatu = 1.0000
 
 ! novopt
 ! ------
 !
-! Treatment of the step overshooting (if != 0).
-! 1 : radial upward extension limited by aup times the
-!     pressure scale height
-! 2 : radial upward extension limited by the minimum 
-!     between aup times the pressure scale height and
-!     aup times r
+! Treatment of the step overshooting (if != 0). 
+! 1,3 : radial upward extension limited by aup times the
+!       pressure scale height 
+! 2,4 : radial upward extension limited by the minimum 
+!       between aup times the pressure scale height and
+!       aup times r
+! If novopt = 3,4 overshooting is applied in the core only.
 
       novopt = 1
 
@@ -260,7 +261,6 @@
 ! ---
 !
 ! Radial upward extension in case of step overshooting.
-! Characterizes core overshooting.
 
       aup = 0.10
 
@@ -268,7 +268,6 @@
 ! ----
 !
 ! Radial downward extension in case of step overshooting.
-! Characterizes envelope undershooting.
 
       adwn = 0.00
 
@@ -278,7 +277,7 @@
 ! 1 : find neutrality of the gradients (AGB phase only)
 ! 2 : call to convzone stopped after iterations
 ! 3 : 1 + 2
-! 5 : overshoot below envelope (lover=23) activated during
+! 5 : overshoot below envelope (lover = 23) activated during
 !     AGB phases only
 
       idup = 0
@@ -302,9 +301,9 @@
 ! 0 : Eddington grey atmosphere
 ! 1 : Analytic fit
 ! 2 : No atmosphere
-! 3 : Siess et al. (2000) fit
+! 3 : Siess et al. (2000,A&A,358,593) fit
 ! 4 : PHOENIX atmosphere models
-! 5 : Krishna-Swamy (1966) fit
+! 5 : Krishna-Swamy (1966,ApJ,145,174) fit
 ! 6 : CMFGEN atmosphere models (massive stars)
 !     Currently not used !
 ! 7 : TLUSTY atmosphere models (massive stars)
@@ -331,11 +330,14 @@
 ! ---
 !
 ! Mass loss prescription (if != 0).
-! 1,2   : Reimers (1975).
+! 1,2   : Reimers (1975,Memoires de la SRSL,8,369).
 !         RGB
-! 3,4   : de Jager et al. (1988) for log(Teff)>3.7,
-!         Crowther (2001) for log(Teff)<3.7.
-!         Massive stars
+! 3,4   : Multiple prescriptions.
+!         if log(Teff) > 3.7
+!            de Jager et al. (1988,A&AS,72,259)
+!         if log(Teff) < 3.7
+!            Crowther (2001,ASSL,264,215) 
+!         Massive stars with RSG phase
 ! 5,6   : Vassiliadis & Wood (1993,ApJ,413,641), no delay of
 !         the onset of the super-wind phase.
 !         AGB
@@ -350,27 +352,29 @@
 !         Massive stars and WR phase
 ! 13,14 : Chiosi (1981,A&A,93,163).
 !         Massive O stars
-! 15,16 : Vink et al. (2001) for log(Teff)>4.0969,
-!         de Jager et al. (1988) for 4.0969>log(Teff)>3.7,
-!         Crowther (2001) for log(Teff)<3.7,
-!         Nugis & Lamers (2000) for H_surf<0.4 and
-!         log(Teff)>4.0.
+! 15,16 : Multiple prescriptions.
+!         if log(Teff) > 3.9
+!            Vink et al. (2001,A&A,369,574)
+!         if 3.9 > log(Teff)
+!            de Jager et al. (1988,A&AS,72,259)
+!         if H_surf < 0.4 and log(Teff) > 4.0
+!            Nugis & Lamers (2000,A&A,360,227)
 !         Massive stars, MS, post-MS, RSG and WR phase
 ! 17,18 : user defined, equal to massrate (Accretion).
-! 19,20 : Crowther (2001).
+! 19,20 : Crowther (2001,ASSL,264,215).
 !         RSG
-! 21,22 : Van Loon et al. (2005).
+! 21,22 : van Loon et al. (2005,A&A,438,273).
 !         AGB and RSG
-! 23,24 : Cranmer & Saar (2011).
+! 23,24 : Cranmer & Saar (2011,ApJ,741,54).
 !         Cool PMS (23 only), MS and RGB stars (if 
 !         rotation and a convective envelope)
-! 25,26 : Graefener (2021).
+! 25,26 : Graefener (2021,A&A,647,A13).
 !         VMS at LMC metallicity
-! 27,28 : Sanders & Vink (2022).
-!         VMS stars
-! 29,30 : Sabhahit et al. (2023).
+! 27,28 : Sander & Vink (2020,MNRAS,499,873).
+!         WR stars
+! 29,30 : Sabhahit et al. (2022,MNRAS,514,3736).
 !         VMS stars at low Z
-! If mlp is odd, mass is removed in shells above m=0.95*mtot.
+! If mlp is odd, mass is removed in shells above m = 0.95*mtot.
 ! If mlp is even, shells are removed.
 
       mlp = 15
@@ -394,8 +398,8 @@
 ! --------
 !
 ! Factor by which the Vink et al. (2001) mass loss is
-! artificially multiplied to take into account the effects of
-! clumping.
+! artificially multiplied to take into account the effect
+! of clumping.
 
       clumpfac = 1.0d0
 
@@ -405,7 +409,7 @@
 ! If t, multiply the mass loss rate by a factor 
 ! (Z/Zsun)**0.8, where Zsun is the solar metallicity.
 
-      zscaling = t
+      zscaling = f
 
 ! =============================================================
 !   NUCLEAR
@@ -535,14 +539,14 @@
 !
 ! Computation of angular momentum and chemical transports
 ! including the feedback on molecular weight when
-! idiffty=8,9,11,13 or 15.
+! idiffty = 8,9,11,13 or 15.
 
       zgradmu = F
 
 ! nu_add
 ! ------
 !
-! Additional viscosity in cm^2/s (idiffty=15).
+! Additional viscosity in cm^2/s (idiffty = 15).
 
       nu_add = 3.0000D-12
 
@@ -573,7 +577,7 @@
 !
 ! Coefficient entering the expression of the turbulent
 ! diffusion coefficient for chemicals according to Richard et
-! al. 2005, ApJ 619, 538, Equation 2.
+! al. (2005,ApJ,619,538), Equation 2.
 ! Multiplicative factor compared to the He atomic diffusion
 ! coefficient.
 ! Dturbul is proportional to om_turbul*DHe0.
@@ -586,7 +590,7 @@
 !
 ! Exponent indicating the density dependence of the turbulent
 ! diffusion coefficient for chemicals according to Richard et
-! al. 2005, ApJ 619, 538, Equation 2.
+! al. (2005,ApJ,619,538), Equation 2.
 ! Dturbul is proportional to 1/\rho^{n_turbul}.
 
       n_turbul = 3
@@ -596,7 +600,7 @@
 !
 ! Coefficient entering the turbulent diffusion coefficient
 ! expression according to Proffitt & Michaud (1991a) as
-! expressed in  Richard et al. 2005, ApJ 619, 538, Equation 3.
+! expressed in  Richard et al. (2005,ApJ,619,538), Equation 3.
 ! Dturbul2 is proportional to PM_turbul*\rho^{-3}.
 
       PM_turbul = 5000
@@ -643,7 +647,8 @@
 !
 ! Prescription for vertical diffusion coefficient Dv.
 ! Za92 : Zahn 1992
-! TZ97 : Talon & Zahn 1997 (do not use with Dh_prescr=Mathis16)
+! TZ97 : Talon & Zahn 1997
+!        (do not use with Dh_prescr = Mathis16)
 ! Ma97 : Maeder 1997
 ! Pr16 : Mathis et al. 2018
 !        Currently not used !
@@ -701,7 +706,7 @@
 ! 5 : torque applied propotionnal to \Omega_S^3
 ! 6 : constant specific angular momentum
 ! 7 : gfdsf
-! 8 : Matt et al. 2012 (with mlp=23,24)
+! 8 : Matt et al. 2012 (with mlp = 23,24)
 ! 9 : Matt et al. 2015
 
       idiffvr = 0
@@ -709,7 +714,7 @@
 ! idiffex
 ! -------
 !
-! Exponent intervening in the breaking law (if idiffvr=2,3).
+! Exponent intervening in the breaking law (if idiffvr = 2,3).
 
       idiffex = 3
 
@@ -723,9 +728,9 @@
 ! breaktime
 ! ---------
 !
-! If idiffvr=3, date in years from which the braking of the
+! If idiffvr = 3, date in years from which the braking of the
 ! star starts when Skumanich braking law is used.
-! If idiffvr!=3, angular velocity of the disk (and thus the
+! If idiffvr != 3, angular velocity of the disk (and thus the
 ! stellar surface) during the disk-locking phase on the PMS
 ! in s-1.
 
@@ -739,7 +744,7 @@
 ! -----
 !
 ! Computation of time-dependent mixing (tdm) and
-! nucleosynthesis (if !=0).
+! nucleosynthesis (if != 0).
 ! 1 : core only
 ! 2 : envelope only
 ! 3 : core & envelope
@@ -861,7 +866,7 @@
 ! iaccr
 ! -----
 !
-! Computation of the accreted matter profile (if !=0)
+! Computation of the accreted matter profile (if != 0)
 ! 1,3 : without (1) or with (3) shear energy production rate
 !       and with M_{acc} = \int f_{acc} / (1+f_{acc}) dm.
 ! 2,4 : without (2) or with (4) shear energy production rate
@@ -890,10 +895,10 @@
 ! itacc
 ! -----
 ! 
-! If accphase=0, different prescriptions for deuterium mixing
+! If accphase = 0, different prescriptions for deuterium mixing
 ! in case of accretion.
-! If itacc=0, matter pills up at the surface of the star.
-! If itacc>0, matter mixing with the surface layers.
+! If itacc = 0, matter pills up at the surface of the star.
+! If itacc > 0, matter mixing with the surface layers.
 
       itacc = 0
 
@@ -1128,7 +1133,7 @@
 !
 ! The evolution timestep is not allowed to be larger than
 ! ftsh times the nuclear timescale corresponding to H
-! burning (where the nuclear energy production is maximum)
+! burning (where the nuclear energy production is maximum).
 ! When nphase = 7, ftsh controls Ne burning.
 
       ftsh = 0.05
