@@ -3,23 +3,6 @@
 ************************************************************************
 * Modify the mass distribution due to mass-loss and/or accretion   
 * WARNING : never use t it is not defined yet, use lnt !
-* mlp = 1,2   : Reimers
-* mlp = 3,4   : de Jager
-* mlp = 5,6   : Vassiliadis & Wood without delaying the onset of
-*               super-wind
-* mlp = 55,56 : Vassiliadis & Wood original prescription
-* mlp = 7,8   : Blocker
-* mlp = 9,10  : Arndt
-* mlp = 11,12 : Schaller et al.
-* mlp = 13,14 : Chiosi
-* mlp = 15,16 : Vink et al.
-* mlp = 17,18 : massrate, specified in starevol.par
-* mlp = 19,20 : Crowther
-* mlp = 21,22 : Van loon et al (2005)
-* mlp = 23,24 : Cranmer & Saar (2011)
-* mlp = 25,26 : Graefener (2021) -> VMS at LMC metallicity
-* mlp = 27,28 : Sanders & Vink (2022) -> VMS stars
-* mlp = 29,30 : Sabhahit et al. (2023) -> VMS stars at low Z
 ************************************************************************
 
       implicit none
@@ -43,7 +26,8 @@
       include 'evolcom.therm'
       include 'evolcom.transp'
       include 'evolcom.var'
-
+      
+      integer error
       integer imenv,ii1,jj,jj1,nn1,nold,mm
       integer ibot,itop,iqmrbot,iqmrtop
       integer mlp1,nmod0,ibind,mlsh
@@ -53,8 +37,17 @@
       integer icrazy
 c      integer nenv,nend
 
-      logical arndt,blocker,wood,limit!,zscaling
+      logical arndt,blocker,limit
       character prescrip*120,zdep*50
+
+      double precision :: mass_loss_deJager
+      double precision :: mass_loss_Crowther
+      double precision :: mass_loss_vanLoon
+      double precision :: mass_loss_Grafener_Hamann
+      double precision :: mass_loss_Nugis_Lamers
+      double precision :: mass_loss_Vink
+      double precision :: mass_loss_Sander_Vink
+      double precision :: mass_loss_Wood
 
       double precision xmm,momlim,dmsmec,rapom,omegacrit
       double precision meini,Leini,omsurfini,dLrad,omegamax
@@ -63,7 +56,7 @@ c      integer nenv,nend
       double precision mominnew,mominold
       double precision plog,pcomp,mdlog,vesc,dmsmax,dmsreim
       double precision qmr,vqmr,xtot
-      double precision rco,tteff,lleff,xmlos,ymlos,totmv,totmd,
+      double precision rco,tteff,lleff,totmv,totmd,
      &     xxm,dxxm,ddm,vddm,vtotma
       double precision dmaccrg,fedd,ebind
       double precision sigmae,gammae,brackro,teffjump1,teffjump2,
@@ -74,7 +67,6 @@ c      integer nenv,nend
       double precision menvconv,dmenvconv,mcore
       double precision prot,FeH,logg
       double precision Bcrit,fstar,Bequi
-      double precision qsig, HeH
       double precision ledd
       double precision geffrot,Rp2
       double precision kap,kapm
@@ -84,7 +76,8 @@ c      integer nenv,nend
      $     ,vesceff,dmsthick
       double precision Dclump,etawind
       double precision acoeff, cbd, logmdotoff, gammaeb,logdmsvms
-
+      
+!     TODO (VOJE) : All common blocks should be in include files.
       common /disclocking/ disctime
       common /hydrodyn/ Lmax,tmax,mackmax,enucmax,itmax,ishockb,ishockt
       common /meshconv/ menvconv,dmenvconv,mcore,nconvsh,ienvsh
@@ -111,7 +104,7 @@ c$$$      zscaling = .false.        ! Modif TD et CC Juillet 2018 (com supr.)
 *____________________
 ***   Initializations
 *--------------------
-      
+
       zeff = 1.d0-xsp(neff,ih1)-xsp(neff,ih2)-xsp(neff,ihe3)-
      &     xsp(neff,ihe4)
       zeff = max(zeff,5.d-5)
@@ -218,31 +211,12 @@ c..   second order accuracy in the spatial deriatives
             endif
             
 ***   change in mass-loss rate beyond the main sequence for B type stars
-            
             if (mtini.ge.7.d0.and.mtini.le.12.d0.and.nphase.gt.2) then
                if (mlp.eq.15) mlp = 1
                if (mlp.eq.16) mlp = 2
             endif
-
-***	switch to de Jager et al 1988 when Vink et al. 2000,2001 is not valid
-
-            if (tteff.le.3.9d0.and.(mlp.eq.15.or.mlp.eq.16)) then
-   !         if (tteff.le.4.0969d0.and.(mlp.eq.15.or.mlp.eq.16)) then
-               if (tteff.gt.3.7d0) then
-                  write (nout,200)
-                  if (mlp.eq.15) then
-                     mlp = 3
-                  else
-                     mlp = 4
-                  endif
-               else
-                  write (nout,300)
-                  mlp = 19
-               endif
-            endif
-
+            
 ***   change in mass-loss rate during AGB evolution
-
             if (agbphase.or.superagb) then
                arndt = totm.lt.1.8d0.and.rco.gt.1.2d0.and.teff.lt.3.d3
                blocker = totm.ge.1.d0.and.totm.le.7.d0
@@ -261,79 +235,40 @@ c..   second order accuracy in the spatial deriatives
                   write (90,400) mlp
                endif
             endif
-            wood = mlp.eq.5.or.mlp.eq.6.or.mlp.eq.55.or.mlp.eq.56
-
                
 *_________________________________
 ***   mass-loss rate prescriptions
 *---------------------------------
 
 ***   Reimers (1975) prescription (MS and RGB phases)
-
             if (mlp.eq.1.or.mlp.eq.2) then
                dms = min(etapar*3.98d-13*soll*solr/totm,1.d-4)
                print *,'Reimers mass loss',dms,'solar masses / year'
             endif
 
-
-***   de Jager et al. (1988 A&AS,72,259) (RGB phase + massive stars)
-
+!     Multiple prescriptions
+!     if log(Teff)>3.7
+!        de Jager et al. (1988,A&AS,72,259)
+!     if log(Teff)<3.7
+!        Crowther (2001)
+!     Massive stars with RGB phase
             if (mlp.eq.3.or.mlp.eq.4) then
                if (tteff.gt.3.7d0) then
-                  dms = 0.d0
-                  xmlos = (tteff-4.05d0)/0.75d0
-                  ymlos = (lleff-4.6d0)/2.1d0
-                  xmlos = max(xmlos,-1.d0)
-                  xmlos = min(xmlos,1.d0)
-                  ymlos = max(ymlos,-1.d0)
-                  ymlos = min(ymlos,1.d0)
-                  do nn = 1,6
-                     nn1 = nn-1
-                     do ii = 1,nn
-                        ii1 = ii-1
-                        if (nn1-ii1.ne.5) then
-                           jj1 = nn1-ii1
-                           jj = jj1+1
-                           dms = dms+amlos(ii,jj)*cos(dble(ii1)*
-     &                          acos(xmlos))*cos(dble(jj1)*acos(ymlos))
-                        endif
-                     enddo
-                  enddo
+                  dms = mass_loss_deJager(tteff,lleff)
                else
-***   Mass loss rate for RSG based on Sylvester+1998 and van Loon+99 (LMC)
-***   Crowther (2001) : for red-super giants
-                  dms = -(1.7d0*lleff-13.83d0)
+                  dms = mass_loss_Crowther(lleff)
                endif
-               dms = 10.d0**(-dms)
                if (limit) dms = min(dms,1.d-4)
             endif
 
 ***   Vassiliadis & Wood (1993, ApJ 413, 641) prescription (AGB phase)
-
-            if (wood) then
-               plog = -2.07d0+1.94d0*log10(solr)-0.9d0*log10(totm)
-               pcomp = 10.d0**plog
-               if (totm.le.2.5d0.and.(mlp.eq.55.or.mlp.eq.56)) then
-c..   modification for M > 2.5Mo to delay the onset of the superwind phase
-                  mdlog = -11.4d0+0.0125d0*(pcomp-1.d2*(totm-2.5d0))
-               else
-                  mdlog = -11.4d0+0.0125d0*pcomp
-               endif
+            if (mlp.eq.5.or.mlp.eq.6.or.mlp.eq.55.or.mlp.eq.56) then
+               dms = mass_loss_Wood(solr,totm,leff,mlp)
 c..   WARNING : limitation of mass loss rate to 1d-4 Mo/yr
-               if (limit) mdlog = min(mdlog,-4.d0)
-               dms = 10.d0**mdlog
-               vesc = -13.5d0+0.056d0*pcomp
-               vesc = vesc*1.d5
-               vesc = max(3.d5,vesc)
-               vesc = min(1.5d6,vesc)
-c     dmsmax = lum(nmod)/(c*vesc)
-               dmsmax = leff/(c*vesc)
-               dmsmax = dmsmax*sec/msun
-               dms = min(dms,dmsmax)
+               if (limit) dms = min(dms,-4.d0)
             endif
 
 ***   Blocker (1995, A&A 297, 727) prescription (AGB phase)
-
             if (mlp.eq.7.or.mlp.eq.8) then
                plog = -2.07d0+1.94d0*log10(solr)-0.9d0*log10(totm)
                pcomp = 10.d0**plog
@@ -348,7 +283,6 @@ c..   WARNING : limitation of mass loss rate to 1d-3 Mo/yr
             endif
 
 ***   Arndt (1997, A&A 327, 614) prescription (low mass AGB)
-
             if (mlp.eq.9.or.mlp.eq.10) then
                dms = 17.158d0-8.26d0*tteff+1.53d0*lleff-2.88d0*
      &              log10(totm)
@@ -356,13 +290,11 @@ c..   WARNING : limitation of mass loss rate to 1d-3 Mo/yr
             endif
 
 ***   Schaller et al. (1992) prescription (massive stars and WR phase)
-
             if (mlp.eq.11.or.mlp.eq.12) then
                dms = 4.d-8*totm**2.5d0
             endif
 
 ***   Chiosi (1981, A&A 93, 163) prescription (massive O stars)
-
             if (mlp.eq.13.or.mlp.eq.14) then
                fedd = abs(1.d0-1.31237d-5*lum(nmod)/m(nmod))
 c     dms = 5.5d-14*soll**1.5d0*solr**2.25d0*fedd**(-1.75d0)*
@@ -370,176 +302,42 @@ c     &           totm**(-2.25d0)
                dms=2.6d-10*soll**0.72d0*(solr/(fedd*totm))**2.5d0
             endif
 
-***   Vink et al. (2001) (massive stars with log Teff > 3.9) then
-***   Nugis & Lamers (2000) for the WR phase , i.e. H_surf < 0.4 and
-***   log Teff > 4.0
-
+!     Multiple prescriptions
+!     if log(Teff)>3.9
+!        Vink et al. (2001,A&A,369,574)
+!     if log(Teff)<3.9
+!        de Jager et al. (1988,A&AS,72,259)
+!     if H_surf<0.4 and log(Teff)>4.0
+!        Nugis & Lamers (2000,A&A,360,227)
+!     Massive stars, MS, post-MS, RSG and WR phase
             if (mlp.eq.15.or.mlp.eq.16) then
-               print *,'M loss for massive stars, Vink 2000'
-               if (xsp(nmod1,ih1).le.0.4d0.and.tteff.gt.4.d0) then
-                  print *,'M loss for massive stars : NL2000'
-***   Nugis & Lamers (2000) for WR stars
-                  write (nout,500)
-                  logdms =-11.d0+1.29d0*log10(soll)+
-     &                 1.73d0*log10(xsp(nmod,ihe4))+0.47d0*log10(zeff)
-                  dms = 10**logdms
+               if (tteff.le.4.0d0) then
+                  !write (nout,200)
+                  dms = mass_loss_deJager(tteff,lleff)
+               else if (xsp(nmod1,ih1).le.0.4d0.and.tteff.gt.4.d0) then
+                  !write (nout,500)
+                  !dms = mass_loss_Nugis_Lamers(soll,zkint,xsp,nmod)
+                  dms = mass_loss_Sander_Vink(soll,totm,zkint,
+     &                 xsp,nmod)
                else
-***   Vink et al. 2001
-c..   Lamers & Leitherer (1993), ApJ 412, p771, eq. 2
-                  HeH = xsp(nmod1,ihe4)/(xsp(nmod1,ihe4)+xsp(nmod1,ih1))
-                  if (teff.lt.3.d4) then
-                     qsig = 0d0
-                  elseif (teff.ge.3.d4.and.teff.lt.3.5d4) then
-                     qsig = 0.5d0
-                  else
-                     qsig = 1.d0
-                  endif
-c                  sigmae = 0.401d0*(1.d0+qsig*HeH)/(1.d0+3.d0*HeH)
-                  sigmae = 0.325d0
-                  gammae = 7.66d-5*sigmae*soll/totm
-                  brackro = -14.94d0+3.1857d0*gammae+0.85d0*
-     &                 log10(zeff/0.019d0)
-c     &                 log10(zeff/zsol)
-                  teffjump1 = 1.d3*(61.2d0+2.59d0*brackro)
-                  teffjump2 = 1.d3*(1.d2+6.d0*brackro)
-                  print *,'teffjump1',teffjump1,'teffjump2',teffjump2
-                  if (teffjump1.le.teffjump2) then
-                     write (nout,'("unrealistic stellar parameters")')
-                     stop 'mchange'
-                  endif
-c..   Smoothing the transitions following the eval_Vink_wind routine from MESA
-                  if (teff.ge.27500.d0) then
-                     ratio = 2.6d0
-                     logdms1 = -6.697d0+2.194d0*log10(soll*1.d-5)
-     &                    -1.313d0*log10(totm/30.d0)
-     &                    -1.226d0*log10(ratio*0.5d0)
-     &                    +9.33d-1*log10(teff/4.d4)
-     &                    -10.92d0*(log10(teff/4.d4))**2
-     &                    +0.85d0*log10(zeff/0.019d0)
-                        dms = 10.d0**logdms1
-!     else if (teff.le.22500.d0.and.teff.ge.12500.d0) then
-                  else if (teff.le.22500.d0) then
-                     if (teff.ge.teffjump2) then
-                        ratio = 1.3d0
-                        logdms2 = -6.688d0+2.210d0*log10(soll*1.d-5)
-     &                       -1.339d0*log10(totm/30.d0)
-     &                       -1.601d0*log10(ratio*0.5d0)
-     &                       +1.07d0*log10(teff/2.d4)
-     &                       +0.85d0*log10(zeff/0.019d0)
-                        dms = 10.d0**logdms2
-                     else
-                        ratio = 0.7d0
-                        logdms2 = -5.99d0+2.210d0*log10(soll*1.d-5)
-     &                       -1.339d0*log10(totm/30.d0)
-     &                       -1.601d0*log10(ratio*0.5d0)
-     &                       +1.07d0*log10(teff/2.d4)
-     &                       +0.85d0*log10(zeff/0.019d0)
-                        dms = 10.d0**logdms2
-                     endif
-                  else if (teff.gt.22500.d0.and.teff.lt.27500.d0) then
-
-c$$$                     if (teff.le.teffjump1) then
-c$$$                        if (teff.lt.teffjump2) then
-c$$$                           ratio = 0.7d0
-c$$$                           logdms = -5.99d0+2.210d0*log10(soll*1.d-5)
-c$$$     &                          -1.339d0*log10(totm/30.d0)
-c$$$     &                          -1.601d0*log10(ratio*0.5d0)
-c$$$     &                          +1.07d0*log10(teff/2.d4)
-c$$$     &                          +0.85d0*log10(zeff/0.019d0)
-c$$$                        else
-c$$$                           ratio = 1.3d0
-c$$$                           logdms = -6.688d0+2.210d0*log10(soll*1.d-5)
-c$$$     &                          -1.339d0*log10(totm/30.d0)
-c$$$     &                          -1.601d0*log10(ratio*0.5d0)
-c$$$     &                          +1.07d0*log10(teff/2.d4)
-c$$$     &                          +0.85d0*log10(zeff/0.019d0)
-c$$$                        endif
-c$$$                     else
-c$$$                        ratio = 2.6d0
-c$$$                        logdms = -6.697d0+2.194d0*log10(soll*1.d-5)
-c$$$     &                       -1.313d0*log10(totm/30.d0)
-c$$$     &                       -1.226d0*log10(ratio*0.5d0)
-c$$$     &                       +9.33d-1*log10(teff/4.d4)
-c$$$     &                       -10.92d0*(log10(teff/4.d4))**2
-c$$$     &                       +0.85d0*log10(zeff/0.019d0)
-c$$$                     endif
-c$$$                     dms = 10.d0**logdms
-                     
-                     alfa = (teff-22500.d0)/(5.d3)
-                     logdms1 = -6.697d0+2.194d0*log10(soll*1.d-5)
-     &                    -1.313d0*log10(totm/30.d0)
-     &                    -1.226d0*log10(2.6d0*0.5d0)
-     &                    +9.33d-1*log10(teff/4.d4)
-     &                    -10.92d0*(log10(teff/4.d4))**2
-     &                    +0.85d0*log10(zeff/0.019d0)
-                     logdms2 = -6.688d0+2.210d0*log10(soll*1.d-5)
-     &                    -1.339d0*log10(totm/30.d0)
-     &                    -1.601d0*log10(1.3d0*0.5d0)
-     &                    +1.07d0*log10(teff/2.d4)
-     &                    +0.85d0*log10(zeff/0.019d0)
-                     dms1 = 10.d0**logdms1
-                     dms2 = 10.d0**logdms2
-                     dms =  (1-alfa)*dms2 + alfa*dms1
-      
-                  endif
-                  print*, soll, totm, ratio, teff, zeff
-                  print *,'dms',dms,alfa,dms1,dms2,teff
-c$$$                   if (teff.le.teffjump1) then
-c$$$                     if (teff.lt.teffjump2) then
-c$$$                        ratio = 0.7d0
-c$$$                        logdms = -5.99d0+2.210d0*log10(soll*1.d-5)
-c$$$     &                       -1.339d0*log10(totm/30.d0)
-c$$$     &                       -1.601d0*log10(ratio*0.5d0)
-c$$$     &                       +1.07d0*log10(teff/2.d4)
-c$$$     &                       +0.85d0*log10(zeff/0.019d0)
-c$$$                     else
-c$$$                        ratio = 1.3d0
-c$$$                        logdms = -6.688d0+2.210d0*log10(soll*1.d-5)
-c$$$     &                       -1.339d0*log10(totm/30.d0)
-c$$$     &                       -1.601d0*log10(ratio*0.5d0)
-c$$$     &                       +1.07d0*log10(teff/2.d4)
-c$$$     &                       +0.85d0*log10(zeff/0.019d0)
-c$$$                     endif
-c$$$                  else
-c$$$                     ratio = 2.6d0
-c$$$                     logdms = -6.697d0+2.194d0*log10(soll*1.d-5)
-c$$$     &                    -1.313d0*log10(totm/30.d0)
-c$$$     &                    -1.226d0*log10(ratio*0.5d0)
-c$$$     &                    +9.33d-1*log10(teff/4.d4)
-c$$$     &                    -10.92d0*(log10(teff/4.d4))**2
-c$$$     &                    +0.85d0*log10(zeff/zsol)
-c$$$                  endif
-c$$$                  
-c$$$                  dms = 10.d0**logdms
-c Mass loss rate from Vink et al 2000 modified to account for the
-c effects of rotation (factor 0.85)
-c                  dms = 0.8d0*dms
-cc Mass loss rate modified to account for the effect of clumping!
-cc (reduction by a factor of 3 ; see Smith 2014 ARA&A)
-c     dms = dms*pw13
-                  print*,'clumpfac in mchange',clumpfac
-                  dms = dms*clumpfac
+                  dms = mass_loss_Vink(soll,teff,totm,zkint,xsp,nmod1,
+     &                 clumpfac)
                endif
-               
             endif
 
-***   Crowther (2000) : for red-super giants
+!     Crowther (2001)
+!     red-super giants
             if (mlp.eq.19.or.mlp.eq.20) then
-               logdms = -1.7d0*log10(soll)+13.83d0
-               dms = 10.d0**(-logdms)
+               dms = mass_loss_Crowther(lleff)
             endif
 
-***   van loon et al (2005, A&A, 438, 273) : for AGB & red supergiants
+!     van Loon et al (2005,A&A,438,273)
+!     AGB & red supergiants
             if (mlp.eq.21.or.mlp.eq.22) then
-               logdms = -5.65d0+1.05d0*log10(soll*1.d-4)-6.3d0*
-     &              log10(teff/3500.d0)
-               dms = 10.d0**logdms
+               dms = mass_loss_vanLoon(soll,teff)
             endif
 
-
-            if (mlp1.eq.15.or.mlp1.eq.16) mlp = mlp1
-
-
+!     Constant mass loss rate (see starevol.par)
             if (mlp.eq.17.or.mlp.eq.18) then
                dms = massrate
                dmlinc = 1.d0
@@ -619,7 +417,7 @@ c               dms1 = 0.8d0*10.d0**logdms1
                   endif
                   Dclump = 10.d0
                   gammaeb = -0.324d0*log10(zeff/zsol)+0.244
-                  logmdotoff = 0.23d0**log10(zeff/zsol)-2.61
+                  logmdotoff = 0.23d0*log10(zeff/zsol)-2.61
                   cbd = -0.44d0*log10(zeff/zsol)+9.15
                   acoeff = 2.932d0
                   logdmsvms = acoeff*log10(-log10(1-gammae))-log10(2.d0)
@@ -662,36 +460,13 @@ c     dms1 = 0.8d0*10.d0**logdms1
             endif
             
          endif
-
-
-c$$$         msigmae = 0.401d0*(zeff*0.5d0+xsp(neff,ih1)+xsp(neff,ih2)
-c$$$     &        +(xsp(neff,ihe3)+xsp(neff,ihe4))*0.5d0)
-c$$$         mgamma = msigmae*lum(nmod)/(4*pi*g*c*m(nmod))
-c$$$         dms = dms * 1.d0/(1.d0-mgamma)
-!         print *,'dms Sander and Vink 2020',dms,dms1,dms2,taus,tau1,tau2
-
-***   Eddington limit correction (Ekstrom et al. 2012) (17/10/2023)
-         
-c$$$         if (irotbin.eq.0.and.mtini.gt.15.d0) then
-c$$$c$$$               msigmae = 0.401d0*(zeff*0.5d0+xsp(neff,ih1)+xsp(neff,ih2)
-c$$$c$$$  &              +(xsp(neff,ihe3)+xsp(neff,ihe4))*0.5d0)
-c$$$            i=nmod
-c$$$            do while (tau(i).gt.taulim)
-c$$$               k=i
-c$$$               i=i-1
-c$$$            end do
-c$$$            !write(*,*) tau(k), taulim
-c$$$            do i=nmod,k,-1
-c$$$               msigmae = 0.401d0/2.d0*(1.d0+xsp(i,ih1)+xsp(i,ih2))
-c$$$               mgamma = kapm(i)*lum(i)/(4*pi*g*c*m(i))
-c$$$               if (mgamma.gt.1.d0) then
-c$$$                  dms = 8.d0*dms
-c$$$                  print*," Applying enhanced mass loss", mgamma, dms
-c$$$                  goto 1230
-c$$$               endif
-c$$$            end do
-c$$$ 1230    end if
             
+***   ---------------------------------------------------------------------------------------------------------------
+            
+            if (mlp1.eq.15.or.mlp1.eq.16) mlp = mlp1
+            
+***   ---------------------------------------------------------------------------------------------------------------
+
 ***   Correction for rotating stars : Maeder & Meynet, 2001, A&A 373, 555
 ***   New version : Georgy et al. 2011 A&A 527, A52, Eq. (4)
             if (irotbin.eq.1) then
@@ -749,18 +524,14 @@ c..   mass loss by a factor of 3 whenever mgamma > 5 and M > 15 Msun
                endif
             endif
          endif
-
-!         print *,'dms 2',dms
          
-*_____________________________________________________
-***   change shells mass distribution due to mass-loss
-*-----------------------------------------------------
 
 ***   Metallicity dependence
          zdep = ' '
 c         if (zscaling.and.((mlp.ge.11.and.mlp.ne.17.and.mlp.ne.18)
 c     &        .or.mlp.le.4.or.mlp.eq.7.or.mlp.eq.8)) then
-         if (zscaling) then
+         if (zscaling.and..not.((mlp.eq.15.or.mlp.eq.16)
+     &        .and.tteff.gt.3.9)) then
 C           dms = dms*dsqrt(zeff*5.d1)
 C     Mokiem et al 2007
 C            dms = dms*dsqrt(zeff/zsol)
@@ -787,7 +558,11 @@ c            dms = dms*3
             prescrip = trim(prescrip) // zdep
             write (90,700) prescrip
          endif
-!         print *,'dms 3',dms,zscaling,(zeff/zsol)**0.8d0
+         
+         print*,"Mass loss rate (Msun/yr) :",dms
+*_____________________________________________________
+***   change shells mass distribution due to mass-loss
+*-----------------------------------------------------
 
  3       dms = dms*dmlinc
          dma = dms*dtn*seci
@@ -1315,4 +1090,249 @@ c$$$         endif
      &     ' TOO SMALL !!!!')
 
       return
-      end
+      
+      end SUBROUTINE mchange
+
+****************************************************************************
+
+      double precision function mass_loss_Vink(soll,teff,totm,zeff,xsp,
+     &     nmod1,clumpfac)
+      include 'evolpar.star'
+      include 'evolcom.nuc'
+      integer, intent(in) :: nmod1
+      double precision, intent(in) :: soll, teff, totm, zeff,
+     &     xsp(nsh,nsp), clumpfac
+!      double precision :: HeH, qsig
+      double precision :: sigmae, gammae, brackro
+      double precision :: teffjump1, teffjump2, alfa, ratio
+      double precision :: dms1, dms2, logdms1, logdms2
+      print*,'Mass loss prescription : '//
+     &'Vink et al. (2001,A&A,369,574)'
+!     Lamers & Leitherer (1993), ApJ 412, p771, eq. 2
+!      HeH = xsp(nmod1,ihe4)/(xsp(nmod1,ihe4)+xsp(nmod1,ih1))
+!      if (teff.lt.3.d4) then
+!         qsig = 0d0
+!      elseif (teff.ge.3.d4.and.teff.lt.3.5d4) then
+!         qsig = 0.5d0
+!      else
+!         qsig = 1.d0
+!      endif
+!      sigmae = 0.401d0*(1.d0+qsig*HeH)/(1.d0+3.d0*HeH)
+      sigmae = 0.325d0
+      gammae = 7.66d-5*sigmae*soll/totm
+      brackro = -14.94d0+3.1857d0*gammae+0.85d0*
+     &     log10(zeff/0.019d0)
+!     WARNING : Unused teffjump1 !!!
+      teffjump1 = 1.d3*(61.2d0+2.59d0*brackro)
+      teffjump2 = 1.d3*(1.d2+6.d0*brackro)
+      if (teffjump1.le.teffjump2) then
+         write (nout,'("unrealistic stellar parameters")')
+         stop 'mchange'
+      endif
+      if (teff.ge.27500.d0) then
+         ratio = 2.6d0
+         logdms1 = -6.697d0+2.194d0*log10(soll*1.d-5)
+     &        -1.313d0*log10(totm/30.d0)
+     &        -1.226d0*log10(ratio*0.5d0)
+     &        +9.33d-1*log10(teff/4.d4)
+     &        -10.92d0*(log10(teff/4.d4))**2
+     &        +0.85d0*log10(zeff/0.019d0)
+         mass_loss_Vink = 10.d0**logdms1
+      else if (teff.le.22500.d0) then
+         if (teff.ge.teffjump2) then
+            ratio = 1.3d0
+            logdms2 = -6.688d0+2.210d0*log10(soll*1.d-5)
+     &           -1.339d0*log10(totm/30.d0)
+     &           -1.601d0*log10(ratio*0.5d0)
+     &           +1.07d0*log10(teff/2.d4)
+     &           +0.85d0*log10(zeff/0.019d0)
+            mass_loss_Vink = 10.d0**logdms2
+         else
+            ratio = 0.7d0
+            logdms2 = -5.99d0+2.210d0*log10(soll*1.d-5)
+     &           -1.339d0*log10(totm/30.d0)
+     &           -1.601d0*log10(ratio*0.5d0)
+     &           +1.07d0*log10(teff/2.d4)
+     &           +0.85d0*log10(zeff/0.019d0)
+            mass_loss_Vink = 10.d0**logdms2
+         endif
+c..   Smoothing the transitions following the eval_Vink_wind routine from MESA
+      else if (teff.gt.22500.d0.and.teff.lt.27500.d0) then   
+         alfa = (teff-22500.d0)/(5.d3)
+         logdms1 = -6.697d0+2.194d0*log10(soll*1.d-5)
+     &        -1.313d0*log10(totm/30.d0)
+     &        -1.226d0*log10(2.6d0*0.5d0)
+     &        +9.33d-1*log10(teff/4.d4)
+     &        -10.92d0*(log10(teff/4.d4))**2
+     &        +0.85d0*log10(zeff/0.019d0)
+         logdms2 = -6.688d0+2.210d0*log10(soll*1.d-5)
+     &        -1.339d0*log10(totm/30.d0)
+     &        -1.601d0*log10(1.3d0*0.5d0)
+     &        +1.07d0*log10(teff/2.d4)
+     &        +0.85d0*log10(zeff/0.019d0)
+         dms1 = 10.d0**logdms1
+         dms2 = 10.d0**logdms2
+         mass_loss_Vink = (1-alfa)*dms2 + alfa*dms1
+      endif
+c Mass loss rate from Vink et al 2000 modified to account for the
+c effects of rotation (factor 0.85)
+c     dms = 0.8d0*dms
+!     Mass loss rate modified to account for the effect of clumping!
+      mass_loss_Vink = mass_loss_Vink*clumpfac
+      print*,'Clumping factor :',clumpfac
+      print*,'teffjump1 :',teffjump1
+      print*,'teffjump2 :',teffjump2
+      end function mass_loss_Vink
+
+****************************************************************************
+      
+      double precision function mass_loss_deJager(tteff,lleff)
+      double precision, intent(in) :: tteff, lleff
+      integer :: i, j, ii, ii1, jj, jj1, nn, nn1
+      double precision :: xmlos, ymlos, logdms
+      double precision :: amlos(6,5)
+!     parameters for the de Jager mass loss prescription
+      data ((amlos(i,j),i = 1,6),j = 1,5)/6.34916d0,3.41678d0,
+     &   -1.08683d0,0.13095d0,0.22427d0,0.11968d0,-5.0424d0,0.15629d0,
+     &   0.41952d0,-0.09825d0,0.46591d0,0.d0,-0.83426d0,2.96244d0,
+     &   -1.37272d0,0.13025d0,0.d0,0.d0,-1.13925d0,0.33659d0,-1.07493d0,
+     &   0.d0,0.d0,0.d0,-0.12202d0,0.57576d0,0.d0,0.d0,0.d0,0.d0 /
+      print*,'Mass loss prescription : '//
+     &'de Jager et al. (1988,A&AS,72,259)'
+      logdms = 0.d0
+      xmlos = (tteff-4.05d0)/0.75d0
+      ymlos = (lleff-4.6d0)/2.1d0
+      xmlos = max(xmlos,-1.d0)
+      xmlos = min(xmlos,1.d0)
+      ymlos = max(ymlos,-1.d0)
+      ymlos = min(ymlos,1.d0)
+      do nn = 1,6
+         nn1 = nn-1
+         do ii = 1,nn
+            ii1 = ii-1
+            if (nn1-ii1.ne.5) then
+               jj1 = nn1-ii1
+               jj = jj1+1
+               logdms = logdms
+     &              - amlos(ii,jj)*cos(dble(ii1)*
+     &              acos(xmlos))*cos(dble(jj1)*acos(ymlos))
+            endif
+         enddo
+      enddo
+      mass_loss_deJager = 10**logdms
+      end function mass_loss_deJager
+
+****************************************************************************
+
+      double precision function mass_loss_Sander_Vink(soll,totm,zeff,
+     &     xsp,nmod)
+      include 'evolpar.star'
+      include 'evolcom.nuc'
+      integer, intent(in) :: nmod
+      double precision, intent(in) :: soll, totm, zeff, xsp(nsh,nsp)
+      double precision :: acoeff, cbd, logmdotoff, gammaeb, logdms
+      double precision :: zsol
+      print*,'Mass loss prescription : '//
+     &'Sander & Vink (2020,MNRAS,499,873)'
+!     ToDo : Change that.
+      zsol = 0.014
+      acoeff = 2.932d0
+      gammae = 10.d0**(-4.8125)*(1+xsp(nmod,ih1))*soll/totm
+      gammaeb = -0.324d0*log10(zeff/zsol)+0.244
+      logmdotoff = 0.23d0*log10(zeff/zsol)-2.61
+      cbd = -0.44d0*log10(zeff/zsol)+9.15
+      logdms = acoeff*log10(-log10(1-gammae))-log10(2.d0)
+     $     *(gammaeb/gammae)**cbd+logmdotoff
+      mass_loss_Sander_Vink = 10**logdms
+      end function mass_loss_Sander_Vink
+
+****************************************************************************
+      
+      double precision function mass_loss_Nugis_Lamers(soll,zeff,xsp,
+     &     nmod)
+      include 'evolpar.star'
+      include 'evolcom.nuc'
+      integer, intent(in) :: nmod
+      double precision, intent(in) :: soll, zeff, xsp(nsh,nsp)
+      double precision :: logdms
+      print*,'Mass loss prescription : '//
+     &'Nugis & Lamers (2000,A&A,360,227)'
+      logdms =-11.d0+1.29d0*log10(soll)+
+     &     1.73d0*log10(xsp(nmod,ihe4))+0.47d0*log10(zeff)
+      mass_loss_Nugis_Lamers = 10**logdms
+      end function mass_loss_Nugis_Lamers
+
+****************************************************************************
+
+      double precision function mass_loss_Crowther(lleff)
+!     Mass loss rate for RSG based on Sylvester+1998 and van Loon+99 (LMC)
+      double precision, intent(in) :: lleff
+      double precision :: logdms
+      print*,'Mass loss prescription : '//
+     &'Crowther (2001,ASSL,264,215)'
+      logdms = 1.7d0*lleff-13.83d0
+      mass_loss_Crowther = 10.d0**logdms
+      end function mass_loss_Crowther
+
+****************************************************************************
+
+      double precision function mass_loss_Grafener_Hamann(lum,m,soll,
+     &     teff,xsp,nmod)
+!     Grafener & Hamann (2008)
+      include 'evolcom.cons'
+      include 'evolpar.star'
+      include 'evolcom.nuc'
+      integer, intent(in) :: nmod
+      double precision, intent(in) :: lum(nsh), m(nsh), soll, teff
+      double precision, intent(in) :: xsp(nsh,nsp)
+      double precision :: msigmae, mgamma, logdms
+      msigmae = 0.2d0*(1.d0+xsp(nmod,ih1)+xsp(nmod,ih2))
+      mgamma = msigmae*lum(nmod)/(4*pi*g*c*m(nmod))
+      logdms = 10.046d0+1.727d0*log10(mgamma-0.326d0)
+     &     -3.5d0*log10(teff)+0.42d0*log10(soll)
+     &     -0.45d0*xsp(nmod,ih1)
+      mass_loss_Grafener_Hamann = 10**logdms
+      end function mass_loss_Grafener_Hamann
+
+****************************************************************************
+      
+      double precision function mass_loss_vanLoon(soll,teff)
+      double precision, intent(in) :: soll, teff
+      double precision :: logdms
+      print*,'Mass loss prescription : '//
+     &'van Loon et al (2005,A&A,438,273)'
+      logdms = -5.65d0+1.05d0*log10(soll*1.d-4)-6.3d0*
+     &     log10(teff/3500.d0)
+      mass_loss_vanLoon = 10.d0**logdms
+      end function mass_loss_vanLoon
+
+****************************************************************************
+
+      double precision function mass_loss_Wood(solr,totm,leff,mlp)
+      integer, intent(in) :: mlp
+      double precision, intent(in) :: solr, totm, leff
+      double precision :: plog, pcomp, mdlog, vesc, dmsmax 
+      print*,'Mass loss prescription : '//
+     &'Vassiliadis & Wood (1993,ApJ,413,641)'
+      plog = -2.07d0+1.94d0*log10(solr)-0.9d0*log10(totm)
+      pcomp = 10.d0**plog
+      if (totm.le.2.5d0.and.(mlp.eq.55.or.mlp.eq.56)) then
+c..   modification for M > 2.5Mo to delay the onset of the superwind phase
+         print*,'Original prescription'
+         mdlog = -11.4d0+0.0125d0*(pcomp-1.d2*(totm-2.5d0))
+      else
+         print*,'No delay of the onset of the super-wind phase'
+         mdlog = -11.4d0+0.0125d0*pcomp
+      endif
+      vesc = -13.5d0+0.056d0*pcomp
+      vesc = vesc*1.d5
+      vesc = max(3.d5,vesc)
+      vesc = min(1.5d6,vesc)
+      dmsmax = leff/(c*vesc)
+      dmsmax = dmsmax*sec/msun
+      mass_loss_Wood = min(10.d0**mdlog,dmsmax)
+      end function mass_loss_Wood
+
+****************************************************************************
+
+      

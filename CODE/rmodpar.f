@@ -68,10 +68,6 @@ C     Modifs CC ondes (2/04/07)
       common /convergence/ imerk,icrasht
       common /turbulparam/ n_turbul,Tfix,om_turbul,PM_turbul
 
-!     Commented out on 19/12/2023, parameters defined elsewhere or unused.
-c$$$      namelist /RICHER/ Tfix, om_turbul, n_turbul
-c$$$      namelist /PROFITTMICHAUD/ PM
-
       namelist /starevol_parameters/ evolpar_version,
      &     maxmod,imodpr,mtini,zkint,
      &     addH2,addHm,tmaxioH,tmaxioHe,

@@ -1050,6 +1050,10 @@ c..   NUCLEAR problem
             write (90,3004)
             write (nout,3004)
          endif
+c$$$         if (error.eq.101) then
+c$$$            write (90,3101)
+c$$$            write (nout,3101)
+c$$$         endif
       endif
 
       ifail = 1
@@ -1263,5 +1267,6 @@ c     3081 format (3x,'KAPPA : pb table 3 - O rich')
  3014 format (3x,'NUCSOLVE : maximum iterations and/or non-convergence')
  3003 format (3x,'Pb in NETWORK, maxsh set to ZERO')
  3004 format (3x,'Pb in CHEDIF')
+! 3101 format (3x,'NWTRAF : NaN in xmod')
 
       end

@@ -251,7 +251,7 @@ c         pwc3 = -0.12d0
 
          call splineatm (Tatms,taumod,nmod,1.d50,1.d50,ddqtautemp,
      &        dqtautemp)
-         call splintatm (Tatms,taumod,ddqtautemp,nmod,ts,taueff)
+         call splintatmb (Tatms,taumod,ddqtautemp,nmod,ts,taueff)
          write(*,*) "taueff = ", taueff
          call splineatm (tau,qtau,nmod,1.d50,1.d50,ddqtau,dqdtau)
          do k=1,nmod1

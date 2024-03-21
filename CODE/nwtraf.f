@@ -52,7 +52,6 @@
       double precision Lmax,tmax,mackmax,enucmax
       double precision dp,ag
 
-
       logical corrmax
 
       common /calcul/ iiter
@@ -90,7 +89,6 @@ c      print *, 'dtn nwtraf',dtn*seci
       
       call thermo (error)
       if (error.gt.0) return 1
-
       
 *___________________________________________________
 ***   application of the central boundary conditions
@@ -287,9 +285,6 @@ cccc---------------------------------------------
       do ish = 2,nmod
          t(ish) = exp(min(xmod(ish,4),23.d0))
          r(ish) = exp(min(xmod(ish,2),50.d0))
-         !Debugging 
-c$$$         write(1023,"(1X,I4,4(1X,E13.6E3))") ish, r(ish), t(ish),
-c$$$     &        xmod(ish,3), m(ish)
       enddo
       if (icorr.eq.'t') then
          do ish = neff,2,-1

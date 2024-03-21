@@ -9,7 +9,6 @@
       integer nspecies,natoms,neqchim,ireac
       integer refsolchem
       
-      double precision amlos
       double precision xspsol,xspref,zsol
       double precision akap,aIrwin,aSauval,aheavy,Eion
 
@@ -17,7 +16,6 @@
 c     character*5 refsolar
       character*6 refsolar
 
-      common /data/ amlos(6,5)
       common /composition/ xspref(15,nis+6), refsolchem   ! TD 12/2019
 c      common /composition/ xspref(4,nis+6)
 cc      common /composition/ xspref(3,nis+6)

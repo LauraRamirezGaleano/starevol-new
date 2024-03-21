@@ -35,9 +35,9 @@
 
       dimension lambdac(nsh)
 
-
-      if (novopt.eq.3) novopt = 1
-      if (novopt.eq.4) novopt = 2
+!     Commented out VOJE -- allow novopt > 2 to trigger only core overshoot (11.03.2024)
+!     if (novopt.eq.3) novopt = 1
+!     if (novopt.eq.4) novopt = 2
       do kl = 1,nsconv
          imin = novlim(kl,1)
          imax = novlim(kl,2)
@@ -68,9 +68,10 @@
          do i = imax,nmod
             dr = r(i)-r(imax)
             dxm = mr(i)-mr(imax)
-            if (novopt.eq.1.and.(dr.gt.rext1.or.
-     &           dxm.gt.dmconv*aup)) goto 20
-            if (novopt.eq.2.and.(dr.gt.min(rext1,rext2))) goto 20
+            if (novopt.eq.1.or.novopt.eq.3.and.
+     &           (dr.gt.rext1.or.dxm.gt.dmconv*aup)) goto 20
+            if (novopt.eq.2.or.novopt.eq.4.and.
+     &           (dr.gt.min(rext1,rext2))) goto 20
          enddo
  20      lmax = i-1
 

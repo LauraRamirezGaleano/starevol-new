@@ -30,10 +30,12 @@ c temps. Wood 1974 ApJ 190, 609
       include 'evolcom.therm2'
       include 'evolcom.var'
 
+      include 'evolcom.surf'
+      
       integer imin,imax,imin0
       integer error,ibiff
       integer it,iross
-      integer i,j,im,ip
+      integer i,j,im,ip,k
 
       double precision ca,cb,cg,y,sqrz,x4,x
       double precision lambdac,lambdaa,a0
@@ -59,6 +61,8 @@ c temps. Wood 1974 ApJ 190, 609
      &     pconv,profil
       double precision lambdat(nsh),lambdab(nsh)
       double precision tconv_midCE
+
+      double precision mgamma
  
       dimension lambdac(nsh),lambdaa(nsh),taumix(nsh),abel(nsh)
 
@@ -86,7 +90,6 @@ C.. Fin Modif
 ***   MLT prescription with Hp
 *-----------------------------
 
-!      if (.not.ihro.or.(ihro.and.(ro(imin).gt.1.d-3))) then
       if (.not.ihro) then
 
 ***   with analytic (exact) root of the third order polynomial equation
@@ -399,7 +402,7 @@ c              tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
             a00 = etaturb
 
             do i = imin0,imax
-	       im = i - 1
+	            im = i-1
                adrad = dabs(abrad(i)-abm(i))
                lambdat(i) = hp(i)*alphat
                lambdab(i) = hp(i)*alphab
@@ -602,13 +605,11 @@ c     &           r(imax+1)-r(i))
             abel(i) = (abla(i)+eff(i)*abm(i))/(eff(i)+1.d0)
             fconv(i) = lambdac(i)*cpm(i)*rom(i)*tm(i)*sconv(i)/
      &           (2.d0*hp(i))*(abla(i)-abel(i))
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Non utilisés dans le code => revoir !
-            fkin(i) = etaturb*rom(i)*sconv(i)**8/csm**5  !/lambdac(i) ! Eq 1 Maeder 1987 A&A 173 : etaturb = 1e3 
+!           Currently unused !
+            fkin(i) = etaturb*rom(i)*sconv(i)**8/csm**5  ! Eq 1 Maeder 1987 A&A 173 : etaturb = 1e3 
             fkcr(i) = fkin(i)/fconv(i)
             frad(i) = lum(i)/(pim4*r(i)*r(i))-fconv(i)-fkin(i)
-            frad(i) = 16.d0*sig*g/3.d0*tm(i)**4*m(i)*abla(i)/
-     &           (kapm(i)*pm(i)*r(i)*r(i))
-            
+               
             Dconv(i) = sconv(i)*lambdac(i)/3.d0
 c     tconv(i) = (r(imax)-r(imin))**2/Dconv(i)
             tconv(i) = lambdac(i)/sconv(i)

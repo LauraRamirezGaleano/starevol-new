@@ -181,6 +181,7 @@ if [ ! -s $filevolgz ]
       then
       evol_format=msn
     fi
+    evol_format=mevol
     echo "cpevol $evol_format $FILE $phdir"
     cpevol_3.40 $evol_format $FILE $phdir
   fi

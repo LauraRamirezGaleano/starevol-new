@@ -362,7 +362,7 @@ c      facCE = 5.d1
             write (nout,1020) nmod
             write (90,1020) nmod
          endif
-c     lnucl = voir carte des paramètres
+c     see parameter card for the value of lnucl
          if (.not.lnucl) then
             forall (i=1:nmod)
                enucl(i) = venucl(i)
