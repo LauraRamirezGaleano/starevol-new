@@ -8243,7 +8243,7 @@ c							      ! Zsto(kz),X=0.95
                      cofzhi(k,il,1) = qzinter(int_hi_z,3,zat,2,
      $                    cofzhi(k,il,1),cofzhi(k,il,2),
      $                    cof_tmp,0.0d0,
-     $                    zhi_look(1),zhi_look(2),0.05,0.0d0,zdel)
+     $                    zhi_look(1),zhi_look(2),0.05d0,0.0d0,zdel)
                      int_hi_z = 1
                   enddo
                enddo
