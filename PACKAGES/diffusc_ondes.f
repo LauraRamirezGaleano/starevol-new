@@ -204,6 +204,7 @@ c     double precision altse,diffpaqt,ddth,dmic
       double precision yb,vtot                                     ! ion part TD Oct.2018
       double precision VD,vtherm
       double precision gammat,xKPE,xlambi,alphaT
+      double precision dummy(36), dummy2
 
       common /coefdiffpaqbe/ xvdiffbe(nsh),xvdbe(nsh),
      &     xvthermbe(nsh),xdmicbe(nsh)
@@ -385,7 +386,7 @@ c$$$                diff13(l) = dmic
 c            NE = rhosh/(amu*muesh) ! vient de Thoul, voir si possible adapter à MM
             call paq (as,zs,abond(l,2),xmb,zb,abond(l,ielem),             ! modif TD mars 2018 : zielem par xmb
      &           rho,temp,dmic,ddth,altpi,altep,diffpaqt,ratneh(l),
-     &           muizero(l))
+     &           muizero(l),dummy2,dummy,dummy,dummy2)
 c Vitesse de diffusion de Montmerle & Michaud (1976 APJS 31,489)
 c Expression A.5
             xvdiffp = -rho/p(l)*g*m(l)/(r(l)*r(l))

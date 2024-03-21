@@ -1698,7 +1698,7 @@ c					 ! 'GN93hz' relative metal abundances
          endif
 c		       ! read opacities: use 'GN93hz', but no CNO-interpolation
 c							    ! will be possible:
-         call readzexco(nz,-1.,z,-1.d0,k_hz,-1,ofe_brack)
+         call readzexco(nz,-1.d0,z,-1.d0,k_hz,-1,ofe_brack)
 c
       endif
 c
@@ -2363,7 +2363,7 @@ c
 c..... If necessary, read data files and do initializations, using READZEXCO
 c
       if ( itime .ne. 12345678 )
-     $     call readzexco(nz,-1.,z,-1.,k_hz,-1,ofe_brack)
+     $     call readzexco(nz,-1.d0,z,-1.d0,k_hz,-1,ofe_brack)
 c
 c  If X > 0.03 and C+O is not too large, then the more-numerous X-values from
 c  'GN93hz' can help, if use-flag is set: set f_xhi for later use.  Only used
@@ -8234,7 +8234,7 @@ c							   ! logK at Zsto,X=1-Z
      $                    zhi_look(3),zhi_look(4),zhi_look(5),
      $                    zhi_look(6),zdel)
 c							  ! temp: Z=0.05,X=0.95
-                     cof_tmp = qzinter(int_hi_z,2,0.05,3,
+                     cof_tmp = qzinter(int_hi_z,2,0.05d0,3,
      $                    cofzhi(k,il,3),cofzhi(k,il,4),
      $                    cofzhi(k,il,5),cofzhi(k,il,6),
      $                    zhi_look(3),zhi_look(4),zhi_look(5),

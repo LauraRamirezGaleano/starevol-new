@@ -78,7 +78,7 @@ c      include 'evolcom.transpondesexcit'
       double precision r,vr
       double precision Deff
       double precision abmurj,abmuj
-      double precision ndtenv
+      integer ndtenv
       double precision dshear
 c      double precision depotwaves
 
@@ -2786,14 +2786,14 @@ c               call ash_rgb_prof(ndt,ndt,om,omdom,xpsi)
                bj(blin(2),pcol(4)) = 1.d0
 
 ***   Boundary Condition for angular momentum equation
-               do j = ndt+1,nmod
-                  j1 = j-1
-                  call ash_rgb_prof(ndt,j,om,omdom,xpsi)
-                  vomm = 0.5d0*(vom(j)+vom(j1))
-                  omm = 0.5d0*(om(j)+om(j1))
-                  xmom_old_ce = xmom_old_ce+vrraym2(j)*vomm*dm(j1)
-                  xmom_new_ce = xmom_new_ce+rraym2(j)*omm*dm(j1)
-               enddo
+!               do j = ndt+1,nmod
+!                  j1 = j-1
+!                  call ash_rgb_prof(ndt,j,om,omdom,xpsi)
+!                  vomm = 0.5d0*(vom(j)+vom(j1))
+!                  omm = 0.5d0*(om(j)+om(j1))
+!                  xmom_old_ce = xmom_old_ce+vrraym2(j)*vomm*dm(j1)
+!                  xmom_new_ce = xmom_new_ce+rraym2(j)*omm*dm(j1)
+!               enddo
                bj(blin(1),neqj1) = (0.2d0*rdensm(ndt)*rray(ndt)**4*
      $              ur(ndt)*om(ndt)*ur_S-omdom(ndt)*rray(ndt)**4
      $              *rdensm(ndt)*xnuvv_ndt/(rtot*om(ndt)))
