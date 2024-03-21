@@ -207,7 +207,7 @@ SRC_NUM = exv.f fit.f nwrmat.f interlin.f shearnwt.f \
 	lubksb.f ludcmp.f savgol.f nagmod_ok.f\
 	dgetrf.f dgetrs.f lsame.f dtrsm.f xerbla.f dlaswp.f dgetf2.f \
 	dswap.f dscal.f dger.f idamax.f ilaenv.f dgemm.f iparmq.f ieeeck.f \
-	sort.f spline_der.f spline_interp.f 
+	sort.f splineatm.f splintatm.f splineatmb.f splintatmb.f
 
 
 
