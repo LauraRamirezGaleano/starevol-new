@@ -8,6 +8,7 @@ C Version incluant le calcul de l'excitation a chaque modele evolutif :
 C C.Charbonnel (Decembre 2006)
 C Version incluant les ondes produites par le coeur convectif
 C S.Talon & C.Charbonnel (Octobre 2007)
+C L. Ramirez (Feb 2025)
 C ----------------------------------------------------------------------
       implicit none
 
@@ -48,6 +49,7 @@ C      dimension depotondestot(nsh)
 
 C --------------------------------------------
 C Lecture des donnees et inversion des couches 
+C Reading data and inverting layers 
 C --------------------------------------------
 
       ncouche = nmod
@@ -72,6 +74,7 @@ C      print *,'avant appel a WAVEFLUX'
 C      print *,'sortie de WAVEFLUX'
 
 C Calcul du depot du moment par les ondes
+C Calculation of wave moment depot
 C----------------------------------------
 C
       call ond_omega(iterondes,mtu,npasr,ncouche,dzeit,
@@ -127,6 +130,10 @@ C ---------------------------------------------------------------------
 C Appelle la routine calculflux, qui appelle excitation pour m=1 et m=l
 C  et interpole les autres valeurs de m
 C Appellee par la routine transp_ondesexcit
+C
+C Calls the calculflux routine, which calls excitation for m=1 and m=l
+C and interpolates the other m values
+C Called by the transp_ondesexcit routine
 C
 C Derniere version: 9 septembre 2009
 C ---------------------------------------------------------------------
@@ -216,6 +223,7 @@ C -----------------------------------
  
 
 C Introduction de la valeur de coupure
+C Setting the cut-off value
 C ------------------------------------
       do ii=1,nfreq
          do ll=1,llmax
@@ -251,6 +259,9 @@ C ---------------------------------------------------------------------
 C ---------------------------------------------------------------------
 C Calcul de l'epaisseur optique pour une onde avec une frequence
 C  qui varie avec la profondeur
+C
+C Calculation of optical thickness for a wave with a frequency
+C that varies with depth
 C
 C d_om est deja la differentielle de la valeur moyenne
 C i.e. 0.5*(om_o(i)+om_o(i+1))-om_o(mtu)
@@ -389,6 +400,9 @@ C ---------------------------------------------------------------------
 C Calcul de l'epaisseur optique pour une onde avec une frequence
 C  qui varie avec la profondeur
 C
+C Calculation of optical thickness for a wave with a frequency
+C that varies with depth
+C
 C d_om est deja la differentielle de la valeur moyenne
 C i.e. 0.5*(om_o(i)+om_o(i+1))-om_o(mtu)
 C
@@ -515,6 +529,9 @@ C Auteur : S.Talon
 C
 C Derniere version : 10 mai 2010
 C ---------------------------------------------------------------------
+C Eng: Calculation of wave moment deposition for a given rotation profile
+C
+C OND_OMEGA is called by TRANSPORT_ONDES
 
       implicit none
       include 'evolpar.star'
@@ -613,6 +630,9 @@ C      print *,'Ecriture intermediaire 2 dans ond_omega'
 C
 C depottot(mtu-1): contient le moment depose dans la ZC de surface
 C depottot(npasr): contient le moment depose dans la ZC centrale
+C Eng: 
+C depottot(mtu-1):contains the moment of deposition in the surface of the CZ
+C depottot(npasr):contains the moment of deposition in the central CZ?
 
       depottot(mtu-1) = 0.d0
       do k=mtu,npasr-1
@@ -1090,6 +1110,8 @@ c next correct for the high L cutoff of emission from an eddy i.e.
 c multiply the above term by a factor of exp(-h_hor^2*L*(L+1)/2r^2)
 c where h_hor is the horizontal size of the eddy (h_hor = h_max*zeta;
 c where zeta is the aspect ratio).
+
+          !Laura: Second term of the Kinetic energy flux Eq.(1) Charbonnel+2013
           h_hor = h_max
           term = term*exp( -rL2*(h_hor/rtot/rray_o(i))**2/2.0d0)
           Edot = Edot+(term+termold)*0.5d0*rtot*(rray_o(i)-rray_o(i+1))
@@ -1137,6 +1159,8 @@ C ---------------------------------------------------------------------
 C Adapte pour STAREVOL par C.Charbonnel & S.Talon
 C Appele par calculflux.f
 C Derniere version : 31 octobre 2009
+C Modify by L.Ramirez Galeano : 10 Mars 2025 
+C Added Coriolis Terms
 C ---------------------------------------------------------------------
 
       implicit none
@@ -1144,16 +1168,20 @@ C ---------------------------------------------------------------------
       include 'evolpar.star'
       include 'evolcom.cons'
       include 'evolcom.conv'
-      include 'evolcom.grad'
-      include 'evolcom.teq'
-      include 'evolcom.transp'
-c      include 'evolcom.transpondesexcit'
-      include 'evolcom.igw'
-      include 'evolcom.therm'
-      include 'evolcom.var'
-      include 'evolcom.eng'
 C Modifs CC ondes (19/10/07)
       include 'evolcom.diff'
+      include 'evolcom.eng'
+      include 'evolcom.grad'
+      include 'evolcom.teq'
+C      include 'evolcom.transpondesexcit'
+      include 'evolcom.igw'
+      include 'evolcom.therm'
+      include 'evolcom.therm2' !LR Modif 20250214
+      include 'evolcom.transp'
+      include 'evolcom.var'
+      include 'evolcom.rot' !LR Modif 20250214
+
+
 
       double precision e_total
 c      double precision amplitudemoyenne,amplitudemoyenne_core
@@ -1166,6 +1194,13 @@ C Test CC (31/10/09)
       double precision rlim,deltar,amp,ampp,ampm
       double precision ampli(nsh)
       double precision xlumj,xint,dintpro
+      double precision tamp
+      !Modif LR 20250214
+      double precision Ri_number(nsh),S_number(nsh),Y_number(nsh)
+      double precision Fr_number(nsh, nfreq),baseFactor(nsh)
+      double precision Y,S_n,alpha_val,numerator(nsh),denominator(nsh)
+      double precision coriolfactor(nsh),drfactor(nsh),Fr
+      double precision tau_mode(nfreq,llmax,2*llmax + 1) !LR Modif 20250325 Mode-by-mode resolution.
       data npi/6.2831853d-6/
 
       integer mtu,npasr,ncouche,i,ii,ll,mm,k,k1,j,jj
@@ -1219,6 +1254,72 @@ C <--
         brunt_o(i)=brunt_o(ii)
       enddo
 
+
+C ---- Modif LR 20250213
+C Definition of the dimensionless numbers
+
+! Richardson number 
+      !print *,'Computing Richardson Number LR'
+      rkonv_o(1) = abla(1)-abad(1)
+      do i = 2,nmod
+         rkonv_o(i) = abla(i)-abm(i)
+      enddo
+!       do i = 1,nmod
+!          !Is it needed to define grav and gs?
+!          !	do i=1,nmod-1
+! c	   !  gmr_oo(i) = g*m(i)/(r(i)*r(i))
+!          !  grav(i) = gmr(i)/gmr(nmod)
+! 	   !  gs = gmr(nmod)   
+!          xNt_o(i) = -grav(i)*gs/hp(i)*rkonv_o(i)*deltaKSm(i)
+!          xNmu_o = grav(i)*gs/hp(i)*abmu(i)*phiKSm(i)
+!          xN_o(i) = xNt_o(i) + xNmu_o(i)
+!          !print*,'xN_o = ',xN_o
+!       enddo
+
+! Y number Y = Ri^(-1/2)
+      do i = 1, nmod-1
+            tamp =(vomega(i+1)-vomega(i))/(r(i+1)-r(i))
+            Ri_number(i)=xN_o(i)/(r(i)*5.d1*tamp)**2
+c           Ri(i) = 0.d0
+            if (Ri_number(i).gt.1.d30) Ri_number(i) = 0.d0
+            if (Ri_number(i).lt.-1.d30) Ri_number(i) = 0.d0
+
+            if (Ri_number(i).gt. 0.d0) then
+                Y_number(i)=1.d0/dsqrt(Ri_number(i))
+            else
+                Y_number(i)=0.d0
+            endif
+            if (Y_number(i).gt.1.d30) Y_number(i) = 0.d0
+            if (Y_number(i).lt.-1.d30) Y_number(i) = 0.d0   
+! S Number 
+            if (xN_o(i).gt.0.d0) then
+                  S_number(i)=2*vomega(i)/dsqrt(xN_o(i))
+              else
+                 S_number(i) = 0.d0
+              endif
+     
+              if (S_number(i).gt.1.d30) S_number(i) = 0.d0
+              if (S_number(i).lt.-1.d30) S_number(i) = 0.d0  
+              !print *,i,Ri_number(i),xN_o(i),tamp,vomega(i),r(i)
+              ! Froude Number (Fr = sigma / N)
+              do ii = 1, nfreq  ! Loop over wave frequencies
+                  if (xN_o(i) .gt. 0.d0) then
+                     Fr_number(i, ii)=freqrefinert(ii)/dsqrt(xN_o(i))
+                  else
+                     Fr_number(i, ii) = 0.d0
+                  endif
+
+                  if (Fr_number(i, ii) .gt. 1.d30) Fr_number(i, ii) = 0.d0
+                  if (Fr_number(i, ii) .lt. -1.d30) Fr_number(i, ii) = 0.d0      
+               enddo
+               !print *,i,Ri_number(i),xN_o(i),tamp,S_number(i),Fr_number(i),r(i)
+      enddo
+      Ri_number(nmod)=Ri_number(nmod-1)
+      Y_number(nmod)=Y_number(nmod-1)
+      S_number(nmod)=S_number(nmod-1)
+      !print *,'Computed Ri, Y, S LR'
+
+C----- Until here Modif LR 20250213
 C --> Test ecriture frequence BV avant et apres la condition sur r_os
 C CC (18/09/09)
 C
@@ -1292,20 +1393,94 @@ c           print *,"damping",ii,ll,xN_o(mtu+1),freqrefinert(ii)**2
           tau=0.d0
           ll1=(dfloat(ll)+1.d0)*ll
           i=mtu+1
+          !print *,'tau=',tau
 c          print *,'comp xN_o',i,xN_o(i),freqrefinert(ii)**2
+! Print the values of variables used in the loop condition
+      !     print *,"[DEBUG] Before loop:"
+      !     print *,"tau =", tau, " (should be < 0.5)"
+      !     print *,"xN_o(", i, ") =",xN_o(i)
+      !     print *," (should be > ",freqrefinert(ii)**2,")"
+      !     print *,"Loop index i =",i,"(should be < npasr =",npasr
+      !     print *,"and < ncouche-2 =", ncouche-2, ")"
+
+          !Check each condition separately:
+!           if (.not. (tau.lt.0.5d0)) then
+!             print *,"[DEBUG] Condition failed:", 
+!      &       "tau is not less than 0.5 (tau =",tau, ")"
+!           endif
+
+!           if (.not.(xN_o(i).gt.freqrefinert(ii)**2)) then
+!             print *,"[DEBUG] Condition failed: xN_o(", i, ") =",xN_o(i),
+!      &      " is not greater than freqrefinert(",ii,")**2 =",
+!      &      freqrefinert(ii)**2
+!           endif
+
+!           if (.not. (i.lt.npasr)) then
+!             print *,"[DEBUG] Condition failed: i =", i,
+!      &        " is not less than npasr =", npasr
+!           endif
+
+!           if (.not. (i.lt.ncouche-2)) then
+!             print *,"[DEBUG] Condition failed: i =", i,
+!      &       " is not less than (ncouche-2) =", ncouche-2
+!           endif
+
           if (xN_o(i) .le. freqrefinert(ii)**2) then
 C           L'onde ne peut se propager
             fluxtotalafiltrer(ii,ll)=0.d0
 C            print *,"A: elimination de nu=",freqrefinert(ii),"l=",ll
           else
+! LR commented 20250213 ----
+!             do while (tau.lt.0.5d0.and.xN_o(i).gt.freqrefinert(ii)**2
+!      &                 .and.i.lt.npasr.and.i.lt.ncouche-2)
+!             !Laura: Equation 6 Talon&Charbonnel2003
+!               !fint in diffinitondesexcit.f
+!               !tau to modify: 
+!               !Modif LR 20250213
+!               xN2=dsqrt(abs(xN_o(i)/(xN_o(i)-freqrefinert(ii)**2)))
+!
+!               tau=tau+ll1**1.5d0*fint(i)*xN2/freqrefinert(ii)**4
+!               i=i+1
+!             enddo
+! LR commented until here 20250213----
+! LR New tau function 20250213
+! LR commented 20250213 ----
             do while (tau.lt.0.5d0.and.xN_o(i).gt.freqrefinert(ii)**2
      &                 .and.i.lt.npasr.and.i.lt.ncouche-2)
-              xN2=dsqrt(abs(xN_o(i)/(xN_o(i)-freqrefinert(ii)**2)))
-              tau=tau+ll1**1.5d0*fint(i)*xN2/freqrefinert(ii)**4
-              i=i+1
+                  !print *,"Entering new LR Modifications"
+                  ! 1) Compute local dimensionless numbers
+                  Fr=Fr_number(i, ii)        ! sigma / N
+                  S_n=S_number(i)             ! 2 Omega / N
+                  Y=Y_number(i)             ! Ri^(-1/2)
+                  Ri=Ri_number(i)            ! Richardson number
+                  baseFactor(i) = 0.d0
+
+                  ! 2) Compute base factor: (k_h^3 * kappa) / (N * Fr^4)
+                  if (Fr.gt.0.d0) then
+                        baseFactor(i)=(ll1**1.5d0*(xKm_o(i)+
+     &                        xnuvv_o(i)))/(brunt_o(i) * (Fr**4))
+                  endif
+
+                  ! 3) Coriolis correction
+                  alpha_val= 1.0d0-(1.d0/ll1) !To be changed (1-m2/h2) h2 = ll1
+                  numerator(i)=1.0d0+alpha_val*S_n*(S_n+Y)
+                  denominator(i)=dsqrt(1.d0-Fr**2.0d0+numerator(i))
+                  coriolFactor(i)=numerator(i)/denominator(i)
+
+                  ! 4) Geometric factor: dr / r^3
+                  drFactor(i)=(1.d0/hnenn_o(i))/(rraym_o(i)**3*rtot**2)
+                  ! 5) Update tau
+                  tau=tau+baseFactor(i)*coriolFactor(i)*drFactor(i)
+                  i=i+1
             enddo
-            kr=dsqrt((xN_o(i-1)/freqrefinert(ii)**2-1.d0)*ll1)
-     &         /(rray_o(i)*rtot)
+            !Laura: Radial wave number: Equation 2 Talon&Charbonnel2005
+            !Need a modification eq. 5.70 A.Quentin Thesis
+            !kr witouth coriolis
+C            kr=dsqrt((xN_o(i-1)/freqrefinert(ii)**2-1.d0)*ll1)
+C     &         /(rray_o(i)*rtot)
+            kr=1.0d0/Fr*dsqrt(1-Fr**2+alpha_val*S_n*(S_n+Y))
+     &         *dsqrt(ll1)/(rray_o(i)*rtot)
+
             domega=rray_o(mtu)-rray_o(i)
             if (domega.lt.(1.d0/(kr*rtot)).or.i.eq.(mtu+2)) then
                fluxtotalafiltrer(ii,ll)=0.d0
@@ -1414,7 +1589,7 @@ C          xN2=dsqrt(abs(xN_o(i)/(xN_o(i)-freqrefinert(ii)**2)))
 
  100	do j=mtu,k-1
           lumwave(j)=lumwave(j)+(ampli(j)-ampli(j+1))*xlumj
-C        print *,"lumwave(j) ",lumwave(j),xlumj,ampli(j+1),ampli(j)
+          !print *,"lumwave(j) ",lumwave(j),xlumj,ampli(j+1),ampli(j)
 	enddo
       enddo
       enddo
@@ -1478,6 +1653,7 @@ c      double precision amplitudemoyenne,amplitudemoyenne_core
       double precision rlim,deltar,amp,ampp,ampm
       double precision ampli(nsh)
       double precision xlumj,xint,dintpro
+      double precision Ri_number,S_number,Y_number,Fr_number!Modif LR 20250213
       data npi/6.2831853d-6/
 
       integer mtu,npasr,ncouche,i,ii,ll,mm,k,k1,j
