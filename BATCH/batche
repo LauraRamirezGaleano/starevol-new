@@ -160,7 +160,7 @@ while [ $i -le $iend ]
   #if evolution files too long, create new ones
   nline=`wc -l $FILE.hr`
   nline=`basename $nline`
-  if [ $nline -ge 200007 ]
+  if [ $nline -ge 1000007 ]
     then
     OLDFILE=$FILE
     starevol_tmp=/tmp/starevol_$FILE.par

@@ -113,7 +113,6 @@ c#endif
       include 'evolcom.surf'
       include 'evolcom.teq'
       include 'evolcom.diff'
-
       include 'evolcom.igw'
       include 'evolcom.transp'
 
@@ -165,11 +164,10 @@ c      double precision gtabeff,Ztabeff
      &     ,lgdmic(nsh)
       common /metal/ FeH
 
-
-       common /lthopac/ opaclth(19,85,155),tklth(85),rklth(19),
+      common /lthopac/ opaclth(19,85,155),tklth(85),rklth(19), ! AGSS09
      &     mlth,nlth,itlth
-c     common /lthopac/ opaclth(19,81,155),tklth(81),rklth(19),
-c    &     mlth,nlth,itlth                                       ! TD pour Opacité Fergu 01/2020
+   !    common /lthopac/ opaclth(19,81,155),tklth(81),rklth(19),
+   !   &     mlth,nlth,itlth                                       ! TD pour Opacité Fergu 01/2020
       common /lthopac_as05/ rklth_as05(19),tklth_as05(85),
      &     opaclth_as05(19,85,155)
       common /lthopac_as09/ rklth_as09(19),tklth_as09(85),
@@ -178,10 +176,10 @@ c    &     mlth,nlth,itlth                                       ! TD pour Opaci
      &     opaclth_gn93(19,85,120)
       common /lthopac_grid/ rklth_grid(19),tklth_grid(63),
      &     opaclth_grid(19,63,104)
-      common /lthopac_ay18/ rklth_ay18(19),tklth_ay18(85),  ! TD 12/2019
-     &     opaclth_ay18(19,85,155)
-c      common /lthopac_ay18/ rklth_ay18(19),tklth_ay18(81),  ! TD pour Opacité Fergu 01/2020
-c     &     opaclth_ay18(19,81,155)
+   !    common /lthopac_ay18/ rklth_ay18(19),tklth_ay18(85),  ! TD 12/2019
+   !   &     opaclth_ay18(19,85,155)
+      common /lthopac_ay18/ rklth_ay18(19),tklth_ay18(81),  ! TD pour Opacité Fergu 01/2020
+     &     opaclth_ay18(19,81,155)
       common /disclocking/ disctime
 !      common /atmospheres/ rtau(127,76,10),rT(127,76,10),
 !     &     rhotab(127,76,10),Fconvtab(127,76,10),Ttabeff(76),
@@ -531,6 +529,11 @@ c     $        ) then
       elseif (refsolar.eq.'AY18'.and.ntprof.eq.0) then
          do i = 1,nis+6
             xspsol(i) = xspref(15,i)
+         enddo
+      elseif (refsolar.eq.'AGSS09') then  !LAURA ADDED 2024/11/19
+         alpharefcalib = 2.1954d0
+         do i = 1,nis+6
+            xspsol(i) = xspref(3,i)
          enddo
          
       else
@@ -927,7 +930,9 @@ c      close (25)  !  evolchc5
       close (43)  !  evolas
 
 !      if (astero) close (86)
+      
       if (irotbin.ne.0.or.microdiffus.or.thermohaline.or.igw) close (85) ! evolvarang
+
 c      close(81)                 ! evoldiff
 c      close (85) ! evolvarang
 

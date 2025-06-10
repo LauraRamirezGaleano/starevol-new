@@ -9,6 +9,7 @@ setenv DIR_OPAAGS05 /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/O
 setenv DIR_OPA3 /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/SRC/Data/
 setenv DIR_OPAAGSS09 /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_09/
 setenv DIR_OPA4 /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_09/
+setenv DIR_OPAAY18 $DIR_STAR/EVOL/CODE/OPACITY/LIB_AY18/
 setenv DIR_OPAhoudek /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/INTERPOL/v9/opal95/
 setenv DIRGRID_OPA /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/OPACITY/LIB_GRID/
 setenv DIR_UTILS /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/UTILS/
@@ -24,7 +25,8 @@ setenv DIR_ATMM /usr/local/bigdata/palacios/mnt/EVOLSTELL/STAREVOL/PHYSICS/ATMOS
 #setenv SOLCOMP AGS05
 #setenv SOLCOMP GN93 
 setenv GONGFILE on
-setenv SOLCOMP AGSS09
+#setenv SOLCOMP AGSS09
+setenv SOLCOMP AY18
 setenv LC_ALL C
 setenv STAR_ATM PHOENIX
 setenv FORTRAN ifort

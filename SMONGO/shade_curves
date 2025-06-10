@@ -1,0 +1,16 @@
+shade_curves 4
+ ## Macro to shade space between two cuves defined by (x1,y1) = ($1,$2) 
+ ## and (x2,y2) = ($3,$4)
+  erase
+  set _vec = $1 concat $3
+  vecminmax _vec xmin xmax
+  set _vec2 = $2 concat $4
+  vecminmax _vec2 ymin ymax
+  limits $xmin $xmax $ymin $ymax
+  ctype 0 lweight 4 connect $1 $2
+  connect $3 $4
+  box
+  ctype yolk
+  shade 0 ($1 concat reverse($3)) ($2 concat reverse($4))
+  
+

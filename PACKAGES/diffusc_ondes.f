@@ -1219,6 +1219,7 @@ C Modifs CC ondes (22/10/04)
 
       double precision amp,ssigma,rmtu,dr,xlgD,dmin
       double precision rdensmi_os,xcpmi_os,xKmi_os
+      !double precision lumwave(nsh) !LR ADDED 20250408
 
       write (*,*) 'Entree dans COEFONDES_SURF'
 

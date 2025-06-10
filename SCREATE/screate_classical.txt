@@ -1,0 +1,318 @@
+#!/usr/bin/perl
+#
+#SYNTAX:
+#perl screate_classical.txt <mass> <z> <starevol_*> <model_name>
+#z is metallicity (digits after the Decimal separator, i.e. 012345 for metallicity of 0.012345)
+#
+#EXAMPLES:
+#perl screate_classical.txt 0.78 000123 classical TEST_CLASS_MODEL
+#perl screate_classical.txt 1.0 014227 classical solar_model
+#perl screate_classical.txt 1.0  014227 solar_model
+
+
+$INSTDIR   = "/Users/laura/CALCULS";
+$DIRGRIDS  = "$INSTDIR/starevol/PHYSICS/NUCLEAR/NETGEN/EVOL";
+$DIRBATCH  = "$INSTDIR/starevol/BATCH";
+$DIRM      = "$INSTDIR/MODELS";
+$DIRV      = "$INSTDIR/RESEVOL";
+$DIRS      = "$INSTDIR/RESULTS";
+#$DIRW      = "$INSTDIR/starevol/PHYSICS/ATMOSPHERE/PHOENIX/";
+$DIRMOD    = "$INSTDIR/starevol/PHYSICS/INIT";
+$DIRCREATE = "$INSTDIR/starevol/SCREATE";
+$DIRCODE   = "$INSTDIR/starevol/CODE";
+#-------------------
+# GETTING BASIC DATA
+#-------------------
+
+
+defined($ARGV[1]) or die "Enter mass (5.0 for a 5 sm star) and metallicity (004 for Z=0.004) and version (2.51...) and other (mloss...) \n";
+$m = $ARGV[0];
+$Z = $ARGV[1];
+$v = $ARGV[2]; 
+$b = $ARGV[3];
+$ms = $m;
+
+#$zznew = '000711';
+if (defined $ARGV[4]) {
+	$ms = $ARGV[4];
+}
+
+die ("Bad input for Z = 0.$Z") if ($z =~ m/^0\./) ;
+
+my $mstring = sprintf("%.2f", $ms);
+$name = "m${mstring}z${Z}_${v}_${b}";
+$dirname = "M${mstring}Z${Z}_${v}_${b}";
+print("Directory: M${mstring}Z${Z} \n");
+
+#--------------------
+# CHECKING FOR ERRORS
+#--------------------
+if ($m >= 10){	#Adjusting the string format
+	$nb = 2;
+	$na = 5;
+}else{
+	$nb = 1;
+    $na = 4;
+}
+$mprint = &stringadjust("$m",$nb,$na);
+
+#(-e "$DIRMOD/sini_${mprint}.bin.gz") or die "$DIRMOD/sini_${mprint}.bin.gz does not exist\n";
+(-e "$DIRCREATE/starevol_${v}.par") or die "$DIRCREATE/starevol_X.XX.par does not exist\n";
+die "$DIRM/$dirname already exist\n" if (-d "$DIRM/$dirname");
+
+$mtini = &stringadjust("$m",2,6);
+$znew = &stringadjust("0.$Z",1,9);
+$zznew = &stringadjust("0.$Z",1,8);
+
+#------------------------
+# CREATION OF DIRECTORIES
+#------------------------
+
+mkdir("$DIRM/$dirname",0770);
+mkdir("$DIRV/$dirname",0770);
+mkdir("$DIRS/$dirname",0770);
+#mkdir("$DIRW/$dirname",0770);
+
+#-----------------------
+# CREATION OF MODINI.BIN 
+#-----------------------
+
+print("Initial model: $DIRMOD/sini_${mprint}.bin.gz \n");
+system(
+      "cp  $DIRMOD/sini_${mprint}.bin.gz $DIRCREATE/modini.bin.gz;".
+      "gunzip -d -f $DIRCREATE/modini.bin.gz"
+      );
+
+#--- ! We enter directory $DIRCREATE ! ---
+chdir $DIRCREATE;
+
+
+#--- ---
+
+#------------------
+# AGE DETERMINATION
+#------------------
+
+
+#system(
+#      "cp  $DIRCREATE/dtms_gr.e $DIRCREATE/dtms_gr.e"
+#       );
+
+$age = `printf '$m 0.$Z \n'| ./dtms_gr.e | grep E`;
+chomp($age);
+$age =~ s/E/d/;
+print ("Maximum age on MS = $age yr\n");
+
+#-------------------------
+# CHANGING STAREVOLMAN.PAR
+#-------------------------
+
+#open(F, "starevolman0.par");
+#@lines = <F>;
+#close(F);
+
+#open(F," > starevolman.par");
+#foreach $line (@lines)
+#      {
+#      $line =~ s/binary --> binary modification (.*) y/binary --> binary modification \1 n/;
+#      $line =~ s/global metallicity change (.*) n/global metallicity change \1 y/;
+#      $line =~ s/new metallicity Z. = 0\......../new metallicity Z\* = ${znew}/;
+#      print(F $line);
+#      }
+#close(F);
+
+#------------------------------
+# CREATION OF THE INITIAL MODEL
+#------------------------------
+
+
+system(
+     # "gzip modini.bin;".
+      "$DIRBATCH/starevolman.e"
+      );
+
+
+#print("\n---------------------------------------------------------------- starevolmanY248.e\n");
+#@tab = `./starevolmanY248.e`;
+#print("@tab");
+#$n = '[0-9\.]+';
+#foreach $line (@tab)
+#      {
+#      if ($line =~ /Z\s+=\s+($n)/) { $zkint = &stringadjust("0.$Z",1,8); }
+#      }
+system("mv -f modini1.bin modini.bin");
+system("mv -f modang1.bin modang.bin");
+system("mv  zini.out $DIRM/$dirname/zini.out ");
+
+
+
+#system("mv  solar.out $DIRM/$dirname/solar.out ");
+
+#print("\n---------------------------------------------------------------- transfomu.e\n");
+#system("./transfomu.e");
+system(
+#      "mv -f modini_totioni.bin modini.bin;".
+      "gzip -f modini.bin;".
+      "gzip -f modang.bin;".
+      "chmod 0660 modini.bin.gz;".
+      "chmod 0660 modang.bin.gz;".
+      "mv modini.bin.gz $DIRM/$dirname;".
+      "mv modang.bin.gz $DIRM/$dirname;".
+      "cp $DIRM/$dirname/modini.bin.gz $DIRM/$dirname/modini_0.bin.gz;".
+      "cp $DIRM/$dirname/modang.bin.gz $DIRM/$dirname/modang_0.bin.gz"
+      );
+
+#-------------------------
+# CREATION OF STAREVOL.PAR
+#-------------------------
+
+open(F, "starevol_${v}.par");
+@lines = <F>;
+close(F);
+    
+#if ($m <= 1.5)                { $etapar = '00.33';}	
+#elsif ($m > 1.5 && $m <= 2.5) { $etapar = '00.66';}
+#elsif ($m > 2.5 && $m <= 5)   { $etapar = '01.00';}
+#else                          { $etapar = '01.33';}
+$etapar = '00.50';
+
+$aup     = $ms<=2.5 ? '0.00' : '0.10';
+#$idiffcc = $m<=2.5 ? 'f' : 'f';
+$idiffty = $ms<=2.5 ? '13' : '13';
+#$zznew = '0.000711';
+$alphac = '2.1100';	#;classical_model_TD
+#$alphac = '2.2236';    ;rot_model_TD
+$idiffcc = '.false.';
+#$idiffcc = 'T';
+
+open(F, "> $DIRM/$dirname/starevol.par");
+foreach $line (@lines)
+{
+    $line =~ s/mtini = ...../mtini = $mtini/;
+    $line =~ s/zkint = ......../zkint = $zznew/;
+    unless ("$v" eq "2.92GRID") {
+	$line =~ s/alphac = ....../alphac = $alphac/;
+	$line =~ s/novopt = ./novopt = 0/;
+	$line =~ s/aup = ...., adwn = ..../aup = 0.00, adwn = 0.10/;
+	$line =~ s/tau0 = ......., ntprof = ./tau0 = 0.00500, ntprof = 5/;
+	$line =~ s/mlp = .., etapar = ...../mlp = 01, etapar = $etapar/;
+	$line =~ s/idiffcc = ., idiffty = ../idiffcc = $idiffcc, idiffty = $idiffty/;
+    }
+	#    $line =~ s/dtmax = ........./dtmax = $age/;
+	$line =~ s/dtmax = ........./dtmax = 5.000d+06/;
+    print(F $line);	
+}
+close(F);
+system ("chmod 0660 $DIRM/$dirname/starevol.par");
+system ("cp $DIRM/$dirname/starevol.par $DIRM/$dirname/starevol_0.par");
+system ("cp $DIRCODE/network.par $DIRM/$dirname/network.par");
+
+
+
+$model_presc = "classical";
+
+$line1='#/bin/sh';
+$line2 = "runevol m${mstring}z${Z}_${v}_${b} M${mstring}Z${Z}_${v}_${b} 2 500 5 15 ${model_presc} > output.dat";
+
+# open(F, "> $DIRM/$dirname/run_se");
+# print(F $line1);
+# print(F "\n");
+# print(F "\n");
+# print(F $line2);
+# close(F);
+
+#  Useful for the cluster
+# open(F, "> $DIRM/$dirname/run_starevol.sh");
+# print(F "#!/bin/bash");
+# print(F "\n");
+# print(F "#SBATCH --partition=private-astro-cpu");
+# print(F "\n");
+# print(F "#SBATCH --time=12:00:00");
+# print(F "\n");
+# print(F "#SBATCH --ntasks=1");
+# print(F "\n");
+# print(F "#SBATCH --mem-per-cpu=1000 # in MB");
+# print(F "\n");
+# print(F "\n");
+# print(F "srun sh run_se");
+# close(F);
+
+
+$line = "runevol m${mstring}z${Z}_${v}_${b} M${mstring}Z${Z}_${v}_${b} 1 1 5 15 ${model_presc} > output.dat";
+open(F, "> $DIRM/$dirname/run_comp.sh");
+print(F "#!/bin/bash");
+print(F "\n");
+print(F $line);
+print(F "\n");
+print(F "gzip modini.bin");
+print(F "\n");
+print(F "\n");
+print(F 'sed -i -e "s/addH2 = F, addHm = F/addH2 = T, addHm = T/" starevol.par');
+print(F "\n");
+print(F 'sed -i -e "s/ionizHe = F, ionizC = F, ionizN = F, ionizO = F, ionizNe = F/ionizHe = T, ionizC = T, ionizN = T, ionizO = T, ionizNe = T/" starevol.par');
+print(F "\n");
+print(F "\n");
+#print(F "sbatch run_starevol.sh");
+print(F $line2);
+close(F);
+
+
+#-----------------------------------
+# CREATION OF THE EVOLUTIONARY FILES
+#-----------------------------------
+
+@ext = ("as","tc1","tc2","c1","c2","c3","c4","hr","s1","s2","s3","s4","v1","v2","v3","v4","v5","v6","v7","v8","v11","v12","v13");
+foreach $ext (@ext)
+      {
+      system("cp $INSTDIR/starevol/PHYSICS/HEADERS/mevol.${ext}.gz $DIRV/$dirname/${name}.${ext}.gz");	
+      }
+system("chmod 0660 $DIRV/$dirname/${name}*");
+
+#------------
+# SUBROUTINES
+#------------
+
+sub stringadjust
+      {
+      local ($a,$nb,$nt,@a,$pos,$before,$after);
+
+      $a = $_[0];
+      $nb = $_[1];
+      $nt = $_[2];
+
+      @a = split (//,$a);
+
+      # get position of the '.':
+      for($i=0; $i<=$#a; $i++)
+             {
+             if ($a[$i] eq '.')
+                     {
+                     $pos = $i;
+                     last;
+                     }
+             }
+
+      $before = '';
+      $after = '';
+
+      # add the right number of '0' before:
+      ($pos<=$nb) or die "Stringadjust: too many digits before decimal point\n";
+      for($i=0; $i<($nb-$pos); $i++)
+             {
+             $before .= '0';
+             }
+
+      # add the right number of '0' after:
+      (($#a+1)+($nb-$pos) <= $nt ) or die "Stringadjust: too many digits after decimal point\n";
+      for($i=($#a+1)+($nb-$pos); $i<=($nt-1); $i++)
+             {
+             $after .= '0';
+             }
+
+      # returns the results:
+      "${before}${a}${after}";
+      }
+
+
+
+system ("cp $INSTDIR/starevol/PAQ/*  $DIRM/$dirname/");

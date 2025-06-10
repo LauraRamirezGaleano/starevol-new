@@ -37,16 +37,16 @@ c      include 'evolcom.kap'
       double precision rklth,tklth,opaclth
 C     Warning: dimensions of opacity tables change with solar comp.
 c..   Young+18 (TD: 30/01/2020)
-c     common /lthopac/ opaclth(19,81,155),tklth(81),rklth(19),
-c    &     mlth,nlth,itlth
+   !      common /lthopac/ opaclth(19,81,155),tklth(81),rklth(19),
+   !   &     mlth,nlth,itlth
        common /lthopac/ opaclth(19,85,155),tklth(85),rklth(19),
      &     mlth,nlth,itlth
 c#ifdef GRID
 c      parameter (mlth = 19,nlth = 63,itlth = 104)
 c      common /lthopac/ rklth(19),tklth(63),opaclth(19,63,104)
 c#elif AS09
-c      parameter (mlth = 19,nlth = 85,itlth = 155)
-c      common /lthopac/ rklth(19),tklth(85),opaclth(19,85,155)      
+      ! parameter (mlth = 19,nlth = 85,itlth = 155)
+      ! common /lthopac/ rklth(19),tklth(85),opaclth(19,85,155)      
 c#else
 c      parameter (mlth = 19,nlth = 85,itlth = 120)
 c      common /lthopac/ rklth(19),tklth(85),opaclth(19,85,120)

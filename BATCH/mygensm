@@ -1,0 +1,99 @@
+#!/usr/bin/perl -w 
+
+use strict;
+use File::Basename;
+
+my ($libpaq, $TEMPDIR, $nbr);
+my ($filein, $file, $filexe);
+my (@filesall, @filesallgz);
+my ($nbrsm);
+
+die " !! 1 arguments needed:
+    1 filename 
+2 optional arguments:
+    2 directory (\$PWD by default)
+    3 exec type (evol by default) 
+
+ex : mygensm novae_q2_0024
+     mygensm nextini.bin
+     mygensm m1.2z02_0011 ~/STAREVOL/RESULTS/M1.2Z02
+     mygensm nextang.bin  ~/STAREVOL/TMP/M1.2Z02  evol
+
+".basename $0." aborted.\n" unless (defined $ARGV[0]);
+
+# Initialisation
+$filein = basename $ARGV[0];
+if (defined $ARGV[1]) {
+    my $DIR = $ARGV[1];
+    chdir $DIR;
+}
+$TEMPDIR = $ENV{DIR_RESULTS};
+#$TEMPDIR = $ENV{DIR_MODELS};#LR MODIF
+# $filexe = (defined $ARGV[2]) ? "$ARGV[2]" : "evol3.00_AGSS09";
+#$filexe = (defined $ARGV[2]) ? "$ARGV[2]" : "evolAhuir";
+$filexe = (defined $ARGV[2]) ? "$ARGV[2]" : "evol";
+$filexe = $ENV{DIR_BATCH}."/binlist_$filexe.e" ;
+$nbrsm = (defined $ARGV[3]) ? $ARGV[3] : 1; 
+
+
+# Find file names to proceed.
+# in case of input file is modini.bin/modang.bin(.gz)
+if ($filein =~ /mod(ini|ang).bin/) {
+    $filein =~ s/ang/ini/;
+    @filesall = qw (modini.bin starevol.par modang.bin);
+    @filesall = qw (modini.bin modang.bin);
+
+    $nbr = 9;
+}# or is nextini.bin/nextang.bin(.gz)
+elsif ($filein =~ /next(ini|ang).bin/) {
+    $filein =~ s/ang/ini/;
+    @filesall = qw (nextini.bin starevol.par nextang.bin evolvarang evoldisp); 
+    @filesall = qw (nextini.bin nextang.bin evolvarang evoldisp); 
+    $nbr = 9;
+}# or is a save structure 
+else {
+    $filein =~ s/[a|b|d|w|o](.gz)?$//; # remove ?.gz if present 
+    @filesall = map {$filein.$_} ("b","d","a","w","o");
+    $nbr = 1;
+}
+@filesallgz = map {$_.".gz"} @filesall;
+
+
+# copy (and unzip) file in temporarily directory
+foreach my $f (@filesall, @filesallgz) {
+    next unless (-e $f);
+    print "Copying $f to temporary directory.\n";
+    `cp -f $f $TEMPDIR`;
+    system "gunzip -f $TEMPDIR/$f" if ($f =~ /.gz$/);
+}
+
+# link paq files
+$libpaq = $ENV{DIR_LIB};
+#foreach (<$libpaq/paq*>) {system "ln -s $_ $TEMPDIR"} 
+foreach (<$libpaq/paq*>) {system "ln -s $_ /tmp"} 
+
+chdir "/tmp";
+
+
+# start binlist
+$filein =~ s/\.gz$//;
+system "echo $nbr $nbrsm $filein | $filexe";
+die "Pb with $filexe:\n\n". basename $0." aborted.\n" if ($?>>8);
+
+# binlist end
+
+# clean temporary directory
+chdir "$TEMPDIR";
+foreach my $f (@filesall, @filesallgz, <paq*>, <fort*>,) {
+    next unless (-e $f);
+    unlink $f;
+}
+# clean /tmp directory
+chdir "/tmp";
+foreach my $f (@filesall, @filesallgz, <paq*>, <fort*>, "modang.bin") {
+    next unless (-e $f);
+    unlink $f;
+}
+
+
+print "\n".basename $0." finished.\n"

@@ -201,7 +201,16 @@ C -------------------------------
         xKm_o(i)=khi(j)/cp(j)/ro(j)          ! Diff. thermique
         fint(i)= -(xKm_o(i)+xnuvv_o(i))*brunt_o(i)*xNt_o(i)/hnenn_o(i)/
      &          rraym_o(i)**3/rtot**2
-        
+!         fint(i)= -(xKm_o(i)+xnuvv_o(i))*brunt_o(i)/hnenn_o(i)/
+!      &          rraym_o(i)**3/rtot**2
+            !if (fint(i).gt.0.d0) then
+                  !print *,'in DIFFINITONDESEXCIT'
+                  ! print *,'xKm_o(', i,')','=',xKm_o(i)
+                  ! print *,'xnuvv_o', i,')','=',xnuvv_o(i)
+                  ! print *,'brunt_o', i,')','=',brunt_o(i)
+            !endif
+!         fint(i)= -(xKm_o(i)+xnuvv_o(i))*brunt_o(i)*xNt_o(i)/hnenn_o(i)/
+!      &          rraym_o(i)**3/rtot**2
        write (990,990)i,fint(i),xKm_o(i),xnuvv_o(i),brunt_o(i),xNt_o(i),
      &           hnenn_o(i),rraym_o(i),rtot
  990    format (i4,30(1x,1pe17.10))

@@ -1,0 +1,1363 @@
+! *************************************************************
+!        PARAMETER CARD for STAREVOL : version AGB 4.00
+! *************************************************************
+
+&starevol_parameters          ! Beginning of the parameter card
+
+! =============================================================
+!   VERSION
+! =============================================================
+
+! evolpar_version
+! ---------------
+!
+! Version of the parameter card.
+
+      evolpar_version = 4.00
+
+! =============================================================
+!   EVOLUTIONARY SEQUENCES 
+! =============================================================
+
+! maxmod
+! ------
+!
+! Number of models computed by sequence.
+
+      maxmod = 100
+
+! imodpr
+! ------
+!
+! Activate flame routines.
+! 12 : no printing
+! 33 : save more models during pulse/DUP
+
+      imodpr = 002
+
+! mtini
+! -----
+!
+! Initial stellar mass in solar masses.
+
+      mtini = 01.000
+
+! zkint
+! -----
+!
+! Initial metallicity.
+
+      zkint = 0.020766
+! =============================================================
+!   EQUATION OF STATE 
+! =============================================================
+
+! addH2
+! -----
+!
+! Inclusion of H2.
+
+      addH2 = .false.
+
+! addHm
+! -----
+!
+! Inclusion of H-.
+
+      addHm = .false.
+
+! tmaxioH
+! -------
+!
+! Temperature above which H is considered completely ionized.
+
+      tmaxioH = 1.00D+05
+
+! tmaxioHe
+! -------
+!
+! Temperature above which He is considered completely ionized.
+
+      tmaxioHe = 5.00D+05
+
+! ionizHe
+! -------
+!
+! Inclusion of He partial ionization.
+
+      ionizHe = .true.
+
+! ionizC
+! ------
+!
+! Inclusion of C partial ionization.
+
+      ionizC = T
+
+! ionizN
+! ------
+!
+! Inclusion of N partial ionization.
+
+      ionizN = T
+
+! ionizO
+! ------
+!
+! Inclusion of O partial ionization.
+
+      ionizO = T
+
+! ionizNe
+! -------
+!
+! Inclusion of Ne partial ionization.
+
+      ionizNe = T
+
+! =============================================================
+!   GRAVITATION 
+! =============================================================
+
+! lgrav
+! -----
+!
+! Prescription for the gravitational energy. 
+! 1 : \epsilon_{grav} = - De_{int}/Dt - PD(1/\rho)/Dt
+! 2 : \epsilon_{grav} = - c_P DT/Dt + Q/\rho(DP/Dt)
+! 4 : \epsilon_{grav} = - De_{int}/Dt -
+!                       4\pi P\partial(r^2V)/\partial m_r
+
+      lgrav = 1
+
+! lnucl
+! -----
+!
+! Nuclear energy production computed
+! f : only once the model has converged. 
+! t : at each iteration.
+
+      lnucl = t
+
+! =============================================================
+!   CONVECTION
+! =============================================================
+
+! alphac
+! ------
+!
+! Classical MLT alpha parameter (pressure scale height).
+
+      alphac = 1.6602
+
+! dtnmix
+! ------
+!
+! Mixing prescription.
+! f : instantaneous mixing, lmix not activated
+! t : time-dependent mixing, lmix not activated
+! g : like f but lmix activated (if convective boundaries have
+!     changed, do another iteration)
+! u : like t but lmix activated (if convective boundaries have
+!     changed, do another iteration)
+
+      dtnmix='u'
+
+! mixopt
+! ------
+!
+! Convective zone homogenized 
+! f : only when the structure has converged.
+! t : at each iteration during the convergence.
+
+      mixopt = .false.
+
+! hpmlt
+! -----
+!
+! Different MLT formalisms with the pressure scale height.
+! 1 : Cox & Giuli formalism
+! 2 : Cox & Giuli formalism (time-dependent MLT)
+! 3 : Kippenhahn formalism
+! 4 : Kippenhahn formalism (time-dependent MLT)
+! 5 : Convection model with compression effects
+!     Forestini, Lumer, Arnould (1991,A&A,252,127)
+! 6 : Rotationally modified convection following
+!     Augustson & Mathis (2019)
+!     Currently not used !
+
+      hpmlt = 3
+
+! nczm
+! ----
+!
+! Merge (remove) convective zones that are separated by less
+! (which extend is less) than nczm shells.
+! If nczm < 0 the procedure applies only in the envelope.
+
+      nczm = 10
+
+! ihro
+! ----
+!
+! MLT scale height prescription.
+! f : pressure scale height
+! t : density scale height
+
+      ihro = .false.
+
+! iturb
+! -----
+!
+! Inclusion of a turbulent flux in the convective energy
+! balance (density scale height only).
+! 0 : no inclusion
+! 1 : inclusion
+! Currently not used !
+
+      iturb = 0
+
+! etaturb
+! -------
+!
+! Turbulent viscosity to compute the turbulent flux in the
+! convective energy balance.
+! According to Maeder (1987,A&A,173,247), etaturb should be of
+! the order of 1000.
+
+      etaturb = 1.000D+03
+
+! fover
+! -----
+!
+! Herwig's overshoot coefficient (lover = 23-32) or penetration
+! depth (lover = 33-39,70-73).
+
+      fover = 1.0d-02
+
+! alphatu
+! -------
+!
+! Classical MLT alpha parameter (density scale height) or
+! parameter for compression effects with hpmlt = 5.
+
+      alphatu = 1.0000
+
+! novopt
+! ------
+!
+! Treatment of the step overshooting (if != 0). 
+! 1,3 : radial upward extension limited by aup times the
+!       pressure scale height 
+! 2,4 : radial upward extension limited by the minimum 
+!       between aup times the pressure scale height and
+!       aup times r
+! If novopt = 3,4 overshooting is applied in the core only.
+
+      novopt = 0
+
+! aup
+! ---
+!
+! Radial upward extension in case of step overshooting.
+
+      aup = 0.10
+
+! adwn
+! ----
+!
+! Radial downward extension in case of step overshooting.
+
+      adwn = 0.00
+
+! idup
+! ----
+!
+! 1 : find neutrality of the gradients (AGB phase only)
+! 2 : call to convzone stopped after iterations
+! 3 : 1 + 2
+! 5 : overshoot below envelope (lover = 23) activated during
+!     AGB phases only
+
+      idup = 0
+
+! =============================================================
+!   ATMOSPHERE
+! =============================================================
+
+! tau0
+! ----
+!
+! Fixed optical depth of the last numerical shell.
+! Must be chosen at the start of the model.
+
+      tau0 = 0.00500
+
+! ntprof
+! ------
+!
+! Atmosphere model.
+! 0 : Eddington grey atmosphere
+! 1 : Analytic fit
+! 2 : No atmosphere
+! 3 : Siess et al. (2000,A&A,358,593) fit
+! 4 : PHOENIX atmosphere models
+! 5 : Krishna-Swamy (1966,ApJ,145,174) fit
+! 6 : CMFGEN atmosphere models (massive stars)
+!     Currently not used !
+! 7 : TLUSTY atmosphere models (massive stars)
+!     Currently not used !
+! 8 : Vernazza et al. (1981) analytic fit as quoted in
+!     Spnoi et al. (2019)
+!     Currently not used !
+
+      ntprof = 0
+
+! taulim
+! ------
+!
+! Optical depth above which the Eddington grey approximation
+! is used (to set when starting the model).
+
+      taulim = 1.00D+02
+
+! =============================================================
+!   MASS LOSS 
+! =============================================================
+
+! mlp
+! ---
+!
+! Mass loss prescription (if != 0).
+! 1,2   : Reimers (1975,Memoires de la SRSL,8,369).
+!         RGB
+! 3,4   : Multiple prescriptions.
+!         if log(Teff) > 3.7
+!            de Jager et al. (1988,A&AS,72,259)
+!         if log(Teff) < 3.7
+!            Crowther (2001,ASSL,264,215) 
+!         Massive stars with RSG phase
+! 5,6   : Vassiliadis & Wood (1993,ApJ,413,641), no delay of
+!         the onset of the super-wind phase.
+!         AGB
+! 55,56 : Vassiliadis & Wood (1993,ApJ,413,641), original
+!         prescription.
+!         AGB
+! 7,8   : Blocker (1995,A&A,297,727).
+!         AGB
+! 9,10  : Arndt (1997,A&A,327,614).
+!         AGB
+! 11,12 : Schaller et al. (1992).
+!         Massive stars and WR phase
+! 13,14 : Chiosi (1981,A&A,93,163).
+!         Massive O stars
+! 15,16 : Multiple prescriptions.
+!         if log(Teff) > 3.9
+!            Vink et al. (2001,A&A,369,574)
+!         if 3.9 > log(Teff)
+!            de Jager et al. (1988,A&AS,72,259)
+!         if H_surf < 0.4 and log(Teff) > 4.0
+!            Nugis & Lamers (2000,A&A,360,227)
+!         Massive stars, MS, post-MS, RSG and WR phase
+! 17,18 : user defined, equal to massrate (Accretion).
+! 19,20 : Crowther (2001,ASSL,264,215).
+!         RSG
+! 21,22 : van Loon et al. (2005,A&A,438,273).
+!         AGB and RSG
+! 23,24 : Cranmer & Saar (2011,ApJ,741,54).
+!         Cool PMS (23 only), MS and RGB stars (if 
+!         rotation and a convective envelope)
+! 25,26 : Graefener (2021,A&A,647,A13).
+!         VMS at LMC metallicity
+! 27,28 : Sander & Vink (2020,MNRAS,499,873).
+!         WR stars
+! 29,30 : Sabhahit et al. (2022,MNRAS,514,3736).
+!         VMS stars at low Z
+! If mlp is odd, mass is removed in shells above m = 0.95*mtot.
+! If mlp is even, shells are removed.
+
+      !mlp = 0
+      mlp = 00
+
+! etapar
+! ------
+!
+! Free parameter of the Reimers (1975) mass loss prescription.
+
+      !etapar = 0.5
+      etapar = 00.50
+
+! dmlinc
+! ------
+!
+! Factor by which the mass loss rate is artificially
+! multiplied.
+
+      dmlinc = 1.0D+00
+
+! clumpfac
+! --------
+!
+! Factor by which the Vink et al. (2001) mass loss is
+! artificially multiplied to take into account the effect
+! of clumping.
+
+      clumpfac = 1.0d0
+
+! zscaling
+! --------
+!
+! If t, multiply the mass loss rate by a factor 
+! (Z/Zsun)**0.8, where Zsun is the solar metallicity.
+
+      zscaling = .false.
+
+! =============================================================
+!   NUCLEAR
+! =============================================================
+
+! nucreg
+! ------
+!
+! Treatment of the nucleosynthesis.
+! 0 : no nucleosynthesis (nuclear energy production
+!     calculated)
+! 1 : nucleosynthesis calculated after convergence
+! 2 : like 1 but convective zones treated radiatively
+! 3 : nucleosynthesis calculated at each iteration during 
+!     the convergence process
+
+      nucreg = 1
+
+! nuclopt
+! -------
+!
+! i : mix unstable nuclei inside convective zones even if
+!     \tau_{decay} << \tau_{conv}
+! j : i + deactivate special treatment of Li, Be and B 
+!     during HBB (see diffusion.f)
+! h : deactivate processes linked to HBB
+! n : compute neutron equilibrium abundance after
+!     nucleosynthesis
+! m : homogenize neutron abundances in the convective zones
+! c : authorize coupled resolution of mixing and
+!     nucleosynthesis if the luminosity variation
+!     is > ftnuc and the star is not undergoing a TP
+!     (for p injection)
+! l : if decoupling hypothesis not satisfied (see ftnuc),
+!     model is recomputed with a smaller timestep else
+!     timestep is not allowed to increase
+! u : activate URCA terms (Eloc and Econv)
+! p : if diffzc = f, convection zone can be treated as
+!     radiative (partialmix on)
+! f : do none of the above
+
+      nuclopt='f'
+
+! tolnuc
+! ------
+!
+! Tolerance on mass fraction conservation in the nuclear 
+! subroutine tolerance = 10**-10 * tolnuc.
+
+      tolnuc = 1.0D+00
+
+! ftnuc
+! -----
+!
+! Check that the nucleosynthesis does not modify too much
+! the energetics maximum authorized change in the nuclear
+! luminosity |1 - L_{nuc}(X^{n+1}) / L_{nuc}(X^{n})| < ftnuc.
+
+      ftnuc = 1.00D+00
+
+! znetmax
+! -------
+!
+! Nuclear charge (Z) of the last considered species (only for 
+! large networks).
+
+      znetmax = 50
+
+! =============================================================
+!   DIFFUSION
+! =============================================================
+
+! idiffcc
+! -------
+!
+! Computation of slow particle transport processes (diffusion).
+
+      idiffcc = .false.
+
+! idiffnuc
+! --------
+!
+! Computation of slow particle transport processes
+! (if != 0).
+! 1 : before the nucleosynthesis
+! 2 : after the nucleosynthesis (default)
+! 3 : before and after the nucleosynthesis
+
+      idiffnuc = 2
+
+! idiffty
+! -------
+!
+! Rotational mixing.
+! 4  : mixing recipe used in Charbonnel ApJ 1995
+! 8  : chemical mixing + AM transport Talon 1997
+! 9  : AM transport only, Talon 1997
+! 10 : 8 + (lmicro = 2)
+! 11 : (lmicro = 3) + chemical mixing + AM transport
+!      Maeder, Zahn 1998
+! 13 : 11 + non stationary terms in for AM transport
+!      (includes everything)
+! 14 : Omega evolves as a result of structural changes,
+!      evolution with jk = cste
+! 15 : 13 + additional viscosity nu_add
+
+      idiffty = 13
+
+! diffzc
+! ------
+!
+! Compute convective mixing as a diffusive process
+! (implies radiative nucleosynthesis).
+
+      diffzc = .false.
+
+! diffst
+! ------
+!
+! Factor by which the evolution timestep is reduced to
+! compute the diffusion.
+
+      diffst = 3.000D+01
+
+! zgradmu
+! -------
+!
+! Computation of angular momentum and chemical transports
+! including the feedback on molecular weight when
+! idiffty = 8,9,11,13 or 15.
+
+      zgradmu = .false.
+
+! nu_add
+! ------
+!
+! Additional viscosity in cm^2/s (idiffty = 15).
+
+      nu_add = 3.0000D-12
+
+! del_zc
+! ------
+!
+! Minimum value allowed for the radiative gradient.
+
+      del_zc = 1.00D-02
+
+! ledouxmlt
+! ---------
+!
+! Use Ledoux criterion.
+! In the semiconvective zone mixing is treated diffusively.
+
+      ledouxmlt = .false.
+
+! Tfix
+! ----
+!
+! Fixation point of the turbulence function of temperature.
+
+      Tfix = 2.63d+6
+
+! om_turbul
+! ---------
+!
+! Coefficient entering the expression of the turbulent
+! diffusion coefficient for chemicals according to Richard et
+! al. (2005,ApJ,619,538), Equation 2.
+! Multiplicative factor compared to the He atomic diffusion
+! coefficient.
+! Dturbul is proportional to om_turbul*DHe0.
+
+
+      om_turbul = 400
+
+! n_turbul
+! --------
+!
+! Exponent indicating the density dependence of the turbulent
+! diffusion coefficient for chemicals according to Richard et
+! al. (2005,ApJ,619,538), Equation 2.
+! Dturbul is proportional to 1/\rho^{n_turbul}.
+
+      n_turbul = 3
+
+! PM_turbul
+! ---------
+!
+! Coefficient entering the turbulent diffusion coefficient
+! expression according to Proffitt & Michaud (1991a) as
+! expressed in  Richard et al. (2005,ApJ,619,538), Equation 3.
+! Dturbul2 is proportional to PM_turbul*\rho^{-3}.
+
+      PM_turbul = 5000
+
+! =============================================================
+!   ROTATION
+! =============================================================
+
+! omegaconv
+! ---------
+!
+! Treatment of AM transport in convective zone.
+! f : exclude convective core and envelope only
+! t : include all convective zones
+! s : solid-body rotation in the entire star (routine sol_rot)
+! m : no AM transport but chemical mixing
+
+      omegaconv='f' 
+
+! Dh_prescr
+! ---------
+!
+! Prescription for horizontal diffusion coefficient Dh.
+! Zahn1992 : Zahn 1992
+! Maeder03 : Maeder 2003
+! MPZ_2004 : Mathis, Palacios & Zahn 2004
+! Maeder06 : Maeder 2006
+! Mathis16 : Mathis 2017, \tau = 1/S
+! Mathis02 : Mathis 2017, \tau = 1/(2\Omega + S)
+! Mathiepi : Mathis 2017, \tau = 1/N_\Omega
+
+      Dh_prescr='Zahn1992'
+
+! dm_ext
+! ------
+!
+! Parameter used to smooth the diffusion coefficient at the
+! limit of the convective core.
+
+      dm_ext = 2.90
+
+! Dv_prescr
+! ---------
+!
+! Prescription for vertical diffusion coefficient Dv.
+! Za92 : Zahn 1992
+! TZ97 : Talon & Zahn 1997
+!        (do not use with Dh_prescr = Mathis16)
+! Ma97 : Maeder 1997
+! Pr16 : Mathis et al. 2018
+!        Currently not used !
+
+      Dv_prescr='Za92'
+
+! om_sat
+! ------
+!
+! Saturation value for the dynamo-generated magnetic field in 
+! solar angular velocities.
+
+      om_sat = 10.0
+
+! D_zc
+! ----
+! 
+! Diffusion coefficient in the convective zone.
+
+      D_zc = 1.00D+12
+
+! disctime
+! --------
+!
+! Duration of the disk-locking phase during the PMS in years.
+
+      disctime = 1.00D+00
+      
+! thermal_equilibrium
+! -------------------
+!
+! Starting from thermal equilibrium in the computation of
+! angular momentum transport.
+
+      thermal_equilibrium = .false. 
+
+! diffvr
+! ------
+!
+! Initial velocity in km/s (if no magnetic braking).
+
+      diffvr = 5.00D+01
+
+! idiffvr
+! -------
+!
+! Prescription for braking at the stellar surface.
+! 0 : no torque applied
+! 1 : constant rotation speed
+! 2 : power law for braking
+!     \Omega = \Omega_0 (t/t_0)^n
+! 3 : Skumanich braking law
+!     \Omega = (p/\Omega_0 + cte)^{-1/(p-1)}
+! 4 : constant angular velocity
+! 5 : torque applied propotionnal to \Omega_S^3
+! 6 : constant specific angular momentum
+! 7 : gfdsf
+! 8 : Matt et al. 2012 (with mlp = 23,24)
+! 9 : Matt et al. 2015
+
+      idiffvr = 0
+
+! idiffex
+! -------
+!
+! Exponent intervening in the breaking law (if idiffvr = 2,3).
+
+      idiffex = 3
+
+! diffcst
+! -------
+!
+! Constant intervening in the different braking laws.
+
+      diffcst = 1.000D+00
+
+! breaktime
+! ---------
+!
+! If idiffvr = 3, date in years from which the braking of the
+! star starts when Skumanich braking law is used.
+! If idiffvr != 3, angular velocity of the disk (and thus the
+! stellar surface) during the disk-locking phase on the PMS
+! in s-1.
+
+      breaktime = 5.40D+07
+
+! =============================================================
+!   TIME-DEPENDENT CONVECTION 
+! =============================================================
+
+! nmixd
+! -----
+!
+! Computation of time-dependent mixing (tdm) and
+! nucleosynthesis (if != 0).
+! 1 : core only
+! 2 : envelope only
+! 3 : core & envelope
+! 4 : all convective zones
+! 5 : through all the star
+
+      nmixd = 0
+
+! itmind
+! ------
+!
+! Minimum number of iterations for tdm computations.
+
+      itmind = 3
+
+! itmaxd
+! ------
+!
+! Maximum number of iterations for tdm computations.
+
+      itmaxd = 30
+
+! rprecd
+! ------
+!
+! Precision to be reached on the abundances for the solution
+! to converge.
+
+      rprecd = 1.00D-05
+
+! nretry
+! ------
+!
+! Parameter used in different contexts according to the
+! selected values.
+! 1     : used in the call of the opacity routine kappa to
+!         include the computation of molecular opacities
+!         (= opamol in kappa.f)
+! 4     : used in structure to redefine thermodynamic
+!         quantities at convective boundaries in case of
+!         rotating models where the effective gravity accounts
+!         for centrifugal forces
+! other : number of shells in the shock neighbourhood (in case
+!         of Super AGB stars) 
+
+      nretry = 5
+
+! =============================================================
+!   EXTRA MIXING
+! =============================================================
+
+! lover
+! -----
+!
+! Overshoot prescription.
+! 23    : below convective envelope
+! 24    : above core
+! 25    : below pulse
+! 26    : above pulse
+! 27    : above core and below envelope (23 + 24)
+! 28    : below and above pulse (25 + 26)
+! 29    : treat all cases (27 + 28)
+! 30    : overshoot below all convective zones
+! 31    : overshoot above all convective zones
+! 32    : overshoot everywhere (30 + 31)
+! 33    : overshoot Baraffe 2017
+! 34-36 : overshoot dependent of rotation Augustson &
+!         Mathis 2019 below the base of the CZ (34), above
+!         the base of the CZ (35), or both (36)
+! 37-39 : overshoot dependent of rotation Korre 2019
+!         below the base of the CZ (37), above the base of 
+!         the CZ (38), or both (39)
+! 41-43 : IGW from the envelope only (41), from the core
+!         (42), or from both (43)
+! 60,61 : parametric turbulence Richard 2005
+!         set at a temperature threshold (60), or at the 
+!         base of the CZ (61)
+! 70    : 34 + 60
+! 71    : 34 + 61
+
+      lover = 00
+
+! lthal
+! -----
+!
+! Thermohaline mixing.
+! 0 : off
+! 1 : on
+
+      lthal = 00
+
+! ltach
+! -----
+!
+! Tachocline mixing.
+! 41 : independent of time Brun 1999
+! 43 : dependent of time Brun 1999
+
+      ltach = 00
+
+! lmicro
+! ------
+!
+! Atomic diffusion.
+! 2 : Chapman & Cowling
+! 3 : Montmerle & Michaud 1976, Paquette 1986, partial
+!     ionization
+! 4 : Thoul 1994, Paquette 1986, partial ionization
+! 5 : Montmerle & Michaud 1976, Paquette 1986, total
+!     ionization
+! 6 : Thoul 1994, Paquette 1986, total ionization
+
+      lmicro = 00
+
+! =============================================================
+!   ACCRETION
+! =============================================================
+
+! iaccr
+! -----
+!
+! Computation of the accreted matter profile (if != 0)
+! 1,3 : without (1) or with (3) shear energy production rate
+!       and with M_{acc} = \int f_{acc} / (1+f_{acc}) dm.
+! 2,4 : without (2) or with (4) shear energy production rate
+!       and with M_{acc} = \int f_{acc} dm (reference).
+
+      iaccr = 0
+
+! accphase
+! --------
+!
+! Different computations of the accreted matter profile.
+! 0   : accretion model, including D burning (suited for PMS
+!       phase)
+! 1-4 : accretion inside the star (planet accretion)
+! 5   : uniform accretion from the surface with f_{acc} = ric
+!       (menv unknown)
+! 6   : uniform accretion from the surface M_{star} to menv
+!       (f_{acc} unknown)
+! 7   : uniform accretion from the surface M_{star} to 
+!       M_{star}-menv (f_{acc} unknown)
+! 8   : uniform accretion from the surface M_{star} to
+!       M_{star}*menv (f_{acc} unknown)
+
+      accphase = 6
+
+! itacc
+! -----
+! 
+! If accphase = 0, different prescriptions for deuterium mixing
+! in case of accretion.
+! If itacc = 0, matter pills up at the surface of the star.
+! If itacc > 0, matter mixing with the surface layers.
+
+      itacc = 0
+
+! massrate
+! --------
+!
+! Mass accretion rate in solar masses per year.
+
+      massrate = 3.50D-08
+
+! massend
+! -------
+!
+! Accretion is stopped when M>massend.
+
+      massend = 2.00    
+
+! menv
+! ----
+!
+! Parameter used to compute the accreted matter profile
+! depending on the value of accphase.
+
+      menv = 8.0000D-01
+
+! ric
+! ---
+!
+! Richardson number for convective regions.
+
+      ric = 1.00D+00
+
+! prrc
+! ----
+!
+! Peclet number characterizing the thermal behavior of the
+! accreted matter.
+
+      prrc = 0.500
+
+! xiaccr
+! ------
+!
+! Angular momentum fraction actually accreted inside the star.
+
+      xiaccr = 0.500
+
+! fdtacc
+! ------
+!
+! Factor by which the evolution timestep is modified in case 
+! of non-convergence of the accretion procedure (case
+! accphase=0).
+
+      fdtacc = 1.20
+
+! alphaccr
+! --------
+!
+! Fraction of the accretion luminosity deposited in the star.
+
+      alphaccr = 0.00D+00
+
+! =============================================================
+!   HYDRODYNAMICS 
+! =============================================================
+
+! hydrodynamics
+! -------------
+!
+! Hydrodynamics
+! 0   : off.
+! 1   : on.
+! 2,3 : on, with rotational forces included.
+
+      hydrodynamics='0'
+
+! ivisc
+! -----
+!
+! Prescriptions for the artificial viscosity.
+! 0 : no artificial viscosity
+! 1 : P_{visc} = q_0 l^2 \rho (D \ln \rho/Dt)^2
+! 2 : P_{visc} = q_0 l^2 \rho^3 (4\pi\partial(r^2 v) /
+!                \partial m_r)^2
+! 3 : P_{visc} = q_0 l^2 \rho |\mathrm{div} v| (dv/dr -
+!                1/3\mathrm{div} v)
+
+      ivisc = 0
+
+! q0
+! --
+!
+! Parameter of the artificial viscosity.
+
+      q0 = 0.000
+
+! mcut
+! ----
+!
+! Mass cut above which artificial viscosity is activated.
+
+      mcut = 0.0000D+00
+
+! =============================================================
+!   SHELL MASSES 
+! =============================================================
+
+! maxsh
+! -----
+!
+! Maximum number of shells that can be changed by the mesh
+! laws.
+
+      maxsh = 100
+
+! nresconv
+! --------
+!
+! Spatial resolution increased in at least nresconv shells
+! around a convective boundary.
+! If nresconv < 0 zonetest not activated else zonetest
+! activated.
+! Better to put at 0 if atomic diffusion active.
+
+      nresconv = 0
+
+! dlnvma
+! ------
+!
+! Spatial resolution : Maximum relative variation in the 5
+! dependent variables + pressure, density and mass between
+! adjacent shells.
+
+      dlnvma = 1.20D-01
+
+! dlnvmi
+! ------
+!
+! Luminosity profile constrained if \Delta T/T larger than
+! 0.01*dlnvmi.
+
+      dlnvmi = 1.00D-02
+
+! dlnenuc
+! -------
+!
+! Equivalent to dlnvma, but for the nuclear energy production.
+
+      dlnenuc = 5.00D-01
+
+! dmrma
+! -----
+!
+! Maximum increase of relative mass allowed between adjacent
+! shells.
+
+      dmrma = 3.00D-03
+
+! dmrmi
+! -----
+!
+! Minimum increase of relative mass allowed between adjacent
+! shells.
+
+      dmrmi = 1.00D-05
+
+! =============================================================
+!   TIME-STEP
+! =============================================================
+
+! dtin
+! ----
+!
+! Initial evolution timestep of a model sequence.
+! If dtin = 0, use the previous evolution timestep.
+
+      dtin = 0.0D+01
+
+! dtmin
+! -----
+!
+! Minimum evolution timestep allowed.
+
+      dtmin = 1.000D-10
+
+! dtmax
+! -----
+!
+! Maximum evolution timestep allowed.
+
+      dtmax = 5.231d+08
+
+! facdt
+! -----
+!
+! Factor by which the evolution timestep is increased (in 
+! case of convergence) or decreased (by 2, in case of crash).
+
+      facdt = 1.25
+
+! fkhdt
+! -----
+!
+! Fraction of the Kelvin-Helmholtz timescale considered as
+! maximum evolution timestep allowed (only for contracting
+! phases, ie. nphase = 1,3,5,7).
+
+      fkhdt = 2.00D+00
+
+! ishtest
+! -------
+!
+! Next evolution timestep estimated by the dependent
+! variable evolution rate
+! f : in all the shells.
+! t : in shells where nuclear burning occurs only.
+
+      ishtest='t'
+
+! fts
+! ---
+!
+! Relative maximum change of dependent variable values allowed
+! in each shell between two consecutive models (to estimate the
+! evolution timestep).
+
+      fts = 0.050
+
+! ftsh
+! ----
+!
+! The evolution timestep is not allowed to be larger than
+! ftsh times the nuclear timescale corresponding to H
+! burning (where the nuclear energy production is maximum).
+! When nphase = 7, ftsh controls Ne burning.
+
+      ftsh = 0.05
+
+! ftshe
+! -----
+!
+! The evolution timestep is not allowed to be larger than
+! ftshe times the nuclear timescale corresponding to He
+! burning (where the nuclear energy production is maximum).
+
+      ftshe = 0.05
+
+! ftsc
+! ----
+!
+! The evolution timestep is not allowed to be larger than
+! ftsc times the nuclear timescale corresponding to C
+! burning (where the nuclear energy production is maximum).
+      
+      ftsc = 0.05
+
+! ftacc
+! -----
+!
+! The evolution timestep is not allowed to be larger than
+! ftacc times the accretion timescale.
+      
+      ftacc = 0.167
+
+! ftst
+! ----
+!
+! Controls the maximum temperature increase allowed between 2
+! consecutive models and the increase in nuclear luminosities
+! associated with the different burning modes (H, He and C).
+
+      ftst = 0.800
+
+! =============================================================
+!   ITERATIONS 
+! =============================================================
+
+! itermin
+! -------
+!
+! Minimum number of iterations to converge a model.
+
+      itermin = 3
+
+! itermax
+! -------
+!
+! Maximum number of iterations to converge a model.
+
+      itermax = 100
+
+! itermix
+! -------
+!
+! Maximum number of iterations over which mixing procedure
+! is applied at each iteration (if mixopt is true).
+! If itermix < 0 initial abundances restored after the 
+! itermix iterations.
+
+      itermix = 50
+
+! icrash
+! ------
+!
+! In case of crash, the evolution timestep is reduced 
+! icrash times and increased 9-icrash times.
+! Negative values of icrash force the timestep to be
+! increased |icrash| times and then decreased 9-|icrash|
+! times.
+
+      icrash = -3
+
+! numeric
+! -------
+!
+! 1     : convergence not followed in the surface layers 
+!         where T < tmaxioHe
+! 2-3   : first order spatial derivatives (zi=1/2, zj=1/2)
+! 2-4   : 1/\kappa_i = zi/\kappa_{i-1/2} + zj/\kappa_{i+1/2}
+! other : second order spatial derivatives and
+!         \kappa_i = \kappa_{i-1/2}^{zi} +
+!                    \kappa_{i+1/2}^{zj}
+
+      numeric = 9
+
+! icorr
+! -----
+!
+! f : do not activate parameter adjustments in case of crash
+! i : f + increase tolerance on velocity 
+! m : f + mesh disabled after 1 crash
+! h : f + deactivate acceleration routine after 2 crashes
+!     (iacc=f)
+! a : f + constraint time-step during third dredge-up and set
+!     egrav and its derivatives at 0 in the atmosphere
+! b : set egrav and its derivatives at 0 in the atmosphere
+! t : constraint time-step during third dredge-up and check
+!     that pressure is a decreasing function of mass
+
+      icorr='t'
+
+! =============================================================
+!   TOLERANCES 
+! =============================================================
+
+! tol_u
+! -----
+!
+! Tolerance to be reached by the dependent variable u
+! for the model to converge.
+
+      tol_u = 1.00D-05
+
+! tol_lnr
+! -------
+!
+! Tolerance to be reached by the dependent variable lnr
+! for the model to converge.
+
+      tol_lnr = 1.00D-05
+
+! tol_lnf
+! -------
+!
+! Tolerance to be reached by the dependent variable lnf
+! for the model to converge.
+
+      tol_lnf = 1.00D-05
+
+! tol_lnT
+! -------
+!
+! Tolerance to be reached by the dependent variable lnT
+! for the model to converge.
+
+      tol_lnT = 1.00D-05
+
+! tol_l
+! -----
+!
+! Tolerance to be reached by the dependent variable l
+! for the model to converge.
+
+      tol_l = 1.00D-05
+
+! tol_ang
+! -------
+!
+! Tolerance to be reached by the dependent variables of the 
+! system of equations for AM transport for the model to
+! converge.
+
+      tol_ang = 1.00D-05
+
+! =============================================================
+!   CONVERGENCE 
+! =============================================================
+
+! phi
+! ---
+!
+! Correction applied to to the linear extrapolation
+! to determine the initial guess structure.
+
+      phi = 1.00
+
+! alpha
+! -----
+!
+! Fraction of the Newton-Raphson correction actually
+! applied in all the shells for each dependent variable
+! that is considered for the first four interactions.
+
+      alpha = 0.50
+
+! iacc
+! ----
+!
+! Allow or not the current alpha value to be modified
+! for all the dependent variables every four iterations.
+
+      iacc = t
+
+! alphmin
+! -------
+!
+! Minimum value allowed for alpha (if iacc is true).
+
+      alphmin = 0.30
+
+! alphmax
+! -------
+!
+! Maximum value allowed for alpha (if iacc is true).
+
+      alphmax = 1.00
+
+! sigma
+! -----
+!
+! Numerical scheme.
+! 0             : explicit scheme
+! 0 < sigma < 1 : semi-implicit scheme
+! 1             : implicit scheme
+
+      sigma = 1.000
+
+! vlconv
+! ------
+!
+! Treatment of equation of transport.
+! f : \partial lnT/\partial lnP = \nabla_{conv} ou
+!                                 \nabla_{rad}
+! t : L = L_{rad} + L_{conv}
+
+      vlconv = .false.
+
+/                                   ! End of the parameter card
+
+! *************************************************************

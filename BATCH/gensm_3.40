@@ -77,6 +77,7 @@ if [ -s ${file} ] || [ -s ${filez} ]; then
   idiffty=`grep idiffty starevol.par | cut -c 55-56`
   micro=`grep Mic starevol.par | cut -c 46-47`
   thermohaline=`grep Thl starevol.par | cut -c 38-39`
+  igw =`grep Ov starevol.par | cut -c 34-35`
   codeversion=
   if [ $idiffcc = t ] || [ $idiffcc = T ]; then
        echo DIFFUSION
@@ -90,7 +91,7 @@ if [ -s ${file} ] || [ -s ${filez} ]; then
  echo rotation idiffcc idiffty $rotation $idiffcc $idiffty
   if [ -s ${file} ]; then
     cp $file $DIR_RESULTS.
-    if [ $micro != 0 ] || [ $thermohaline != 0 ]; then
+    if [ $micro != 0 ] || [ $thermohaline != 0 ] || [ $igw != 0 ]; then
 	echo
 	if [ -s evoldiff ]; then
 		echo  copying evoldiff
@@ -195,8 +196,9 @@ echo 'test3'
   idiffty=`grep idiffty starevol.par | cut -c 55-56`
   micro=`grep Mic starevol.par | cut -c 46-47`
   thermohaline=`grep Thl starevol.par | cut -c 38-39`
+  igw=`grep Ov starevol.par | cut -c 34-35` 
   codeversion=
-   echo $micro $thermohaline $idiffcc
+   echo $micro $thermohaline $idiffcc $igw
  if [ $idiffcc = t ] || [ $idiffcc = T ]; then
        echo I\'m in idiffcc true
 	if ([ $idiffty -ge 8 ] && [ $idiffty -le 13 ]) || [ $idiffty -eq 15 ]; then
@@ -214,7 +216,7 @@ echo 'test3'
   filed=${file}"d"
   fileoz=${file}"o.gz"
   fileo=${file}"o"
-  echo $micro $thermohaline $rotation
+  echo $micro $thermohaline $rotation $igw
   if [ ! -s $fileb ] && [ ! -s ${filebz} ]; then
 	echo File $file"{b,b.gz}" does not exist
 	echo
@@ -226,7 +228,7 @@ echo 'test3'
 	exit 2
   fi
   #check if computation with thermohaline or microscopic diffusion
-  if [ $micro != 0 ] || [ $thermohaline != 0 ]; then
+  if [ $micro != 0 ] || [ $thermohaline != 0 ] || [ $igw != 0 ]; then
        if [ ! -s $fileo ] && [ ! -s ${fileoz} ]; then
  	    echo File $file"{o,o.gz}" does not exist
  	    echo
@@ -240,7 +242,7 @@ echo 'test3'
 	\cp $filebz $DIR_RESULTS
 	gunzip $DIR_RESULTS/$filename"b.gz"
   fi
-  if [ $micro != 0 ] || [ $thermohaline != 0 ]; then
+  if [ $micro != 0 ] || [ $thermohaline != 0 ] || [ $igw != 0 ]; then 
         echo thermohaline and/or microscopic diffusion
      if [ -s ${fileo} ]; then
 		\cp $fileo $DIR_RESULTS
@@ -254,7 +256,7 @@ echo 'test3'
   if ([ $rotation = t ] || [ $rotation = T ]); then
         echo rotation
      if [ -s ${filea} ]; then
-	\cp $filea $DIR_RESULTS
+	\cp "$filea" "$DIR_RESULTS"
      else
 	\cp $fileaz $DIR_RESULTS
 	gunzip $DIR_RESULTS/$filename"a.gz"

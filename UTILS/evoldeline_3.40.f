@@ -226,7 +226,7 @@ c     truncate the file name.c6 after the shell nb : shell1
 
       dimension xsp(nsp)
 
-      external system
+      !external system
 
 
 *___________________
@@ -239,7 +239,7 @@ c     truncate the file name.c6 after the shell nb : shell1
       namesave= trim(name) // '.sav6'
       cmd = 'cp -f ' // trim(namein) // ' ' // trim(namesave)
       write (*,*) cmd 
-      dummy=system(cmd)
+      !dummy=system(cmd)
       open (unit = entrunit,file = trim(namein),form = 'unformatted')
       open (unit = entrunitsav,file = trim(namesave),
      &     form = 'unformatted')

@@ -1,0 +1,24 @@
+readatmP	cd /home/ana/CALCULS/EVOL/PHYSICS/ATMOSPHERE/PHOENIX
+		data phoenixsm
+		lines 2 0
+		read {i 1 tau 2 T 3}
+		set lgtau = lg(tau)
+		limits -8 3 T
+		ctype 0
+		erase
+		box
+		define coul 1
+		define j1 0
+		define j2 127
+		do j = 1,56 {
+		  echo $j $j1 $j2
+		  set ij=$j1,$j2
+		  set ctau = lgtau[ij]
+		  set cT = T[ij]
+		  ctype $coul connect ctau cT
+		  define coul ($coul+1)
+		  define j1 ($j2+1)
+		  define j2 ($j2+128)
+		}
+		ctype 0 xlabel log_{10] \tau
+		ylabel T (K)

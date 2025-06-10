@@ -53,6 +53,7 @@ c#endif
       parameter (nmole = 7, nioniz = 24)
 
 ***   shells
+c Note: nsh is also defined in evolcom.igw. Update both files if this value changes.
       integer nsh,neq,neq1,intmax
 
       parameter (nsh = 4500, neq = 5, neq1 = 3*neq+1)

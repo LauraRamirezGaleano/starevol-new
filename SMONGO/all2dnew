@@ -1,0 +1,41 @@
+all2dnew 01
+  ### 1: structure number
+  if ($?1 == 0) { define 1 ? { enter absolute structure star number}}
+
+  init2d $1
+  define myexpand 1.001
+
+  local define x_gutter 0.8
+  local define y_gutter 0.8
+  
+  erase
+  ie 0
+  # Psi
+  window 3 3 1 3
+  iso2d psi $1
+  vertbar 10500 23700 300 7500
+
+  # xlambda
+  window 3 3 2 3
+  iso2d xlambda $1
+  vertbar 20800 23700 300 7500
+
+  # Ucirc
+  window 3 3 3 3
+  iso2d Ucirc $1
+  vertbar 31100 23700 300 7500
+
+  # Flux of angular momentum
+  window 3 3 1 2
+  fluxAM $1
+
+  # omega
+  window 3 3 2 2
+  plotl omega
+  dconv 1
+
+  # chemicals diffusion
+  window 3 3 3 2
+  diff $1
+  w
+  ie 1

@@ -1,0 +1,65 @@
+figure_Claire  limits -12688172.54 339806875.3 6482.6 23125.4
+               lweight 2
+               ctype 0
+	       ibox 0 ixlabel 0 iylabel 0 ilweight 1.2
+               defx t
+	       xlim -12688172.54 339806875.3
+               ylim 6482.6 23125.4
+               ltype 0
+               plot Teff
+               box 1 2 3 3
+               lweight 3 ltype 0
+               ctype 0 lweight 4 connect t_1 Teff_1 if (lg(L_1) < 3.1 && lg(L_1) > 3 && phase_1 >= 2)
+               ctype red connect t_2 Teff_2 if (lg(L_2) < 3.1 && lg(L_2) > 3 && phase_2 >= 2)
+               ctype green3 connect t_3 Teff_3 if (lg(L_3) < 3.1 && lg(L_3) > 3 && phase_3 >= 2)
+               ctype blue connect t_4 Teff_4 if (lg(L_4) < 3.1 && lg(L_4) > 3 && phase_4 >= 2)
+               ctype cyan connect t_5 Teff_5 if (lg(L_5) < 3.1 && lg(L_5) > 3 && phase_5 >= 2)
+               ctype magenta connect t_6 Teff_6 if (lg(L_6) < 3.1 && lg(L_6) > 3 && phase_6 >= 2)
+               ctype 0
+               lweight 0
+               lweight 2
+               ie 0
+	       xlim -12688172.54 339806875.3
+               ylim  2.396 4.394
+	       ltype 3
+               plot geff
+               box 3 3 3 2
+               limits -12688172.54 339806875.3 2.396 4.394
+               lweight 5 ltype 0
+               ctype 0 connect t_1 geff_1 if (lg(L_1) < 3.1 && lg(L_1) > 3 && phase_1 >= 2)
+               ctype red connect t_2 geff_2 if (lg(L_2) < 3.1 && lg(L_2) > 3 && phase_2 >= 2)
+               ctype green3 connect t_3 geff_3 if (lg(L_3) < 3.1 && lg(L_3) > 3 && phase_3 >= 2)
+               ctype blue connect t_4 geff_4 if (lg(L_4) < 3.1 && lg(L_4) > 3 && phase_4 >= 2)
+               ctype cyan connect t_5 geff_5 if (lg(L_5) < 3.1 && lg(L_5) > 3 && phase_5 >= 2)
+               ctype magenta connect t_6 geff_6 if (lg(L_6) < 3.1 && lg(L_6) > 3 && phase_6 >= 2)
+figure_Claire2 limits -12688172.54 339806875.3 2.396 4.394 
+               #limits 6482.6 23125.4 2.396 4.394
+               lweight 2
+               expand 1.2
+               ctype 0
+               lweight 3 ltype 0
+	       defx t
+               ibox 0 ixlabel 0 iylabel 0
+	       xlim -12688172.54 339806875.3
+               ylim  2.396 4.394
+	       plot geff
+               limits -12688172.54 339806875.3 2.396 4.394 
+               box 1 2 3 3
+               ctype 0 lweight 5 connect t_1 geff_1 if (phase_1 >= 2 && Teff_1 > 12000 && Teff_1 < 13000)
+               ctype red connect t_2 geff_2 if ( phase_2 >= 2 && Teff_2 > 12000 && Teff_2 < 13000)
+               ctype green3 connect t_3 geff_3 if (phase_3 >= 2 && Teff_3 > 12000 && Teff_3 < 13000)
+               ctype blue connect t_4 geff_4 if (phase_4 >= 2 && Teff_4 > 12000 && Teff_4 < 13000)
+               ctype cyan connect t_5 geff_5 if (phase_5 >= 2 && Teff_5 > 12000 && Teff_5 < 13000)
+               ctype magenta connect t_6 geff_6 if (phase_6 >= 2 && Teff_6 > 12000 && Teff_6 < 13000)
+               ctype 0
+               lweight 1 
+               xlabel t (years)
+               expand 1.0
+               ylabel log g for 12000K < T_{eff} < 13000 K and star on Main Sequence
+               relocate 3.5e7 4.3 label 3 M_\odot
+               relocate 1.3e8 3.9 label 4 M_\odot
+               relocate 1e8 3.4 label 5 M_\odot
+               relocate 6.3e7 3.2 label 6 M_\odot
+               relocate 4.7e7 3.05 label 7 M_\odot
+               relocate 3.7e7 2.9 label 8 M_\odot
+               

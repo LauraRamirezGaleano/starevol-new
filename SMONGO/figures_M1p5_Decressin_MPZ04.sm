@@ -1,0 +1,37 @@
+readmodels	readsi test_2.92_jnoconv_nosmoothl_MPZ04_0000207 1
+		readsi test_2.92_jnoconv_nosmoothl_MPZ04_0000387 2
+		readsi test_2.92_jnoconv_nosmoothl_MPZ04_0000578 3
+		nn 1,3
+
+Omprof		lweight 3
+		ilweight 3
+		sv 3
+  		location $($gx1 + 2500) $gx2 $($gy1+1500) $gy2
+  		expand 2.8 iexpand 2.8
+  		erase ie 0
+		nn 1,3
+		itoplabel 0
+		ctype 0 ltype 0
+		plot omega 1e-4
+		expand 2.5 xlabel r (R_\odot)
+		ylabel \Omega \times 10^4 (s^{-1})
+		relocate 1.3 5 label 1.5 M_\odot
+ 		ctype 0 relocate 1.41708 1.5 draw 1.41708 2
+		ctype 0 relocate 1.46106 1.5 draw 1.46106 2
+		ctype 0 ltype 0 relocate 0.123437 1.5 draw 0.123437 2
+		ctype red ltype 1 relocate 1.68563 1.5 draw 1.68563 2
+		ctype red ltype 1 relocate 1.81257 1.5 draw 1.81257 2
+		ctype red ltype 1 relocate 0.118515 1.5 draw 0.118515 2
+		ctype green3 ltype 2 relocate 2.07322 1.5 draw 2.07322 2
+		ctype green3 ltype 2 relocate 2.27849 1.5 draw 2.27849 2
+		expand 1.4
+		relocate 1.4 0.98 ctype 0 label X_c = 0.675
+		relocate 1.5 0.65 ctype red label X_c = 0.32
+		relocate 1.94 0.45 ctype green4 label X_c = 0.0
+		ctype 0
+  
+		location 3500 31000 3500 31000
+  		w
+  		rv 3
+
+

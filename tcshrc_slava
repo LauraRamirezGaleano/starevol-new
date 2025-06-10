@@ -1,0 +1,86 @@
+xhost +
+setenv DISPLAY localhost:10.0
+setenv HOSTNAME `hostname`
+cd $HOME
+echo Bonjour
+echo Environnement de calcul STAREVOL initialise sur $HOSTNAME
+setenv DIR_STAR /home/users/b/borisov/STAREVOL
+setenv DIR_INIT $DIR_STAR/EVOL/INIT/
+setenv DIR_EXE $DIR_STAR/EVOL/
+setenv DIR_BATCH $DIR_STAR/BATCH/
+setenv DIR_MODELS $DIR_STAR/MODELS/
+setenv DIR_EVOL $DIR_STAR/EVOL
+setenv DIR_RESEVOL $DIR_STAR/RESEVOL/
+setenv DIR_RESULTS $DIR_STAR/RESULTS/
+setenv DIR_SMONGO $DIR_STAR/SMONGO/
+setenv DIR_ANIM $DIR_STAR/SMONGO/ANIM/
+setenv DIR_SMEPS $DIR_STAR/SMONGO/FIGS/
+setenv DIR_SMMAC $DIR_STAR/SMONGO/
+setenv DIR_LIB $DIR_STAR/EVOL/CODE/LIB/
+setenv DIR_OPA $DIR_STAR/EVOL/CODE/OPACITY/LIB_EXT/GN93/
+setenv DIR_OPA2 $DIR_STAR/EVOL/CODE/OPACITY/LIB_NEW/
+setenv DIR_OPA3 $DIR_STAR/EVOL/CODE/OPACITY/SRC/Data/
+setenv DIR_OPAAGSS09 $DIR_STAR/EVOL/CODE/OPACITY/LIB_09/
+setenv DIR_OPAAY18 $DIR_STAR/EVOL/CODE/OPACITY/LIB_AY18/
+setenv DIR_OPAhoudek $DIR_STAR/EVOL/CODE/OPACITY/INTERPOL/v9/opal95/
+setenv DIRGRID_OPA $DIR_STAR/EVOL/CODE/OPACITY/LIB_GRID/
+setenv DIR_UTILS $DIR_STAR/EVOL/UTILS/
+setenv DIR_SUN $DIR_STAR/EVOL/UTILS/solar_calibration/
+setenv DIR_STARLOC $DIR_STAR/
+setenv DIR_BATCHLOC $DIR_STAR/BATCH/
+setenv DIR_MODELSLOC $DIR_STAR/MODELS/
+setenv DIR_RESEVOLLOC $DIR_STAR/RESEVOL
+setenv DIR_RESULTSLOC $DIR_STAR/RESULTS
+#setenv STAR_ATM PHOENIX
+setenv DIR_ATMP $DIR_STAR/EVOL/PHYSICS/ATMOSPHERE/PHOENIX/
+#setenv SOLCOMP AGS05
+#setenv SOLCOMP GN93
+#setenv SOLCOMP AGSS09
+setenv SOLCOMP AY18
+#setenv FORTRAN ifort
+#setenv FORTRAN pgf95
+setenv FORTRAN gfortran
+#setenv FORTRAN /dios/shared/apps/intel/Compiler/11.1/073/bin/intel64/ifort
+setenv BITSIZE "uname -p"
+#setenv FORTRAN32 /opt/intel/f32/bin/ifort
+#setenv FORTRAN_FLAGS  "-O2 -W1 -w -Vaxlib -static -no-ipo"
+#setenv FORTRAN_FLAGS  "-O2 -W1 -w -Vaxlib -static"
+
+
+#setenv FORTRAN_FLAGS  "-O2 -W1 -w -static -no-ipo"
+module load GCC/6.4.0-2.28
+setenv FORTRAN_FLAGS  "-O2 -w -static"
+
+#setenv LANG "en_CA"
+#setenv LANGUAGE "en_CA.UTF8"
+setenv PATH ${PATH}:/home/users/b/borisov/gcc-v4.8.3/bin
+
+setenv FORTRAN_DBFLAGS "-check all -warn all -gen_interfaces -C -g -traceback -fpe0 -fpstkchk -no-ipo"
+# For 64bits compiler
+ setenv DIR_ANIM $DIR_STAR/SMONGO/ANIM/
+ setenv DIR_SMEPS $DIR_STAR/SMONGO/
+ setenv DIR_SMMAC $DIR_STAR/SMONGO/
+ setenv OPTS_LAME "-V2 --vbr-new -q0 --lowpass 19.7"
+ setenv PATH ${PATH}:$DIR_STAR/BATCH
+ set autologout=0
+ set autoexpand
+ setenv CLICOLOR "true"
+ setenv LSCOLORS "Hxfxbxcxbxegedabagacad"
+#          #
+#          #
+ setenv FCOMPILER gfortran
+ setenv MESASDK_ROOT /Applications/mesasdk
+
+ alias ia='gzip modini.bin modang.bin'
+#
+#            # #set path=($path ~/PROG ${DIR_BATCH} /unige/warehouse1/intel-fc_8.0/bin/ /opt/csw/bin /dios/shared/apps/intel/Compiler/11.1/073/bin/intel64/)
+#            #
+ if (`echo $OSTYPE | cut -c 1-5` == "Linux") then
+     alias ls "ls --color"
+     alias l='ls -CF'
+                       #     endif
+
+     alias srunsm 'setenv TERM xterm; srun -p r3n --x11=all -n1 -N1 --pty --preserve-env --mpi=none /usr/local/bin/sm'
+     alias reg2 'ssh -XY regor2'
+     alias obsrac2 'ssh -XY obsrac2'
+ endif

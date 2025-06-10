@@ -1,0 +1,637 @@
+### -*-SM-*-
+#
+# Provide macros: init2d, all2d, all2dnew, all2dtransp, iso2d, vertbar
+#
+###
+
+init2d 01	
+  if ($?1 == 0) { define 1 ? { enter absolute structure star number}}
+  if ('$1' == 'x') {return}
+	
+  ## dimension of image
+  if ($?dim == 0) {define dim 50} 
+  define dim ? { dimension of image =>  50: fast+low quatity / 100:normal / 200:slow+high quality :}
+  define dim1 $($dim-1)
+  define step $(1/$dim)
+  image ($dim,$dim)
+
+  # define x variable
+  if ($?var2d == 0) {define var2d "r"}
+  define var2d ? { Variable for X axis (r or Mr)}
+  if ('$var2d' == 'x') {return}
+  defx $var2d
+  define nshtot $(dimen(r_$1)-1)
+  define Xstar $($var2d""_$1[$nshtot])
+
+  # define x limit
+  if ($?Xtot == 0) {define Xtot $Xstar }  
+  if ($Xtot > $Xstar) {define Xtot $Xstar} 
+  define Xtot ? < Maximal X value for plot ($var2d=$!Xstar):>
+  if ('$Xtot' == 'x') {return}
+
+  # define nsh(r)
+  set dimen(xx) = $dim
+  define myexpand 1.4
+  do i = 0,$dim1 {
+    define rx $($Xtot*$i*$step)
+    set temp = nsh_$1 if ($rx < $var2d""_$1)
+    set xx[$i] = temp[0]
+  }
+
+  # define label
+  set labpsi = <"\delta T(r,\theta)">
+  set labxlambda = <"\delta \mu(r,\theta)">
+  #set labpsi = <"\Psi(r,\theta)">
+  #set labxlambda = <"\Lambda(r,\theta)">
+  #set labUcirc = <"\rho r^2U_M(r,\theta)">
+  set labUcirc = <"\xi_M(r,\theta)">
+  set labUnorm = <"||U(r,\theta)||">
+
+  # define variables for contours and colors
+  if ($?var == 0) {define var 4}
+  define var ? { Amplitude for levels}
+  if ('$var' == 'x') {return}
+  if ($?niso == 0) {define niso 20}
+  define niso ? { Number of levels}
+  if ('$niso' == 'x') {return}
+
+  define init2d 1
+
+
+all2d	01
+  ### 1: structure number
+  if ($?1 == 0) { define 1 ? { enter absolute structure star number }}
+  if ('$1' == 'x') {return}
+
+  init2d $1 
+	
+  erase 
+  ie 0
+  location 3500 31000 3500 31000
+  window 2 2 1 1  
+  
+  # 2D plot for lambda
+  define var_ $var
+  if ($var > 3) { 
+    echo "$var" set to 3 for xlambda to avoid noise 
+    define var 3
+  }
+  iso2d xlambda $1 
+  if ($var_ > 3) {
+    define var $var_
+  }
+  vertbar 15100 3500
+
+  # 2D plot for psi
+  window 2 2 1 2
+  iso2d psi $1 
+  vertbar 15100 19000
+
+  # 2D plot for meridional current
+  window 2 2 2 2
+  iso2d Ucirc $1 
+  vertbar 31000 19000
+
+  # 2D plot for |U|
+  window 2 2 2 1
+  iso2d Unorm $1
+  vertbar 31000 3500
+  
+  window 1 1 1 1
+  ie 1 ix 1
+
+all2dnew 01
+  ### 1: structure number
+  if ($?1 == 0) { define 1 ? { enter absolute structure star number}}
+
+  init2d $1
+  define myexpand 1.001
+
+  local define x_gutter 0.8
+  local define y_gutter 0.8
+  
+  erase
+  ie 0
+  # Psi
+  window 3 3 1 3
+  iso2d psi $1
+  vertbar 10500 23700 300 7500
+
+  # xlambda
+  window 3 3 2 3
+  iso2d xlambda $1
+  vertbar 20800 23700 300 7500
+
+  # Ucirc
+  window 3 3 3 3
+  iso2d Ucirc $1
+  vertbar 31100 23700 300 7500
+
+  # Flux of angular momentum
+  window 3 3 1 2
+  fluxAM $1
+
+  # omega
+  window 3 3 2 2
+  plotl omega
+  dconv 1
+
+  # chemicals diffusion
+  window 3 3 3 2
+  diff $1
+  w
+  ie 1
+
+all2dtransp 01
+  ### 1: structure number
+  #-------------------------------
+  #       |  psi       |  lambda |
+  #-------------------------------
+  # omega |  CM        |  |CM|   |
+  #-------------------------------
+  # flux  |  bal therm |  Cdiff  |
+  #-------------------------------
+  if	($?1 == 0) {define 1 ? {Structure number ?}}
+  
+  #init2d $1
+  define myexpand 1.001
+
+  local define x_gutter 0.8
+  local define y_gutter 0.8
+  
+  erase
+  expand 1.001
+  location 3500 31000 3500 31000
+  ie 0
+  # Psi
+  expand 1.001
+  window 3 3 2 3
+  iso2d psi $1
+  vertbar 20800 23700 300 7500
+
+  # xlambda
+  window 3 3 3 3
+  iso2d xlambda $1
+  vertbar 31100 23700 300 7500
+
+  # Ucirc
+  window 3 3 2 2
+  iso2d Ucirc $1
+  vertbar 20800 13700 300 7500
+
+  # Unorm
+  window 3 3 3 2
+  iso2d Unorm $1
+  vertbar 31100 13700 300 7500
+
+  local define x_gutter 1.1
+  expand 0.7 iexpand 0.7
+  
+  # Flux of angular momentum
+  itoplabel 0
+  window 3 3 1 1
+  iy 0
+  ylim -17 -6
+  calcfluxAM $1
+  ibox 0 ictype 0 ixlabel 0 iylabel 0
+  ctype blue plotabslg Fluxshear
+  ctype red plotabslg Fluxcirc
+  ltype 2 ctype black plotabslg Fluxtot
+  expand 0.7 iexpand 0.7
+  ltype 0
+  ctype red  relocate $(($xsup-$xinf)*0.3) -7 label F_{MC},
+  ctype blue label  F_{S},
+  ctype black label  F_{tot}
+  box
+  dconv 0
+  xlabel $var2d  ($unit_x)
+  ylabel log(Flux/R_\odot^4)
+  ibox 1 iy 1 ictype 1 ixlabel 1 iylabel 1
+  expand 0.7
+  
+  # omega
+  expand 0.7
+  window 3 3 1 2
+  iylabel 0
+  iy 1
+  #ylim 1 3
+  plot  omega 1E-4
+  iy 1 iylabel 1
+  ylabel \Omega  (1O^{-4}/s)
+  dconv 1
+
+  expand 0.7
+  # chemicals diffusion
+  window 3 3 3 1
+  diff $1
+  relocate $(($xsup-$xinf)*0.2) 14
+  ctype cyan label K_T,
+  ctype black label  D_h,
+  ctype red label  D_{eff},
+  ctype blue label  D_v
+  ctype black
+
+  # balance thermique
+  expand 0.7
+  window 3 3 2 1
+  ylim -9 -2
+  define ictype 0 ixlabel 0 iylabel 0 ibox 0
+  ctype blue plotabslg UB
+  ctype red plotabslg UTh
+  ctype green plotabslg UNG
+  ctype magenta plotabslg UNS
+  ltype 2 ctype black plotabslg Ucirc
+  ltype 0 dconv 0
+  define ictype 1 ixlabel 1 iylabel 1 ibox 1
+  expand 0.7 iexpand 0.7
+  relocate $(($xsup-$xinf)*0.2) -2.5
+  ctype blue    label B,
+  ctype red     label  Th,
+  ctype green   label  N-G,
+  ctype magenta label  NS
+  ctype black box
+  xlabel $var2d  ($unit_x)
+  ylabel log(Ucirc)
+  itoplabel 1
+  
+  # toplabel
+  define _age $(times_$1*$seci)
+  set txt1 = sprintf('%.3f',<$(Mr_$1[dimen(Mr_$1)-1])>)
+  set txt2 = sprintf('%.3t yr',<$_age>)
+  set txt3 = sprintf('%.2f',<$(PXH1_$1[0])>)
+  set txt4 = sprintf('%.2f',<$(PXHe4_$1[0])>)
+  toplabel M(t) = $(txt1) M_\odot  -  t = $(txt2)  -  X_C(^1H) = $(txt3)  -  X_C(^4He) = $(txt4)
+  w
+  ie 1 
+ 	
+
+  
+iso2d 02
+  if ($?1 == 0) { define 1 ? { Variable name : psi, xlambda, Ucirc }}
+  if ('$1' == 'x') {return}
+  if ($?2 == 0) { define 2 ? { enter absolute structure star number}}
+  if ('$2' == 'x') {return}
+  # 1: variable (psi, xlambda, Ucirc)-- 2:model 
+  set _nnsav = nn
+  nn $2
+  
+  if ($ierase == 1) {erase}
+	
+  # Smooth meridional circulation
+  # May need some adjustments
+  if ('$1' == 'Ucirc' || '$1' == 'Unorm')	{
+    set CM = Ucirc_$2
+    do i = 1,$($nshtot-1) {
+    # remove inversion peak
+    if (CM[$i]*CM[$i+1]<0 && CM[$i]*CM[$i-1]<0) {
+      set CM[$i] = 0.5*(CM[$i-1]+CM[$i+1])
+    }
+    # remove too large variation of Ucirc
+    set CM3 = CM
+    if (CM[$i]!=0 && CM[$i+1]!=0 && CM[$i-1]!=0){
+      if (abs(CM[$i]/CM[$i+1])>2 && abs(CM[$i]/CM[$i-1])>2) {
+        set CM[$i] = 0.5*(CM[$i-1]+CM[$i+1])
+      }
+    }
+    }
+    smooth CM CM2 $(int($nshtot/20))
+    set CM = (yzi_$2 != 0) ? 0 : CM2
+    #set CM = (yzi == 0) ? CM2 : 0
+    #smooth  Ucirc_$2 CM 50
+    #set CM_$2 = C
+    #set CM = Ucirc_$2
+
+    # vitesse U_theta
+    set Unorm_$2 = 0*Ucirc_$2
+    set temp_$2 = rho_$2*r_$2**2*CM
+    deriv temp r
+    set Vcirc_$2 = 1/(6*rho_$2*r_$2+1E-30)*Dtemp_$2
+    addvar Vcirc_$2
+  }
+
+  define Xstar $($var2d""_$2[$nshtot])  
+  # Define image (need for contours plot)
+  do i = 0,$dim1 {
+    if ($i%10==1) {echo Build image upon var $1, seq: $i/$dim}
+    define xx $($var2d""_$2[xx[$i]])
+    do j = 0,$dim1 {
+      define yy $($var2d""_$2[xx[$j]])
+      define r $(sqrt($xx**2+$yy**2))
+      
+      if ($r>$Xstar) {
+      # If r(X,Y) > Xstar => image set to the surface value
+        set image[$i,$j] = $1""_$2[$nshtot]
+      }\
+      else {
+        set temp = nsh_$2 if ($r < $var2d""_$2)
+        define ind $(temp[0])
+        if ($ind > $nshtot) {define ind $nshtot}
+        if ('$1' == 'Ucirc') {
+          # rho*r^2*U*1/2*(cos^3(theta)-cos(theta))
+          define delta $(($var2d""_$2[$ind-1]-$r)/($var2d""_$2[$ind-1]-$var2d""_$2[$ind-2]))
+          set CM_r = CM[$ind-1]*rho_$2[$ind-1]*($rsun*r_$2[$ind-1])**1*$delta
+          set CM_r = CM_r+CM[$ind-2]*rho_$2[$ind-2]*($rsun*r_$2[$ind-2])**1*(1-$delta)
+          set image[$i,$j] = 0.5*CM_r*((cos(atan($xx/$yy)))**3-cos(atan($xx/$yy)))
+        }\
+        else {
+          if ('$1' == 'Unorm') {
+            define theta $(asin($xx/$r))
+            set image[$i,$j] = sqrt( (Ucirc_$2[$ind]*0.5*(3*cos($theta)**2-1))**2 + (Vcirc_$2[$ind]*(-1.5)*sin(2*$theta))**2)
+          }\
+          else {
+            # [psi/xlambda]*P2(cos(theta))*[T/mu]
+            if ('$1' == 'psi') {
+              set image[$i,$j] = T_$2[$ind]*$1""_$2[$ind]*(1.5*(cos(atan($xx/$yy)))**2-0.5)
+            }\
+            else {
+              if ('$1' == 'xlambda') {
+                set image[$i,$j] = mu_$2[$ind]*$1""_$2[$ind]*(1.5*(cos(atan($xx/$yy)))**2-0.5)
+              }\
+              else {
+                # other variable (V(r,theta) = V(r))
+                set image[$i,$j] = $1_$2[$ind]
+              }
+            }   
+          } 
+        }
+      }
+    }
+  }
+
+	# define levels for contours line
+  set dimen(Umax) = $dim
+  set dimen(Umin) = $dim
+  do i = 0,$dim1 {
+    set temp = image[$i,*]
+    sort <temp>
+    set Umin[$i] = temp[0]
+    set Umax[$i] = temp[$dim1]
+  }
+  sort <Umax>
+  define mymax $(Umax[$dim1]) 
+  sort <Umin>
+  define mymin $(Umin[0])
+  set mystep = 1/$niso,1,1/$niso
+  set levspos = $mymax*10**(-$var*(mystep))
+  #set levpos = $mymax*10**(-$var)*mystep
+  set levspos = reverse (levspos)
+  set levsneg = $mymin*10**(-$var*(mystep))
+
+  # set limits for contours plot
+  # contour use 0 to dimen(image) for its plot instead of 0 to Rsurf
+  limits 0 $(1.0*$dim) 0 $(1.0*$dim)
+
+  # choose range red color for positive levels 
+  define dimpos $(dimen(levspos)-1)
+  do i = 0,$dimpos {
+    #reset_ctype
+    #if ('$1' == 'xlambda') {
+    #  my_add_ctype 250 $(($i/$dimpos)**2*255%256) 0  
+    #}\
+    #else {
+      my_add_ctype 250 $(($i/$dimpos)**0.3*255%256) 0 
+    #}
+    #ctype new
+    set le = levspos[$dimpos-$i]
+    levels le
+    contour
+  }
+  
+  # choose range blue color for negative value
+  define dimneg $(dimen(levsneg)-1)
+  do i = 0,$dimneg {
+    #reset_ctype
+    my_add_ctype 0 $(sqrt($i/$dimneg)**0.3*255%256) 250
+    #ctype new
+    set le = levsneg[$i]
+    levels le
+    contour
+  }
+  ctype black
+
+  #add black line in shade area case
+  if ($dimpos>100) {
+    #set lev = $mymax*10**(-$var/do(1,10))
+    set lev = $mymax*10**(-$var*do(1,10)/10)
+    set lev = lev concat $mymin*10**(-$var*do(1,10)/10)
+    levels lev
+    contour
+  }
+	expand 1.0001
+
+  # draw surface$var2d
+  limits 0 $(1.0*$Xtot) 0 $(1.0*$Xtot)
+  if ($Xtot == $var2d""_$2[$nshtot]) {
+    set xxr = 0,99
+    set xxr = xxr*$Xtot/99
+    set yyr = sqrt($Xtot**2-xxr**2)
+    connect xxr yyr
+  }
+
+  # find convective border
+  nn $2
+  deriv yzi nsh 
+  set temp = nsh_$2 if (Dyzi_$2 != 0)
+  
+  do i = 0,$(dimen(temp)-1) {
+    define myr $($var2d""_$2[(temp[$i])])
+    set xx$i = 0,$dim1
+    set xx$i = xx$i*$myr/$dim1
+    set yy$i = sqrt(abs($myr**2-xx$i**2))
+    connect xx$i yy$i
+
+    if (yzi_$2[0] == 1) {
+      if ($i == 0) {
+      # shade convective core
+        angle 45
+        set newX = < 0 > concat xx0 concat < 0 >
+        set newY = < 0 > concat yy0 concat < 0 >
+        shade 200 newX newY     
+        angle 0
+      }\
+	    else {
+      # shade convective zone (with conv. core)
+        if ($i%2 == 0) {
+          angle 45
+          set myXX = xx$i
+          set myYY = yy$i
+          do j = 0,$dim1 {
+            set myXX[$j] = xx$i[$dim1-$j]
+            set myYY[$j] = yy$i[$dim1-$j]
+          }
+          set newX = myXX concat xx$($i-1)
+          set newY = myYY concat yy$($i-1)
+          shade 200 newX newY     
+          angle 0
+        }
+      }
+    }\
+    else {
+    # shade convective zone (without conv. core)
+      if ($i%2 != 0) {
+        angle 45
+        set myXX = xx$i
+        set myYY = yy$i
+        do j = 0,$dim1 {
+          set myXX[$j] = xx$i[$dim1-$j]
+          set myYY[$j] = yy$i[$dim1-$j]
+        }
+        set newX = myXX concat xx$($i-1)
+        set newY = myYY concat yy$($i-1)
+        shade 200 newX newY     
+        angle 0
+      }
+    }
+  } 
+
+  #set physical limits for drawing surface and convective zones 
+  expand $myexpand
+  box 1 2 4 4
+  if ('$var2d' == 'r') {
+    xlabel $var2d  (R_\odot)
+    ylabel $var2d  (R_\odot)
+  }\
+  else {
+    xlabel $var2d  (M_\odot)
+    ylabel $var2d  (M_\odot)
+  }
+  set boxX = <0.60 0.60 0.96 0.96>   set boxX = boxX*$Xtot
+  set boxY = <0.95 0.82 0.82 0.95>   set boxY = boxY*$Xtot
+  ctype white
+  shade 0 boxX boxY
+  ctype black 
+  relocate $(0.6*$Xtot) $(0.85*$Xtot)
+  label $(lab$1[0])
+  expand 1
+  set nn = _nnsav
+
+my_add_ctype 3
+  if ($ipasscolor == 0) {
+    set tt = CTYPE()
+    CTYPE	= CTYPE(STRING) concat 'new'
+    define ipasscolor 1
+  }    
+  CTYPE = tt concat $1 + 256*($2 + 256*$3)
+  ctype new
+  
+vertbar 04
+  # 1:abscissa 2:ordonne optional: 3:length 4:heigh
+  window 1 1 1 1
+  #location $1 $($1+600) $2 $($2+12000)
+  if ($?3 == 0) {define 3 600}
+  if ($?4 == 0) {define 4 12000}
+  location $1 $($1+$3) $2 $($2+$4)
+  limits 0 1 $mymin $mymax
+  box 3 3 3 3
+  do i = 0,$dimpos {
+    define step $($i/$niso)
+    #reset_ctype
+    my_add_ctype 250 $(sqrt($i/$dimneg)**0.3*255%256) 0
+    #ctype new 
+    relocate 0 $($mymax*10**(-$var*$step)) 
+    draw 1e4 $($mymax*10**(-$var*$step))
+  }
+  do i = 0,$dimneg {
+    define step $($i/$niso)
+    #reset_ctype
+    my_add_ctype 0 $(sqrt($i/$dimneg)**0.3*255%256) 250
+    #ctype new
+    relocate 0 $($mymin*10**(-$var*$step)) 
+    draw 1e4 $($mymin*10**(-$var*$step))
+  }
+  expand $(0.7*$myexpand)
+  #angle 45
+  #palette
+  ctype black
+
+  #add black line in shade area case
+  if ($dimpos>100) {
+    #set lev = $mymax*10**(-$var/do(1,10))
+    set lev = $mymax*10**(-$var*do(1,10)/10)
+    set lev = lev concat $mymin*10**(-$var*do(1,10)/10)
+    foreach l lev {
+      relocate 0 $l draw 1e4 $l
+    }
+  }
+  
+  relocate 0 0 putlabel 4 0 
+	relocate ($($1-600) $($2-100))
+  set txt = sprintf('%.2e',<$mymin>)
+  putlabel 2 $(txt)  
+	relocate ($($1-600) $($2+$4+100))
+  set txt = sprintf('%.2e',<$mymax>)
+  putlabel 8 $(txt)
+  location 3500 31000 3500 31000
+  expand 1.001
+  angle 0
+	
+init2dnoquestion 01	
+  ### 1: structure number
+  if ($?1 == 0) { define 1 ? { enter absolute structure star number}}
+	
+  ## dimension of image
+  define dim 50
+  define dim1 $($dim-1)
+  define step $(1/$dim)
+  image ($dim,$dim)
+
+  # dimension of radius and nsh
+  define var2d "r"
+  defx $var2d
+  define nshtot $(dimen(psi_$1)-1)  
+  define Xstar $($var2d""_$1[$nshtot]) 
+  define Xtot $Xstar
+
+  set dimen(xx) = $dim
+  define myexpand 1.001
+
+  # define nsh(r)
+  do i = 0,$dim1 {
+    define rx $($Xtot*$i*$step)
+    set temp = nsh_$1 if ($rx < $var2d""_$1)
+    set xx[$i] = temp[0]
+  }
+
+  # define label
+  #set labpsi = <"\Psi(r,\theta)">
+  #set labxlambda = <"\Lambda(r,\theta)">
+  set labpsi = <"\delta T(r,\theta)">
+  set labxlambda = <"\delta \mu (r,\theta)">
+  #set labUcirc = <"\rho r^2U_M(r,\theta)">
+  set labUcirc = <"\xi_M(r,\theta)">
+  set labUnorm = <"||U(r,\theta)||">
+
+  # define variables for contours and colors
+  define var 3
+  define niso 20
+
+  define init2d 1
+
+  
+  ############
+  # MAN PAGE #
+  ############
+
+sm_init2d 
+  Initialized some quantities for 2D plot of angular variable.
+  Ask for dimension if image, maximal radius for drawing, amplitude of
+  the isocontour lines and their number.
+  Arg: init2d "structure number"
+    Ex: initd2d 1
+sm_iso2d
+  Draw the 2D contour plot of an angular variable. For now, this work
+  only with "psi", "xlambda" and "Ucirc".
+  For G(r)=psi or G(r)=xlambda, the 2D fonction is F(r,theta)=G(r)P2(cos(theta))
+  For G(r)=Ucirc, the 2D fonction is F(r,theta=1/2*r^2*rho*G(r)*(cos^3theta-cos(theta))
+  Need that init2d is initialized before running iso2d.
+  Argument: "Variable" "Structure number"
+    Ex: iso2d psi 1
+	iso2d Ucirc 3
+sm_all2d
+  Draw the 2D plot of the angular variables (psi, xlambda and Ucirc) in the same page. Omega profile is also included.
+  Arg: all2d "structure number"
+    Ex: all2d 1
+sm_verbar
+  Draw box where contour levels are indicated in relative values.
+  Also indicate extremum values.
+

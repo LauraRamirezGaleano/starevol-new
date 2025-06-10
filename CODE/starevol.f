@@ -410,7 +410,11 @@ c            enddo
      $        .and.idiffty.gt.0) then
          do i = 1,nis+6
             xspsol(i) = xspref(14,i)
-         enddo  
+         enddo 
+      elseif (refsolar.eq.'AGSS09') then !LAURA ADDED 2024/11/19
+         do i = 1,nis+6
+            xspsol(i) = xspref(3,i)
+         enddo 
       else
          stop 'Wrong solar composition, check $SOLCOMP variable'
       endif

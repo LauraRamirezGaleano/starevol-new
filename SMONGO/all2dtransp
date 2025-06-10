@@ -1,0 +1,131 @@
+all2dtransp 01
+  ### 1: structure number
+  #-------------------------------
+  #       |  psi       |  lambda |
+  #-------------------------------
+  # omega |  CM        |  |CM|   |
+  #-------------------------------
+  # flux  |  bal therm |  Cdiff  |
+  #-------------------------------
+  if	($?1 == 0) {define 1 ? {Structure number ?}}
+  
+  #init2d $1
+  define myexpand 1.001
+
+  local define x_gutter 0.8
+  local define y_gutter 0.8
+  
+  erase
+  expand 1.001
+  location 3500 31000 3500 31000
+  ie 0
+  # Psi
+  expand 1.001
+  window 3 3 2 3
+  iso2d psi $1
+  vertbar 20800 23700 300 7500
+
+  # xlambda
+  window 3 3 3 3
+  iso2d xlambda $1
+  vertbar 31100 23700 300 7500
+
+  # Ucirc
+  window 3 3 2 2
+  iso2d Ucirc $1
+  vertbar 20800 13700 300 7500
+
+  # Unorm
+  window 3 3 3 2
+  iso2d Unorm $1
+  vertbar 31100 13700 300 7500
+
+  local define x_gutter 1.1
+  expand 0.7 iexpand 0.7
+  
+  # Flux of angular momentum
+  itoplabel 0
+  window 3 3 1 1
+  iy 0
+  ylim -17 -6
+  calcfluxAM $1
+  ibox 0 ictype 0 ixlabel 0 iylabel 0
+  set Fluxshear_$1 = abs(Fluxshear_$1)
+  set Fluxcirc_$1 = abs(Fluxcirc_$1)
+  set Fluxtot_$1 = abs(Fluxtot_$1)
+  ltype 2 ctype blue plotabslg Fluxshear
+  ltype 3 ctype red plotabslg Fluxcirc
+  ltype 1 ctype black plotabslg Fluxtot
+  expand 0.7 iexpand 0.7
+  ltype 0
+  ctype red  relocate $(($xsup-$xinf)*0.3) -7 label F_{MC},
+  ctype blue label  F_{S},
+  ctype black label  F_{tot}
+  box
+  dconv 0
+  xlabel $var2d  ($unit_x)
+  ylabel log(|Flux/R_\odot^4|)
+  #ylabel log(Flux/R_\odot^4)
+  ibox 1 iy 1 ictype 1 ixlabel 1 iylabel 1
+  expand 0.7
+  
+  # omega
+  expand 0.7
+  window 3 3 1 2
+  iylabel 0
+  iy 1
+  #ylim 1 3
+  plot  omega 1E-4
+  iy 1 iylabel 1
+  ylabel \Omega  (1O^{-4}/s)
+  dconv 1
+
+  expand 0.7
+  # chemicals diffusion
+  window 3 3 3 1
+  diff $1
+  relocate $(($xsup-$xinf)*0.2) 14
+  ctype cyan label K_T,
+  ctype black label  D_h,
+  ctype red label  D_{eff},
+  ctype blue label  D_v
+  ctype black
+
+  # balance thermique
+  expand 0.7
+  window 3 3 2 1
+  ylim -9 -2
+  define ictype 0 ixlabel 0 iylabel 0 ibox 0
+  set UB_$1 = abs(UB_$1)
+  set UTh_$1 = abs(UTh_$1)
+  set UNG_$1 = abs(UNG_$1)
+  set UNS_$1 = abs(UNS_$1)
+  set Ucirc_$1 = abs(Ucirc_$1)
+  ltype 1 ctype blue plotabslg UB
+  ltype 3 ctype red plotabslg UTh
+  ltype 0 ctype green plotabslg UNG
+  ltype 4 ctype magenta plotabslg UNS
+  ltype 2 ctype black plotabslg Ucirc
+  ltype 0 dconv 0
+  define ictype 1 ixlabel 1 iylabel 1 ibox 1
+  expand 0.7 iexpand 0.7
+  relocate $(($xsup-$xinf)*0.2) -2.5
+  ctype blue    label B,
+  ctype red     label  Th,
+  ctype green   label  N-G,
+  ctype magenta label  NS
+  ctype black box
+  xlabel $var2d  ($unit_x)
+  ylabel log(|U_2|)
+  #ylabel log(Ucirc)
+  itoplabel 1
+  
+  # toplabel
+  define _age $(times_$1*$seci)
+  set txt1 = sprintf('%.3f',<$(Mr_$1[dimen(Mr_$1)-1])>)
+  set txt2 = sprintf('%.3t yr',<$_age>)
+  set txt3 = sprintf('%.2f',<$(PXH1_$1[0])>)
+  set txt4 = sprintf('%.2f',<$(PXHe4_$1[0])>)
+  toplabel M(t) = $(txt1) M_\odot  -  t = $(txt2)  -  X_C(^1H) = $(txt3)  -  X_C(^4He) = $(txt4)
+  w
+  ie 1

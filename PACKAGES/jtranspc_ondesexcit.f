@@ -14,6 +14,7 @@
       SUBROUTINE DIF_OMEGA (ndb,ndt,neqj,ncls,nclc,times,error)
 
 *-----------------------------------------------------------------------
+* -French-
 * Cette routine permet de faire le calcul de l'evolution du moment
 * cinetique.  Le profil de rotation interne va aussi fournir
 * le coefficient de transport turbulent.
@@ -31,11 +32,28 @@
 *     nclc = nombre de CL au centre associees au syst. a resoudre
 *     times = age du modele (en annees)
 *-----------------------------------------------------------------------
+* -English-
+* This routine calculates the evolution of the angular momentum.
+* The internal rotation profile will also provide
+* the turbulent transport coefficient.
+
+* DIF_OMEGA is called by DIFFUSION,
+* and calls NORM, CONS_L, CI, LAMBDA, HEN_OMEGA, CDIFF, ROT_SOL,
+*           ASSYMPT3, CAL_DH
+*
+*
+* Arguments:
+*
+*     ndt = upper bound of the mixing zone
+*     neqj = number of equations in the system to be solved
+*     ncls = number of surface CLs associated with the system to be solved
+*     nclc = number of center CLs associated with the system to be solved
+*     times = model age (in years)
+*-----------------------------------------------------------------------
 
       implicit none
 
       include 'evolpar.star'
-
       include 'evolcom.cons'
       include 'evolcom.conv'
       include 'evolcom.data'
@@ -404,7 +422,7 @@ c            implicit_wave = .false.
          enddo
          
          call hen_omega (ndb,ndt,neqj,ncls,nclc,pcol,dtom,alph,times,
-c     &        xjmod,error,depotwaves)
+         ! c              &        xjmod,error,depotwaves)
      &        xjmod,error)
          
 
@@ -5289,6 +5307,10 @@ c     if (ndt0+nl.gt.nmod) ndt0 = nmod-nl
 
 *-------------------------------------------------------------------
 * Lissage de la quantite y par moyenne arithmetique
+* Auteur: S.Talon
+* Derniere version: 20 septembre 1995
+*-------------------------------------------------------------------
+* Smoothing quantity y by arithmetic mean
 * Auteur: S.Talon
 * Derniere version: 20 septembre 1995
 *-------------------------------------------------------------------

@@ -116,8 +116,8 @@ DIR_BASE=$(shell basename ${PWD})
 
 # Installation directories (default directories)
 IDIR_CODE = $(DIR_EVOL)/CODE
-DIR_NUC = $(IDIR_CODE)/../LIBNUC
-DIR_OPA = $(IDIR_CODE)/../LIB
+DIR_NUC = $(IDIR_CODE)/../NUCLEAR
+DIR_OPA = $(IDIR_CODE)/../OPACITY
 DIR_NUM = $(IDIR_CODE)/../LIBNUM
 DIR_PACK = $(IDIR_CODE)/../PACKAGES
 DIR_FLAME = $(IDIR_CODE)/../FLAME

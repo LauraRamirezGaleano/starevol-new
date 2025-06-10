@@ -1,0 +1,16 @@
+startup2
+  define mfiles < stats utils surfaces irregular colours > 
+  foreach f ( mongo $mfiles) { macro read "$!macro"$f }
+  overload surface 1
+  overload viewpoint 1
+  colours
+  macro read "/Users/laura/CALCULS/starevol/SMONGO/evol.sm"
+  define user "Laura"
+  define smdir "/Users/laura/CALCULS/starevol/SMONGO"
+  define smprog "/Users/laura/CALCULS/starevol/SMONGO/PROG"
+  define smevol "/Users/laura/CALCULS/RESEVOL"
+  define smobs "/Users/laura/CALCULS/starevol/SMONGO/OBS"
+  define smresults "/Users/laura/CALCULS/RESULTS"
+  define iresetevol 0
+  define iresetstruc 0
+  initevolsm

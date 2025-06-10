@@ -1,0 +1,53 @@
+init2d 01	
+  if ($?1 == 0) { define 1 ? { enter absolute structure star number}}
+  if ('$1' == 'x') {return}
+	
+  ## dimension of image
+  if ($?dim == 0) {define dim 50} 
+  define dim ? { dimension of image =>  50: fast+low quatity / 100:normal / 200:slow+high quality :}
+  define dim1 $($dim-1)
+  define step $(1/$dim)
+  image ($dim,$dim)
+
+  # define x variable
+  if ($?var2d == 0) {define var2d "r"}
+  define var2d ? { Variable for X axis (r or Mr)}
+  if ('$var2d' == 'x') {return}
+  defx $var2d
+  define nshtot $(dimen(r_$1)-1)
+  define Xstar $($var2d""_$1[$nshtot])
+
+  # define x limit
+  if ($?Xtot == 0) {define Xtot $Xstar }  
+  if ($Xtot > $Xstar) {define Xtot $Xstar} 
+  define Xtot $Xstar
+  define Xtot ? < Maximal X value for plot ($var2d=$!Xstar):>
+  if ('$Xtot' == 'x') {return}
+
+  # define nsh(r)
+  set dimen(xx) = $dim
+  define myexpand 1.4
+  do i = 0,$dim1 {
+    define rx $($Xtot*$i*$step)
+    set temp = nsh_$1 if ($rx < $var2d""_$1)
+    set xx[$i] = temp[0]
+  }
+
+  # define label
+  set labpsi = <"\delta T(r,\theta)">
+  set labxlambda = <"\delta \mu(r,\theta)">
+  #set labpsi = <"\Psi(r,\theta)">
+  #set labxlambda = <"\Lambda(r,\theta)">
+  #set labUcirc = <"\rho r^2U_M(r,\theta)">
+  set labUcirc = <"\xi_M(r,\theta)">
+  set labUnorm = <"||U(r,\theta)||">
+
+  # define variables for contours and colors
+  if ($?var == 0) {define var 4}
+  define var ? { Amplitude for levels}
+  if ('$var' == 'x') {return}
+  if ($?niso == 0) {define niso 20}
+  define niso ? { Number of levels}
+  if ('$niso' == 'x') {return}
+
+  define init2d 1

@@ -11,6 +11,7 @@
 *        writing of binary files, including crash cases                *
 *  flag  = 0 : first reading                                           *
 *  flag <> 0 : failed computation, reload previous model               *
+* LR MODIFICATIONS 20250407
 ************************************************************************
 
       implicit none
@@ -36,7 +37,8 @@
       include 'evolcom.therm2'
       include 'evolcom.transp'
       include 'evolcom.var'
-
+      include 'evolcom.igw' !LR 20250319
+ 
       integer nspr
       integer error,last_model
       integer i,j,k,l,kl,jl,it
@@ -57,6 +59,7 @@
       double precision vvar(4,nsh)
       double precision eta,degpe,rhpsi
       double precision fscr
+      !double precision lumwave(nsh) !LR 20250319
 
       common /saveMS/ elemsave
       common /hydrodyn/ Lmax,tmax,Mackmax,enucmax,itmax,ishockb,ishockt
@@ -68,6 +71,7 @@
       common /edegen/ eta(nsh),degpe(nsh),rhpsi(nsh)
       common /funcscr/ fscr(nsh,nscr)
       common /overshoot/ klcore,klenv,klpulse
+      !common /lumwave/ lumwaves !LR 20250319
 
       dimension y(nsp),xspr(nsh,100),vxspr(nsh,100),mtotlosr(100)
 
@@ -105,6 +109,7 @@ c..   compatibility check
          mdredgeup = totm*msun
       endif
       do k = 1,nmod
+         !print *,'lumwaves(k)=',lumwave(k) !LR 20250319
          crz(k) = 0
          if (crzc(k).eq.'c') crz(k) = -2 
          if (crzc(k).eq.'a') crz(k) = -1 
@@ -143,6 +148,13 @@ c..   compatibility check
  100     format (1x,' INITIAL COMPOSITION : Z = ',0pf8.6,' , [Fe/H] = ',
      &        0pf7.4)
       endif
+
+   !    !LR 20250319
+      ! print *, 'nmod=', nmod
+      ! do k = 1,nmod
+      !    print *, 'After reading, lumwave(', k,')=', lumwave(k)
+      ! enddo
+
       if (nspr+2.gt.nsp) then
          write (nout,*) 'binary conversion : MASSIVE --> EVOL format'
          do k = 1,nmod
@@ -569,6 +581,6 @@ c.. second order accuracy in the spatial deriatives
          klenv = nsconv
          if (accphase.eq.0) call thermo (error)
       endif
-      
+      !print *,'lumwave (end)=',lumwave !LR 20250319
       return
       end

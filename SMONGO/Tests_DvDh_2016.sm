@@ -1,0 +1,662 @@
+readevo	readi M3.0_testDvZahn92DhMPZ2004_vzams200kms_dshear TEST_DhMathis2016 0 0 1
+   	readi M3.0_testDvZahn92DhZahn1992_vzams200kms_dshear TEST_DhMathis2016 0 0 2 
+   	readi M3.0_testDvZahn92DhMathis2006_vzams200kms_dshear TEST_DhMathis2016 0 0 3 
+   	readi M3.0_testDvTZ97DhMathis2006_vzams200kms_dshear TEST_DhMathis2016 0 0 4   
+   	readi M3.0_testDvTZ97DhMPZ2004_vzams200kms_dshear TEST_DhMathis2016 0 0 5  
+   	readi M3.0_testDvTZ97DhZahn1992_vzams200kms_dshear TEST_DhMathis2016 0 0 6    
+   	readi M3.0_testDvPrat2016DhZahn1992_vzams200kms_dshear TEST_DhMathis2016 0 0 7
+   	readi M3.0_testDvPrat2016DhMPZ2004_vzams200kms_dshear TEST_DhMathis2016 0 0 8
+   	readi M3.0_testDvPrat2016DhMathis2016_vzams200kms_dshear TEST_DhMathis2016 0 0 9
+
+readevo20 readi M20FeH0Eover0.1v233_DvP16DhM16 TEST_DhMathis2016 0 0 1
+	  readi M20FeH0Eover0.1v233_DvP16DhZ92_newsolcalib TEST_DhMathis2016 0 0 2
+	  readi M20FeH0Eover0.1v233_DvTZ97DhZ92_newsolcalib TEST_DhMathis2016 0 0 3
+	  readi M20FeH0Eover0.1v233_DvZ92DhM16_newsolcalib TEST_DhMathis2016 0 0 4
+	  
+	
+
+readstruc  readsi M3.0_testDvZahn92DhZahn1992_vzams200kms_dshear_0000383 1    
+	   readsi M3.0_testDvZahn92DhZahn1992_vzams200kms_dshear_0002083 2
+	   readsi M3.0_testDvZahn92DhZahn1992_vzams200kms_dshear_0008170 3
+	   readsi M3.0_testDvZahn92DhZahn1992_vzams200kms_dshear_0009270 4
+	   readsi M3.0_testDvZahn92DhMPZ2004_vzams200kms_dshear_0000237 5   
+	   readsi M3.0_testDvZahn92DhMPZ2004_vzams200kms_dshear_0000366 6   
+	   readsi M3.0_testDvZahn92DhMPZ2004_vzams200kms_dshear_0000526 7   
+	   readsi M3.0_testDvZahn92DhMPZ2004_vzams200kms_dshear_0000726 8   
+	   readsi M3.0_testDvZahn92DhMathis2006_vzams200kms_dshear_0000275 9  
+	   readsi M3.0_testDvZahn92DhMathis2006_vzams200kms_dshear_0000584 10  
+	   readsi M3.0_testDvZahn92DhMathis2006_vzams200kms_dshear_0000763 11  
+	   readsi M3.0_testDvZahn92DhMathis2006_vzams200kms_dshear_0001263 12  
+	   readsi M3.0_testDvTZ97DhZahn1992_vzams200kms_dshear_0000237 13
+	   readsi M3.0_testDvTZ97DhZahn1992_vzams200kms_dshear_0000355 14
+	   readsi M3.0_testDvTZ97DhZahn1992_vzams200kms_dshear_0000490 15
+	   readsi M3.0_testDvTZ97DhZahn1992_vzams200kms_dshear_0000652 16
+	   readsi M3.0_testDvTZ97DhMPZ2004_vzams200kms_dshear_0000237 17   
+	   readsi M3.0_testDvTZ97DhMPZ2004_vzams200kms_dshear_0000355 18   
+	   readsi M3.0_testDvTZ97DhMPZ2004_vzams200kms_dshear_0000492 19   
+	   readsi M3.0_testDvTZ97DhMPZ2004_vzams200kms_dshear_0000661 20   
+	   readsi M3.0_testDvTZ97DhMathis2006_vzams200kms_dshear_0000236 21
+	   readsi M3.0_testDvTZ97DhMathis2006_vzams200kms_dshear_0000354 22
+	   readsi M3.0_testDvTZ97DhMathis2006_vzams200kms_dshear_0000491 23
+	   readsi M3.0_testDvTZ97DhMathis2006_vzams200kms_dshear_0000663 24
+	   readsi M3.0_testDvPrat2016DhMathis2016_vzams200kms_dshear_0000267 25
+	   readsi M3.0_testDvPrat2016DhMathis2016_vzams200kms_dshear_0000485 26
+	   readsi M3.0_testDvPrat2016DhMathis2016_vzams200kms_dshear_0000649 27
+	   readsi M3.0_testDvPrat2016DhMathis2016_vzams200kms_dshear_0001049 28
+	   readsi M3.0_testDvPrat2016DhMPZ2004_vzams200kms_dshear_0000238 29
+	   readsi M3.0_testDvPrat2016DhMPZ2004_vzams200kms_dshear_0000369 30
+	   readsi M3.0_testDvPrat2016DhMPZ2004_vzams200kms_dshear_0000529 31
+	   readsi M3.0_testDvPrat2016DhMPZ2004_vzams200kms_dshear_0000729 32
+	   readsi M3.0_testDvPrat2016DhZahn1992_vzams200kms_dshear_0000295 33
+	   readsi M3.0_testDvPrat2016DhZahn1992_vzams200kms_dshear_0002102 34
+
+readstruc20	   readsi M20FeH0Eover0.1v233_DvP16DhM16_0000448 1
+		   readsi M20FeH0Eover0.1v233_DvP16DhM16_0000700 2
+		   readsi M20FeH0Eover0.1v233_DvP16DhM16_0001565 3
+		   readsi M20FeH0Eover0.1v233_DvP16DhM16_0000728 11
+		   readsi M20FeH0Eover0.1v233_DvP16DhZ92_0000449 4
+		   readsi M20FeH0Eover0.1v233_DvP16DhZ92_0000806 5
+		   readsi M20FeH0Eover0.1v233_DvP16DhZ92_0001981 6
+		   readsi M20FeH0Eover0.1v233_DvP16DhZ92_0000857 12
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhMPZ04_0000454 7
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhMPZ04_0000684 8
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhMPZ04_0001326 9
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhMPZ04_0001226 10
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhMPZ04_0000708 13
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhZ92_0000453 14
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhZ92_0000663 15
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhZ92_0001305 16
+
+
+readstruc20b	   readsi M20FeH0Eover0.1v233_DvP16DhZ92_newsolcalib_0000485 1
+		   readsi M20FeH0Eover0.1v233_DvP16DhZ92_newsolcalib_0000771 2
+		   readsi M20FeH0Eover0.1v233_DvP16DhZ92_newsolcalib_0001656 3
+		   readsi M20FeH0Eover0.1v233_DvZ92DhM16_newsolcalib_0000477 4
+		   readsi M20FeH0Eover0.1v233_DvZ92DhM16_newsolcalib_0000759 5
+		   readsi M20FeH0Eover0.1v233_DvZ92DhM16_newsolcalib_0001736 6
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhZ92_newsolcalib_0000504 7
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhZ92_newsolcalib_0000743 8
+		   readsi M20FeH0Eover0.1v233_DvTZ97DhZ92_newsolcalib_0001119 9
+		   
+
+Evolmassive	  itoplabel 0
+		  toplabel 20 Msun, Zsun, Mai 2016
+		  window 1 1 1 1
+		  nn 1,4
+		  defx Teff
+		  ixinv 1
+		  ylim 4.6 5.12
+		  xlim 36000 16000
+		  plotl L
+		  ctype red expand 2 ptype 50 3 points (34252) (4.645)
+		  ctype red expand 2 ptype 50 3 points (31392) (4.83)
+		  ctype red expand 2 ptype 50 3 points (25146) (5.056)
+		  expand 1.2 relocate 30000 4.62 label Dv P16, Dh Z92
+		  ctype green4 expand 1.2 relocate 30000 4.75 label Dv TZ97, Dh Z92
+		  ctype blue expand 2 ptype 50 3 points (34217) (4.642)
+		  ctype blue expand 2 ptype 50 3 points (31241.) (4.796)
+		  ctype blue expand 2 ptype 50 3 points (26674) (4.947)
+		  expand 1.2 relocate 30000 4.66 label Dv TZ97, Dh MPZ04
+		  ctype 0 expand 2 ptype 50 3 points (34193) (4.644)
+		  ctype 0 expand 2 ptype 50 3 points (31100) (4.825)
+		  ctype 0 expand 2 ptype 50 3 points (23752) (5.017)
+		  expand 1.2 relocate 30000 4.7 label Dv P16, Dh M16
+		  
+
+Evolution  itoplabel 0
+	   toplabel 3 M_\odot, Z_\odot, April 2016
+	   window 2 2 1 2
+	   nn < 1 2 5 6 8> #nn 1,4 #nn 1,9
+	   hrd 1
+	   ie 0
+	   window 2 2 2 2
+	   defx Teff
+	   ixinv 1
+	   Li
+	   window 2 2 1 1
+	   defx t
+	   plot conv1_Mt
+	   relocate 5e7 2.8 ctype 0 expand 0.9 label Dv Z92, Dh MPZ04
+	   relocate 5e7 2.6 ctype red expand 0.9 label Dv Z92, Dh Z92
+	   #relocate 5e7 2.4 ctype green3 expand 0.9 label Dv Z92, Dh M16
+	   #relocate 5e7 2.2 ctype blue expand 0.9 label Dv TZ97, Dh M16
+	   #relocate 5e7 2 ctype cyan expand 0.9 label Dv TZ97, Dh MPZ04
+	   relocate 5e7 2.4 ctype green3 expand 0.9 label Dv TZ97, Dh MPZ04
+	   #relocate 5e7 1.8 ctype magenta expand 0.9 label Dv TZ97, Dh Z92
+	   relocate 5e7 2.2 ctype blue expand 0.9 label Dv TZ97, Dh Z92
+	   #relocate 5e7 1.6 ctype orange3 expand 0.9 label Dv P16, Dh Z92
+	   #relocate 5e7 1.4 ctype lightblue expand 0.9 label Dv P16, Dh MPZ04
+	   relocate 5e7 2 ctype cyan expand 0.9 label Dv P16, Dh MPZ04
+	   #relocate 5e7 1.2 ctype merlot expand 0.9 label Dv P16, Dh M16
+	   expand 1.1 ctype 0
+	   window 2 2 2 1
+	   plot vsurf
+	   ie 1
+
+Rotation   gos
+	   ibox 0 ixlabel 0
+	   window -3 -3 1 3
+	   nn 1,4
+	   ylim 2 30 
+	   plot omega 1e-5
+	   box 0 2 0 0
+	   ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 0.2 25 label Dv Z92, Dh Z92
+	   expand 1.1
+	   #toplabel Dv Z92, Dh Z92
+	   ie 0
+	   window -3 -3 1 2
+	   nn 5,8
+	   iy 0
+	   plot omega 1e-5
+	   box 0 2 0 0
+	   ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 0.2 25 label Dv Z92, Dh MPZ04
+	   expand 1.1
+	   #toplabel Dv Z92, Dh MPZ04
+	   window -3 -3 1 1
+	   nn 9,12
+	   iy 0
+	   plot omega 1e-5
+	   box 1 2 0 0
+	   xlabel Mr (M_\odot)
+	   ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 0.2 25 label Dv Z92, Dh M16
+	   expand 1.1
+	   iylabel 0
+	   window -3 -3 2 3
+	   nn 13,16
+	   iy 0
+	   plot omega 1e-5
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 25 label Dv TZ97, Dh Z92
+	   expand 1.1
+	   window -3 -3 2 2
+	   nn 17,20
+	   iy 0
+	   plot omega 1e-5
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 25 label Dv TZ97, Dh MPZ04
+	   expand 1.1
+	   window -3 -3 2 1
+	   nn 21,24
+	   iy 0
+	   plot omega 1e-5
+	   box 1 0 0 0
+	   expand 0.9
+	   relocate 0.2 25 label Dv TZ97, Dh M16
+	   expand 1.1
+	   xlabel Mr (M_\odot)
+	   window -3 -3 3 1
+	   nn 25,28
+	   iy 0
+	   plot omega 1e-5
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 25 label Dv P16, Dh M16
+	   expand 1.1
+	   xlabel Mr (M_\odot)
+	   window -3 -3 3 2
+	   nn 29,32
+	   iy 0
+	   plot omega 1e-5
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 25 label Dv P16, Dh MPZ04
+	   expand 1.1
+	   window -3 -3 3 3
+	   nn 33,34
+	   iy 0
+	   plot omega 1e-5
+	   box 1 0 0 0
+	   expand 0.9
+	   relocate 0.2 25 label Dv P16, Dh Z92
+	   expand 1.1
+
+Rotation20   gos
+	   ibox 0 ixlabel 0
+	   window -2 -2 1 1
+	   nn 1,3
+	   ylim 0 11
+	   xlim -1 18
+	   defx r
+	   plot omega 1e-5
+	   box 1 2 0 0
+	   xlabel r (R_\odot)
+	   ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 5 10 label Dv P16, Dh M16
+	   expand 1.1
+	   #toplabel Dv Z92, Dh Z92
+	   ie 0
+	   window -2 -2 2 1
+	   nn 4,6
+	   iy 0
+	   plot omega 1e-5
+	   box 1 0 0 0
+	   xlabel r (R_\odot)
+	   #ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 5 10 label Dv P16, Dh Z92
+	   expand 1.1
+	   #toplabel Dv Z92, Dh MPZ04
+	   window -2 -2 1 2
+	   nn 7,9
+	   iy 0
+	   plot omega 1e-5
+	   box 0 2 0 0
+	   #xlabel r (R_\odot)
+	   #ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 5 10 label Dv TZ97, Dh MPZ04
+	   expand 1.1
+	   window -2 -2 2 2
+	   nn 14,16
+	   iy 0
+	   plot omega 1e-5
+	   box 0 0 0 0
+	   #xlabel r (R_\odot)
+	   #ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 5 10 label Dv TZ97, Dh Z92
+	   expand 1.1
+	   iylabel 0
+
+Diffusion20 gos
+	   ibox 0 ixlabel 0
+	   window -3 -1 1 1
+	   ylim 0 18
+	   defx r
+	   diff 11
+	   box 1 2 0 0
+	   xlabel r (R_\odot)
+	   #ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 2 17 label Dv P16, Dh M16
+	   expand 1.1
+	   #toplabel Dv Z92, Dh Z92
+	   ie 0
+	   window -3 -1 2 1
+	   iy 0
+	   diff 12
+	   box 1 0 0 0
+	   xlabel r (R_\odot)
+	   #ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 2 17 label Dv P16, Dh Z92
+	   expand 1.1
+	   #toplabel Dv Z92, Dh MPZ04
+	   window -3 -1 3 1
+	   iy 0
+	   diff 13
+	   box 1 0 0 0
+	   xlabel r (R_\odot)
+	   #ylabel \Omega \times 10^{-5} (s^{-1})
+	   expand 0.9
+	   relocate 2 17 label Dv TZ97, Dh MPZ04
+	   expand 1.1
+	   iylabel 0
+	
+	   
+Diffusion1   gos
+	   ibox 0 ixlabel 0
+	   window -3 -3 1 3
+	   nn 1,4
+	   ylim 0 10 
+	   plotl Dshear
+	   box 0 2 0 0
+	   ylabel log (D_v)
+	   expand 0.9
+	   relocate 0.2 8 label Dv Z92, Dh Z92
+	   expand 1.1
+	   #toplabel Dv Z92, Dh Z92
+	   ie 0
+	   window -3 -3 1 2
+	   nn 5,8
+	   iy 0
+	   plotl  Dshear
+	   box 0 2 0 0
+	   ylabel log (D_v)
+	   expand 0.9
+	   relocate 0.2 8 label Dv Z92, Dh MPZ04
+	   expand 1.1
+	   #toplabel Dv Z92, Dh MPZ04
+	   window -3 -3 1 1
+	   nn 9,12
+	   iy 0
+	   plotl  Dshear
+	   box 1 2 0 0
+	   xlabel Mr (M_\odot)
+	   ylabel log(D_v)
+	   expand 0.9
+	   relocate 0.2 8 label Dv Z92, Dh M16
+	   expand 1.1
+	   iylabel 0
+	   window -3 -3 2 3
+	   nn 13,16
+	   iy 0
+	   plotl  Dshear
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv TZ97, Dh Z92
+	   expand 1.1
+	   window -3 -3 2 2
+	   nn 17,20
+	   iy 0
+	   plotl  Dshear
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv TZ97, Dh MPZ04
+	   expand 1.1
+	   window -3 -3 2 1
+	   nn 21,24
+	   iy 0
+	   plotl  Dshear
+	   box 1 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv TZ97, Dh M16
+	   expand 1.1
+	   xlabel Mr (M_\odot)
+	   window -3 -3 3 1
+	   nn 25,28
+	   iy 0
+	   plotl  Dshear
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv P16, Dh M16
+	   expand 1.1
+	   xlabel Mr (M_\odot)
+	   window -3 -3 3 2
+	   nn 29,32
+	   iy 0
+	   plotl  Dshear
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv P16, Dh MPZ04
+	   expand 1.1
+	   window -3 -3 3 3
+	   nn 33,34
+	   iy 0
+	   plotl  Dshear
+	   box 1 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv P16, Dh Z92
+	   expand 1.1
+Diffusion2   gos
+	   ibox 0 ixlabel 0
+	   window -3 -3 1 3
+	   nn 1,4
+	   ylim 0 10 
+	   plotl Dcirc
+	   box 0 2 0 0
+	   ylabel log (D_{eff})
+	   expand 0.9
+	   relocate 0.2 8 label Dv Z92, Dh Z92
+	   expand 1.1
+	   #toplabel Dv Z92, Dh Z92
+	   ie 0
+	   window -3 -3 1 2
+	   nn 5,8
+	   iy 0
+	   plotl  Dcirc
+	   box 0 2 0 0
+	   ylabel log (D_{eff})
+	   expand 0.9
+	   relocate 0.2 8 label Dv Z92, Dh MPZ04
+	   expand 1.1
+	   #toplabel Dv Z92, Dh MPZ04
+	   window -3 -3 1 1
+	   nn 9,12
+	   iy 0
+	   plotl  Dcirc
+	   box 1 2 0 0
+	   xlabel Mr (M_\odot)
+	   ylabel log(D_{eff})
+	   expand 0.9
+	   relocate 0.2 8 label Dv Z92, Dh M16
+	   expand 1.1
+	   iylabel 0
+	   window -3 -3 2 3
+	   nn 13,16
+	   iy 0
+	   plotl  Dcirc
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv TZ97, Dh Z92
+	   expand 1.1
+	   window -3 -3 2 2
+	   nn 17,20
+	   iy 0
+	   plotl  Dcirc
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv TZ97, Dh MPZ04
+	   expand 1.1
+	   window -3 -3 2 1
+	   nn 21,24
+	   iy 0
+	   plotl  Dcirc
+	   box 1 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv TZ97, Dh M16
+	   expand 1.1
+	   xlabel Mr (M_\odot)
+	   window -3 -3 3 1
+	   nn 25,28
+	   iy 0
+	   plotl  Dcirc
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv P16, Dh M16
+	   expand 1.1
+	   xlabel Mr (M_\odot)
+	   window -3 -3 3 2
+	   nn 29,32
+	   iy 0
+	   plotl  Dcirc
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv P16, Dh MPZ04
+	   expand 1.1
+	   window -3 -3 3 3
+	   nn 33,34
+	   iy 0
+	   plotl  Dcirc
+	   box 1 0 0 0
+	   expand 0.9
+	   relocate 0.2 8 label Dv P16, Dh Z92
+	   expand 1.1
+MerCirc   gos
+	   ibox 0 ixlabel 0
+	   window -3 -3 1 3
+	   nn 1,4
+	   ylim -1 1
+	   plot Ucirc 1e-4
+	   box 0 2 0 0
+	   ylabel U_r \times 10^{-4}
+	   expand 0.9
+	   relocate 0.2 0.6 label Dv Z92, Dh Z92
+	   expand 1.1
+	   #toplabel Dv Z92, Dh Z92
+	   ie 0
+	   window -3 -3 1 2
+	   nn 5,8
+	   iy 0
+	   plot Ucirc  1e-4
+	   box 0 2 0 0
+	   ylabel U_r \times 10^{-4}
+	   expand 0.9
+	   relocate 0.2 0.6 label Dv Z92, Dh MPZ04
+	   expand 1.1
+	   #toplabel Dv Z92, Dh MPZ04
+	   window -3 -3 1 1
+	   nn 9,12
+	   iy 0
+	   plot Ucirc  1e-4
+	   box 1 2 0 0
+	   xlabel Mr (M_\odot)
+	   ylabel U_r \times 10^{-4}
+	   expand 0.9
+	   relocate 0.2 0.6 label Dv Z92, Dh M16
+	   expand 1.1
+	   iylabel 0
+	   window -3 -3 2 3
+	   nn 13,16
+	   iy 0
+	   plot Ucirc  1e-4
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 0.6 label Dv TZ97, Dh Z92
+	   expand 1.1
+	   window -3 -3 2 2
+	   nn 17,20
+	   iy 0
+	   plot Ucirc  1e-4
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 0.6 label Dv TZ97, Dh MPZ04
+	   expand 1.1
+	   window -3 -3 2 1
+	   nn 21,24
+	   iy 0
+	   plot Ucirc  1e-4
+	   box 1 0 0 0
+	   expand 0.9
+	   relocate 0.2 0.6 label Dv TZ97, Dh M16
+	   expand 1.1
+	   xlabel Mr (M_\odot)
+	   window -3 -3 3 1
+	   nn 25,28
+	   iy 0
+	   plot Ucirc  1e-4
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 0.6 label Dv P16, Dh M16
+	   expand 1.1
+	   xlabel Mr (M_\odot)
+	   window -3 -3 3 2
+	   nn 29,32
+	   iy 0
+	   plot Ucirc  1e-4
+	   box 0 0 0 0
+	   expand 0.9
+	   relocate 0.2 0.6 label Dv P16, Dh MPZ04
+	   expand 1.1
+	   window -3 -3 3 3
+	   nn 33,34
+	   iy 0
+	   plot Ucirc  1e-4
+	   box 1 0 0 0
+	   expand 0.9
+	   relocate 0.2 0.6 label Dv P16, Dh Z92
+	   expand 1.1
+	   
+
+omegaprof20	itoplabel 0
+		iltype 0
+		defx r
+		iylabel 0
+		ixlabel 1
+		xlim -1 25 ylim 0.6 10
+		ltype 2 nn 7,9 plot omega 1e-5
+		ie 0 iy 0 ix 0 nn 4,6 ltype 1 plot omega 1e-5
+		nn 1,3 ltype 0 plot omega 1e-5
+		toplabel M = 20 M_\odot, Z_\odot, \alpha_{MLT} = 2.17
+		ylabel \Omega \times 10^{-5} (s^{-1})
+		ctype 0 relocate 5 9 label X_c = 0.6
+		ctype red relocate 9 9 label 0.2
+		ctype green4 relocate 11 9 label 0.0015
+		ctype 0 relocate 5 8 draw 10 8 relocate 11 8 expand 0.9 label D_v Prat16, D_h Zahn92
+		relocate 5 7 ltype 1 draw 10 7 relocate 11 7 expand 0.9 label D_v Zahn92 Dh Mathis16
+		relocate 5 6 ltype 2 draw 10 6 relocate 11 6 expand 0.9 label D_v TZ97 Dh Zahn92
+		ctype 0 ltype 0 ie 1 ix 1 iy 1
+
+Dshear20	ylim 0 16
+		defx Mr
+		ix 1 iy 0 ie 0
+		window 1 -3 1 3
+		ibox 0
+		ixlabel 0
+		ltype 0 nn 1 plotl Dshear
+		ltype 1 nn 4 plotl Dshear
+		ltype 2 nn 7 plotl Dshear
+		box 0 2 0 0
+		ylabel D_v
+		relocate 2 13 label X_c = 0.6, M = 20 M_\odot, Z_\odot
+		ltype 0 relocate 0 10 draw 2 10 relocate 3 10 expand 0.9 label D_v Prat16, D_h Zahn92
+		ltype 1 relocate 0 8 draw 2 8 relocate 3 8 expand 0.9 label D_v Zahn92, D_h Zahn92
+		ltype 2 relocate 0 6 draw 2 6 relocate 3 6 expand 0.9 label D_v TZ97, D_h Zahn92
+		window 1 -3 1 2
+		ctype red
+		ltype 0 nn 2 plotl Dshear
+		ctype red ltype 1 nn 5 plotl Dshear
+		ctype red ltype 2 nn 8 plotl Dshear
+		ctype red
+		ltype 0 relocate 2 13 label X_c = 0.2, M = 20 M_\odot, Z_\odot
+		ltype 0 relocate 0 10 draw 2 10 relocate 3 10 expand 0.9 label D_v Prat16, D_h Zahn92
+		ltype 1 relocate 0 8 draw 2 8 relocate 3 8 expand 0.9 label D_v Zahn92, D_h Zahn92
+		ltype 2 relocate 0 6 draw 2 6 relocate 3 6 expand 0.9 label D_v TZ97, D_h Zahn92
+		ctype 0	box 0 2 0 0
+		ylabel D_v
+		window 1 -3 1 1
+		ctype green4
+		ltype 0 nn 2 plotl Dshear
+		ctype green4 ltype 1 nn 6 plotl Dshear
+		ctype green4 ltype 2 nn 9 plotl Dshear
+		ctype green4
+		relocate 2 13 label X_c = 0.0015, M = 20 M_\odot, Z_\odot
+		ltype 0 relocate 0 10 draw 2 10 relocate 3 10 expand 0.9 label D_v Prat16, D_h Zahn92
+		ltype 1 relocate 0 8 draw 2 8 relocate 3 8 expand 0.9 label D_v Zahn92, D_h Zahn92
+		ltype 2 relocate 0 6 draw 2 6 relocate 3 6 expand 0.9 label D_v TZ97, D_h Zahn92
+		ctype 0	box 1 2 0 0
+		ylabel D_v
+		xlabel M/M_*
+		
+Dcirc20		ylim 0 16
+		defx Mr
+		ix 1 iy 0 ie 0
+		window 1 -3 1 3
+		ibox 0
+		ixlabel 0
+		ltype 0 nn 1 plotl Dcirc
+		ltype 1 nn 4 plotl Dcirc
+		ltype 2 nn 7 plotl Dcirc
+		box 0 2 0 0
+		ylabel D_{eff}
+		relocate 2 13 label X_c = 0.6, M = 20 M_\odot, Z_\odot
+		ltype 0 relocate 0 10 draw 2 10 relocate 3 10 expand 0.9 label D_v Prat16, D_h Zahn92
+		ltype 1 relocate 0 8 draw 2 8 relocate 3 8 expand 0.9 label D_v Zahn92, D_h Zahn92
+		ltype 2 relocate 0 6 draw 2 6 relocate 3 6 expand 0.9 label D_v TZ97, D_h Zahn92
+		window 1 -3 1 2
+		ctype red
+		ltype 0 nn 2 plotl Dcirc
+		ctype red ltype 1 nn 5 plotl Dcirc
+		ctype red ltype 2 nn 8 plotl Dcirc
+		ctype red
+		ltype 0 relocate 2 13 label X_c = 0.2, M = 20 M_\odot, Z_\odot
+		ltype 0 relocate 0 10 draw 2 10 relocate 3 10 expand 0.9 label D_v Prat16, D_h Zahn92
+		ltype 1 relocate 0 8 draw 2 8 relocate 3 8 expand 0.9 label D_v Zahn92, D_h Zahn92
+		ltype 2 relocate 0 6 draw 2 6 relocate 3 6 expand 0.9 label D_v TZ97, D_h Zahn92
+		ctype 0	box 0 2 0 0
+		ylabel D_{eff}
+		window 1 -3 1 1
+		ctype green4
+		ltype 0 nn 2 plotl Dcirc
+		ctype green4 ltype 1 nn 6 plotl Dcirc
+		ctype green4 ltype 2 nn 9 plotl Dcirc
+		ctype green4
+		relocate 2 13 label X_c = 0.0015, M = 20 M_\odot, Z_\odot
+		ltype 0 relocate 0 10 draw 2 10 relocate 3 10 expand 0.9 label D_v Prat16, D_h Zahn92
+		ltype 1 relocate 0 8 draw 2 8 relocate 3 8 expand 0.9 label D_v Zahn92, D_h Zahn92
+		ltype 2 relocate 0 6 draw 2 6 relocate 3 6 expand 0.9 label D_v TZ97, D_h Zahn92
+		ctype 0	box 1 2 0 0
+		ylabel D_{eff}
+		xlabel M/M_*
+		
+
+				

@@ -1,4 +1,3 @@
-c$$$      end subroutine Quintic
       SUBROUTINE resulpr (error)
 
 ************************************************************************
@@ -8,7 +7,7 @@ c$$$      end subroutine Quintic
 * $LastChangedDate:: 2016-05-11 17:20:46 +0200 (Mer, 11 mai 2016)    $ *
 * $Author:: palacios                                                 $ *
 * $Rev:: 62                                                          $ *
-*                                                                      *
+*LR MODIF 20250319                                                     *
 ************************************************************************
 
       implicit none
@@ -55,14 +54,17 @@ C <--
       double precision tautime,Ereac,taureac
       double precision Ushear(nsh),ULj(nsh)
       double precision brunt,lumwaves(nsh),bruntV2,bruntV
-
+      !double precision lumwave !LR 20250408
       double precision depottotn,depottot_surfn,depottot_coren
       double precision depotondestotn,vrn
 
       double precision abundelec     ! Ajout pour creer donnees Montreal (Mars 2018)
-      
+ 
+
+      !----LR 20250407
       character*1 crzc(nsh)
       logical partialmix
+      !common /igw_diffusion/ lumwave(nsh)  !LR 20250408
 
       common /calcDh/ Dhold(nsh)
       common /difcirc/ dift(nsh),dife(nsh)
@@ -121,7 +123,7 @@ c Ajout par TD (22/02/2018) + modif 25/04/2019
 ***   storage of the calculated models in the binary file
 *--------------------------------------------------------
 
-!      if (error.eq.-30) neff = -neff
+      if (error.eq.-30) neff = -neff
 
       if (nsconv.gt.0.and.turnover(1).eq.0.d0) then
 c..   determine turnover timescale
@@ -130,8 +132,7 @@ c..   determine turnover timescale
             imax = novlim(kl,4)
             call mix (dm,imin,imax,kl,5,partialmix)
          enddo
-      endif
-      
+      endif 
       do k = 1,nmod
          if (crz(k).eq.-2) crzc(k) = 'c'
          if (crz(k).eq.-1) crzc(k) = 'a'
@@ -154,7 +155,6 @@ c..   determine turnover timescale
      &     (xsp(k,l),l = 1,nis-1),k = 1,nmod),
      &     (mtotlos(j),j = 1,nis-1)
       close (92)
-      
       do k = 1,nmod
          venucl(k) = enucl(k)
          vsconv(k) = sconv(k)
@@ -179,7 +179,7 @@ c         print *,'urs=',urs(1:nmod)
                 lgdturb(k) = 0.d0
                 lgdmic(k) = 0.d0
                 if (dturb(k).gt.0.d0) lgdturb(k) = log10(dturb(k))
-c                if (xdmiche(k).gt.0.d0) lgdmic(k) = log10(xdmiche(k))  ! modif Mai 2019
+!                if (xdmiche(k).gt.0.d0) lgdmic(k) = log10(xdmiche(k))  ! modif Mai 2019
             else
                 lgdturb(k) = 0.d0
                 lgdmic(k) = 0.d0
@@ -190,6 +190,60 @@ C <--
       open (unit = 92,file = 'nextini.bin',form = 'unformatted',
      &     status = 'unknown')
 
+
+!       if (microdiffus.or.thermohaline.or.igw) then
+! c         write (81,8100)
+!          print *,'LA 85 is written!'
+!          rewind(85)
+!          do k = 1,nmod
+!             if (dabs(Ereac(k,ibe7pg)).lt.1d-99) Ereac(k,ibe7pg) = 0.d0
+!             if (dabs(lumondestot(k)).lt.1d-99) lumondestot(k) = 0.d0
+!             if (dabs(lumondes_surf(k)).lt.1d-99) then
+!                lumondes_surf(k) = 0.d0
+!             endif
+!             if (dabs(lumondes_core(k)).lt.1d-99) then
+!                lumondes_core(k) = 0.d0
+!             endif
+!          enddo
+!          if (igw) then
+!             do k = 1,nmod
+!                depottotn(k) = depottot(k)/lsun
+!                depottot_surfn(k) = depottot_surf(k)/lsun
+!                depottot_coren(k) = depottot_core(k)/lsun
+!                depotondestotn(k) = depotondestot(k)/lsun
+!                vrn(k) = vr(k)/rsun
+!             enddo
+!             write (85) (lgdmic(k),lgdturb(k),vom(k),
+!      &           depottotn(k)/lsun,depottot_surfn(k)/lsun,
+!      &           depottot_coren(k)/lsun,
+!      &           depotondestotn(k)/lsun,Dondes(k),Dondeschim(k),
+!      &           lumwave(k),lumwave_core(k),
+!      &           lumondes_surf(k),lumondes_core(k),lumondestot(k),
+!      &           brunt_o(k),vrn(k)/rsun,vxpsi(k),Fenerg,
+!      &           Fenerg_core,
+!      &           Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
+!      &           deltaKS(k),tautime(k,ippg),Ereac(k,ippg),tautime(k
+!      &           ,ipdg), Ereac(k,ipdg),tautime(k,i2he3),Ereac(k
+!      &           ,i2he3),tautime(k,ihe3ag), Ereac(k,ihe3ag),tautime(k
+!      &           ,ibe7beta),Ereac(k,ibe7beta), tautime(k,ili7pa)
+!      &           ,Ereac(k,ili7pa),tautime(k,ibe7pg), Ereac(k,ibe7pg)
+!      &           ,tautime(k,ib8beta),Ereac(k,ib8beta), tautime(k
+!      &           ,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg), Ereac(k
+!      &           ,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1,nmod)
+
+!          else
+!             write (85) (Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
+!      &           deltaKS(k),tautime(k,ippg),Ereac(k,ippg),
+!      &           tautime(k,ipdg), Ereac(k,ipdg),tautime(k,i2he3),
+!      &           Ereac(k,i2he3),tautime(k,ihe3ag),Ereac(k,ihe3ag),
+!      &           tautime(k,ibe7beta),Ereac(k,ibe7beta),
+!      &           tautime(k,ili7pa),Ereac(k,ili7pa),tautime(k,ibe7pg),
+!      &           Ereac(k,ibe7pg),tautime(k,ib8beta),Ereac(k,ib8beta),
+!      &           tautime(k,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg),
+!      &           Ereac(k,in14pg),tautime(k,icpg),Ereac(k,icpg),
+!      &           k = 1,nmod)
+!          endif
+!       endif
 
 
 *_________________
@@ -287,14 +341,19 @@ c..   and prescription used for horizontal turbulent diffusion coefficient
 
       if (model.eq.(modeli+1).and.rotation) then
          write (90,1270) Dh_prescr
+c        do k = 1,nmod
+c           write(667,*),'nturb',k,nturb(k),xnum(k),xnuvv(k)
+c        enddo
       endif
 
 
       write (90,1000) totm,dms,time*seci,dtn*seci,teff,soll
 
-c     if (no.eq.maxmod.or.time.eq.4.6000000d9*sec) then
+!if (no.eq.maxmod.or.time.eq.4.6000000d9*sec) then
       if (no.eq.maxmod) then
+         if (microdiffus.or.thermohaline.or.igw) then
             if (igw) then
+            print *,'LR 85 is written!'
 
                do k = 1,nmod
                   if (dabs(lumondestot(k)).lt.1d-99)
@@ -306,27 +365,67 @@ c     if (no.eq.maxmod.or.time.eq.4.6000000d9*sec) then
                   brunt(k)=brunt_o(nmod-k+1)
                   lumwaves(k)=lumwave(nmod-k+1)
                enddo
-               rewind (85)
 
-               write (85) (lgdmic(k),lgdturb(k),vom(k),
-     &              depottot(k)/lsun,depottot_surf(k)/lsun,
-     &              depottot_core(k)/lsun,
-     &              depotwaves(k)/lsun,Dondes(k),Dondeschim(k),
-     &              lumwaves(k),lumwave_core(k),
-     &              lumondes_surf(k),lumondes_core(k),lumondestot(k),
-     &              brunt(k),vr(k)/rsun,vxpsi(k),           
-     &              Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
-     &              deltaKS(k),tautime(k,ippg),Ereac(k,ippg),tautime(k
-     &              ,ipdg), Ereac(k,ipdg),tautime(k,i2he3),Ereac(k
-     &              ,i2he3),tautime(k,ihe3ag), Ereac(k,ihe3ag),tautime(k
-     &              ,ibe7beta),Ereac(k,ibe7beta), tautime(k,ili7pa)
-     &              ,Ereac(k,ili7pa),tautime(k,ibe7pg), Ereac(k,ibe7pg)
-     &              ,tautime(k,ib8beta),Ereac(k,ib8beta), tautime(k
-     &              ,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg), Ereac(k
-     &              ,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1,nmod)
+   !             ! Diagnostic print loop LR 20250319
+   !             print *,'nmod=',nmod
+   !             do k = 1,nmod
+   !                print *,'Before writing, phiKS(', k,')=',
+   !   &                phiKS(k)
+   !             enddo
+               rewind (85)
+               ! Diagnostic loop LR 20250408
+               do k = 1, nmod
+                  write(85) lgdmic(k), lgdturb(k), vom(k), 
+     &              depottot(k)/lsun, depottot_surf(k)/lsun, 
+     &              depottot_core(k)/lsun, depotwaves(k)/lsun, 
+     &              Dondes(k), Dondeschim(k), lumwaves(k), 
+     &              lumwave_core(k), lumondes_surf(k), lumondes_core(k), 
+     &              lumondestot(k), brunt(k), vr(k)/rsun, vxpsi(k), 
+     &              Dmicro(k), vmicro(k), Dthc(k), phiKS(k), 
+     &              deltaKS(k), tautime(k,ippg), Ereac(k,ippg), 
+     &              tautime(k,ipdg), Ereac(k,ipdg), tautime(k,i2he3), 
+     &              Ereac(k,i2he3), tautime(k,ihe3ag), Ereac(k,ihe3ag), 
+     &              tautime(k,ibe7beta), Ereac(k,ibe7beta), 
+     &              tautime(k,ili7pa), Ereac(k,ili7pa), 
+     &              tautime(k,ibe7pg), Ereac(k,ibe7pg), 
+     &              tautime(k,ib8beta), Ereac(k,ib8beta), 
+     &              tautime(k,ic13pg), Ereac(k,ic13pg), 
+     &              tautime(k,in14pg), Ereac(k,in14pg), 
+     &              tautime(k,icpg), Ereac(k,icpg)
+                  ! Output to standard output to verify this record is written.
+                  !write(*,*) 'Before lumwaves(', k, ') =', lumwaves(k)
+               enddo
+               ! Diagnostic loop LR 20250408
+                        
+   !             write (85) (lgdmic(k),lgdturb(k),vom(k),
+   !   &              depottot(k)/lsun,depottot_surf(k)/lsun,
+   !   &              depottot_core(k)/lsun,
+   !   &              depotwaves(k)/lsun,Dondes(k),Dondeschim(k),
+   !   &              lumwaves(k),lumwave_core(k),
+   !   &              lumondes_surf(k),lumondes_core(k),lumondestot(k),
+   !   &              brunt(k),vr(k)/rsun,vxpsi(k),
+   !   &              Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
+   !   &              deltaKS(k),tautime(k,ippg),Ereac(k,ippg),tautime(k
+   !   &              ,ipdg), Ereac(k,ipdg),tautime(k,i2he3),Ereac(k
+   !   &              ,i2he3),tautime(k,ihe3ag), Ereac(k,ihe3ag),tautime(k
+   !   &              ,ibe7beta),Ereac(k,ibe7beta), tautime(k,ili7pa)
+   !   &              ,Ereac(k,ili7pa),tautime(k,ibe7pg), Ereac(k,ibe7pg)
+   !   &              ,tautime(k,ib8beta),Ereac(k,ib8beta), tautime(k
+   !   &              ,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg), Ereac(k
+   !   &              ,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1,nmod)
+   !             ! Diagnostic print loop LR 20250408
+   !             !print *,'After writing, lumwaves(',k,')=',lumwaves(k)
+   !             do k = 1,nmod
+   !                print *,'After writing, lumwaves(', k,')=',
+   !   &                lumwaves(k)
+   !             enddo
+
 
             else
-               write (85) (Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
+               print *,'85 in else!'
+   !             write (85) (Dmicro(k),vmicro(k),Dthc(k),phiKS(k), 
+   !   $              k = 1,nmod)             
+               write (85) (Dmicro(k),vmicro(k),Dthc(k),phiKS(k), 
      $              Dturbul(k),Dbar(k),Dkyle(k),coefDtacho(k),                                ! dturbul 10/2019 + dbar
      $              xvdiffhe(k),xvdiffhenoc(k),xvdiffc12(k)    ! Ajout TD Fev.2018
      $              ,xvdiffc12noc(k),xvdiffc13(k)
@@ -344,37 +443,33 @@ c     if (no.eq.maxmod.or.time.eq.4.6000000d9*sec) then
      $              Ereac(k,ibe7pg),tautime(k,ib8beta),Ereac(k,ib8beta),
      $              tautime(k,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg),
      $              Ereac(k,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1
-     $              ,nmod)
+     $              ,nmod)  
             endif
+         endif
+            !close (85)!LR 20250319
+            !print *,'lumwaves(loop)=',lumwaves !LR 20250319
       endif
+      !print *,'lumwaves(end loop)=',lumwaves !LR 20250319
+      !close (85) !LR 20250319
 
-     
-c..   Storage of values for atomic diffusion (modif AP TD Jan.2019)
-      if(model.eq.(modeli+1).and.microdiffus) then
-         do k=1,nmod
-            write(654,'(1x,i4,9(1x,1pe11.4))'),k,T(k),zmeanO16(k),xsp(k
-     $           ,io16),dens_elec(k),coulomb(k),Zpaq(k),Zpaq1(k)
-     $           ,Zpaq2(k),Kpaq(k)
-         enddo
-      endif
       
       
  1000 format (' Final mass = ',f11.8,', dm = ',f11.9,', age = ',1pe12.6,
      &     ' yr, dt = ',1pe13.7,' yr, Teff = ',0pf7.0,', L = ',1pe10.4)
  1100 format (5x,'convective limits:')
- 1200 format (2x,'Schwar.: ',i4,' --> ',i4,' (',1pe9.3,',',1pe9.3,
-     &     ')   turnover: ',1pe9.3,' yr   Overshoot (dm): ',i4,' -->',i4,
+ 1200 format (2x,'Schwar.: ',i4,' -->',i4,' (',1pe9.3,',',1pe9.3,
+     &     ')   turnover: ',1pe9.3,'yr   Overshoot (dm): ',i4,' -->',i4,
      &     ' (',1pe9.3,',',1pe9.3,')')
- 1210 format (2x,'Schwar.: ',i4,' --> ',i4,' (',1pe9.3,',',1pe9.3,
-     &     ')   turnover: ',1pe9.3,' yr')
- 1230 format (2x,'Ledoux : ',i4,' --> ',i4,' (',1pe9.3,',',1pe9.3,
-     &     ')   turnover: ',1pe9.3,' yr')
- 1240 format (2x,'Ledoux : ',i4,' --> ',i4,' (',1pe9.3,',',1pe9.3,
-     &     ')   turnover: ',1pe9.3,' yr   Overshoot (dm): ',i4,' -->',i4,
+ 1210 format (2x,'Schwar.: ',i4,' -->',i4,' (',1pe9.3,',',1pe9.3,
+     &     ')   turnover: ',1pe9.3,'yr')
+ 1230 format (2x,'Ledoux : ',i4,' -->',i4,' (',1pe9.3,',',1pe9.3,
+     &     ')   turnover: ',1pe9.3,'yr')
+ 1240 format (2x,'Ledoux : ',i4,' -->',i4,' (',1pe9.3,',',1pe9.3,
+     &     ')   turnover: ',1pe9.3,'yr   Overshoot (dm): ',i4,' -->',i4,
      &     ' (',1pe9.3,',',1pe9.3,')')
- 1250 format (2x,'semiconvection : ',i4,' --> ',i4,' (',1pe9.3,',',
+ 1250 format (2x,'semiconvection : ',i4,' -->',i4,' (',1pe9.3,',',
      &     1pe9.3,')')
- 1260 format (2x,'Thermohaline : ',i4,' --> ',i4,' (',1pe9.3,',',
+ 1260 format (2x,'Thermohaline : ',i4,' -->',i4,' (',1pe9.3,',',
      &     1pe9.3,')')
  1270 format (//,'o PRESCRIPTIONS FOR ROTATIONNAL MIXING',/,3x,
      &     'Critical Richardson number Ric = 0.25',/,3x,

@@ -74,11 +74,11 @@ C Richardson number
       double precision Ri
 
 C Term used for diff coeffcient computation in the SLO
-      double precision lumwave,lumwave_core
-
+      !double precision lumwave,lumwave_core LR COMMENTED
+      double precision lumwave, lumwave_core
 C Amplitude of excitation by conv. region
-      double precision amplitudemoyenne,amplitudemoyenne_core
-
+      double precision amplitudemoyenne
+      double precision amplitudemoyenne_core
 C From CC_2007
       double precision dm_m1,dm_p1
       double precision dlum_zc
@@ -86,14 +86,20 @@ C From CC_2007
       double precision xKm_o
       double precision rraym_o,rraym2_o
       double precision hnenn_o,xNmu_o
-      double precision rray_o,xpress_o,rdens_o,grav_o
+      double precision rray_o(nsh)
+      double precision xpress_o,rdens_o,grav_o
       double precision cs_o,rtemp_o,xcp_o,khi_o,xluml_o
       double precision rmass_o,dlnmu_o,hp_o,dm_o
       double precision rkonv_o,vconv_o,xnurad_o
+! C From LR_2025
+! Global definition of dimensionless numbers for IGW calculations
+      double precision Ri_number(nsh)   ! Richardson number
+      double precision S_number(nsh)    ! S = 2 Omega / N
+      double precision Y_number(nsh)    ! Y = Ri^(-1/2)
+      double precision Fr_number(nsh, nfreq) ! Froude number (Fr = sigma / N)
 
-
-      common /igw_transp/ om_o(nsh),xdm_o(nsh),xNt_o(nsh),xN_o(nsh),
-     &     brunt_o(nsh)
+      common /igw_transp/ om_o(nsh),xdm_o(nsh),xNt_o(nsh),
+     &     xN_o(nsh),brunt_o(nsh)
 
       common /igw_excitation/ freqonde(nfreq),
      &     xlum_ond(nfreq,llmax,-llmax:llmax),
@@ -107,7 +113,6 @@ C From CC_2007
      &     depotwaves(nsh)
 
       common /igw_diffusion/ lumwave(nsh),lumwave_core(nsh)
-      
       common /igw_flux/ Fenerg,Fenerg_core
       
       common /igw_diagnosis/ lumonde(nsh),lumondestot(nsh),
@@ -124,9 +129,9 @@ C From CC_2007
      &        hnenn_o(nsh),xNmu_o(nsh),
      &        xKm_o(nsh)
 
-       common /calcond_divers/ dm_m1(nsh),dm_p1(nsh)
+      common /calcond_divers/ dm_m1(nsh),dm_p1(nsh)
 
-      common /transpondes/ rray_o(nsh),xpress_o(nsh),
+      common /transpondes/ rray_o,xpress_o(nsh),
      &        rdens_o(nsh),grav_o(nsh),cs_o(nsh),
      &        rtemp_o(nsh),xcp_o(nsh),khi_o(nsh),
      &        xluml_o(nsh),rmass_o(nsh),dlnmu_o(nsh),
@@ -134,3 +139,6 @@ C From CC_2007
      &        rkonv_o(nsh),vconv_o(nsh),xnurad_o(nsh)
 C Modif CC 17/11/05
      &        ,nturb_o(nsh),xnuvv_o(nsh)
+
+!       common /igw_rotnums/ Ri_number(nsh),S_number(nsh),
+!      &      Y_number(nsh),Fr_number(nsh,nfreq)

@@ -111,8 +111,8 @@ ifeq ($(PAR),on)
    SFLAGS=
    #PARALLEL = -openmp -fpp
   # PARLINKS = -openmp -lpthread
-   PARLINKS = -qopenmp 
-#   PARLINKS = -fopenmp 
+#   PARLINKS = -qopenmp 
+   PARLINKS = -fopenmp 
 #-lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lmkl_lapack -lguide -openmp -lpthread
 endif
 
@@ -207,10 +207,10 @@ DIR_SRC = $(DIR_EXE)
 # Installation directories (default directories)
 IDIR_CODE = $(DIR_SRC)/CODE
 IDIR_INCL = $(DIR_SRC)/INCL
-IDIR_NUC = $(DIR_SRC)/LIBNUC
+IDIR_NUC = $(DIR_SRC)/NUCLEAR
 IDIR_NUM = $(DIR_SRC)/LIBNUM
 IDIR_PACK = $(DIR_SRC)/PACKAGES
-IDIR_OPA = $(DIR_SRC)/LIB
+IDIR_OPA = $(DIR_SRC)/OPACITY
 IDIR_FLAME = $(DIR_SRC)/FLAME
 IDIR_BATCH = $(DIR_BATCH)
 IDIR_SMPROG = $(DIR_SMONGO)/PROG

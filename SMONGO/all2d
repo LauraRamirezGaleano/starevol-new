@@ -1,0 +1,41 @@
+all2d	01
+  ### 1: structure number
+  if ($?1 == 0) { define 1 ? { enter absolute structure star number }}
+  if ('$1' == 'x') {return}
+
+  init2d $1 
+	
+  erase 
+  ie 0
+  location 3500 31000 3500 31000
+  window 2 2 1 1  
+  
+  # 2D plot for lambda
+  define var_ $var
+  if ($var > 3) { 
+    echo "$var" set to 3 for xlambda to avoid noise 
+    define var 3
+  }
+  iso2d xlambda $1 
+  if ($var_ > 3) {
+    define var $var_
+  }
+  vertbar 15100 3500
+
+  # 2D plot for psi
+  window 2 2 1 2
+  iso2d psi $1 
+  vertbar 15100 19000
+
+  # 2D plot for meridional current
+  window 2 2 2 2
+  iso2d Ucirc $1 
+  vertbar 31000 19000
+
+  # 2D plot for |U|
+  window 2 2 2 1
+  iso2d Unorm $1
+  vertbar 31000 3500
+  
+  window 1 1 1 1
+  ie 1 ix 1

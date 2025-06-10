@@ -40,14 +40,14 @@
 !
 ! Initial stellar mass in solar masses.
 
-      mtini = 60.0
+      mtini = 1.0
 
 ! zkint
 ! -----
 !
 ! Initial metallicity.
 
-      zkint = 0.014
+      zkint = 0.013446
 
 ! =============================================================
 !   EQUATION OF STATE 
@@ -58,14 +58,14 @@
 !
 ! Inclusion of H2.
 
-      addH2 = F
+      addH2 = .false.
 
 ! addHm
 ! -----
 !
 ! Inclusion of H-.
 
-      addHm = F
+      addHm = .false.
 
 ! tmaxioH
 ! -------
@@ -86,7 +86,7 @@
 !
 ! Inclusion of He partial ionization.
 
-      ionizHe = T
+      ionizHe = .true.
 
 ! ionizC
 ! ------
@@ -162,7 +162,7 @@
 ! u : like t but lmix activated (if convective boundaries have
 !     changed, do another iteration)
 
-      dtnmix = f
+      dtnmix='u'
 
 ! mixopt
 ! ------
@@ -171,7 +171,7 @@
 ! f : only when the structure has converged.
 ! t : at each iteration during the convergence.
 
-      mixopt = t
+      mixopt = .false.
 
 ! hpmlt
 ! -----
@@ -205,7 +205,7 @@
 ! f : pressure scale height
 ! t : density scale height
 
-      ihro = f
+      ihro = .false.
 
 ! iturb
 ! -----
@@ -255,7 +255,7 @@
 !       aup times r
 ! If novopt = 3,4 overshooting is applied in the core only.
 
-      novopt = 1
+      novopt = 0
 
 ! aup
 ! ---
@@ -377,7 +377,7 @@
 ! If mlp is odd, mass is removed in shells above m = 0.95*mtot.
 ! If mlp is even, shells are removed.
 
-      mlp = 15
+      mlp = 0
 
 ! etapar
 ! ------
@@ -409,7 +409,7 @@
 ! If t, multiply the mass loss rate by a factor 
 ! (Z/Zsun)**0.8, where Zsun is the solar metallicity.
 
-      zscaling = f
+      zscaling = .false.
 
 ! =============================================================
 !   NUCLEAR
@@ -451,7 +451,7 @@
 !     radiative (partialmix on)
 ! f : do none of the above
 
-      nuclopt = f
+      nuclopt='f'
 
 ! tolnuc
 ! ------
@@ -487,7 +487,7 @@
 !
 ! Computation of slow particle transport processes (diffusion).
 
-      idiffcc = F
+      idiffcc = .false.
 
 ! idiffnuc
 ! --------
@@ -524,7 +524,7 @@
 ! Compute convective mixing as a diffusive process
 ! (implies radiative nucleosynthesis).
 
-      diffzc = f
+      diffzc = .false.
 
 ! diffst
 ! ------
@@ -541,7 +541,7 @@
 ! including the feedback on molecular weight when
 ! idiffty = 8,9,11,13 or 15.
 
-      zgradmu = F
+      zgradmu = .false.
 
 ! nu_add
 ! ------
@@ -563,7 +563,7 @@
 ! Use Ledoux criterion.
 ! In the semiconvective zone mixing is treated diffusively.
 
-      ledouxmlt = F
+      ledouxmlt = .false.
 
 ! Tfix
 ! ----
@@ -618,7 +618,7 @@
 ! s : solid-body rotation in the entire star (routine sol_rot)
 ! m : no AM transport but chemical mixing
 
-      omegaconv = F
+      omegaconv='f' 
 
 ! Dh_prescr
 ! ---------
@@ -632,7 +632,7 @@
 ! Mathis02 : Mathis 2017, \tau = 1/(2\Omega + S)
 ! Mathiepi : Mathis 2017, \tau = 1/N_\Omega
 
-      Dh_prescr = Zahn1992
+      Dh_prescr='Zahn1992'
 
 ! dm_ext
 ! ------
@@ -653,7 +653,7 @@
 ! Pr16 : Mathis et al. 2018
 !        Currently not used !
 
-      Dv_prescr = Za92
+      Dv_prescr='Za92'
 
 ! om_sat
 ! ------
@@ -683,7 +683,7 @@
 ! Starting from thermal equilibrium in the computation of
 ! angular momentum transport.
 
-      thermal_equilibrium = F 
+      thermal_equilibrium = .false. 
 
 ! diffvr
 ! ------
@@ -974,7 +974,7 @@
 ! 1   : on.
 ! 2,3 : on, with rotational forces included.
 
-      hydrodynamics = 0
+      hydrodynamics='0'
 
 ! ivisc
 ! -----
@@ -1024,7 +1024,7 @@
 ! activated.
 ! Better to put at 0 if atomic diffusion active.
 
-      nresconv = 10
+      nresconv = 0
 
 ! dlnvma
 ! ------
@@ -1090,7 +1090,7 @@
 !
 ! Maximum evolution timestep allowed.
 
-      dtmax = 5.231d+04
+      dtmax = 5.231d+08
 
 ! facdt
 ! -----
@@ -1117,7 +1117,7 @@
 ! f : in all the shells.
 ! t : in shells where nuclear burning occurs only.
 
-      ishtest = t
+      ishtest='t'
 
 ! fts
 ! ---
@@ -1239,7 +1239,7 @@
 ! t : constraint time-step during third dredge-up and check
 !     that pressure is a decreasing function of mass
 
-      icorr = t
+      icorr='t'
 
 ! =============================================================
 !   TOLERANCES 
@@ -1355,7 +1355,7 @@
 !                                 \nabla_{rad}
 ! t : L = L_{rad} + L_{conv}
 
-      vlconv = F
+      vlconv = .false.
 
 /                                   ! End of the parameter card
 

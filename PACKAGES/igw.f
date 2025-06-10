@@ -8,7 +8,7 @@ C Version incluant le calcul de l'excitation a chaque modele evolutif :
 C C.Charbonnel (Decembre 2006)
 C Version incluant les ondes produites par le coeur convectif
 C S.Talon & C.Charbonnel (Octobre 2007)
-C L. Ramirez (Feb 2025)
+C NEW  VERSION : 28/05/2025  LAURA MODIFICATIONS
 C ----------------------------------------------------------------------
       implicit none
 
@@ -49,7 +49,6 @@ C      dimension depotondestot(nsh)
 
 C --------------------------------------------
 C Lecture des donnees et inversion des couches 
-C Reading data and inverting layers 
 C --------------------------------------------
 
       ncouche = nmod
@@ -74,7 +73,6 @@ C      print *,'avant appel a WAVEFLUX'
 C      print *,'sortie de WAVEFLUX'
 
 C Calcul du depot du moment par les ondes
-C Calculation of wave moment depot
 C----------------------------------------
 C
       call ond_omega(iterondes,mtu,npasr,ncouche,dzeit,
@@ -130,10 +128,6 @@ C ---------------------------------------------------------------------
 C Appelle la routine calculflux, qui appelle excitation pour m=1 et m=l
 C  et interpole les autres valeurs de m
 C Appellee par la routine transp_ondesexcit
-C
-C Calls the calculflux routine, which calls excitation for m=1 and m=l
-C and interpolates the other m values
-C Called by the transp_ondesexcit routine
 C
 C Derniere version: 9 septembre 2009
 C ---------------------------------------------------------------------
@@ -223,7 +217,6 @@ C -----------------------------------
  
 
 C Introduction de la valeur de coupure
-C Setting the cut-off value
 C ------------------------------------
       do ii=1,nfreq
          do ll=1,llmax
@@ -260,9 +253,6 @@ C ---------------------------------------------------------------------
 C Calcul de l'epaisseur optique pour une onde avec une frequence
 C  qui varie avec la profondeur
 C
-C Calculation of optical thickness for a wave with a frequency
-C that varies with depth
-C
 C d_om est deja la differentielle de la valeur moyenne
 C i.e. 0.5*(om_o(i)+om_o(i+1))-om_o(mtu)
 C
@@ -277,6 +267,8 @@ C ---------------------------------------------------------------------
       include 'evolpar.star'
 c      include 'evolcom.transpondesexcit'
       include 'evolcom.igw'
+      include 'evolcom.rot' !LR Added
+      include 'evolcom.var' !LR Added
 
       integer mtu,npasr,ncouche,ll,mm
       double precision omegaloc,d_om(nsh)
@@ -284,12 +276,16 @@ c      include 'evolcom.transpondesexcit'
       double precision xintret(nsh)
       double precision ampret(nsh)
       double precision t1,t2
-
       double precision sigmaret,dintret,xN2,ll1
       double precision amp_crit,amp_1,x_depot,abslogamp_crit
+      double precision integrand,numerator(nsh),denominator
+      double precision alpha_val,dr,N,N2, Omega_d(nsh)
+      double precision tamp,zeta,sigma2,ll1_15,coriolis
+      double precision dr_arr(nsh),domega_arr(nsh)
       integer n_allerretour
       integer i,k,k1,kk,un,allerretour
       logical retrograde
+      double precision t_start, t_end
 
       allerretour=0
       n_allerretour=0
@@ -297,10 +293,19 @@ c      include 'evolcom.transpondesexcit'
       abslogamp_crit=abs(log10(amp_crit))
 
       ll1=(dfloat(ll+1)*dfloat(ll))**1.5d0
+      !ll1_15 = ll1**1.5d0
+      !alpha_val = 1.d0 - dfloat(mm*mm)/ll1!dfloat(mm*mm)/ll1
       do k=1,ncouche
         xintret(k)=0.d0
         depotonde(k)=0.d0
       enddo
+
+      ! Precompute dr and domega/dr arrays if possible LR modiffication
+      do k = 1, ncouche-1
+         dr_arr(k) = r(k+1) - r(k)
+         domega_arr(k) = vomega(k+1) - vomega(k)
+      enddo
+
 
 C Calcul de l'integrale tau (cf. 19, Zahn Talon Matias 1997)
 C ----------------------------------------------------------
@@ -308,7 +313,7 @@ C ----------------------------------------------------------
       ampret(k1)=1.d0
       un=1
       retrograde = .true.
-
+      !print *, '--- ond_int DEBUG ---'
 C Calcul de l'amplitude de l'onde retrograde
 C ------------------------------------------
       do while (retrograde)
@@ -317,52 +322,101 @@ C ------------------------------------------
 
         sigmaret=omegaloc+dfloat(mm)*d_om(k)
         if (sigmaret.lt.1.d-16) sigmaret=1.d-16
-
+        ! Compute local quantities
+        !N2 = xN_o(k) 
 C Modifs CC (10/05/04)
 C        xN2=dsqrt(xN_o(k)/(xN_o(k)-sigmaret**2))
+        !xN2=dsqrt(abs(xN_o(k)/(xN_o(k)-sigmaret**2)))
+        !dintret=ll1**1.5d0*fint(k)*xN2/sigmaret**4
+        ! Compute Omega and dOmega/dr
+        !Omega_d = vomega(k)
+        !tamp = domega_arr(k)/dr_arr(k)
+        !dr = dr_arr(k)
+        
+        !zeta = 2.d0*Omega_d +(r(k)*tamp)
+        !coriolis = (alpha_val*2.d0*Omega_d*zeta)
+        !coriolis = 0.0d0
+        numerator(k) = xNt_o(k)!+coriolis
+
+        !xN2 = N/dsqrt(abs(denominator -coriolis))
         xN2=dsqrt(abs(xN_o(k)/(xN_o(k)-sigmaret**2)))
-        dintret=ll1*fint(k)*xN2/sigmaret**4
-c dintret < 0
+        !xN2=dsqrt(abs(xN_o(k)/(xN_o(k)+coriolis-sigmaret**2)))
+
+!             integrand = (xKm_o (k)+xnuvv_o(k))* (N/sigma2) * 
+! &                  (numerator/sigma2) * xN2/(r(k)**3)
+        !dintret=ll1*fint(k)*xN2/sigmaret**4
+        dintret=ll1*(fint(k)/xNt_o(k))*xN2*numerator(k)/sigmaret**4  !denominator = xN_o(k) - sigmaret**2        
+        !dintret=ll1*(fint(k))*xN2/sigmaret**4  !denominator = xN_o(k) - sigmaret**2        
+
+        !print *, 'xNt_o(',k,')=',xNt_o(k)   
         xintret(k1)=xintret(k)+dintret
-c        print *,k,k1,dintret,fint(k)
-c        print *,'xintret=',xintret(k1),'dintret=',dintret
+      !print *, 'xNt_o', xNt_o(k)!, 'numerator', numerator
+      !   print *, 'coriolis', coriolis  
+        !print *, 'xN2', xN2
+        !print *, 'll1_15', ll1_15
+        !print *, 'fint(k)*numerator', fint(k)*numerator
+        !print *, 'dintret', dintret
+        !print *, 'xintret(k1)', xintret(k1)
+            
+      
+        
+c dintret < 0
 C A-t-on vraiment besoin de ce test?
 C En fait, quand xint devient trop grand, on met simplement l'amplitude a 0
 C Verifier en execution
 C         if (xintret(k1).lt.1.d-27) then 
 c         if (dabs(xintret(k1)).lt.1.d-20) then 
-        if (xintret(k1).lt.1.d-20) then 
+         if(xintret(k1).lt.1.d-20) then 
 C Test CC (21/05/04)
 C             xintret(k1)=1.d-27
            xintret(k1)=1.d-20
+           !print *,'xintret(k1).lt.1.d-20'
          endif
         
-         if (xintret(k1) .gt. abslogamp_crit) then
+         if (xintret(k1).gt.abslogamp_crit) then
 c        if (abs(xintret(k1)) .gt. abslogamp_crit) then
 C Test sigmaret (24/11/06)
 C          ampret(k1)=1.d-16
 CC (18/09/09)
             ampret(k1)=0.d0
             retrograde = .false.
+            !print *,'xintret(k1).gt.abslogamp_crit'
          else
             ampret(k1)=dexp(-xintret(k1))
+            !print *,'ampret(k1)=dexp(-xintret(k1))'
          endif
+        !print *, 'amplitude=', ampret(k1)
+        !print *, '---------------------'
 C	kk=min(k,k1)
 C        depotondes(kk)=depotondes(kk)-ampret(k)+ampret(k1)
          depotonde(k1)=depotonde(k1)-ampret(k)+ampret(k1)
          sigmaret=omegaloc+dfloat(mm)*d_om(k+un+un)
+      !    print *,'sigmaret',sigmaret,'brunt_o(k+un+un)',brunt_o(k+un+un)
+      !    print *, 'should be sigmaret<brunt_o(k+un+un)'
+      !    if (un.eq.1 .and. sigmaret.gt.brunt_o(k+un+un)) then
+      !       print *, 'DEBUG un.eq.1 .and. sigmaret.gt.brunt_o(k+un+un)'
+      !    endif
+      !    if (k1.eq.npasr) then
+      !       print *, 'DEBUG k1.eq.npasr'
+      !    endif
+      !    if (rray_o(k).lt.1.d-3) print *, 'DEBUG rray_o(k).lt.1.d-3'
          
          if ((un.eq.1 .and. sigmaret.gt.brunt_o(k+un+un)) 
-     &       .or. k1.eq.npasr.or.rray_o(k).lt.1.d-3) then
+     &       .or. (k1.eq.(npasr-1)).or.rray_o(k).lt.1.d-3) then
             un=-1
             allerretour=allerretour+1
+            !print *,'allerretour'
             
          else if (k1.eq.mtu) then
             un=+1
             allerretour=allerretour+1
             retrograde = .false.
+            !print *,'k1.eq.mtu'
+            !print *,'retrograde = .false.'
          endif
       enddo
+      !call cpu_time(t_end)
+      !print *, 'Time in ond_int main loop:', t_end-t_start
 
 C      print *,'Dans ond_int, apres 1ere boucle'
 
@@ -399,9 +453,6 @@ C ---------------------------------------------------------------------
 C ---------------------------------------------------------------------
 C Calcul de l'epaisseur optique pour une onde avec une frequence
 C  qui varie avec la profondeur
-C
-C Calculation of optical thickness for a wave with a frequency
-C that varies with depth
 C
 C d_om est deja la differentielle de la valeur moyenne
 C i.e. 0.5*(om_o(i)+om_o(i+1))-om_o(mtu)
@@ -657,9 +708,8 @@ C doit valoir 0
          sumdepottot = sumdepottot+depottot(k)
       enddo
 C
-      print *,' Sortie de ond_omega'
 
-      print *,'ond_omega'
+      print *,'Sortie de ond_omega'
       print *,'depot ZC surf = ',depottot(mtu-1)
       print *,'depot ZC core = ',depottot(npasr)
       print *,'  sumdepottot = ',sumdepottot
@@ -1159,8 +1209,6 @@ C ---------------------------------------------------------------------
 C Adapte pour STAREVOL par C.Charbonnel & S.Talon
 C Appele par calculflux.f
 C Derniere version : 31 octobre 2009
-C Modify by L.Ramirez Galeano : 10 Mars 2025 
-C Added Coriolis Terms
 C ---------------------------------------------------------------------
 
       implicit none
@@ -1168,20 +1216,17 @@ C ---------------------------------------------------------------------
       include 'evolpar.star'
       include 'evolcom.cons'
       include 'evolcom.conv'
-C Modifs CC ondes (19/10/07)
-      include 'evolcom.diff'
-      include 'evolcom.eng'
       include 'evolcom.grad'
       include 'evolcom.teq'
-C      include 'evolcom.transpondesexcit'
+      include 'evolcom.transp'
+c      include 'evolcom.transpondesexcit'
       include 'evolcom.igw'
       include 'evolcom.therm'
-      include 'evolcom.therm2' !LR Modif 20250214
-      include 'evolcom.transp'
       include 'evolcom.var'
-      include 'evolcom.rot' !LR Modif 20250214
-
-
+      include 'evolcom.eng'
+C Modifs CC ondes (19/10/07)
+      include 'evolcom.diff'
+      include 'evolcom.rot' !LR ADDED 20250523
 
       double precision e_total
 c      double precision amplitudemoyenne,amplitudemoyenne_core
@@ -1194,13 +1239,10 @@ C Test CC (31/10/09)
       double precision rlim,deltar,amp,ampp,ampm
       double precision ampli(nsh)
       double precision xlumj,xint,dintpro
-      double precision tamp
-      !Modif LR 20250214
-      double precision Ri_number(nsh),S_number(nsh),Y_number(nsh)
-      double precision Fr_number(nsh, nfreq),baseFactor(nsh)
-      double precision Y,S_n,alpha_val,numerator(nsh),denominator(nsh)
-      double precision coriolfactor(nsh),drfactor(nsh),Fr
-      double precision tau_mode(nfreq,llmax,2*llmax + 1) !LR Modif 20250325 Mode-by-mode resolution.
+      !double precision lumwave(nsh) !LR ADDED 20250408
+      double precision alpha_val, numerator, denominator
+      double precision integrand, N, N2, Omega_d, sigma
+      double precision sigma2, tamp, zeta(nsh),numerator_kr
       data npi/6.2831853d-6/
 
       integer mtu,npasr,ncouche,i,ii,ll,mm,k,k1,j,jj
@@ -1254,72 +1296,6 @@ C <--
         brunt_o(i)=brunt_o(ii)
       enddo
 
-
-C ---- Modif LR 20250213
-C Definition of the dimensionless numbers
-
-! Richardson number 
-      !print *,'Computing Richardson Number LR'
-      rkonv_o(1) = abla(1)-abad(1)
-      do i = 2,nmod
-         rkonv_o(i) = abla(i)-abm(i)
-      enddo
-!       do i = 1,nmod
-!          !Is it needed to define grav and gs?
-!          !	do i=1,nmod-1
-! c	   !  gmr_oo(i) = g*m(i)/(r(i)*r(i))
-!          !  grav(i) = gmr(i)/gmr(nmod)
-! 	   !  gs = gmr(nmod)   
-!          xNt_o(i) = -grav(i)*gs/hp(i)*rkonv_o(i)*deltaKSm(i)
-!          xNmu_o = grav(i)*gs/hp(i)*abmu(i)*phiKSm(i)
-!          xN_o(i) = xNt_o(i) + xNmu_o(i)
-!          !print*,'xN_o = ',xN_o
-!       enddo
-
-! Y number Y = Ri^(-1/2)
-      do i = 1, nmod-1
-            tamp =(vomega(i+1)-vomega(i))/(r(i+1)-r(i))
-            Ri_number(i)=xN_o(i)/(r(i)*5.d1*tamp)**2
-c           Ri(i) = 0.d0
-            if (Ri_number(i).gt.1.d30) Ri_number(i) = 0.d0
-            if (Ri_number(i).lt.-1.d30) Ri_number(i) = 0.d0
-
-            if (Ri_number(i).gt. 0.d0) then
-                Y_number(i)=1.d0/dsqrt(Ri_number(i))
-            else
-                Y_number(i)=0.d0
-            endif
-            if (Y_number(i).gt.1.d30) Y_number(i) = 0.d0
-            if (Y_number(i).lt.-1.d30) Y_number(i) = 0.d0   
-! S Number 
-            if (xN_o(i).gt.0.d0) then
-                  S_number(i)=2*vomega(i)/dsqrt(xN_o(i))
-              else
-                 S_number(i) = 0.d0
-              endif
-     
-              if (S_number(i).gt.1.d30) S_number(i) = 0.d0
-              if (S_number(i).lt.-1.d30) S_number(i) = 0.d0  
-              !print *,i,Ri_number(i),xN_o(i),tamp,vomega(i),r(i)
-              ! Froude Number (Fr = sigma / N)
-              do ii = 1, nfreq  ! Loop over wave frequencies
-                  if (xN_o(i) .gt. 0.d0) then
-                     Fr_number(i, ii)=freqrefinert(ii)/dsqrt(xN_o(i))
-                  else
-                     Fr_number(i, ii) = 0.d0
-                  endif
-
-                  if (Fr_number(i, ii) .gt. 1.d30) Fr_number(i, ii) = 0.d0
-                  if (Fr_number(i, ii) .lt. -1.d30) Fr_number(i, ii) = 0.d0      
-               enddo
-               !print *,i,Ri_number(i),xN_o(i),tamp,S_number(i),Fr_number(i),r(i)
-      enddo
-      Ri_number(nmod)=Ri_number(nmod-1)
-      Y_number(nmod)=Y_number(nmod-1)
-      S_number(nmod)=S_number(nmod-1)
-      !print *,'Computed Ri, Y, S LR'
-
-C----- Until here Modif LR 20250213
 C --> Test ecriture frequence BV avant et apres la condition sur r_os
 C CC (18/09/09)
 C
@@ -1393,95 +1369,60 @@ c           print *,"damping",ii,ll,xN_o(mtu+1),freqrefinert(ii)**2
           tau=0.d0
           ll1=(dfloat(ll)+1.d0)*ll
           i=mtu+1
-          !print *,'tau=',tau
 c          print *,'comp xN_o',i,xN_o(i),freqrefinert(ii)**2
-! Print the values of variables used in the loop condition
-      !     print *,"[DEBUG] Before loop:"
-      !     print *,"tau =", tau, " (should be < 0.5)"
-      !     print *,"xN_o(", i, ") =",xN_o(i)
-      !     print *," (should be > ",freqrefinert(ii)**2,")"
-      !     print *,"Loop index i =",i,"(should be < npasr =",npasr
-      !     print *,"and < ncouche-2 =", ncouche-2, ")"
-
-          !Check each condition separately:
-!           if (.not. (tau.lt.0.5d0)) then
-!             print *,"[DEBUG] Condition failed:", 
-!      &       "tau is not less than 0.5 (tau =",tau, ")"
-!           endif
-
-!           if (.not.(xN_o(i).gt.freqrefinert(ii)**2)) then
-!             print *,"[DEBUG] Condition failed: xN_o(", i, ") =",xN_o(i),
-!      &      " is not greater than freqrefinert(",ii,")**2 =",
-!      &      freqrefinert(ii)**2
-!           endif
-
-!           if (.not. (i.lt.npasr)) then
-!             print *,"[DEBUG] Condition failed: i =", i,
-!      &        " is not less than npasr =", npasr
-!           endif
-
-!           if (.not. (i.lt.ncouche-2)) then
-!             print *,"[DEBUG] Condition failed: i =", i,
-!      &       " is not less than (ncouche-2) =", ncouche-2
-!           endif
-
           if (xN_o(i) .le. freqrefinert(ii)**2) then
 C           L'onde ne peut se propager
             fluxtotalafiltrer(ii,ll)=0.d0
 C            print *,"A: elimination de nu=",freqrefinert(ii),"l=",ll
           else
-! LR commented 20250213 ----
-!             do while (tau.lt.0.5d0.and.xN_o(i).gt.freqrefinert(ii)**2
-!      &                 .and.i.lt.npasr.and.i.lt.ncouche-2)
-!             !Laura: Equation 6 Talon&Charbonnel2003
-!               !fint in diffinitondesexcit.f
-!               !tau to modify: 
-!               !Modif LR 20250213
-!               xN2=dsqrt(abs(xN_o(i)/(xN_o(i)-freqrefinert(ii)**2)))
-!
-!               tau=tau+ll1**1.5d0*fint(i)*xN2/freqrefinert(ii)**4
-!               i=i+1
-!             enddo
-! LR commented until here 20250213----
-! LR New tau function 20250213
-! LR commented 20250213 ----
             do while (tau.lt.0.5d0.and.xN_o(i).gt.freqrefinert(ii)**2
      &                 .and.i.lt.npasr.and.i.lt.ncouche-2)
-                  !print *,"Entering new LR Modifications"
-                  ! 1) Compute local dimensionless numbers
-                  Fr=Fr_number(i, ii)        ! sigma / N
-                  S_n=S_number(i)             ! 2 Omega / N
-                  Y=Y_number(i)             ! Ri^(-1/2)
-                  Ri=Ri_number(i)            ! Richardson number
-                  baseFactor(i) = 0.d0
+            !print *,'entering LR modifications'
+              !xN2=dsqrt(abs(xN_o(i)/(xN_o(i)-freqrefinert(ii)**2)))
+              ! Compute local quantities
+              N2 = xN_o(i)
+              N = dsqrt(N2)
+              sigma2 = freqrefinert(ii)**2
+              sigma = freqrefinert(ii)
+              alpha_val = 1.d0 - 1.d0/ll1!dfloat(mm*mm)/ll1 To be changed
+            
+            ! Compute Omega and dOmega/dr
+              Omega_d = vomega(i)
+              !print *,'damping Omega_d=',i,Omega_d
+              if (i < ncouche-1) then
+                  tamp = (vomega(i+1) - vomega(i)) / (r(i+1) - r(i))
+              else
+                  tamp = (vomega(i) - vomega(i-1)) / (r(i) - r(i-1))
+              endif
+              zeta(i) = (2.d0*Omega_d) + (r(i)*tamp)
+              numerator = N2 + alpha_val*2.d0*Omega_d*zeta(i)
+              !print *,'coriolis ',numerator-N2
+              denominator = N2+(alpha_val*2.d0*Omega_d*zeta(i))-sigma2
+              if (denominator <= 0.d0) print *,'denominator',denominator
 
-                  ! 2) Compute base factor: (k_h^3 * kappa) / (N * Fr^4)
-                  if (Fr.gt.0.d0) then
-                        baseFactor(i)=(ll1**1.5d0*(xKm_o(i)+
-     &                        xnuvv_o(i)))/(brunt_o(i) * (Fr**4))
-                  endif
+              if (denominator <= 0.d0) exit
 
-                  ! 3) Coriolis correction
-                  alpha_val= 1.0d0-(1.d0/ll1) !To be changed (1-m2/h2) h2 = ll1
-                  numerator(i)=1.0d0+alpha_val*S_n*(S_n+Y)
-                  denominator(i)=dsqrt(1.d0-Fr**2.0d0+numerator(i))
-                  coriolFactor(i)=numerator(i)/denominator(i)
+              xN2 = dsqrt(N2/denominator)
 
-                  ! 4) Geometric factor: dr / r^3
-                  drFactor(i)=(1.d0/hnenn_o(i))/(rraym_o(i)**3*rtot**2)
-                  ! 5) Update tau
-                  tau=tau+baseFactor(i)*coriolFactor(i)*drFactor(i)
-                  i=i+1
+              integrand = (xKm_o(i)+xnuvv_o(i))/N * (N2/sigma2) *
+     &                    (numerator/sigma2) * xN2 / (r(i)**3)
+              !tau = tau + ll1**1.5d0 * integrand * (r(i+1)-r(i))  ! dr step
+                  
+              tau=tau+ll1**1.5d0*fint(i)*xNt_o(i)*xN2/
+     &            freqrefinert(ii)**4
+              !tau=tau+ll1**1.5d0*fint(i)*xN2/freqrefinert(ii)**4 !xNt_o in fint 
+
+              i=i+1
             enddo
-            !Laura: Radial wave number: Equation 2 Talon&Charbonnel2005
-            !Need a modification eq. 5.70 A.Quentin Thesis
-            !kr witouth coriolis
-C            kr=dsqrt((xN_o(i-1)/freqrefinert(ii)**2-1.d0)*ll1)
-C     &         /(rray_o(i)*rtot)
-            kr=1.0d0/Fr*dsqrt(1-Fr**2+alpha_val*S_n*(S_n+Y))
-     &         *dsqrt(ll1)/(rray_o(i)*rtot)
-
-            domega=rray_o(mtu)-rray_o(i)
+!             kr=dsqrt((xN_o(i-1) + 2.d0*Omega_d*zeta(i)
+!      &       /freqrefinert(ii)**2 - 1.d0)*ll1)/(rray_o(i)*rtot)
+            kr=dsqrt(((xN_o(i-1) + 2.d0*alpha_val*Omega_d*zeta(i))/
+     &       freqrefinert(ii)**2-1.d0)*ll1)
+     &         /(rray_o(i)*rtot)
+            !Radial wave number Equation 2 Talon&Charbonnel2005
+!             kr=dsqrt((xN_o(i-1)/freqrefinert(ii)**2-1.d0)*ll1)
+!      &         /(rray_o(i)*rtot)
+            domega=rray_o(mtu)-rray_o(i) 
             if (domega.lt.(1.d0/(kr*rtot)).or.i.eq.(mtu+2)) then
                fluxtotalafiltrer(ii,ll)=0.d0
 c               print *,"C: elimination de nu=",freqrefinert(ii),"l=",ll
@@ -1587,9 +1528,9 @@ C          xN2=dsqrt(abs(xN_o(i)/(xN_o(i)-freqrefinert(ii)**2)))
 	  endif
         enddo
 
- 100	do j=mtu,k-1
+ 100	do j=mtu,k-1 
           lumwave(j)=lumwave(j)+(ampli(j)-ampli(j+1))*xlumj
-          !print *,"lumwave(j) ",lumwave(j),xlumj,ampli(j+1),ampli(j)
+          !print *,"LR lumwave(j) ",lumwave(j),xlumj,ampli(j+1),ampli(j)
 	enddo
       enddo
       enddo
@@ -1653,7 +1594,6 @@ c      double precision amplitudemoyenne,amplitudemoyenne_core
       double precision rlim,deltar,amp,ampp,ampm
       double precision ampli(nsh)
       double precision xlumj,xint,dintpro
-      double precision Ri_number,S_number,Y_number,Fr_number!Modif LR 20250213
       data npi/6.2831853d-6/
 
       integer mtu,npasr,ncouche,i,ii,ll,mm,k,k1,j
@@ -2346,4 +2286,3 @@ C     &         ' xlum=',e11.4)
       write(*,*) 'Sortie de excitation_core'
       return
       end
-

@@ -425,9 +425,9 @@ echo  >> $DIR_RESEVOL/run.log
 
  if [ $6 == 0 ] 
    then
-   ../../EVOL/BATCH/batche_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${bintype}
+   $DIR_BATCH/batche_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${bintype}
  else
-   ../../EVOL/BATCH/batchesun_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${stopage} ${bintype}
+   $DIR_BATCH/batchesun_3.40 ${FILE} ${phdir} ${subinis} ${ibeg} ${iend} ${phase} ${stopage} ${bintype}
  fi
 
 echo

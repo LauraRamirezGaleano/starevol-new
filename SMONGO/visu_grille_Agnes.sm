@@ -1,0 +1,31 @@
+readmodels	readi m2.0FeHm0.15 Grille_Agnes_v3.0 0 0 1
+		readi m2.5FeHm0.15 Grille_Agnes_v3.0 0 0 2
+		readi m3.0Z0.02 Grille_Agnes_v3.0 0 0 3
+		readi m3.5FeH0.0 Grille_Agnes_v3.0 0 0 4
+		readi m4.0FeH0.0 Grille_Agnes_v3.0 0 0 5
+		readi m4.0FeH0.0 Grille_Agnes_v3.0 0 0 6
+		readi m4.5FeH0.0 Grille_Agnes_v3.0 0 0 7
+		readi m5.0FeH0.0 Grille_Agnes_v3.0 0 0 8
+		readi m2.0FeHm0.15 Grille_Agnes_v3.0 0 0 9
+		readi m2.5FeHm0.15 Grille_Agnes_v3.0 0 0 10
+		readi m3.0FeHm0.15 Grille_Agnes_v3.0 0 0 11
+		readi m3.5FeHm0.15 Grille_Agnes_v3.0 0 0 12
+		readi m4.0FeHm0.15 Grille_Agnes_v3.0 0 0 13
+		readi m4.5FeHm0.15 Grille_Agnes_v3.0 0 0 14
+		readi m5.0FeHm0.15 Grille_Agnes_v3.0 0 0 15
+		readi m1.5FeHm0.3 Grille_Agnes_v3.0 0 0 16
+		readi m2.0FeHm0.3 Grille_Agnes_v3.0 0 0 17
+		readi m2.5FeHm0.3 Grille_Agnes_v3.0 0 0 18
+		readi m3.0FeHm0.3 Grille_Agnes_v3.0 0 0 19
+		readi m3.5FeHm0.3 Grille_Agnes_v3.0 0 0 20
+		ie 0
+		erase
+		window 2 2 1 2
+		nn 1,8
+		Li
+		window 2 2 2 2
+		nn 9,15
+		Li
+		window 2 2 1 1
+		nn 16,20
+		Li

@@ -1,0 +1,2015 @@
+  # -*-SM-*-
+
+myhrd1
+  sv 3
+  location $($gx1 + 2500) $gx2 $($gy1+1500) $gy2
+  expand 2.8 iexpand 2.8
+  erase ie 0
+  defx Teff
+  ixinv 1
+  ixlog 0
+  itoplabel 0
+  ihrd 1
+
+  nn 1
+  plotl L
+  expand 3
+  ctype 0
+  ptype 6 3 points (Teff_1[904]) (lg(L_1[904]))
+  ptype 6 3 points (Teff_1[204]) (lg(L_1[204]))
+  ptype 6 3 points (Teff_1[1628]) (lg(L_1[1628]))
+  expand 2.8
+
+  location 3500 31000 3500 31000
+  w
+  limits 0 1 0 1
+  relocate 0.15 0.9 putlabel 6 20 M_\odot
+  relocate 0.623382 0.815236 expand 2 label X_c = 0.0
+  relocate 0.408909 0.582509 expand 2 label X_c = 0.32
+  relocate 0.224218 0.182255 expand 2 label X_c = 0.675
+  rv 3
+
+myhrd2
+  sv 3
+   nn 3
+  location $($gx1 + 2500) $gx2 $($gy1+1500) $gy2
+  expand 2.8 iexpand 2.8
+  erase ie 0
+  defx Teff
+  ixinv 1
+  ixlog 0
+  itoplabel 0
+  ixlabel 0
+  ihrd 1
+
+  nn 3
+  xlim 7200 6100
+  plotl L 
+  expand 2.5
+  ctype 0
+  xlabel Teff (K)
+  ylabel log L (L_\odot)
+  expand 3
+  ptype 6 3 points (Teff_3[20]) (lg(L_3[20]))
+  ptype 6 3 points (Teff_3[200]) (lg(L_3[200]))
+  ptype 6 3 points (Teff_3[391]) (lg(L_3[391]))
+  expand 2.8
+
+  location 3500 31000 3500 31000
+  w
+  limits 0 1 0 1
+  relocate 0.16 0.72  putlabel 6 1.5 M_\odot
+  relocate 0.730618 0.859455 expand 2 label X_c = 0.0
+  relocate 0.532036 0.354036 expand 2 label X_c = 0.32
+  relocate 0.254 0.145018 expand 2 label X_c = 0.675
+  rv 3
+
+myflux20
+  sv 10
+  erase
+  itoplabel 0
+  ie 0
+  ixlabel 0
+  ixlabel 0 iylabel 0
+  ibox 0
+
+  local define x_gutter 0.4
+  local define y_gutter 0.4
+  location 3500 31000 3500 31000
+  ilweight 3 lweight 3 
+
+  #flux AM
+  location $($gx1 + 2500) $gx2 $($gy1+1500) $gy2
+  #location 3500 31000 3500 31000
+  #location $gx1 $gx2 $gy1 $gy2
+  expand 2.3 iexpand 2.3
+  erase ie 0
+  #calcfluxAM 30
+  #set Fluxtot_30 = (r_30>9)? 0: Fluxtot_30
+  calcfluxAM 1
+  set Fluxtot_1 = (r_1>9)? 0: Fluxtot_1
+
+  ylim -6 6
+  ctype red ltype 2 plot Fluxcirc 1e-13
+  ctype blue ltype 1 plot Fluxshear 1e-13
+  ctype black ltype 0 plot Fluxtot 1e-13
+  #set testy_12 = 1e7*Fluxtot_12 if (Fluxtot_12 > 0 && r_12>3)
+  #set testx_12 = r_12 if (Fluxtot_12 > 0 && r_12>3)
+  #lweight 4 connect testx_12 testy_12
+  
+  box
+  dconv 1	
+  xlabel $x  ($unit_x)
+  ctype red  relocate 2.5 0.5 label F_{MC},
+  ctype blue label  F_{S},
+  ctype black label  F_{tot}
+  ylabel 10^{-7}\times Flux/R^4_\odot
+  #define fx1 | define fx2 | define fy2 |
+  #relocate $(($fx2-$fx1)/2+$fx1) $($fy2*1.05) putlabel 8 10^{-7}\times Flux/R^4_\odot
+  location 3500 31000 3500 31000
+
+
+myU
+  #readsi n0000444 32
+  #readsi n0001005 42
+  #readsi m1.5z02_V2.80_muc_0000443 31
+  #readsi m1.5z02_V2.80_muc_0001004 41
+  #readsi m1.5z02_V2.80_muc_0000267 21
+  #readsi n0000268 22
+  #nn <22 32 42>
+  #makeconv
+  #set vomega_22 = omega_21 set vr_22 = r_21
+  #set vomega_32 = omega_31 set vr_32 = r_31
+  #set vomega_42 = omega_41 set vr_42 = r_41
+
+  sv 3
+  erase ie 0
+
+  local define x_gutter 0.5
+  
+  window 3 3 1 1
+  #nn 32
+  nn 1
+  ie 0
+  plotUcircR
+  ylabel log(|U_2|)
+  relocate 0.5 1.1 putlabel 5 X_c = 0.675
+  
+  window 3 3 2 1 
+  #nn 35
+  nn 2
+  plotUcircR
+  relocate 0.5 1.1 putlabel 5 X_c = 0.32
+
+  window 3 3 3 1
+  #nn 34
+  nn 3
+  plotUcircR
+  relocate 0.5 1.1 putlabel 5 X_c = 0.0
+  
+
+  w
+  rv 3
+  
+plotUcircR
+  sv 5
+  if ($ierase==1) {erase ie 0}
+  calcUcircR
+  foreach n nn {
+    set Ucircl_$n = (yzi_$n<0 || r_$n>r_$n[dimen(r_$n)-1]-.01) ? -30 : lg(abs(Ucirc_$n))
+    set UcircRl_$n = (yzi_$n<0 || r_$n>r_$n[dimen(r_$n)-1]-.01) ? -30 : lg(abs(UcircR_$n))
+    set UcircRl1_$n = (yzi_$n<0 || r_$n>r_$n[dimen(r_$n)-1]-.01) ? -30 : lg(abs(temp1_$n))
+    set UcircRl2_$n = (yzi_$n<0 || r_$n>r_$n[dimen(r_$n)-1]-.01) ? -30 : lg(abs(temp2_$n))
+    
+  }
+  addvar Ucircl
+  addvar UcircRl
+  addvar UcircRl1
+  addvar UcircRl2
+  ixlabel 0
+  iylabel 0
+  itoplabel 0
+  ibox 0 ie 0
+  ylim -10 5
+  expand 0.9
+  ctype black	  ltype 3 plot Ucircl
+  ctype green     ltype 0 plot UcircRl
+  ctype blue      ltype 1 plot UcircRl1
+  ctype red ltype 2 plot UcircRl2
+  
+  foreach n nn {
+    define lweight |
+    lweight $($lweight+3)
+    #ctype green     ltype 0 connect r_$n UcircRl_$n if (UcircR_$n < 0)
+    ctype blue      ltype 1 connect r_$n UcircRl1_$n if (temp1_$n < 0)
+    ctype red ltype 2 connect r_$n UcircRl2_$n if (temp2_$n < 0)
+    ctype black     ltype 3 connect r_$n Ucircl_$n if (Ucirc_$n < 0)
+    lweight $lweight
+  }
+  
+  ltype 0 ctype black box
+  dconv 0
+  xlabel r  (R_\odot)
+
+  limits 0 1 0 1
+  expand 1.1
+  relocate .1 .85 putlabel 6 U_2,
+  ctype green     label  U_A,
+  ctype blue      label  U_V,
+  ctype red label  U_\Gamma
+  
+  rv 5
+
+figflux
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  sv 4
+  erase ie 0
+  iylabel 0
+  ixlabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  
+  window 3 3 1 2
+  myfluxAM 1
+  box 1 2 0 0
+  xlabel r (R_\odot)
+  dconv 1
+  ylabel log(|Flux/R_\odot^4|)
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.675
+  
+  window 3 3 2 2
+  myfluxAM 2
+  box 1 0 0 0
+  xlabel r (R_\odot)
+  dconv 1
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.32
+  
+  window 3 3 3 2
+  myfluxAM 3
+  box 1 0 0 0
+  xlabel r (R_\odot)
+  dconv 1
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.0  
+  w
+  rv 4
+  
+myfluxAM 1
+  # Flux of angular momentum
+  iy 0
+  ylim -20 4
+  ie 0
+  calcfluxAM $1
+  ibox 0 ictype 0 ixlabel 0 iylabel 0
+  #set Fluxshear_$1 = (Fluxshear_$1)
+  #set Fluxcirc_$1 = (Fluxcirc_$1)
+  #set Fluxtot_$1 = (Fluxtot_$1)
+  ltype 2 ctype blue plotabslg Fluxshear
+  ltype 3 ctype red plotabslg Fluxcirc
+  ltype 1 ctype black plotabslg Fluxtot
+  expand 1.1 iexpand 1.1
+  ltype 0
+  ctype red  relocate $(($xsup-$xinf)*0.25) -6 label F_{MC},
+  ctype blue label  F_{S},
+  ctype black label  F_{tot}
+  box
+  dconv 0
+  #xlabel r  ($unit_x)
+  expand 1.1
+  ie 1
+
+  ## figCdiff
+  ##   #readsi m1.5z02_V2.80_muc_0000326 1
+  ##   #readsi m1.5z02_V2.80_muc_0000443 2
+  ##   #readsi m1.5z02_V2.80_muc_0001004 3
+  ##   sv 4
+  ##   erase ie 0
+  ##   iylabel 0
+  ##   itoplabel 0
+  ##   local define y_gutter 0.5
+  ##   local define x_gutter 0.5
+  ##   
+  ##   window 3 3 1 1
+  ##   nn 1
+  ##   diff 1
+  ##   #dconv 1
+  ##   ylabel log(D_{iff})
+  ##   limits 0 1 0 1
+  ##   relocate 0.5 1.1 putlabel 5 X_c = 0.57
+  ##   
+  ##   window 3 3 2 1
+  ##   nn 2
+  ##   diff 2
+  ##   #dconv 1
+  ##   limits 0 1 0 1
+  ##   relocate 0.5 1.1 putlabel 5 X_c = 0.32
+  ##   
+  ##   window 3 3 3 1
+  ##   nn 3
+  ##   diff 3
+  ##   #dconv 1
+  ##   limits 0 1 0 1
+  ##   relocate 0.5 1.1 putlabel 5 X_c = 0.00
+  ## 
+  ##   w
+  ##   rv 4
+  ##   
+  
+figomega
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  
+  window 3 3 1 1
+  nn 1
+  plot omega 1e-4
+  dconv 1
+  ylabel \Omega \times 10^4  (s^{-1})
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.57
+  
+  window 3 3 2 1
+  nn 2
+  plot omega 1e-4
+  dconv 1
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.32
+  
+  window 3 3 3 1
+  nn 3
+  plot omega 1e-4
+  dconv 1
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.00
+
+  w
+  rv 4
+
+figentete
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  
+  window 3 3 1 1
+  nn 1
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.57
+  
+  window 3 3 2 1
+  nn 2
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.32
+  
+  window 3 3 3 1
+  nn 3
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.00
+
+  w
+  rv 4
+  
+
+
+figUcompo
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.4
+  local define x_gutter 0.4
+  lweight 3 ilweight 3
+  defx r  
+
+  window 3 3 1 1
+  nn 1
+  ylabel log(|S transport|)
+  testlog 1
+  limits 0 1 0 1
+  relocate 0.5 2.2 putlabel 5 X_c = 0.675
+  
+  window 3 3 2 1
+  nn 2
+  testlog 2
+  limits 0 1 0 1
+  relocate 0.5 2.2 putlabel 5 X_c = 0.32
+  
+  window 3 3 3 1
+  nn 3
+  testlog 3
+  limits 0 1 0 1
+  relocate 0.5 2.2 putlabel 5 X_c = 0.0
+
+  w
+  rv 4
+
+plotUcompo 1
+  define _ierase $ierase
+  if ($ierase==1) {erase ie 0}
+  ylim -5 4
+  define ictype 0 ixlabel 0 iylabel 0 ibox 0
+  set UB_$1 = abs(UB_$1)
+  set UTh_$1 = abs(UTh_$1)
+  set UNG_$1 = abs(UNG_$1)
+  set UNS_$1 = -UNS_$1
+  set Ucirc_$1 = abs(Ucirc_$1)
+  ltype 1 ctype blue plotabslg UB
+  ltype 3 ctype red plotabslg UTh
+  ltype 0 ctype green plotabslg UNG
+  ltype 4 ctype magenta plotabslg UNS
+  ltype 2 ctype black plotabslg Uadv
+  ltype 0 dconv 0
+  define ictype 1 ixlabel 1 iylabel 1 ibox 1
+  expand 0.9 iexpand 0.9
+  relocate $(($xsup-$xinf)*0.2) 3
+  ctype magenta label NS,
+  ctype black   label  Adv,
+  ctype blue    label  B,
+  ctype red     label  Th,
+  relocate $(($xsup-$xinf)*0.2) 2
+  ctype green   label N-G
+  ctype black box
+  ctype black expand 1.1
+  xlabel $var2d  ($unit_x)
+  define ierase $_ierase
+
+testlog 1
+  sv 4
+  #erase 
+  ie 0
+  iylabel 0
+
+  window 3 -6 $1 2
+  iibox 0 2
+  ixlabel 0
+  ylim -4 6
+  ibox 0
+  ltype 1 ctype blue plotl SB
+  ltype 3 ctype red plotl STh
+  ltype 0 ctype green plotl SNG
+  ltype 4 ctype magenta plotl SNS
+  ibox 1
+  ltype 2 ctype black plotl Sadv
+  dconv 0  
+
+  expand 0.9 iexpand 0.9
+  relocate $(($xsup-$xinf)*0.08) 3
+  ctype magenta label NS,
+  ctype black   label  Adv,
+  ctype blue    label  B,
+  ctype red     label  Th,
+  ctype green   label  N-G
+  #relocate $(($xsup-$xinf)*0.1) 2
+  #ctype green   label N-G
+  ctype black expand 1.1
+
+  window 3 -6 $1 1
+  iibox 1 2
+  ylim 4 -4
+  ibox 0
+  ltype 1 ctype blue plotl SB -1
+  ltype 3 ctype red plotl STh -1
+  ltype 0 ctype green plotl SNG -1 
+  ltype 4 ctype magenta plotl SNS -1
+  ibox 1
+  ixlabel 1
+  ltype 2 ctype black plotl Sadv -1
+  dconv 0
+  
+  
+  rv 4
+  
+  
+figdiff
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  iylabel 0
+  local define x_gutter 0.35
+  local define y_gutter 0.35
+  
+  window 3 3 1 1
+  nn 1
+  diff 1
+  ylabel log (D_{iff})
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.675
+  relocate 0.25 0.8 expand 0.9
+  ctype green4 putlabel 5 K_t,
+  ctype black   label  D_h,
+  ctype red     label  D_{eff},
+  ctype blue    label  D_v
+  ctype black expand 1.1
+  
+  window 3 3 2 1
+  nn 2
+  diff 2
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.32
+  relocate 0.25 0.8 expand 0.9
+  ctype green4 putlabel 5 K_t,
+  ctype black   label  D_h,
+  ctype red     label  D_{eff},
+  ctype blue    label  D_v
+  ctype black expand 1.1
+  
+  window 3 3 3 1
+  nn 3
+  diff 3
+  dconv 1
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 X_c = 0.0
+  relocate 0.25 0.8 expand 0.9
+  ctype green4 putlabel 5 K_t,
+  ctype black   label  D_h,
+  ctype red     label  D_{eff},
+  ctype blue    label  D_v
+  ctype black expand 1.1
+
+  w
+  rv 4
+
+mydlconv 01
+  #draw convective zone
+  if ($?1 == 0) { define 1 ? { enter absolute star number or (0) to draw (all) convective zone(s) }}
+  if ('$1' == 'x') {return}
+  set _nnsav = nn
+  define _nstar $nstar
+  if ($1 != 0) {
+    define _n $(dimen(nn))
+    if ( $1 > $_n ) {
+      echo
+      echo "bad argument : "$1" > dimension of nn ! "
+      echo
+      return }\
+    else {
+      define nstar 1
+      set nn = $(nn[$1-1]) }
+  }
+  checknn
+  if ($ipass != 0) { 
+     define nstar $_nstar
+     set nn = _nnsav
+     return}
+  do i = 1,$nstar {
+    define j ($i-1)
+    define jcolor ($j % $ncolors)
+    echo TEST $i $jcolor $(color_name[$jcolor])
+    if ($ictype == 1 && $nstar > 1) {ctype $(color_name[$jcolor])}  
+    set _x = $x"_"$(nn[$j])
+    if ($ixlog == 1 ) { set _x = lg(_x+1e-30)}
+    set _y = (yzi"_"$(nn[$j]) < 0) ? 1 : 0
+    set _ym = < $(_y[0]) > concat _y
+    set _yp = _y concat < 0 >
+    set _nsh = < 0 > concat nsh"_"$(nn[$j])
+    set _idx = _nsh if (_ym != _yp)
+    define _nidx $(dimen(_idx)-1)
+    do k = 0,$_nidx {
+      define ix $(_idx[$k])
+      if ($k % 2) {
+        define ix $((_idx[$k])-1) }\
+      else {
+        define ix $(_idx[$k])
+      }
+      #dx $(_x[$ix])
+      #ctype $(color_name[nn[$j]])
+      echo $i $j
+      if ($j == 1) {
+        relocate $(_x[$ix]) 4.3 draw $(_x[$ix]) 4.8
+      } else { if ($j == 0) {
+        relocate $(_x[$ix]) 6.7 draw $(_x[$ix]) 7.2
+      } else {
+        relocate $(_x[$ix]) 3 draw $(_x[$ix]) 3.5
+      }}
+      #ctype black
+    }
+  }
+  ctype 0
+  define nstar $_nstar
+  set nn = _nnsav
+  #limits $xinf $xsup $_yi $_ys
+
+
+
+  
+figom20
+  sv 3
+  location $($gx1 + 2500) $gx2 $($gy1+1500) $gy2
+  expand 2.8 iexpand 2.8
+  erase ie 0
+  defx r
+  ixlog 0
+  itoplabel 0
+  iylabel 0
+
+  nn 11,13
+  plot omega 1e-5
+  mydlconv 0
+  ylabel \Omega \times 10^5  (s^{-1})
+
+  location 3500 31000 3500 31000
+  w
+  rv 3
+
+figom1p5
+  sv 3
+  location $($gx1 + 2500) $gx2 $($gy1+1500) $gy2
+  expand 2.8 iexpand 2.8
+  erase ie 0
+  defx r
+  ixlog 0
+  itoplabel 0
+  iylabel 0
+
+  #nn < 31 26 29>
+  nn 1,3
+  plot omega 1e-4
+  ltype 0 ctype 0
+  relocate 1.40965 0.8 draw 1.40965 1
+  relocate 1.45241 0.8 draw 1.45241 1
+  relocate 0.124172 0.8 draw 0.124172 1
+  ltype 1 ctype red
+  relocate 1.68809 0.8 draw 1.68809 1
+  relocate 1.81667 0.8 draw 1.81667 1
+  relocate 0.129468 0.8 draw 0.129468 1
+  ltype 2 ctype green4
+  relocate 2.07373 0.8 draw 2.07373 1
+  relocate 2.27194 0.8 draw 2.27194 1
+  #dlconv 0
+  ctype 0 ltype 0
+  ylabel \Omega \times 10^4  (s^{-1})
+  expand 2.5 xlabel r (R_\odot)
+  relocate 1 1.7 label 1.5 M_\odot
+  expand 1.5
+  relocate 1.1 1 ctype 0 label X_c = 0.675
+  relocate 1.3 0.52 ctype red label X_c = 0.32
+  relocate 1.8 0.4 ctype green4 label X_c = 0.0
+  ctype 0
+  
+  location 3500 31000 3500 31000
+  w
+  rv 3
+
+
+
+
+plotUcircR20
+  #readsi m20.0z014_idiffty13zgradmuT_OV_DhMaeder03_nucloptT_0000903 12
+  #readsi m20.0z014_idiffty13zgradmuT_OV_DhMaeder03_nucloptT_0000203 11
+  #readsi m20.0z014_idiffty13zgradmuT_OV_DhMaeder03_nucloptT_0001628 13
+  #readsi n0000904 12
+  #nn 12
+  #makeconv
+  #set vomega_12 = omega_11 set vr_12 = r_11
+  #
+  
+  sv 5
+  if ($ierase==1) {erase ie 0}
+  calcUcircR
+  foreach n nn {
+    set Ucircl_$n = (yzi_$n<0) ? -30 : lg(abs(Ucirc_$n))
+    set UcircRl_$n = (yzi_$n<0) ? -30 : lg(abs(UcircR_$n))
+    set UcircRl1_$n = (yzi_$n<0) ? -30 : lg(abs(temp1_$n))
+    set UcircRl2_$n = (yzi_$n<0) ? -30 : lg(abs(temp2_$n))
+  }
+  addvar Ucircl
+  addvar UcircRl
+  addvar UcircRl1
+  addvar UcircRl2
+  ixlabel 0
+  iylabel 0
+  itoplabel 0
+  ibox 0 ie 0
+  ylim -5 3
+  location $($gx1 + 2500) $gx2 $($gy1+1500) $gy2
+  expand 2.8 iexpand 2.8
+  foreach n nn {
+    set UcircRl_$n = (r_$n>9) ? -30 : UcircRl_$n
+    set UcircRl1_$n = (r_$n>9) ? -30 : UcircRl1_$n
+    set UcircRl2_$n = (r_$n>9) ? -30 : UcircRl2_$n
+    set Ucircl_$n = (r_$n>9) ? -30 : Ucircl_$n
+  }
+
+  
+  ctype green     ltype 0 plot UcircRl
+  ctype blue      ltype 1 plot UcircRl1
+  ctype redpurple ltype 2 plot UcircRl2
+  ctype black     ltype 3 plot Ucircl
+  ctype black box
+  dconv 0
+  xlabel r  (R_\odot)
+  ylabel log(|U_2|)
+  
+  limits 0 1 0 1
+  expand 3
+  relocate .2 .85 putlabel 6 U_2,
+  ctype green     label  U_A,
+  ctype blue      label  U_V,
+  ctype redpurple label  U_\Gamma
+  location 3500 31000 3500 31000
+  rv 5
+
+
+figUnorm
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  
+  window 3 3 1 2
+  nn 1
+  iylabel 1
+  init2dart 1
+  define var 6
+  iso2dart Unorm 1
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.57
+  horibar 4500 9500 5000 400
+  iylabel 0
+  
+  window 3 3 2 2
+  nn 4
+  init2dart 4
+  define var 6
+  iso2dart Unorm 4
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.32
+  relocate 0.5 1.1 putlabel 5 ||U_2(r,\theta)||
+  horibar 15000 9500 5000 400
+  
+  window 3 3 3 2
+  nn 8
+  init2dart 8
+  define var 6
+  iso2dart Unorm 8
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.00
+  horibar 24500 9500 5000 400
+
+  w
+  rv 4
+
+figUcirc
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  
+  window 3 3 1 2
+  nn 1
+  iylabel 1
+  init2dart 1
+  define twoDplanecolor 0
+  define nbrcontour 14
+  iso2dart Ucirc 1
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  #horibar 4500 9500 5000 400
+  iylabel 0
+  
+  window 3 3 2 2
+  nn 2
+  init2dart 2
+  define twoDplanecolor 0
+  define nbrcontour 14
+  iso2dart Ucirc 2
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 \xi_M(r,\theta)
+  #horibar 15000 9500 5000 400
+  
+  window 3 3 3 2
+  nn 3
+  init2dart 3
+  define twoDplanecolor 0
+  define nbrcontour 14
+  iso2dart Ucirc 3
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.
+  #horibar 24500 9500 5000 400
+
+  w
+  rv 4
+
+figdeltaT
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  
+  window 3 3 1 2
+  nn 1
+  iylabel 1
+  init2dart 1
+  iso2dart psi 1
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  iylabel 0
+  
+  window 3 3 2 2
+  nn 2
+  init2dart 2
+  iso2dart psi 2
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 \delta T(r,\theta)
+  horibar 15000 9500 5000 400
+  
+  window 3 3 3 2
+  nn 3
+  init2dart 3
+  iso2dart psi 3
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.
+  horibar 24500 9500 5000 400
+
+  w
+  rv 4
+  
+figdeltamu
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  #readsi test_2.92_jnoconv_nosmoothl_0000207 1
+  #readsi test_2.92_jnoconv_nosmoothl_0000387 2
+  #readsi test_2.92_jnoconv_nosmoothl_0000578 3
+
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  
+  window 3 3 1 2
+  nn 1
+  iylabel 0
+  init2dart 1
+  define nbrcontour 10
+  iso2dart xlambda 1
+  limits 0 1 0 1
+  ylabel r (R_\odot)
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 8500 5000 400
+  
+  window 3 3 2 2
+  nn 2
+  init2dart 2
+  define nbrcontour 10
+  iso2dart xlambda 2
+  limits 0 1 0 1
+  #ylabel r (R_\odot)
+  relocate 0.5 1.1 putlabel 5 \delta \mu(r,\theta)
+  horibar 15000 8500 5000 400
+  
+  window 3 3 3 2
+  nn 3
+  iylabel 0
+  init2dart 3
+  define nbrcontour 10
+  iso2dart xlambda 3
+  limits 0 1 0 1
+  #ylabel r (R_\odot)
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.
+  horibar 24500 8500 5000 400
+
+  w
+  rv 4
+
+figdeltamuAna
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  
+  window 5 4 1 4
+  nn 1
+  iylabel 0
+  init2dart 1
+  define nbrcontour 10
+  iso2dart xlambda 1
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 2 4
+  nn 1
+  iylabel 0
+  init2dart 2
+  define nbrcontour 10
+  iso2dart xlambda 2
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 3 4
+  nn 1
+  iylabel 0
+  init2dart 3
+  define nbrcontour 10
+  iso2dart xlambda 3
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 4 4
+  nn 1
+  iylabel 0
+  init2dart 4
+  define nbrcontour 10
+  iso2dart xlambda 4
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 5 4
+  nn 1
+  iylabel 0
+  init2dart 5
+  define nbrcontour 10
+  iso2dart xlambda 5
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 1 3
+  nn 1
+  iylabel 0
+  init2dart 6
+  define nbrcontour 10
+  iso2dart xlambda 6
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 2 3
+  nn 1
+  iylabel 0
+  init2dart 7
+  define nbrcontour 10
+  iso2dart xlambda 7
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 3 3
+  nn 1
+  iylabel 0
+  init2dart 8
+  define nbrcontour 10
+  iso2dart xlambda 8
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 4 3
+  nn 1
+  iylabel 0
+  init2dart 9
+  define nbrcontour 10
+  iso2dart xlambda 9
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 5 3
+  nn 1
+  iylabel 0
+  init2dart 10
+  define nbrcontour 10
+  iso2dart xlambda 10
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 1 2
+  nn 1
+  iylabel 0
+  init2dart 11
+  define nbrcontour 10
+  iso2dart xlambda 11
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 2 2
+  nn 1
+  iylabel 0
+  init2dart 12
+  define nbrcontour 10
+  iso2dart xlambda 12
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 3 2
+  nn 1
+  iylabel 0
+  init2dart 13
+  define nbrcontour 10
+  iso2dart xlambda 13
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 4 2
+  nn 1
+  iylabel 0
+  init2dart 14
+  define nbrcontour 10
+  iso2dart xlambda 14
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 5 2
+  nn 1
+  iylabel 0
+  init2dart 15
+  define nbrcontour 10
+  iso2dart xlambda 15
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 1 1
+  nn 1
+  iylabel 0
+  init2dart 16
+  define nbrcontour 10
+  iso2dart xlambda 16
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 2 1
+  nn 1
+  iylabel 0
+  init2dart 17
+  define nbrcontour 10
+  iso2dart xlambda 17
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 3 1
+  nn 1
+  iylabel 0
+  init2dart 18
+  define nbrcontour 10
+  iso2dart xlambda 18
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 4 1
+  nn 1
+  iylabel 0
+  init2dart 19
+  define nbrcontour 10
+  iso2dart xlambda 19
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 5 1
+  nn 1
+  iylabel 0
+  init2dart 20
+  define nbrcontour 10
+  iso2dart xlambda 20
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  
+  w
+  rv 4
+
+
+figdeltaTAna
+  #readsi m1.5z02_V2.80_muc_0000326 1
+  #readsi m1.5z02_V2.80_muc_0000443 2
+  #readsi m1.5z02_V2.80_muc_0001004 3
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  
+  window 5 4 1 4
+  nn 1
+  iylabel 0
+  init2dart 1
+  define nbrcontour 10
+  iso2dart psi 1
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 2 4
+  nn 1
+  iylabel 0
+  init2dart 2
+  define nbrcontour 10
+  iso2dart psi 2
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 3 4
+  nn 1
+  iylabel 0
+  init2dart 3
+  define nbrcontour 10
+  iso2dart psi 3
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 4 4
+  nn 1
+  iylabel 0
+  init2dart 4
+  define nbrcontour 10
+  iso2dart psi 4
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 5 4
+  nn 1
+  iylabel 0
+  init2dart 5
+  define nbrcontour 10
+  iso2dart psi 5
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 1 3
+  nn 1
+  iylabel 0
+  init2dart 6
+  define nbrcontour 10
+  iso2dart psi 6
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 2 3
+  nn 1
+  iylabel 0
+  init2dart 7
+  define nbrcontour 10
+  iso2dart psi 7
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 3 3
+  nn 1
+  iylabel 0
+  init2dart 8
+  define nbrcontour 10
+  iso2dart psi 8
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 4 3
+  nn 1
+  iylabel 0
+  init2dart 9
+  define nbrcontour 10
+  iso2dart psi 9
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 5 3
+  nn 1
+  iylabel 0
+  init2dart 10
+  define nbrcontour 10
+  iso2dart psi 10
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 1 2
+  nn 1
+  iylabel 0
+  init2dart 11
+  define nbrcontour 10
+  iso2dart psi 11
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 2 2
+  nn 1
+  iylabel 0
+  init2dart 12
+  define nbrcontour 10
+  iso2dart psi 12
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 3 2
+  nn 1
+  iylabel 0
+  init2dart 13
+  define nbrcontour 10
+  iso2dart psi 13
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 4 2
+  nn 1
+  iylabel 0
+  init2dart 14
+  define nbrcontour 10
+  iso2dart psi 14
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 5 2
+  nn 1
+  iylabel 0
+  init2dart 15
+  define nbrcontour 10
+  iso2dart psi 15
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 1 1
+  nn 1
+  iylabel 0
+  init2dart 16
+  define nbrcontour 10
+  iso2dart psi 16
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 2 1
+  nn 1
+  iylabel 0
+  init2dart 17
+  define nbrcontour 10
+  iso2dart psi 17
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 3 1
+  nn 1
+  iylabel 0
+  init2dart 18
+  define nbrcontour 10
+  iso2dart psi 18
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 4 1
+  nn 1
+  iylabel 0
+  init2dart 19
+  define nbrcontour 10
+  iso2dart psi 19
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  window 5 4 5 1
+  nn 1
+  iylabel 0
+  init2dart 20
+  define nbrcontour 10
+  iso2dart psi 20
+  limits 0 1 0 1
+  #relocate 0.5 1.1 putlabel 5 X_c = 0.76
+  horibar 4500 9500 5000 400
+  
+  w
+  rv 4
+
+  
+  
+
+init2dart 01
+  if ($?1 == 0) { define 1 ? { enter absolute structure star number}}
+  if ('$1' == 'x') {return}
+	
+  ## dimension of image
+  define dim 100
+  define dim1 $($dim-1)
+  define step $(1/$dim)
+  image ($dim,$dim)
+
+  # define x variable
+  define var2d "r"
+  defx $var2d
+  define nshtot $(dimen(r_$1)-1)
+  define Xstar $($var2d""_$1[$nshtot])
+
+  # define x limit
+  if ($?Xtot == 0) {define Xtot $Xstar }  
+  define Xtot $Xstar
+  if ('$Xtot' == 'x') {return}
+
+  # define nsh(r)
+  set dimen(xx) = $dim
+  define myexpand 1.1
+  do i = 0,$dim1 {
+    define rx $($Xtot*$i*$step)
+    set temp = nsh_$1 if ($rx < $var2d""_$1)
+    set xx[$i] = temp[0]
+  }
+
+  # define label
+  set labpsi = <"\delta T(r,\theta)">
+  set labxlambda = <"\delta \mu(r,\theta)">
+  #set labpsi = <"\Psi(r,\theta)">
+  #set labxlambda = <"\Lambda(r,\theta)">
+  #set labUcirc = <"\rho r^2U_M(r,\theta)">
+  set labUcirc = <"\xi_M(r,\theta)">
+  set labUnorm = <"||U(r,\theta)||">
+
+  # define variables for contours and colors
+  define var 4
+
+  define nbrcontour 15
+
+  # default: use color
+  define twoDplanecolor 1
+  
+  define init2d 1
+
+
+  
+iso2dart 02
+  if ($?1 == 0) { define 1 ? { Variable name : psi, xlambda, Ucirc }}
+  if ('$1' == 'x') {return}
+  if ($?2 == 0) { define 2 ? { enter absolute structure star number}}
+  if ('$2' == 'x') {return}
+  # 1: variable (psi, xlambda, Ucirc)-- 2:model 
+  set _nnsav = nn
+  nn $2
+
+  if ('$1' == 'xlambda') {
+    define _var $var
+    define var 2
+  }
+  
+  if ($ierase == 1) {erase}
+	
+  # Smooth meridional circulation
+  # May need some adjustments
+  if ('$1' == 'Ucirc' || '$1' == 'Unorm')	{
+    set CM = Ucirc_$2
+    do i = 1,$($nshtot-1) {
+    # remove inversion peak
+    if (CM[$i]*CM[$i+1]<0 && CM[$i]*CM[$i-1]<0) {
+      set CM[$i] = 0.5*(CM[$i-1]+CM[$i+1])
+    }
+    # remove too large variation of Ucirc
+    set CM3 = CM
+    if (CM[$i]!=0 && CM[$i+1]!=0 && CM[$i-1]!=0){
+      if (abs(CM[$i]/CM[$i+1])>2 && abs(CM[$i]/CM[$i-1])>2) {
+        set CM[$i] = 0.5*(CM[$i-1]+CM[$i+1])
+      }
+    }
+    }
+    smooth CM CM2 $(int($nshtot/20))
+    set CM = (yzi_$2 < 0) ? 0 : CM2
+    #set CM = (yzi == 0) ? CM2 : 0
+    #smooth  Ucirc_$2 CM 50
+    #set CM_$2 = C
+    #set CM = Ucirc_$2
+
+    # vitesse U_theta
+    set Unorm_$2 = 0*Ucirc_$2
+    set temp_$2 = rho_$2*r_$2**2*CM
+    deriv temp r
+    set Vcirc_$2 = 1/(6*rho_$2*r_$2+1E-30)*Dtemp_$2
+    set Vcirc_$2[0] = 0
+    #set Vcirc_$2 =  (r_$2 >1.6) ? 0 : Vcirc_$2
+    if ($2 != 3) {mysmooth Vcirc 10} else {mysmooth Vcirc 4}
+    set Vcirc_$2 = Vcircs_$2
+    addvar Vcirc
+    
+  }
+
+  define Xstar $($var2d""_$2[$nshtot])
+
+  limits 0 1 0 1
+  # Define image (need for contours plot)
+  do i = 0,$dim1 {
+    define xx $($var2d""_$2[xx[$i]])
+    set yy = $var2d""_$2[xx[do(0,$dim1)]]
+    set r = sqrt($xx**2+yy**2)
+    set ind = ifloor ($var2d""_$2,r)
+
+    if ('$1' == 'psi') {
+      # [psi/xlambda]*P2(cos(theta))*[T/mu]
+      set image[$i,do(0,$dim1)] = (r>$Xstar) ? 0 : T_$2[ind]*$1""_$2[ind]*(1.5*(cos(atan($xx/yy)))**2-0.5)
+    } else{if ('$1' == 'xlambda') {
+      set image[$i,do(0,$dim1)] = (r>$Xstar) ? 0 : mu_$2[ind]*$1""_$2[ind]*(1.5*(cos(atan($xx/yy)))**2-0.5)
+      echo $(image[$i,do(0,25)])
+    } else{if ('$1' == 'Ucirc') {
+      # rho*r^2*U*1/2*(cos^3(theta)-cos(theta))
+      set image[$i,do(0,$dim1)] = (r>$Xstar) ? 0 : 0.5*CM[ind]*rho_$2[ind]*($rsun*r_$2[ind])**1*((cos(atan($xx/yy)))**3-cos(atan($xx/yy)))
+    } else{if ('$1' == 'Unorm') {   
+      set image[$i,do(0,$dim1)] = (r>$Xstar) ? 0 : sqrt( (0.5*Ucirc_$2[ind]*(3*cos(asin($xx/r))**2-1))**2 + (-1.5*Vcirc_$2[ind]*sin(2*asin($xx/r)))**2 )
+      echo $(sqrt( (0.5*Ucirc_$2[ind]*(3*cos(asin($xx/r))**2-1))**2 + (-1.5*Vcirc_$2[ind]*sin(2*asin($xx/r)))**2 ))
+    } else {
+      # other variable (V(r,theta) = V(r)) 
+      set image[$i,do(0,$dim1)] = (r>$Xstar) ? 0 : $1_$2[ind]
+    }}}}
+  }
+  
+  define mymax 0
+  define mymin 0
+  do i = 0,$dim1 {
+    set temp = image[$i,*]
+    sort { temp }
+    if ($mymax < temp[$dim1]) { define mymax $(temp[$dim1])}
+    if ($mymin > temp[0]) { define mymin $(temp[0])}
+  }
+
+  # draw 2D plane with color
+  if ($twoDplanecolor == 1) {
+    do i = 0,$dim1 {
+      if ($i%10==1) {echo Draw color plane for $1, $(int(100*$i/$dim))%}
+      set ind = do(0,$dim1) if (image[$i,do(0,$dim1)] != 0)
+      if (dimen(ind) > 0) {
+        foreach j ind {
+          if ($mymax > 0 && image[$i,$j]>=($mymax*10**(-$var))) {
+            draw_rect $i $j $(abs(image[$i,$j]/$mymax)) 1
+          } else {
+            if ($mymin < 0 && image[$i,$j]<=($mymin*10**(-$var))) {
+              draw_rect $i $j $(abs(image[$i,$j]/$mymin)) 2 
+            } 
+          }  
+        }
+      }
+    }
+  }
+
+  ctype black
+
+  # set limits for contours plot
+  # contour use 0 to dimen(image) for its plot instead of 0 to Rsurf
+  
+
+  #add black line in shade area case
+  #echo limits 0 $($dim*$Xstar/$Xtot) 0 $($dim*$Xstar/$Xtot)
+  limits 0 $dim 0 $dim
+  lweight 2
+  set levpos = $mymax*10**(-$var*do(1,$nbrcontour,2)/$nbrcontour)
+  set levneg = $mymin*10**(-$var*do(1,$nbrcontour,2)/$nbrcontour)
+  if ($twoDplanecolor == 1) {
+    # We draw black lines
+    if ($mymin<0) {
+      set lev = levpos concat levneg
+    } else {
+      set lev = levpos
+    }
+    levels lev
+    contour
+  } else {
+    # We draw red/blue lines (in case no color plane is drawn previously)
+    ctype red
+    ltype  1
+    levels levpos
+    contour
+    #if ($mymin<0) {
+      ctype blue ltype 0
+      lweight 3
+      levels levneg
+      contour
+    #}
+  }
+	lweight 1
+	expand 1.0001
+  ctype black
+
+  # draw surface$var2d
+  limits 0 $(1.0*$Xtot) 0 $(1.0*$Xtot)
+  circle 0 0 $var2d""_$2[$nshtot]
+  
+  # find convective border
+  nn $2
+  deriv yzi nsh
+  set Dyzi_$2 = -Dyzi_$2
+  set temp = nsh_$2 if (Dyzi_$2 != 0)
+  set temp = temp-1
+  ltype 0
+  #foreach sh temp {
+  #  echo conv/rad border: $sh
+  #}
+
+  do i = 0,$(dimen(temp)-1) {
+    define myr $($var2d""_$2[(temp[$i])])
+    set xx$i = 0,$dim1
+    set xx$i = xx$i*$myr/$dim1
+    set yy$i = sqrt(abs($myr**2-xx$i**2))
+    connect xx$i yy$i
+    ctype black
+
+    if (yzi_$2[0] < 0) {
+      if ($i == 0) {
+      # shade convective core
+        angle 45
+        set newX = < 0 > concat xx0 concat < 0 >
+        set newY = < 0 > concat yy0 concat < 0 >
+        shade 200 newX newY     
+        angle 0
+      }\
+	    else {
+      # shade convective zone (with conv. core)
+        if ($i%2 == 0) {
+          angle 45
+          set myXX = xx$i
+          set myYY = yy$i
+          do j = 0,$dim1 {
+            set myXX[$j] = xx$i[$dim1-$j]
+            set myYY[$j] = yy$i[$dim1-$j]
+          }
+          set newX = myXX concat xx$($i-1)
+          set newY = myYY concat yy$($i-1)
+          shade 200 newX newY     
+          angle 0
+        }
+      }
+    }\
+    else {
+    # shade convective zone (without conv. core)
+      if ($i%2 != 0) {
+        angle 45
+        set myXX = xx$i
+        set myYY = yy$i
+        do j = 0,$dim1 {
+          set myXX[$j] = xx$i[$dim1-$j]
+          set myYY[$j] = yy$i[$dim1-$j]
+        }
+        set newX = myXX concat xx$($i-1)
+        set newY = myYY concat yy$($i-1)
+        shade 200 newX newY     
+        angle 0
+      }
+    }
+  } 
+
+  #set physical limits for drawing surface and convective zones 
+  expand $myexpand
+  box 1 2 4 4
+  if ('$var2d' == 'r') {
+    xlabel $var2d  (R_\odot)
+    #if ($2 == 1 || $2 == 11) {ylabel $var2d  (R_\odot)}
+    if ($iylabel == 1) {ylabel $var2d  (R_\odot)}
+  }\
+  else {
+    xlabel $var2d  (M_\odot)
+    ylabel $var2d  (M_\odot)
+  }
+  set boxX = <0.60 0.60 0.96 0.96>   set boxX = boxX*$Xtot
+  set boxY = <0.95 0.82 0.82 0.95>   set boxY = boxY*$Xtot
+  expand 1.2
+  if ('$1' == 'xlambda') {
+    define var $_var
+  }
+  set nn = _nnsav
+
+
+horibar 04
+  # 1:abscissa 2:ordonne optional: 3:length 4:heigh
+  if ($twoDplanecolor != 1) {
+    echo Vertbar are not needed without shade color
+    echo Skip vertbar
+    return
+  }
+	window 1 1 1 1
+  #location $1 $($1+600) $2 $($2+12000)
+  if ($?3 == 0) {define 3 600}
+  if ($?4 == 0) {define 4 12000}
+  location $1 $($1+$3) $2 $($2+$4)
+  limits $mymin $mymax 0 1
+  box 3 3 3 3
+
+  set yyy = <0 1 1 0> 
+  do i = 1,254 {
+    set xxx = <$($i/256*$mymax) $($i/256*$mymax) $(($i+1)/256*$mymax) $(($i+1)/256*$mymax)>
+    my_add_ctype 255 (256-$i) 0
+    shade 0 xxx yyy
+    set xxx = <$($i/256*$mymin) $($i/256*$mymin) $(($i+1)/256*$mymin) $(($i+1)/256*$mymin)>
+    my_add_ctype 0 $(255-$i) 255
+    shade 0 xxx yyy    
+  }
+  ctype black
+  set lev = $mymax*10**(-$var*do(1,$nbrcontour,2)/$nbrcontour)
+  if ($mymin<0) {
+    set lev = lev concat $mymin*10**(-$var*do(1,$nbrcontour,2)/$nbrcontour)
+  }
+  foreach l lev {
+    relocate $l 0 draw $l 1e4
+  }
+
+  expand 0.95
+  relocate 0 1.5 putlabel 8 0 
+	relocate ($($1) $($2-400))
+  set txt = sprintf('%.2e',<$mymin>)
+  putlabel 2 $(txt)  
+	relocate  $mymax -1.1
+  set txt = sprintf('%.2e',<$mymax>)
+  putlabel 2 $(txt)
+  location 3500 31000 3500 31000
+  expand 1.001
+  angle 0
+  
+vertbar 04
+  # 1:abscissa 2:ordonne optional: 3:length 4:heigh
+  window 1 1 1 1
+  #location $1 $($1+600) $2 $($2+12000)
+  if ($?3 == 0) {define 3 600}
+  if ($?4 == 0) {define 4 12000}
+  location $1 $($1+$3) $2 $($2+$4)
+  limits 0 1 $mymin $mymax
+  box 3 3 3 3
+  define l $($mymax*10**-$var)
+  set levspos = $l
+  while {$l < $mymax} {
+    if ($l>$mymax/2) {
+      define l ($l*1.001)
+    } else { if ($l>$mymax/5) {
+      define l $($l*1.005)
+    } else { if ($l>$mymax/20) {
+      define l $($l*1.01)
+    } else {
+      define l $($l*1.05)
+    }}}
+    set levspos = levspos concat < $l >
+  }
+  foreach l levspos {
+    my_add_ctype 250 $((1-$l/$mymax)*255%256) 0
+    relocate 0 $l
+    draw 1e4 $l
+  }
+  define l $($mymin*10**-$var)
+  set levspos = $l
+  while {$l > $mymin} {
+    if ($l<$mymin/2) {
+      define l ($l*1.001)
+    } else { if ($l<$mymin/5) {
+      define l $($l*1.005)
+    } else { if ($l<$mymin/20) {
+      define l $($l*1.01)
+    } else {
+      define l $($l*1.05)
+    }}}
+    set levsneg = levsneg concat < $l >
+  }
+  foreach l levsneg {
+    my_add_ctype 0 $((1-$l/$mymin)**$niso*255%256) 255
+    relocate 0 $l
+    draw 1e4 $l
+  }
+  expand $(1.6*$myexpand)
+  #angle 45
+  #palette
+  ctype black
+  #return
+
+  #add black line in shade area case
+  if ($dimpos>100) {
+    #set lev = $mymax*10**(-$var/do(1,10))
+    set lev = $mymax*10**(-$var*do(1,10)/10)
+    set lev = lev concat $mymin*10**(-$var*do(1,10)/10)
+    foreach l lev {
+      relocate 0 $l draw 1e4 $l
+    }
+  }
+  
+  #relocate 0 0 putlabel 4 0 
+	relocate ($($1+00) $($2-100))
+  set txt = sprintf('%.2e',<$mymin>)
+  putlabel 2 $(txt)  
+	relocate ($($1-200) $($2+$4+100))
+  set txt = sprintf('%.2e',<$mymax>)
+  putlabel 8 $(txt)
+  location 3500 31000 3500 31000
+  expand 1.001
+  angle 0
+
+draw_rect 4
+  local define c $3
+  if ($c==0) { return}  
+  local set xxx = <$($1/$dim) $($($1+1)/$dim) $($($1+1)/$dim) $($1/$dim)>
+  local set yyy = <$($2/$dim) $($2/$dim) $($($2+1)/$dim) $($($2+1)/$dim)>
+  if ($3 == 0) {
+    # grey levels
+    my_add_ctype int(255*(1-$c)) int(256*(1-$c)) int(256*(1-$c))
+  } else {
+    if ($4 == 1) {
+      # red levels
+    my_add_ctype 255 int(255*(1-$c)**4) 0 
+  } else {
+    if ($4 == 2) {
+      # blue levels
+    my_add_ctype 0 int(255*(1-$c)**4) 255
+  }}}
+  shade 0 xxx yyy
+  
+Unorm20
+  #readsi m20.0z014_idiffty13zgradmuT_OV_DhMaeder03_nucloptT_0000903 11
+  sv 4
+  erase ie 0
+  iylabel 0
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  set Ucirc_11 = (r_11>9)? 0: Ucirc_11
+  
+  window 3 3 1 2
+  nn 11
+  init2dart 11
+  iylabel 1
+  define var 6
+  iso2dart Unorm 11
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 ||U(r,\theta)||
+  horibar 4500 9500 5000 400
+
+
+  w
+  rv 4
+  
+figall20
+  #readsi m20.0z014_idiffty13zgradmuT_OV_DhMaeder03_nucloptT_0000903 12
+  sv 4
+  erase ie 0
+  iylabel 1
+  itoplabel 0
+  local define y_gutter 0.5
+  local define x_gutter 0.5
+  set psi_12 = (r_12>9)? 0: psi_12
+
+  ps fig1.eps n
+  window 3 3 1 2
+  nn 12
+  iylabel 1
+  init2dart 12
+  define twoDplanecolor 0
+  iso2dart Ucirc 12
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 \xi_M(r,\theta)
+  #horibar 24500 9500 5000 400
+
+  psp
+  ps fig2.eps n
+  window 3 3 2 2
+  nn 12
+  iylabel 1
+  init2dart 12
+  iso2dart psi 12
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 \delta T(r,\theta)
+  horibar 15000 9500 5000 400
+  #horibar 4500 9500 5000 400
+
+  psp
+  ps fig3.eps n
+  window 3 3 3 2
+  nn 12
+  iylabel 1
+  init2dart 12
+  define nbrcontour 5
+  iso2dart xlambda 12
+  limits 0 1 0 1
+  relocate 0.5 1.1 putlabel 5 \delta \mu(r,\theta)
+  horibar 24500 9500 5000 400
+
+  psp
+  
+  iylabel 1
+  w
+  rv 4
+tt
+  plotl PXN13 1 0 dlconv 0 ylabel log (^{13}N)  (mass fraction)
+
+
+  #postdam
+  # readsi m1.5z02_V2.80_muc_0000443 2
+PDomega
+  sv 10
+  itoplabel 0
+  iexpand 1.8 expand 1.8
+  location 4500 31000 3500 31000
+  iylabel 0
+  plot omega 0.0001
+  ylabel \Omega   (10^{-4}s^{-1})
+
+  rv 10
+  
+PDCM
+  sv 10
+  location 4500 30000 4500 30000
+  init2dart 2
+  iso2dart Ucirc 2
+  #vertbar 30000 4500 2000 24500 
+  rv 10
+  
+PDU
+  sv 10
+  location 4500 30000 4500 30000
+  init2dart 2
+  iso2dart Unorm 2
+  vertbar 30000 4500 2000 24500 
+  #vertbar 18500 29000 11500 1000
+  
+  rv 10
+
+diag20
+  sv 10
+  erase
+  itoplabel 0
+  ie 0
+  ixlabel 0
+  ixlabel 0 iylabel 0
+  ibox 0
+
+  local define x_gutter 0.4
+  local define y_gutter 0.4
+
+  #flux AM
+  #ps M20_transp1.eps n
+  window 3 -3 1 1
+  #calcfluxAM 31
+  #set Fluxtot_31 = (r_31>9)? 0: Fluxtot_31
+  calcfluxAM 1
+  set Fluxtot_1 = (r_1>9)? 0: Fluxtot_1
+
+  ylim -1 1
+  ctype red ltype 2 plot Fluxcirc 1e-7
+  ctype blue ltype 1 plot Fluxshear 1e-7
+  ctype black ltype 0 plot Fluxtot 1e-7
+  #set testy_12 = 1e7*Fluxtot_12 if (Fluxtot_12 > 0 && r_12>3)
+  #set testx_12 = r_12 if (Fluxtot_12 > 0 && r_12>3)
+  #lweight 4 connect testx_12 testy_12
+  
+  box
+  dconv 1	
+  xlabel $x  ($unit_x)
+  ctype red  relocate 2.5 0.5 label F_{MC},
+  ctype blue label  F_{S},
+  ctype black label  F_{tot}
+  define fx1 | define fx2 | define fy2 |
+  relocate $(($fx2-$fx1)/2+$fx1) $($fy2*1.05) putlabel 8 10^{-7}\times Flux/R^4_\odot
+ 
+
+  nn 30
+  #S tranport
+  #psp
+  #ps M20_transp2.eps n
+  window 3 -3 2 1
+  nn 12
+  testlog20 2
+  window 3 -3 2 1
+  define fx1 | define fx2 | define fy2 |
+  relocate $(($fx2-$fx1)/2+$fx1) $($fy2*1.05) putlabel 8 log(|S transport|)
+ 
+
+  
+  #Cdiff
+  #psp
+  #ps M20_transp3.eps n
+  window 3 -3 3 1
+  diff 12
+  relocate 2.2 15.5 expand 0.9
+  ctype cyan putlabel 5 K_t,
+  ctype black   label  D_h,
+  ctype red     label  D_{eff},
+  ctype blue    label  D_v
+  ctype black expand 1.1
+  define fx1 | define fx2 | define fy2 |
+  relocate $(($fx2-$fx1)/2+$fx1) $($fy2*1.05) putlabel 8 log(|D_{diff}|)
+  #psp
+
+
+  rv 10
+  w
+
+  
+plotUcompo20 1
+  define _ierase $ierase
+  if ($ierase==1) {erase ie 0}
+  ylim -5 5
+  define ictype 0 ixlabel 0 iylabel 0 ibox 0
+  #set UB_$1 = abs(UB_$1)
+  #set UTh_$1 = abs(UTh_$1)
+  #set UNG_$1 = abs(UNG_$1)
+  #set UNS_$1 = abs(UNS_$1)
+  set UNS_$1 = -UNS_$1
+  #set Ucirc_$1 = abs(Ucirc_$1)
+  ltype 1 ctype blue plotabslg UB
+  ltype 3 ctype red plotabslg UTh
+  ltype 0 ctype green plotabslg UNG
+  ltype 4 ctype magenta plotabslg UNS
+  ltype 2 ctype black plotabslg Uadv
+  ltype 0 dconv 0
+  define ictype 1 ixlabel 1 iylabel 1 ibox 1
+  expand 0.9 iexpand 0.9
+  relocate $(($xsup-$xinf)*0.2) 3.5
+  ctype magenta label NS,
+  ctype black   label  Adv,
+  ctype blue    label  B,
+  ctype red     label  Th,
+  relocate $(($xsup-$xinf)*0.5) 2.5
+  ctype green   label N-G
+  ctype black expand 1.1
+  ctype black box
+  xlabel $var2d  ($unit_x)
+  define ierase $_ierase
+
+  
+testlog20 1
+  sv 4
+  #erase 
+  ie 0
+  iylabel 0
+
+  window 3 -6 $1 2
+  iibox 0 2
+  ixlabel 0
+  ylim -4 5
+  ibox 0
+  ltype 1 ctype blue plotl SB
+  ltype 3 ctype red plotl STh
+  ltype 0 ctype green plotl SNG
+  ltype 4 ctype magenta plotl SNS
+  ibox 1
+  ltype 2 ctype black plotl Sadv
+  dconv 0  
+
+  expand 0.9 iexpand 0.9
+  relocate $(($xsup-$xinf)*0.2) 3.5
+  ctype magenta label NS,
+  ctype black   label  Adv,
+  ctype blue    label  B,
+  ctype red     label  Th,
+  relocate $(($xsup-$xinf)*0.6) 2
+  ctype green   label N-G
+  ctype black expand 1.1
+
+  window 3 -6 $1 1
+  iibox 1 2
+  ylim 5 -4
+  ibox 0
+  ltype 1 ctype blue plotl SB -1
+  ltype 3 ctype red plotl STh -1
+  ltype 0 ctype green plotl SNG -1 
+  ltype 4 ctype magenta plotl SNS -1
+  ibox 1
+  ixlabel 1
+  ltype 2 ctype black plotl Sadv -1
+  dconv 0
+  
+  
+  rv 4
+  
+mytestlog20 1
+  sv 4
+  #erase 
+  ie 0
+  iylabel 0
+
+  window 1 -2 $1 2
+  iibox 0 2
+  ixlabel 0
+  ylim -4 5
+  ibox 0
+  ltype 1 ctype blue plotl SB
+  ltype 3 ctype red plotl STh
+  ltype 0 ctype green plotl SNG
+  ltype 4 ctype magenta plotl SNS
+  ibox 1
+  ltype 2 ctype black plotl Sadv
+  dconv 0  
+
+  expand 0.9 iexpand 0.9
+  relocate $(($xsup-$xinf)*0.2) 3.5
+  ctype magenta label NS,
+  ctype black   label  Adv,
+  ctype blue    label  B,
+  ctype red     label  Th,
+  relocate $(($xsup-$xinf)*0.6) 2
+  ctype green   label N-G
+  ctype black expand 1.1
+
+  window 1 -2 $1 1
+  iibox 1 2
+  ylim 5 -4
+  ibox 0
+  ltype 1 ctype blue plotl SB -1
+  ltype 3 ctype red plotl STh -1
+  ltype 0 ctype green plotl SNG -1 
+  ltype 4 ctype magenta plotl SNS -1
+  ibox 1
+  ixlabel 1
+  ltype 2 ctype black plotl Sadv -1
+  dconv 0
+  
+  
+  rv 4
+  

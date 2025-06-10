@@ -1,0 +1,252 @@
+*******************************************************************************
+  Manual for load_evolution_STAREVOL and load_structure_STAREVOL
+  Version 1.01, 14/06/2024
+  VOJE Thomas <thomas.voje@umontpellier.fr>
+*******************************************************************************
+
+ Introduction
+ ============
+ 
+  load_evolution_STAREVOL and load_structure_STAREVOL are two Python libraries which purpose is 
+  to product highly customizable plots from STAREVOL results. As indicated by their names
+  load_evolution_STAREVOL is dedicated to load and plot data from the STAREVOL evolution files and
+  load_structure_STAREVOL is dedicated to load and plot data from the STAREVOL structure files.
+  
+  If some points are missing or if you notice any error in this manual, feel free to contact the author by mail.
+  
+  IMPORTANT : For the libraries to work on your computer you must modify the "Main parameters" part of the code to
+              select the folders where results are loaded and the folder where plots are saved.
+
+ Glossary
+ ========
+ 
+  quantity : list of NumPy ndarrays (one for each model) used in the plots
+      Example : The variable T_eff is a quantity. If you load 2 models it will be a 2-elements list composed 
+                of 2 NumPy arrays containing the values of the effective temperature for each timestep for the 
+                associated model.
+
+ Main variables
+ ==============
+ 
+ Common to both libraries               loading_path : str
+                                            path where the evolution files are loaded
+      
+                                        saving_path : str
+                                            path where the figures are saved
+ 
+                                        N : int [user input]
+                                            number of STAREVOL results loaded
+     
+                                        colors : list of str
+                                            list containing the name of the color used in the plots for each STAREVOL result loaded
+                                            Notes : - value set by default for model number n to the n-th basic color in matplotlib 
+                                                    - colors are not taken into account when using "mapping"
+     
+                                        labels : list of str
+                                            list containing the name of the label used in the plots for each STAREVOL result loaded
+                                            Note : - value set by default to the model's name
+     
+                                        linestyles : list of str
+                                            list containing the name of the linestyle/marker used in the plots for each
+                                            STAREVOL result loaded
+                                            Notes : - value set by default to 'solid'
+                                                    - linestyles are not taken into account when using "mapping"
+              
+ Specific to load_evolution_STAREVOL    folder_names : list of str [user input]
+                                            list containing the name of the folder for each STAREVOL result loaded
+     
+                                        model_names : list of str [user input]
+                                            list containing the name of the model for each STAREVOL result loaded
+  
+ Specific to load_structure_STAREVOL    profile_names : list of str [user input]
+                                            list containing the name of the profile for each STAREVOL result loaded
+
+ Callable functions
+ ==================
+ 
+ Each function in the code has a docstring presenting how it is used and its different parameters.
+ If you want to know the different parameters and possibilities provided by a specific function,
+ see the docstring.
+ 
+ Plotting functions
+ ------------------
+ 
+ Common to both libraries               plot() : Main plotting function. Plot y as a function of x. Allows mapping (ie. coloring 
+                                                 the plot according to the value of a specified quantity).
+           
+                                        multiplot() : Multiple plotting function. Plot each quantity in the list y as a function
+                                                      of x for the selected loaded STAREVOL result.
+  
+ Specific to load_evolution_STAREVOL    hrd() : Plot an Hertzsprung-Russell diagram.
+  
+                                        shrd() : Plot a spectroscopic Hertzsprung-Russell diagram.
+                                                 See Langer & Kudritzki (2014,A&A,564,A52).
+ 
+                                        kiel() : Plot a Kiel diagram.
+  
+                                        central_rho_T() : Plot a central temperature / density diagram.
+  
+                                        teff_evol() : Plot an effective temperature / age diagram.
+  
+                                        mass_evol() : Plot a mass / age diagram.
+  
+                                        mass_teff() : Plot a mass / effective temperature diagram.
+  
+                                        mlos_evol() : Plot a mass loss / age diagram.
+  
+                                        mlos_teff() : Plot a mass loss / effective temperature diagram.
+    
+                                        kipp() : Plot a Kippenhahn diagram (in mass).
+  
+                                        r_kipp() : Plot a Kippenhahn diagram (in radius).
+  
+ Specific to load_structure_STAREVOL    rho_T() : Plot a logarithmic temperature density diagram.
+
+ Data handling functions
+ -----------------------
+
+ Common to both libraries               add_model() : Load an input specified supplementary model.
+  
+                                        change_color() : Change the color of an input specified model.
+  
+                                        change_label() : Change the label of an input specified model.
+  
+                                        change_linestyle() : Change the linestyle of an input specified model.
+  
+                                        change_all() : Change the color, the label and the linestyle of an input specified model.
+  
+                                        remove_model() : Remove an input specified loaded model.
+
+                                        infos() : Print informations on all loaded models.
+  
+ Specific to load_evolution_STAREVOL    merge() : Merge model number 2 into model number 1 and delete model number 2.
+                                                  Works only with quantities loaded by default (ie. with load_abundances and
+                                                  compute_quantities as False).
+            
+                                        merge_all() : Merge all loaded models.
+                                                      Works only with quantities loaded by default (ie. with load_abundances and
+                                                      compute_quantities as False).
+  
+ Mathematical operations on quantities
+ -------------------------------------
+
+ Common to both libraries               add() : Return a quantity corresponding to the quantity x added to the quantity y.
+
+                                        minus() : Return a quantity corresponding to the quantity x multiplied by -1.
+
+                                        multiply() : Return a quantity corresponding to the quantity x multiplied by the quantity y.
+
+                                        divide() : Return a quantity corresponding to the quantity x divided by the quantity y.
+  
+                                        log10() : Return a quantity corresponding to the decimal logarithm of the quantity x.
+
+                                        absol() : Return a quantity corresponding to the absolute value of the quantity x.
+
+                                        derivative() : Return a quantity corresponding to the derivative of x with respect to y.
+
+                                        cumulative() : Return a quantity corresponding to the cumulative value of x.
+  
+ Quantities loaded in load_evolution_STAREVOL
+ ============================================
+
+ Main evolution quantities
+ -------------------------
+ 
+  models, T_eff, L, t, phases
+  R_eff, rho_eff, g_eff, mlos
+  mass, dt
+ 
+ Computationnal quantities
+ -------------------------
+ 
+  nb_shell, cpu_time, nb_iter, crash
+  
+ Internal structure quantities
+ -----------------------------
+ 
+  T_c, rho_c, P_c, T_max, mass_T_max, rho_max
+  beta_c, eta_c, degpec, E_nupla, E_nucl, E_grav
+  L_H, L_He, L_C, L_Ne, L_O, L_Si, L_nucl, L_grav
+
+ Central abundances
+ ------------------
+  
+  H1_c, H2_c, He3_c, He4_c
+  C12_c, N14_c, O16_c, Ne20_c
+
+ Surface abundances
+ ------------------
+ 
+  Format as follow : H1_s means (*_s) surface abundance of (H1) hydrogen with mass number 1
+ 
+  H1_s, H2_s, He3_s, He4_s
+  C12_s, N14_s, O16_s, Ne20_s
+
+ Burning zones / convective zones positions (in mass) used in the kipp() function
+ --------------------------------------------------------------------------------
+
+  H_burning_zone_b, H_burning_zone_t
+  He_burning_zone_b, He_burning_zone_t
+  C_burning_zone_b, C_burning_zone_t
+  Ne_burning_zone_b, Ne_burning_zone_t
+  conv_zone_1_b, conv_zone_2_b, conv_zone_3_b, conv_zone_4_b, conv_zone_5_b
+  conv_zone_1_t, conv_zone_2_t, conv_zone_3_t, conv_zone_4_t, conv_zone_5_t
+  thermohaline_conv_zone_b, conv_envelope_b
+  thermohaline_conv_zone_t, conv_envelope_t
+
+ Burning zones / convective zones positions (in radius) used in the r_kipp() function
+ ------------------------------------------------------------------------------------
+ 
+  r_H_burning_zone_b, r_H_burning_zone_t
+  r_He_burning_zone_b, r_He_burning_zone_t
+  r_C_burning_zone_b, r_C_burning_zone_t
+  r_Ne_burning_zone_b, r_Ne_burning_zone_t
+  r_conv_zone_1_b, r_conv_zone_2_b, r_conv_zone_3_b, r_conv_zone_4_b, r_conv_zone_5_b
+  r_conv_zone_1_t, r_conv_zone_2_t, r_conv_zone_3_t, r_conv_zone_4_t, r_conv_zone_5_t
+  r_thermohaline_conv_zone_b, r_conv_envelope_b
+  r_thermohaline_conv_zone_t, r_conv_envelope_t
+  
+ If load_abundances is True
+ --------------------------
+ 
+  The evolution of the abundances of all elements considered in STAREVOL (in the center and at the surface) are loaded.
+  The names all follow the same format as in "central abundances" and "surface abundances". 
+  
+ Quantities loaded in load_structure_STAREVOL
+ ============================================
+ 
+ Evolution values (cannot be plotted)
+ ------------------------------------
+ 
+  mass, L, R, age, seq, dt, T_eff, n_eff
+
+ Thermodynamic profiles
+ ----------------------
+
+  nb_shell, yzi, dm, r, T, rho, P, beta, eta, lnf
+  s, accel, u, xmr, tau, kappa, mu, mue, cs, cp 
+  abad, abmu, abrad, abla, gamma1, pvisc, dlum_dt, L_edd
+
+  e_nucl, e_int, e_nupla, e_nunucl, e_grav
+  D_conv, D_turb, v_conv, t_conv, F_conv, F_rad
+
+  compression_rate, heat_rate, work_e_grav, heat_e_grav
+
+  Hp, gmr, phi_eos, delta_eos, N2, N2_thermal, N2_chemical
+
+ Abundance profiles
+ ------------------
+
+  H1, H2, He3, He4, Li6, Li7, Be7, B8, Be9, B10, B11, C12
+  C13, N13, C14, N14, N15, O15, O16, O17, O18, F18, F19, F20
+  Ne20, Ne21, Ne22, Na22, Ne23, Na23, Na24, Mg24, Na25
+  Mg25, Mg26, Al26m, Al26g, Mg27, Al27, Si28, Si29, Si30
+  P31, S32, S33, S34, S35, Cl35, S36, Cl36, Cl37
+  neutron, heavy, sumX, metallicity
+
+ Others (See Jiang et al. (2015,ApJ,813,74))
+ -------------------------------------------
+ 
+  tau_crit, tau_0
+  
+  

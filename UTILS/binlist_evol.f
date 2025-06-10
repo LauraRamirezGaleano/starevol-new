@@ -108,7 +108,7 @@ C      double precision dtcour,lmax,tmax,enucmax
       double precision hptce,rtce,rc,tc_hp,rc_hp,rce,tc_r,rc_r
       double precision tc_m,rc_m,tc_max,rc_max,secd,mce,factdc
       double precision lgdmic,lgdturb,vpsi
-
+      double precision Ri_n,S_n,Y_n !Added LR Jan 2025
       logical shockdetect
 
       integer kbce,ktce
@@ -227,6 +227,7 @@ c      common /solar/ xspsol(nis+6,2),zsol,refsolar
      &     StB4(nsh)
 C Modif CC (02/02/07) 
       dimension abmuliss(nsh)
+      dimension Ri_n(nsh), S_n(nsh) !LR 21 Jan 2025
 
       external system
       
@@ -796,9 +797,11 @@ c.. Smoothing the soundspeed profile
 
       if (microdiffus.or.thermohaline.or.igw) then
          if (igw) then
-            open (unit=85, file = trim(diresults) // trim(name) // 'w',
+            open (unit=85, file = trim(diresults) // trim(name) // 'o',
      &           form = 'unformatted', status = 'old', action = 'read', 
      &           err=42)
+            !print *,'LR open ',trim(diresults) // trim(name) // 'o'
+
             read (85, end=42, err=42) (lgdmic(k),lgdturb(k),vom(k),
      &           depottot(k),depottot_surf(k),
      &           depottot_core(k),
@@ -815,6 +818,9 @@ c.. Smoothing the soundspeed profile
      &           ,tautime(k,ib8beta),Ereac(k,ib8beta), tautime(k
      &           ,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg), Ereac(k
      &           ,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1,nmod)
+            do k =1,nmod
+               print *,'LR read bin', lumwave(k), deltaKS(k)
+            enddo
          else
             open (unit=85, file = trim(diresults) // trim(name) // 'o',
      &           form = 'unformatted', status = 'old', action = 'read', 
@@ -840,6 +846,8 @@ c.. Smoothing the soundspeed profile
          endif
  42      close (85)
       endif
+
+      !print *,'DEPOTTOT',depottot(:)
 
       write (*,45) nmod,model,time*seci
  45   format (/,' Total number of shells :',i5,', model number :',i8,/
@@ -1112,25 +1120,44 @@ c.. not done in diffinit
             rro(i) = pw34*dm(i)*msun*totm/(pi*(r(i+1)**3-r(i)**3))
          enddo
 
-cC Richardson number
-c         rkonv_o(1) = abla(1)-abad(1)
-c         do i = 2,nmod
-c            rkonv_o(i) = abla(i)-abm(i)
-c         enddo
-c         do i = 1,nmod
-c            xNt_o(i) = -grav(i)*gs/hp(i)*rkonv_o(i)*deltaKSm(i)
-c            xNmu_o = grav(i)*gs/hp(i)*abmu(i)*phiKSm(i)
-c            xN_o(i) = xNt_o(i)+xNmu_o
-c         enddo
-c         do i = 1,nmod-1
-c            tamp = (vomega(i+1)-vomega(i))/(r(i+1)-r(i))
-c            Ri(i) = xN_o(i)/(r(i)*5.d1*tamp)**2
+! Richardson number Added LR 21 Jan 2025
+         rkonv_o(1) = abla(1)-abad(1)
+         do i = 2,nmod
+            rkonv_o(i) = abla(i)-abm(i)
+         enddo
+         do i = 1,nmod
+            xNt_o(i) = -grav(i)*gs/hp(i)*rkonv_o(i)*deltaKSm(i)
+            xNmu_o = grav(i)*gs/hp(i)*abmu(i)*phiKSm(i)
+            xN_o(i) = xNt_o(i)+xNmu_o(i)
+
+         enddo
+         do i = 1,nmod-1 
+            print *,'lumwave =',lumwave(i)
+            tamp = (vomega(i+1)-vomega(i))/(r(i+1)-r(i))
+            !Ri_n(i) = xN_o(i)/(r(i)*5.d1*tamp)**2 !Previus Version, Why 5.d1, Should be 0.5?
+            Ri_n(i) = xN_o(i)/(r(i)*tamp)**2
 c            Ri(i) = 0.d0
-c            if (Ri(i).gt.1.d30) Ri(i) = 0.d0
-c            if (Ri(i).lt.-1.d30) Ri(i) = 0.d0     
+            if (Ri_n(i).gt.1.d30) Ri_n(i) = 0.d0
+            if (Ri_n(i).lt.-1.d30) Ri_n(i) = 0.d0     
 cc            print *,i,Ri(i),xN_o(i),tamp,vomega(i),r(i)
-c         enddo
-cc         Ri(nmod) = Ri(nmod-1)
+         enddo
+         Ri_n(nmod) = Ri_n(nmod-1)
+
+! S_NUMBER Added LR 21 Jan 2025
+         
+         do i = 1,nmod-1
+            if (xN_o(i) .gt. 0.d0) then
+                S_n(i) = 2*vomega(i)/sqrt(xN_o(i))
+            else
+               S_n(i) = 0.d0
+            endif
+
+            if (S_n(i).gt.1.d30) S_n(i) = 0.d0
+            if (S_n(i).lt.-1.d30) S_n(i) = 0.d0   
+
+cc           
+         enddo
+         S_n(nmod) = S_n(nmod-1)
 
 
 
@@ -1710,6 +1737,8 @@ C...fin modif Nadège
 
 c.. file.p1
       do i = 1,nmod
+            if (vr(i).gt.1.d30) vr(i) = 0.d0
+            if (vr(i).lt.-1.d30) vr(i) = 0.d0    
          write (11,2810) i,rcrz(i),r(i)/rsun,t(i),vvro(i),vvp(i),beta(i)
      &        ,eta(i),lnf(i),sr(i),lum(i)/lsun,u(i),mr(i),accel(i),vr(i)
       enddo
@@ -1845,7 +1874,8 @@ c      call lissage (dife,1,nmod-1,5)
      &           Dtot(i),Dhold(i),xpsis(i),xlambdas(i),abmuj(i),
      &           xnuvv(i),xnum(i),xKt(i),auxs(i),StB(i),StTh(i),
      &           StNG(i),StNS(i),StAdv(i),StTh1(i),StTh2(i),
-     &           StB1(i),StB2(i),StB3(i),StB4(i),omega(i)!!,thetac(i)
+     &           StB1(i),StB2(i),StB3(i),StB4(i),omega(i),Ri_n(i),
+     &           S_n(i)!!,thetac(i)
          enddo
       endif
 
@@ -1979,9 +2009,9 @@ c.. *.p3
      &     'enucl',7x,'enupla',7x,'egrav',5x,'enunucl',6x,'Dconv',7x,
      &     'dturb',6x,
      &     'Dherw ',6x,' Dsc  ',6x,'Dmicro',6x,'Vmicro',7x,'Dthc',6x,
-C Modif CC ondes (12/04/07) 
-C     &     'Dondes',6x,'Dondeschim',3x,'scz')
-C Modif CC ondes (11/07/07) 
+!C Modif CC ondes (12/04/07) 
+!C     &     'Dondes',6x,'Dondeschim',3x,'scz')
+!C Modif CC ondes (11/07/07) 
      &     'Dondes',6x,'Dondeschim',6x,'lumwave',3x,'scz')
 c Ajout TD Fev.2018      
  1224 format ('# nsh',3x,'VmicroHe',6x,'VmicroHeTP',6x ,'VmicroC12',6x
@@ -1997,9 +2027,9 @@ c Ajout TD Fev.2018
      $     ,'Dkyle',6x,'Dtacho',3x,'scz')
 cFin ajout TD Fev.2018      
  3210 format (1x,i4,1x,1pe10.4,1x,1pe10.4,1x,1pe12.3,1x,
-C Modif CC ondes (12/04/07) 
-C     &     1pe9.3,10(1x,1pe11.4),1x,i4)
-C Modif CC ondes (11/07/07) 
+!C Modif CC ondes (12/04/07) 
+!C    &     1pe9.3,10(1x,1pe11.4),1x,i4)
+!C Modif CC ondes (11/07/07) 
      &     1pe12.3,14(1x,1pe11.4),1x,i4)
  3213 format (1x,i4,20(1x,1pe11.4),1x,1pe10.4,1x,1pe10.4,1x,1pe12.3,1x
      $     ,1pe12.3,15(1x,1pe11.4),1x,i4)   ! Add by TD Fev.2018        
@@ -2009,9 +2039,9 @@ c.. *.p10
      &     'abmuj',6x,'Nuturb',5x,'Numol',8x,'Kt',9x,'aux',8x,
      &     ' SB ',8x,' STh ',7x,' SNG ',7x,' SNS ',7x,' Sadv ',
      &     7x,' STh1',7x,' STh2',7x,' SB1 ',7x,' SB2 ',7x,
-     &     ' SB3 ',7x,' SB4 ',7x,'vomega')
+     &     ' SB3 ',7x,' SB4 ',7x,'vomega',7x,'Ri',7x,'S')
  3460 format (1x,i4,1x,1pe12.5,1x,1pe12.5,4(1x,1pe10.4),3(1x,
-     &     1pe11.4),3(1x,1pe10.4),12(1x,1pe11.4),1x,2(1pe12.5))
+     &     1pe11.4),3(1x,1pe10.4),12(1x,1pe11.4),1x,4(1pe12.5,1x)) ! Add by LR 21 Jan 2025     
 
 
 c.. *.p11
