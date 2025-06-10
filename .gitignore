@@ -1,11 +1,8 @@
-# Ignore data repositories
-HEADERS/
-INIT/
-PHYSICS/
-
-# Ignore executables and object files
 *.o
-*.~
-*.e
-evolstell_gyre.mod
-last_compil
+*.mod
+*.exe
+*.dat
+*.log
+*.out
+*.tmp
+
