@@ -1,0 +1,81 @@
+
+           Hello  . I am the Mighty IAA Network Generator.
+ 
+
+    Choose your editor 
+ 
+ 0: no editor (batch mode) - 1: vi - 2: emacs - 3: vuepad :  2
++++++
+         ***********************************************************
+         *                NETWORK SYNTHESIS MENU                   *
+         ***********************************************************
+   0. Stop
+
+   1. (optional)
+      Generate a network from all documented rates in the required format
+
+   8. (optional)
+      Generate a network between Zmin, Zmax with fixed boundaries with
+      respect to drip or stability lines   
+
+   2. Check baryon and proton balance for the network,
+      Check network syntax,
+      Compute Q, Qneutrino values for the network using Audi's mass table
+   3. Generate the table of reaction rates for the considered network 
+   4. Compute the matrix shape parameters for routine EIGEN, and write the
+         network in coded form
+
+   5. Plot some selected reactions
+
+   9. ****HELP****
+
+  10. Generate a list of all available reaction rates (except SMOKER),
+         with references for the rates
+  11. Plot the atlas of all documented reaction rates
+  12. Generate table of all documented reaction rates
+
+         >>>>> Give me your choice (0 to stop, 1-5, 8-12):  
+++++
+rm: b.b non-existent
+rm: err.log non-existent
+
+ Enter network file name:  network.in
+++++
+Attempt to remove NaN in rate file using Hauser-Feshbach extrapolation? (0/1) 1
+++++
+Linear (0) or cubic spline (1) interpolation? (0/1) 0
+++++
+Write second derivatives to output file? (0/1) 0
+++++
+ Did you ask to plot some reaction rates (1st col. flag < 0)? (y/n)   n
+++++
+ Do you have a file with your own temperature grid? 
+
+   [Such a file should have the format: 
+
+       ngrid * 
+       rhomin rhomax 
+       T1 T2 T3 T4 ...Tngrid (free format)] 
+   (y/n) y
+++++
+File name? Tgrid.in
+++++
+Do you want the data in lines or columns? (l/c)l
+++++
+ Do you have a file with your choices of biblio reference indices
+           for **some** (not necessarily all) reactions? 
+
+   [Such a file should have the format: 
+
+       nreac bibindex
+       nreac bibindex
+       ...
+    where nreac is the reaction number in the network file
+    and bibindex the corresponding biblio reference index]
+   (y/n) n
+++++
+ MOST directory is Most. Do you want to change it ? (y/n) n
+++++
+ Network file to be used is network.in. Change it ? (y/n)  n
+++++
+

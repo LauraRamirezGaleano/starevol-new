@@ -1,0 +1,132 @@
+#! /bin/bash
+
+if [ $# -ne 1 ]; then
+    echo "enter the type of model atmosphere you want to process"
+    echo "   1 :  PHOENIX"
+    echo "   2 :  MARCS"
+    exit 3
+fi
+
+
+get_header_phoenix ()
+{
+    teff=`grep teff $1 | tail -1| perl -n -e "s/(.*):\s*(.*)\sk/\2/g; print" | awk '{printf "%5.5d",$1}' `
+    radius=`grep R_eff $1 | tail -1| perl -n -e "s/(.*):\s*(.*)\scm(.*)/\2/g; print" | sed s/d/e/i`
+    lum=`grep luminosity $1 | tail -1| perl -n -e "s/(.*):\s*(.*)\sergs(.*)/\2/g; print" | sed s/d/e/i`
+    logg=`grep 'log(g)' $1 | tail -1| perl -n -e "s/(.*):\s*(.*)\s\[(.*)/\2/g; print" | awk '{printf "%+5.2f",$1}'`
+    #echo Teff=$teff R=$radius L=$lum  logg=$logg
+}
+
+get_header_marcs ()
+{
+    teff=`grep Teff $1  | perl -n -e "s/(.*)Teff(.*)/\1/g; print" | awk '{printf "%5.5d",$1}' `
+    radius=`grep radius $1 | perl -n -a -e 'print @F[0];' | sed s/d/e/i`
+    lum=`grep Luminosity $1 | perl -n -e "s/(.*)Luminosity(.*)/\1/g; print" | sed s/d/e/i`
+    logg=`grep Surface $1 | perl -n -e "s/(.*)Surface(.*)/\1/g; print" | awk '{printf "%+5.2f",log($1)/log(10)}'`
+    metal=`grep Metallicity $1 | perl -n -e "s/(.*)\s(.*)\sMeta(.*)/\1/g; print" | awk '{printf "%+5.2f",$1}'`
+    [ `grep "plane-parallel" $model_file | wc -l` -ne  0 ] && type="p" || type="s"
+    #echo Teff=$teff R=$radius L=$lum  logg=$logg metal=$metal type=${type}
+}
+
+
+gen_output_phoenix ()
+{
+    echo "#n1=`expr $nlines + 1` n2=4 Teff=$teff R=$radius L=$lum logg=$logg"> $2
+    echo "#   tau          T          rho         Fconv" >> $2
+    Ftot=`echo $lum $radius | awk '{print ($1/(12.5663706144*$2*$2))}'`
+    echo $Ftot $lum $radius 
+    cat $1 | cut -c 6-18,30-42,54-66,138-149 | sed s/d/e/ig >  $1"a"
+    echo  $1"a"
+    awk '{printf " %7.5e %7.5e %7.5e %+8.5e\n",$1,$2,$3,$4/"'"$Ftot"'"}' $1"a" >> $2
+}
+
+gen_output_marcs ()
+{
+    echo "#n1=`expr $nlines + 1` n2=4 Teff=$teff R=$radius L=$lum logg=$logg"> $2
+    echo "#   tau          T          rho         Fconv" >> $2
+    awk '{printf "%7.5e %7.5e %7.5e %+8.5e\n",10.**$2,$7+$8,$13,$16}' $1 >> $2
+}
+
+
+phoenix ()
+{
+    echo
+    echo "   ******   Extracting PHOENIX model atmospheres  ******"
+    echo
+    ls lte* | grep  -v P > filelist
+    nfiles=`wc -l filelist | perl -n -e "s/\s(.*)(\d*)\s(.*)/\1/g; print"`
+    nlines=127
+    
+
+    i=1
+    while ([ $i -le $nfiles ])
+    do
+	model_file=`sed -n "$i p" filelist`
+	[ $debug -ne 0 ] && echo $model_file
+	if [ -s $model_file ]; then
+	    metal=`echo $model_file | cut -c 11-14 | awk '{printf "%+5.2f",$1}'`
+	    nstart=`grep -n "Fconv" $model_file | tail -1 |  perl -n -e "s/(\d*):(.*)/\1/g; print"`
+	    nstart=`expr $nstart + 1`
+	    nstop=`expr $nstart + $nlines`
+	    sed -n ''$nstart','$nstop'p' $model_file >  $tmp_file
+	    
+	    [ $debug -ne 0 ] && echo $tmp_file
+	    get_header_phoenix $model_file
+
+	    out_file=Ps${teff}_g${logg}_z${metal}
+	    [ -e $out_file ] && echo "$out_file already exists!" && exit 2
+	    gen_output_phoenix $tmp_file $out_file
+	    echo "generating $out_file "
+	else
+	    echo "file $model_file has a size = 0!"
+	fi
+	i=`expr $i + 1`
+    done
+}
+
+
+
+marcs ()
+{
+    echo
+    echo "   ******   Extracting MARCS model atmospheres  ******"
+    echo
+    ls *mod > filelist
+    nfiles=`wc -l filelist | perl -n -e "s/(\d*)\s(.*)/\1/g; print"`
+    nlines=55
+
+    i=1
+    while ([ $i -le $nfiles ])
+    do
+	model_file=`sed -n "$i p" filelist`
+	nstart=`grep -n "Depth" $model_file | tail -1 |  perl -n -e "s/(\d*):(.*)/\1/g; print"`
+	nstart=`expr $nstart + 1`
+	nstop=`expr $nstart + $nlines`
+	sed -n ''$nstart','$nstop'p' $model_file >  ${tmp_file}a
+
+	nstart=`grep -n "Density" $model_file | tail -1 |  perl -n -e "s/(\d*):(.*)/\1/g; print"`
+	nstart=`expr $nstart + 1`
+	nstop=`expr $nstart + $nlines`
+	sed -n ''$nstart','$nstop'p' $model_file >  ${tmp_file}b
+	paste -d ,  ${tmp_file}a  ${tmp_file}b > $tmp_file
+
+	get_header_marcs $model_file
+
+	out_file=M${type}${teff}_g${logg}_z${metal}
+	[ -e $out_file ] && echo "$out_file already exists!" && exit 2
+	gen_output_marcs $tmp_file $out_file
+	echo "generating $out_file "
+	i=`expr $i + 1`
+    done
+}
+
+
+tmp_file=/tmp/$$0
+debug=1
+
+if [ $1 -ne 1 -a $1 -ne 2 ]; then
+    echo "invalid parameter : must be 1 or 2"
+else
+    [ $1 -eq 1 ] && phoenix || marcs
+fi
+rm -f $tmp_file ${tmp_file}a ${tmp_file}b

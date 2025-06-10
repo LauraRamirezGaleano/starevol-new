@@ -1,0 +1,168 @@
+	program a2bopal05
+
+
+	implicit none
+c        implicit double precision (a-h,o-z)
+c
+c	purpose:
+c		read the OPAL05 of the
+c		Livermore opacity tables (Asplund et al. 2005 solar composition)
+c               and convert the values from ascii to binarie format .
+c 	reference: 
+c		rogers & iglesias, ap.j.supplement 79, april(1992)
+c
+c	written: g.w. houdek
+c
+c       History: 
+c
+c      13.11.1995 creation, derived from da2b.f
+c
+c	last modification: 13.11.1995
+c
+c	Variables:
+c	lun ....... logical unit number of opacity-table-file
+c	ntab ...... nr. of opacity tables/file
+c	nval ...... max. nr. of op.values pro line (const. t6)
+c	nlin ...... max. nr. of op.table lines
+c       nzva ...... Nr. of input files (different z-values)
+c                   (z = mass fraction of heavy elements)
+c
+c	rlg ....... array[1..nval,1..ntab], 
+c		    decade log of r=density(gm/cm**3)/t6**3
+c	t6 ........ array[1..nlin,1..ntab].
+c                   temperature/10**6
+c	opa ....... array[1..nvar,1..nlin,1..ntab],
+c                   opacity values
+c
+c       Adapted for the new opacities by A. Palacios
+c
+c       setup array-dimensions
+c
+
+	integer ntab,ntab1,ntab2,nzva,nzvaa,nzvab,i,j,k,l
+	integer nval,nlin,lun
+
+	real rlg,tlg,opa
+
+        parameter(ntab=21,ntab1=8,ntab2=10,nzvaa=13,nzvab=10,nzva=23)
+        parameter(nval=19,nlin=70)
+c        parameter(lun=21)
+        parameter(lun=41)
+c
+	dimension	rlg(nval,nzva)
+	dimension	tlg(nlin,nzva)
+	dimension	opa(nval,nlin,nzva)
+
+	character*132 	line
+	character*10	ifname,ofname
+	character*6	ct6
+c
+c	initialize input filename
+	data   ifname
+     +         /'opal05.tab'/
+c
+c	initialize output filename
+	data	ofname
+     +          /'opal05.bin'/
+c
+c	  open outputfile
+	  open(lun+1,file=ofname,status='unknown',
+     +               form='unformatted',err=9011)
+c
+c
+c
+c	open inputfile
+	open(lun,file=ifname,status='old',err=9001)
+c
+
+***     Read tables for X = 0.000 to X = 0.9000
+c       read ntab tables/Z-value
+
+
+        do k=1,ntab1
+c
+	   do l=1,nzvaa
+c       read 1st 5 lines 
+	      do i=1,5
+		 read(lun,'(a)') line
+		 if (i.eq.2) print *,line(1:60)
+	      enddo
+c	  read/write string 'logT' + rlg-values
+	      read(lun,   '(a6,19f7.3)') ct6,(rlg(i,k),i=1,nval)
+	      write(lun+1              )     (rlg(i,k),i=1,nval)
+c       
+c       read blank line
+	      read(lun,'(a)') line
+c       
+c       read/write logT & opacity-values
+	      do j=1,nlin
+		 read(lun,'(f5.3,19f7.3)',err=9002)
+     &           tlg(j,k)           ,(opa(i,j,k),i=1,nval)
+		 write(lun+1,             err=9020)
+     &           tlg(j,k)           ,(opa(i,j,k),i=1,nval)
+		 print *,j,k,tlg(j,k)
+	      enddo
+	   enddo
+	enddo
+	
+
+***     Read table for X = 0.95000
+
+	do l=1,nzvab
+c       read 1st 5 lines 
+	   do i=1,5
+	      read(lun,'(a)') line
+	      if (i.eq.2) print *,line(1:60)
+	   enddo
+c       read/write string 'logT' + rlg-values
+	   read(lun,   '(a6,19f7.3)') ct6,(rlg(i,ntab1+1),i=1,nval)
+	   write(lun+1              )     (rlg(i,ntab1+1),i=1,nval)
+c       
+c       read blank line
+	   read(lun,'(a)') line
+c       
+c       read/write logT & opacity-values
+	   do j=1,nlin
+	      read(lun,'(f5.3,19f7.3)',err=9002)
+     &	   tlg(j,ntab1+1)           ,(opa(i,j,ntab1+1),i=1,nval)
+	      write(lun+1,             err=9020)
+     &     tlg(j,ntab1+1)           ,(opa(i,j,ntab1+1),i=1,nval)
+	   enddo
+	enddo
+
+***     Read tables for X > 0.95000
+
+	do k = ntab2,ntab
+	      do i=1,5
+		 read(lun,'(a)') line
+		 if (i.eq.2) print *,line(1:60)
+	      enddo
+	      read(lun,   '(a6,19f7.3)') ct6,(rlg(i,k),i=1,nval)
+	      write(lun+1              )     (rlg(i,k),i=1,nval)
+c       read blank line
+	      read(lun,'(a)') line
+c       
+c       read/write logT & opacity-values
+	      do j=1,nlin
+		 read(lun,'(f5.3,19f7.3)',err=9002)
+     &	      tlg(j,k)           ,(opa(i,j,k),i=1,nval)
+		 write(lun+1,             err=9020)
+     &	      tlg(j,k)           ,(opa(i,j,k),i=1,nval)
+	      enddo
+	enddo
+
+	
+	close(lun+1)
+c
+	stop
+c
+ 9001   print *,'a2bopal05: error in opening ',ifname,'lun= ',lun
+	stop
+ 9011   print *,'a2bopal05: error in opening ',ofname,'lun= ',lun+1
+	stop
+ 9002	print *,'a2bopal05: error in reading: line: ',j
+	stop
+ 9020   print *,'a2bopal05: error in writing ',ofname,'lun= ',lun+1 
+        stop
+c
+	end

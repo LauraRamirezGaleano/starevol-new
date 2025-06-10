@@ -1,0 +1,113 @@
+   2    2 PROT  ( 0 OOOOO, 0 NUTRI)  1 DEUT  : Q =   1.442 MeV      2  55   0   3  QINU =  0.270 MeV
+   3    1 DEUT  ( 1 PROT , 0 OOOOO)  1 HE  3 : Q =   5.494 MeV      3   2  55   4  QINU =  0.000 MeV
+   4    2 DEUT  ( 0 DEUT , 0 OOOOO)  1 HE  4 : Q =  23.847 MeV      3   3  55   5  QINU =  0.000 MeV
+   5    2 DEUT  ( 0 OOOOO, 1 NEUT )  1 HE  3 : Q =   3.270 MeV      3  55   1   4  QINU =  0.000 MeV
+   9    1 DEUT  ( 1 HE  4, 0 OOOOO)  1 LI  6 : Q =   1.474 MeV      3   5  55   6  QINU =  0.000 MeV
+   7    1 HE  3 ( 1 DEUT , 1 PROT )  1 HE  4 : Q =  18.353 MeV      4   3   2   5  QINU =  0.000 MeV
+   8    2 HE  3 ( 0 OOOOO, 2 PROT )  1 HE  4 : Q =  12.859 MeV      4  55   2   5  QINU =  0.000 MeV
+  10    1 HE  4 ( 1 HE  3, 0 OOOOO)  1 BE  7 : Q =   1.587 MeV      5   4  55   8  QINU =  0.000 MeV
+  12    1 LI  6 ( 1 PROT , 0 OOOOO)  1 BE  7 : Q =   5.607 MeV      6   2  55   8  QINU =  0.000 MeV
+  13    1 LI  6 ( 1 PROT , 1 HE  4)  1 HE  3 : Q =   4.020 MeV      6   2   5   4  QINU =  0.000 MeV
+  14    1 LI  7 ( 1 PROT , 0 OOOOO)  2 HE  4 : Q =  17.346 MeV      7   2  55   5  QINU =  0.000 MeV
+  17    1 BE  7 ( 1 PROT , 0 OOOOO)  1 B   8 : Q =   0.136 MeV      8   2  55   9  QINU =  0.000 MeV
+  21    1 BE  9 ( 1 PROT , 0 OOOOO)  1 B  10 : Q =   6.586 MeV     10   2  55  11  QINU =  0.000 MeV
+  22    1 BE  9 ( 1 PROT , 1 DEUT )  2 HE  4 : Q =   0.651 MeV     10   2   3   5  QINU =  0.000 MeV
+  23    1 BE  9 ( 1 PROT , 1 HE  4)  1 LI  6 : Q =   2.125 MeV     10   2   5   6  QINU =  0.000 MeV
+  25    1 B  10 ( 1 PROT , 0 OOOOO)  1 B  11 : Q =  10.672 MeV     11   2  55  12  QINU =  0.582 MeV
+  24    1 B  10 ( 1 PROT , 1 HE  4)  1 BE  7 : Q =   1.146 MeV     11   2   5   8  QINU =  0.000 MeV
+  26    1 B  11 ( 1 PROT , 0 OOOOO)  1 C  12 : Q =  15.957 MeV     12   2  55  13  QINU =  0.000 MeV
+  27    1 B  11 ( 1 PROT , 1 HE  4)  2 HE  4 : Q =   8.682 MeV     12   2   5   5  QINU =  0.000 MeV
+  30    1 C  12 ( 1 PROT , 0 OOOOO)  1 N  13 : Q =   1.944 MeV     13   2  55  15  QINU =  0.000 MeV
+  31    1 C  12 ( 1 HE  4, 0 OOOOO)  1 O  16 : Q =   7.162 MeV     13   5  55  20  QINU =  0.000 MeV
+  35    1 C  13 ( 1 PROT , 0 OOOOO)  1 N  14 : Q =   7.551 MeV     14   2  55  17  QINU =  0.000 MeV
+  36    1 C  13 ( 1 HE  4, 1 NEUT )  1 O  16 : Q =   2.216 MeV     14   5   1  20  QINU =  0.000 MeV
+  39    1 N  13 ( 1 PROT , 0 OOOOO)  1 N  14 : Q =   9.771 MeV     15   2  55  17  QINU =  2.222 MeV
+  48    1 N  14 ( 1 PROT , 0 OOOOO)  1 O  15 : Q =   7.296 MeV     17   2  55  19  QINU =  0.000 MeV
+  52    1 N  15 ( 1 PROT , 0 OOOOO)  1 O  16 : Q =  12.127 MeV     18   2  55  20  QINU =  0.000 MeV
+  51    1 N  15 ( 1 PROT , 1 HE  4)  1 C  12 : Q =   4.965 MeV     18   2   5  13  QINU =  0.000 MeV
+  41    1 C  14 ( 1 PROT , 0 OOOOO)  1 N  15 : Q =  10.208 MeV     16   2  55  18  QINU =  0.000 MeV
+  45    1 C  14 ( 1 HE  4, 0 OOOOO)  1 O  18 : Q =   6.228 MeV     16   5  55  22  QINU =  0.000 MeV
+  49    1 N  14 ( 1 HE  4, 0 OOOOO)  1 F  18 : Q =   4.415 MeV     17   5  55  23  QINU =  0.000 MeV
+  53    1 N  15 ( 1 HE  4, 0 OOOOO)  1 F  19 : Q =   4.013 MeV     18   5  55  24  QINU =  0.000 MeV
+  58    1 O  16 ( 1 PROT , 0 OOOOO)  1 O  17 : Q =   3.361 MeV     20   2  55  21  QINU =  1.000 MeV
+  59    1 O  16 ( 1 HE  4, 0 OOOOO)  1 NE 20 : Q =   4.730 MeV     20   5  55  26  QINU =  0.000 MeV
+  67    1 O  17 ( 1 PROT , 0 OOOOO)  1 F  18 : Q =   5.607 MeV     21   2  55  23  QINU =  0.000 MeV
+  68    1 O  17 ( 1 PROT , 1 HE  4)  1 N  14 : Q =   1.192 MeV     21   2   5  17  QINU =  0.000 MeV
+  72    1 O  18 ( 1 PROT , 0 OOOOO)  1 F  19 : Q =   7.993 MeV     22   2  55  24  QINU =  0.000 MeV
+  73    1 O  18 ( 1 PROT , 1 HE  4)  1 N  15 : Q =   3.980 MeV     22   2   5  18  QINU =  0.000 MeV
+  74    1 O  18 ( 1 HE  4, 0 OOOOO)  1 NE 22 : Q =   9.667 MeV     22   5  55  28  QINU =  0.000 MeV
+  85    1 NE 20 ( 1 PROT , 0 OOOOO)  1 NE 21 : Q =   5.979 MeV     26   2  55  27  QINU =  1.408 MeV
+  87    1 NE 20 ( 1 HE  4, 0 OOOOO)  1 MG 24 : Q =   9.317 MeV     26   5  55  33  QINU =  0.000 MeV
+  91    1 NE 21 ( 1 PROT , 0 OOOOO)  1 NA 22 : Q =   6.739 MeV     27   2  55  29  QINU =  0.000 MeV
+  95    1 NE 22 ( 1 PROT , 0 OOOOO)  1 NA 23 : Q =   8.794 MeV     28   2  55  31  QINU =  0.000 MeV
+  96    1 NE 22 ( 1 HE  4, 0 OOOOO)  1 MG 26 : Q =  10.615 MeV     28   5  55  36  QINU =  0.000 MeV
+  97    1 NE 22 ( 1 HE  4, 1 NEUT )  1 MG 25 : Q =  -0.478 MeV     28   5   1  35  QINU =  0.000 MeV
+ 101    1 NA 22 ( 1 PROT , 0 OOOOO)  1 NA 23 : Q =  11.637 MeV     29   2  55  31  QINU =  1.670 MeV
+ 103    1 NA 23 ( 1 PROT , 0 OOOOO)  1 MG 24 : Q =  11.693 MeV     31   2  55  33  QINU =  0.000 MeV
+ 104    1 NA 23 ( 1 PROT , 1 HE  4)  1 NE 20 : Q =   2.376 MeV     31   2   5  26  QINU =  0.000 MeV
+ 107    1 MG 24 ( 1 PROT , 0 OOOOO)  1 MG 25 : Q =   6.548 MeV     33   2  55  35  QINU =  1.782 MeV
+ 109    1 MG 24 ( 1 HE  4, 0 OOOOO)  1 SI 28 : Q =   9.984 MeV     33   5  55  41  QINU =  0.000 MeV
+ 112    1 MG 25 ( 1 PROT , 0 OOOOO)  1 AL 26g: Q =   6.306 MeV     35   2  55   0  QINU =  0.000 MeV
+ 111    1 MG 25 ( 1 PROT , 0 OOOOO)  1 AL 26m: Q =   6.078 MeV     35   2  55   0  QINU =  0.000 MeV
+ 117    1 MG 26 ( 1 PROT , 0 OOOOO)  1 AL 27 : Q =   8.271 MeV     36   2  55  40  QINU =  0.000 MeV
+ 130    1 AL 26g( 1 PROT , 0 OOOOO)  1 AL 27 : Q =  12.276 MeV      0   2  55  40  QINU =  2.054 MeV
+ 133    1 AL 27 ( 1 PROT , 0 OOOOO)  1 SI 28 : Q =  11.585 MeV     40   2  55  41  QINU =  0.000 MeV
+ 134    1 AL 27 ( 1 PROT , 1 HE  4)  1 MG 24 : Q =   1.601 MeV     40   2   5  33  QINU =  0.000 MeV
+
+nuclear network references:
+
+    2  Nacre reaction rates 280399  ppnu     (nominal)                                                                                                                            
+    3  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+    4  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+    5  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+    9  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+    7  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+    8  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   10  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   12  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   13  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   14  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   17  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   21  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   22  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   23  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   25  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   24  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   26  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   27  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   30  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   31  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   35  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   36  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   39  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   48  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   52  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   51  NACRE2, Nucl. Phys. A, 918 (2013) 61 (nominal)                                                                                                                             
+   41  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   45  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   49  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   53  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   58  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   59  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   67  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   68  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   72  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   73  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   74  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   85  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   87  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   91  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   95  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   96  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+   97  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  101  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  103  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  104  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  107  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  109  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  112  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  111  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  117  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  130  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  133  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  
+  134  R. Longland, C. Iliadis,  A. Coc et al. NPA, 2010, 841, 1-3, 88 (nominal)                                                                                                  

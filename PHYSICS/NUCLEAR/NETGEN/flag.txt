@@ -1,0 +1,12 @@
+ Flags:
+ 0:                            -> keep as it is   and lin spline
+ -1: <sigma>(n,g) -> * RHO * 7.7629e+04 * SQRT(T8) and lin spline
+ -12: (n,g) from SMOKER         -> * RHO           and lin spline
+ -11: photodissociation,beta-   -> keep as it is   and log spline
+ -13: electronic capture        -> * RHO / PME     and log spline
+ -14: electronic capture on Be7 -> * RHO / PME     and log spline
+      check that rate does not exceed 1.51E-07 at T9 < 0.001
+ 1,3,10,30:beta rho sensitive   -> interpolate rho and log spline
+ -10:                           -> * RHO           and log spline
+ -100: charged, identical       -> * RHO*RHO       and log spline
+ -200: charged, four particles  -> * RHO*RHO*RHO   and log spline

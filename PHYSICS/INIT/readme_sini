@@ -1,0 +1,14 @@
+
+Lionel Siess 30/04/2004
+
+j'ai reformate tous les binaires initiaux (les sini_*) qui sont maintenant 
+dans le format LITTLE_ENDIAN (celui de votre PC)
+  ET
+pour chacun de ces fichiers, j'ai fait tourner starevolman.e et recalculer 
+la metallicite, imposee a Z = 0.02
+
+Ils sont maintenant tous homogenes, cad ils ont tous les memes abondances, 
+solaires en l'occurence.
+J'ai aussi incorpore dans cette base de donnees les modeles initiaux 
+generes par Gwen pour ses super-AGBs
+

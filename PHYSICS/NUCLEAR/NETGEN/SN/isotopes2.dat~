@@ -1,0 +1,54 @@
+List of isotopes used in AGB models (Forestini)
+  1  n      n      NEUT   neutr      1  0
+  4  H      p      PROT   proto      1  1
+  5  D      D      DEUT   deutr      2  1
+  6  He3    He3    HE  3  he  3      3  2
+  7  He4    alpha  HE  4  he  4      4  2
+  8  Li6    Li6    LI  6  li  6      6  3
+  9  Li7    Li7    LI  7  li  7      7  3
+ 10  Be7    Be7    BE  7  be  7      7  4
+ 11  B8     B8     B   8  b   8      8  5
+ 12  Be9    Be9    BE  9  be  9      9  4
+ 13  B10    B10    B  10  b  10     10  5
+ 14  B11    B11    B  11  b  11     11  5  
+ 15  C11    C11    C  11  c  11     11  6  ! modification to take b- into account
+ 16  C12    C12    C  12  c  12     12  6
+ 17  C13    C13    C  13  c  13     13  6
+ 18  N13    N13    N  13  n  13     13  7  ! modification to take b- into account
+ 19  C14    C14    C  14  c  14     14  6
+ 20  N14    N14    N  14  n  14     14  7
+ 21  N15    N15    N  15  n  15     15  7
+ 22  O15    O15    O  15  o  15     15  8  ! modification to take b- into account
+ 23  O16    O16    O  16  o  16     16  8
+ 24  O17    O17    O  17  o  17     17  8
+ 25  O18    O18    O  18  o  18     18  8
+ 26  F18    F18    F  18  f  18     18  9  ! modification to take b- into account
+ 27  F19    F19    F  19  f  19     19  9
+ 28  Ne20   Ne20   NE 20  ne 20     20 10
+ 29  Ne21   Ne21   NE 21  ne 21     21 10
+ 30  Ne22   Ne22   NE 22  ne 22     22 10
+ 31  Na22   Na22   NA 22  na 22     22 11
+ 32  Na23   Na23   NA 23  na 23     23 11
+ 33  Mg24   Mg24   MG 24  mg 24     24 12
+ 34  Mg25   Mg25   MG 25  mg 25     25 12
+ 35  Mg26   Mg26   MG 26  mg 26     26 12
+ 36  Ali26  Al26i  AL26m  alm26  m  26 13
+ 37  Alg26  Al26g  AL26g  alg26  g  26 13
+ 38  Al27   Al27   AL 27  al 27     27 13
+ 39  Si28   Si28   SI 28  si 28     28 14
+ 40  Si29   Si29   SI 29  si 29     29 14
+ 41  Si30   Si30   SI 30  si 30     30 14
+ 42  Si31   Si31   SI 31  si 31     31 14  ! modification to take b- into account
+ 43  P31    P31    P  31  p  31     31 15
+ 44  Si32   Si32   SI 32  si 32     32 14
+ 45  P32    P32    P  32  p  32     32 15  ! modification to take b- into account
+ 46  S32    S32    S  32  s  32     32 16
+ 47  P33    P33    P  33  p  33     33 15  ! modification to take b- into account
+ 48  S33    S33    S  33  s  33     33 16
+ 49  S34    S34    S  34  s  34     34 16
+ 50  S35    S35    S  35  s  35     35 16
+ 51  Cl35   Cl35   CL 35  cl 35     35 17
+ 52  S36    S36    S  36  s  36     36 16
+ 53  Cl36   Cl36   CL 36  cl 36     36 17
+ 54  Cl37   Cl37   CL 37  cl 37     37 17
+ 55  Xheav  Xheav  XHEAV  xheav     56 26

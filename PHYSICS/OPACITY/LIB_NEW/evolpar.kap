@@ -1,0 +1,6 @@
+
+      integer mlth,nlth,itlth
+      integer nth,nrh,ixh,itabh
+
+      parameter (mlth = 19,nlth = 85,itlth = 120)
+      parameter (nrh = 17,nth = 11,itabh= 77)

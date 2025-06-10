@@ -1,0 +1,35 @@
+     1   1 BE  7 ( 1 PROT , 0 OOOOO)  1 B   8 
+
+                      T9 =   0.003 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  be7pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  be7pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  be7pg    (high)                
+
+ Ref. # 1 selected for reaction be7pg    (nominal)                   
+===============================================================================
+1 LI  7 ( 1 PROT , 1 HE  4)  1 HE  4 
+ rewritten as 1 LI  7 ( 1 PROT , 0 OOOOO)  2 HE  4 
+
+     2   1 LI  7 ( 1 PROT , 1 HE  4)  1 HE  4 
+
+                      T9 =   0.001 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  li7pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  li7pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  li7pa    (high)                
+
+ Ref. # 1 selected for reaction li7pa    (nominal)                   
+===============================================================================

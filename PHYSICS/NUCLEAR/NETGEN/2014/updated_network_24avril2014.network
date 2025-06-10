@@ -1,0 +1,56 @@
+501      2 H   1 ( 0 OOOOO, 0 OOOOO)  1 H   2 
+601      1 H   2 ( 1 PROT , 0 OOOOO)  1 HE  3 
+601      1 H   2 ( 1 DEUT , 0 OOOOO)  1 HE  4 
+601      2 H   2 ( 0 OOOOO, 1 NEUT )  1 HE  3 
+601      1 H   2 ( 1 HE  4, 0 OOOOO)  1 LI  6 
+601      1 HE  3 ( 1 DEUT , 1 PROT )  1 HE  4 
+601      2 HE  3 ( 0 OOOOO, 2 PROT )  1 HE  4 
+601      1 HE  4 ( 1 HE  3, 0 OOOOO)  1 BE  7 
+601      1 LI  6 ( 1 PROT , 0 OOOOO)  1 BE  7 
+601      1 LI  6 ( 1 PROT , 1 HE  4)  1 HE  3 
+601      1 LI  7 ( 1 PROT , 0 OOOOO)  2 HE  4 
+601      1 LI  7 ( 1 PROT , 1 HE  4)  1 HE  4 
+601      1 BE  7 ( 1 PROT , 0 OOOOO)  1 B   8 
+601      1 BE  9 ( 1 PROT , 0 OOOOO)  1 B  10 
+601      1 BE  9 ( 1 PROT , 1 DEUT )  2 HE  4 
+601      1 BE  9 ( 1 PROT , 1 HE  4)  1 LI  6 
+1        1 B  10 ( 1 PROT , 0 OOOOO)  1 B  11 
+601      1 B  10 ( 1 PROT , 1 HE  4)  1 BE  7 
+601      1 B  11 ( 1 PROT , 0 OOOOO)  1 C  12 
+601      1 B  11 ( 1 PROT , 1 HE  4)  2 HE  4 
+601      1 C  12 ( 1 PROT , 0 OOOOO)  1 N  13 
+601      1 C  12 ( 1 HE  4, 0 OOOOO)  1 O  16 
+601      1 C  13 ( 1 PROT , 0 OOOOO)  1 N  14 
+601      1 C  13 ( 1 HE  4, 1 NEUT )  1 O  16 
+1        1 N  13 ( 1 PROT , 0 OOOOO)  1 N  14 
+601      1 N  14 ( 1 PROT , 0 OOOOO)  1 O  15 
+601      1 N  15 ( 1 PROT , 0 OOOOO)  1 O  16 
+601      1 N  15 ( 1 PROT , 1 HE  4)  1 C  12 
+101      1 C  14 ( 1 PROT , 0 OOOOO)  1 N  15 
+101      1 C  14 ( 1 HE  4, 0 OOOOO)  1 O  18 
+101      1 N  14 ( 1 HE  4, 0 OOOOO)  1 F  18 
+101      1 N  15 ( 1 HE  4, 0 OOOOO)  1 F  19 
+1        1 O  16 ( 1 PROT , 0 OOOOO)  1 O  17 
+101      1 O  16 ( 1 HE  4, 0 OOOOO)  1 NE 20 
+101      1 O  17 ( 1 PROT , 0 OOOOO)  1 F  18 
+101      1 O  17 ( 1 PROT , 1 HE  4)  1 N  14 
+101      1 O  18 ( 1 PROT , 0 OOOOO)  1 F  19 
+101      1 O  18 ( 1 PROT , 1 HE  4)  1 N  15 
+101      1 O  18 ( 1 HE  4, 0 OOOOO)  1 NE 22 
+1        1 NE 20 ( 1 PROT , 0 OOOOO)  1 NE 21 
+101      1 NE 20 ( 1 HE  4, 0 OOOOO)  1 MG 24 
+101      1 NE 21 ( 1 PROT , 0 OOOOO)  1 NA 22 
+101      1 NE 22 ( 1 PROT , 0 OOOOO)  1 NA 23 
+101      1 NE 22 ( 1 HE  4, 0 OOOOO)  1 MG 26 
+101      1 NE 22 ( 1 HE  4, 1 NEUT )  1 MG 25 
+1        1 NA 22 ( 1 PROT , 0 OOOOO)  1 NA 23 
+101      1 NA 23 ( 1 PROT , 0 OOOOO)  1 MG 24 
+101      1 NA 23 ( 1 PROT , 1 HE  4)  1 NE 20 
+1        1 MG 24 ( 1 PROT , 0 OOOOO)  1 MG 25 
+101      1 MG 24 ( 1 HE  4, 0 OOOOO)  1 SI 28 
+1        1 MG 25 ( 1 PROT , 0 OOOOO)  1 AL 26g
+1        1 MG 25 ( 1 PROT , 0 OOOOO)  1 AL 26m
+101      1 MG 26 ( 1 PROT , 0 OOOOO)  1 AL 27 
+1        1 AL 26g( 1 PROT , 0 OOOOO)  1 AL 27 
+101      1 AL 27 ( 1 PROT , 0 OOOOO)  1 SI 28 
+101      1 AL 27 ( 1 PROT , 1 HE  4)  1 MG 24 

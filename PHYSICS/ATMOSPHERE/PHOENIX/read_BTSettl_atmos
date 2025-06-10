@@ -1,0 +1,48 @@
+#! /bin/ksh
+echo
+echo "   ******   Extracting BT-Settl model atmospheres  ******"
+echo
+
+#echo 
+#if [ $# -ne 1 ]
+#   then
+#   echo " !! 1 arguments needed:"
+#   echo " 1: file name"
+#   echo 
+#   echo "   ex : read_BTSettl_atmos lte057-1.5-0.0a+0.0.BT-Settl.6"
+#   echo 
+#   exit 2
+#fi
+
+# Retrieve number of files
+cd $DIR_ATMP
+ls *0.0*.BT-Settl.6 > filelist
+wc -l filelist > lines
+nline=`cut -c 1-3 lines`
+
+i=1
+while ([ $i -le $nline ])
+do
+# Uncompress the original file
+    
+    namein=`sed -n "$i p" filelist | cut -c 1-30`
+#    bunzip2 $namein.bz2
+#Search the key sentence " phoenix: saving structure"
+    grep -n "l        tstd temperature        pgas          pe     density      mu      radius   extension        kapq" $namein > lignes
+
+# Retrieving the line number of the last structure saved from the lignes file
+    nstart=`tail -n 1 lignes | awk '{print $1}' | sed 's/.$//`
+# Define the last line to be retrieved
+    nstop=`expr $nstart + 519`
+
+# Extract the lines desired and save in new file
+    sed -n ''$nstart','$nstop'p' $namein > $namein_evol
+
+# Compress the original file
+#    bzip2 $namein
+  i=`expr $i + 1`
+done
+
+
+echo Thermal structure of model atmosphere $1 extracted into  $1_evol
+

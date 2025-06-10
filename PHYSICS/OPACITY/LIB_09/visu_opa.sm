@@ -1,0 +1,38 @@
+fig1	   cd /home/ana/CALCULS/EVOL/tmp_CODEDIR
+	   data fort.605
+	   lines 1 1
+ 	   read { x 1 y 2 z 3}
+ 	   lines 2 0
+ 	   read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+ 	   erase
+ 	   ctype 0
+	   limits t -9 8
+ 	   box
+ 	   ctype 0 connect t kr0
+ 	   ctype red connect t kr1
+ 	   ctype blue connect t kr2
+ 	   ctype green2 connect t kr3
+ 	   ctype magenta connect t kr4
+ 	   ctype cyan connect t kr5
+ 	   ctype orange3 connect t kr6
+ 	   ctype merlot connect t kr7
+ 	   toplabel Z = 0.01, X = 0.7 Y = 0.29, AGSS09
+	   data fort.705
+	   lines 1 1
+ 	   read { x 1 y 2 z 3}
+ 	   lines 2 0
+ 	   read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+ 	   erase
+ 	   ctype 0
+	   limits t -9 8
+ 	   box
+	   ltype 3 lweight 3
+ 	   ctype 0 connect t kr0
+ 	   ctype red connect t kr1
+ 	   ctype blue connect t kr2
+ 	   ctype green2 connect t kr3
+ 	   ctype magenta connect t kr4
+ 	   ctype cyan connect t kr5
+ 	   ctype orange3 connect t kr6
+ 	   ctype merlot connect t kr7
+ 	   toplabel Z = 0.01, X = 0.7 Y = 0.29, AGS05

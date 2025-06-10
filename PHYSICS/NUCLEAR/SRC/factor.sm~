@@ -1,0 +1,40 @@
+fscreen 1
+  if ($?1 == 0) { define 1 ? { select : gij tij beta sg itoh ratio }}
+  data fs_ro1d9.dat lines 1 1
+  read row _dim 1
+  define nro $(_dim[1])
+  define nmod $(_dim[0]) 
+  image($nro,$nmod)
+  define beg 2
+  set _ix = 0,$($nro-1)
+  set _iy = 0,$($nmod-1)
+  set irho = 0,$($nro-1)
+  do k = 0,$($nro-1) {
+    define end ($($beg+$nmod-1))
+    data fs_ro1d9.dat lines $beg $end
+    read { ro 1 T 2 gij 3 tij 4 beta 5 sg 6 itoh 7 ratio 8 }
+    set image[$k,_iy] = $1
+    set irho[$k] = lg($(ro[0]))
+    define beg $($end+1)
+  }
+  set ibeta = (beta)
+  set iT = lg(T)
+
+fs
+  #viewpoint 30 140 30
+  #surface 103 -3 100 irho iT box3
+  label3 x log(\rho)
+  label3 y log(T)
+  label3 z f_{screen}
+
+xxx
+  limits  (lg(beta)) sg
+  erase
+  box
+  connect (lg(beta)) sg
+  ctype red connect  (lg(beta)) itoh
+  ctype 0
+  xlabel beta
+  ylabel log (s_{factor})
+
+  

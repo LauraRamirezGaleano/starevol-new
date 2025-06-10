@@ -1,0 +1,162 @@
+   1    2 PROT  ( 0 OOOOO, 0 OOOOO ) 1 DEUT  : Q =   1.442 MeV      2  55  55   3  QINU =  0.270 MeV
+   2    1 DEUT  ( 1 PROT , 0 OOOOO ) 1 HE  3 : Q =   5.494 MeV      3   2  55   4  QINU =  0.000 MeV
+   3    2 DEUT  ( 0 OOOOO, 0 OOOOO ) 1 HE  4 : Q =  23.847 MeV      3  55  55   5  QINU =  0.000 MeV
+   4    2 DEUT  ( 0 OOOOO, 1 NEUT  ) 1 HE  3 : Q =   3.270 MeV      3  55   1   4  QINU =  0.000 MeV
+   5    1 HE  3 ( 1 DEUT , 1 PROT  ) 1 HE  4 : Q =  18.353 MeV      4   3   2   5  QINU =  0.000 MeV
+   6    2 HE  3 ( 0 OOOOO, 2 PROT  ) 1 HE  4 : Q =  12.859 MeV      4  55   2   5  QINU =  0.000 MeV
+   7    1 HE  4 ( 1 DEUT , 0 OOOOO ) 1 LI  6 : Q =   1.475 MeV      5   3  55   6  QINU =  0.000 MeV
+   8    1 HE  4 ( 1 HE  3, 0 OOOOO ) 1 BE  7 : Q =   1.587 MeV      5   4  55   8  QINU =  0.000 MeV
+   9    3 HE  4 ( 0 OOOOO, 0 OOOOO ) 1 C  12 : Q =   7.275 MeV      5  55  55  13  QINU =  0.000 MeV
+  10    1 LI  6 ( 1 PROT , 0 OOOOO ) 1 BE  7 : Q =   5.606 MeV      6   2  55   8  QINU =  0.000 MeV
+  11    1 LI  6 ( 1 PROT , 1 HE  3 ) 1 HE  4 : Q =   4.019 MeV      6   2   4   5  QINU =  0.000 MeV
+  12    1 LI  7 ( 1 PROT , 1 HE  4 ) 1 HE  4 : Q =  17.347 MeV      7   2   5   5  QINU =  0.000 MeV
+  13    1 LI  7 ( 1 DEUT , 1 NEUT  ) 2 HE  4 : Q =  15.123 MeV      7   3   1   5  QINU =  0.000 MeV
+  14    1 BE  7 ( 0 OOOOO, 0 OOOOO ) 1 LI  7 : Q =   0.861 MeV      8  55  55   7  QINU =  0.861 MeV
+  15    1 BE  7 ( 1 PROT , 0 OOOOO ) 1 B   8 : Q =   0.137 MeV      8   2  55   9  QINU =  0.000 MeV
+  16    1 BE  7 ( 1 DEUT , 1 PROT  ) 2 HE  4 : Q =  16.766 MeV      8   3   2   5  QINU =  0.000 MeV
+  17    1 B   8 ( 0 OOOOO, 0 OOOOO ) 2 HE  4 : Q =  18.071 MeV      9  55  55   5  QINU =  8.662 MeV
+  18    1 BE  9 ( 1 PROT , 0 OOOOO ) 1 B  10 : Q =   6.586 MeV     10   2  55  11  QINU =  0.000 MeV
+  19    1 BE  9 ( 1 PROT , 1 DEUT  ) 2 HE  4 : Q =   0.651 MeV     10   2   3   5  QINU =  0.000 MeV
+  20    1 BE  9 ( 1 PROT , 1 HE  4 ) 1 LI  6 : Q =   2.126 MeV     10   2   5   6  QINU =  0.000 MeV
+  21    1 B  10 ( 1 PROT , 1 HE  4 ) 1 BE  7 : Q =   1.146 MeV     11   2   5   8  QINU =  0.000 MeV
+  22    1 B  10 ( 1 PROT , 0 OOOOO ) 1 C  11 : Q =  10.672 MeV     11   2  55  -1  QINU =  0.582 MeV
+  23    1 B  11 ( 1 PROT , 0 OOOOO ) 1 C  12 : Q =  15.957 MeV     12   2  55  13  QINU =  0.000 MeV
+  24    1 B  11 ( 1 PROT , 1 HE  4 ) 2 HE  4 : Q =   8.682 MeV     12   2   5   5  QINU =  0.000 MeV
+  25    1 B  11 ( 1 HE  4, 1 PROT  ) 1 C  14 : Q =   0.784 MeV     12   5   2  16  QINU =  0.000 MeV
+  26    1 C  12 ( 1 NEUT , 0 OOOOO ) 1 C  13 : Q =   4.946 MeV     13   1  55  14  QINU =  0.000 MeV
+  27    1 C  12 ( 1 PROT , 0 OOOOO ) 1 N  13 : Q =   1.944 MeV     13   2  55  15  QINU =  0.000 MeV
+  28    1 C  12 ( 1 HE  4, 0 OOOOO ) 1 O  16 : Q =   7.162 MeV     13   5  55  20  QINU =  0.000 MeV
+  29    2 C  12 ( 0 OOOOO, 1 HE  4 ) 1 NE 20 : Q =   4.617 MeV     13  55   5  26  QINU =  0.000 MeV
+  30    2 C  12 ( 0 OOOOO, 1 PROT  ) 1 NA 23 : Q =   2.240 MeV     13  55   2  31  QINU =  0.000 MeV
+  31    1 C  13 ( 1 NEUT , 0 OOOOO ) 1 C  14 : Q =   8.176 MeV     14   1  55  16  QINU =  0.000 MeV
+  32    1 C  13 ( 1 PROT , 0 OOOOO ) 1 N  14 : Q =   7.551 MeV     14   2  55  17  QINU =  0.000 MeV
+  33    1 C  13 ( 1 HE  4, 1 NEUT  ) 1 O  16 : Q =   2.216 MeV     14   5   1  20  QINU =  0.000 MeV
+  34    1 N  13 ( 0 OOOOO, 0 OOOOO ) 1 C  13 : Q =   2.220 MeV     15  55  55  14  QINU =  0.712 MeV
+  35    1 N  13 ( 1 NEUT , 1 PROT  ) 1 C  13 : Q =   3.002 MeV     15   1   2  14  QINU =  0.000 MeV
+  36    1 N  13 ( 1 PROT , 0 OOOOO ) 1 O  14 : Q =   9.771 MeV     15   2  55  -1  QINU =  2.222 MeV
+  37    1 C  14 ( 1 NEUT , 0 OOOOO ) 1 N  15 : Q =  10.990 MeV     16   1  55  18  QINU =  5.064 MeV
+  38    1 C  14 ( 1 PROT , 0 OOOOO ) 1 N  15 : Q =  10.208 MeV     16   2  55  18  QINU =  0.000 MeV
+  39    1 C  14 ( 1 PROT , 1 NEUT  ) 1 N  14 : Q =  -0.625 MeV     16   2   1  17  QINU =  0.000 MeV
+  40    1 C  14 ( 1 PROT , 1 HE  4 ) 1 B  11 : Q =  -0.784 MeV     16   2   5  12  QINU =  0.000 MeV
+  41    1 C  14 ( 1 HE  4, 1 NEUT  ) 1 O  17 : Q =  -1.817 MeV     16   5   1  21  QINU =  0.000 MeV
+  42    1 C  14 ( 1 HE  4, 0 OOOOO ) 1 O  18 : Q =   6.227 MeV     16   5  55  22  QINU =  0.000 MeV
+  43    1 N  14 ( 1 NEUT , 0 OOOOO ) 1 N  15 : Q =  10.833 MeV     17   1  55  18  QINU =  0.000 MeV
+  44    1 N  14 ( 1 NEUT , 1 PROT  ) 1 C  14 : Q =   0.625 MeV     17   1   2  16  QINU =  0.000 MeV
+  45    1 N  14 ( 1 PROT , 0 OOOOO ) 1 O  15 : Q =   7.297 MeV     17   2  55  19  QINU =  0.000 MeV
+  46    1 N  14 ( 1 HE  4, 0 OOOOO ) 1 F  18 : Q =   4.415 MeV     17   5  55  23  QINU =  0.000 MeV
+  47    1 N  15 ( 1 NEUT , 0 OOOOO ) 1 O  16 : Q =  12.909 MeV     18   1  55  20  QINU =  5.388 MeV
+  48    1 N  15 ( 1 PROT , 1 HE  4 ) 1 C  12 : Q =   4.965 MeV     18   2   5  13  QINU =  0.000 MeV
+  49    1 N  15 ( 1 PROT , 0 OOOOO ) 1 O  16 : Q =  12.127 MeV     18   2  55  20  QINU =  0.000 MeV
+  50    1 N  15 ( 1 HE  4, 0 OOOOO ) 1 F  19 : Q =   4.013 MeV     18   5  55  24  QINU =  0.000 MeV
+  51    1 O  15 ( 0 OOOOO, 0 OOOOO ) 1 N  15 : Q =   2.754 MeV     19  55  55  18  QINU =  0.997 MeV
+  52    1 O  15 ( 1 NEUT , 1 HE  4 ) 1 C  12 : Q =   8.501 MeV     19   1   5  13  QINU =  0.000 MeV
+  53    1 O  15 ( 1 NEUT , 1 PROT  ) 1 N  15 : Q =   3.536 MeV     19   1   2  18  QINU =  0.000 MeV
+  54    1 O  16 ( 1 NEUT , 0 OOOOO ) 1 O  17 : Q =   4.143 MeV     20   1  55  21  QINU =  0.000 MeV
+  55    1 O  16 ( 1 PROT , 0 OOOOO ) 1 F  17 : Q =   3.361 MeV     20   2  55  -1  QINU =  1.000 MeV
+  56    1 O  16 ( 1 HE  4, 0 OOOOO ) 1 NE 20 : Q =   4.730 MeV     20   5  55  26  QINU =  0.000 MeV
+  57    2 O  16 ( 0 OOOOO, 1 PROT  ) 1 P  31 : Q =   7.678 MeV     20  55   2  44  QINU =  0.000 MeV
+  58    2 O  16 ( 0 OOOOO, 1 HE  4 ) 1 SI 28 : Q =   9.594 MeV     20  55   5  41  QINU =  0.000 MeV
+  59    1 O  17 ( 1 NEUT , 1 HE  4 ) 1 C  14 : Q =   1.817 MeV     21   1   5  16  QINU =  0.000 MeV
+  60    1 O  17 ( 1 NEUT , 0 OOOOO ) 1 O  18 : Q =   8.044 MeV     21   1  55  22  QINU =  0.000 MeV
+  61    1 O  17 ( 1 PROT , 0 OOOOO ) 1 F  18 : Q =   5.607 MeV     21   2  55  23  QINU =  0.000 MeV
+  62    1 O  17 ( 1 PROT , 1 HE  4 ) 1 N  14 : Q =   1.192 MeV     21   2   5  17  QINU =  0.000 MeV
+  63    1 O  17 ( 1 HE  4, 1 NEUT  ) 1 NE 20 : Q =   0.587 MeV     21   5   1  26  QINU =  0.000 MeV
+  64    1 O  17 ( 1 HE  4, 0 OOOOO ) 1 NE 21 : Q =   7.348 MeV     21   5  55  27  QINU =  0.000 MeV
+  65    1 O  18 ( 1 NEUT , 0 OOOOO ) 1 F  19 : Q =   8.776 MeV     22   1  55  24  QINU =  2.576 MeV
+  66    1 O  18 ( 1 PROT , 0 OOOOO ) 1 F  19 : Q =   7.994 MeV     22   2  55  24  QINU =  0.000 MeV
+  67    1 O  18 ( 1 PROT , 1 HE  4 ) 1 N  15 : Q =   3.981 MeV     22   2   5  18  QINU =  0.000 MeV
+  68    1 O  18 ( 1 HE  4, 0 OOOOO ) 1 NE 22 : Q =   9.667 MeV     22   5  55  28  QINU =  0.000 MeV
+  69    1 O  18 ( 1 HE  4, 1 NEUT  ) 1 NE 21 : Q =  -0.696 MeV     22   5   1  27  QINU =  0.000 MeV
+  70    1 F  18 ( 0 OOOOO, 0 OOOOO ) 1 O  18 : Q =   1.655 MeV     23  55  55  22  QINU =  0.397 MeV
+  71    1 F  18 ( 1 NEUT , 1 PROT  ) 1 O  18 : Q =   2.437 MeV     23   1   2  22  QINU =  0.000 MeV
+  72    1 F  18 ( 1 NEUT , 1 HE  4 ) 1 N  15 : Q =   6.418 MeV     23   1   5  18  QINU =  0.000 MeV
+  73    1 F  18 ( 1 HE  4, 1 PROT  ) 1 NE 21 : Q =   1.741 MeV     23   5   2  27  QINU =  0.000 MeV
+  74    1 F  19 ( 1 NEUT , 0 OOOOO ) 1 NE 20 : Q =  13.626 MeV     24   1  55  26  QINU =  3.685 MeV
+  75    1 F  19 ( 1 PROT , 0 OOOOO ) 1 NE 20 : Q =  12.844 MeV     24   2  55  26  QINU =  0.000 MeV
+  76    1 F  19 ( 1 PROT , 1 HE  4 ) 1 O  16 : Q =   8.114 MeV     24   2   5  20  QINU =  0.000 MeV
+  77    1 F  19 ( 1 HE  4, 1 PROT  ) 1 NE 22 : Q =   1.673 MeV     24   5   2  28  QINU =  0.000 MeV
+  78    1 NE 20 ( 1 NEUT , 0 OOOOO ) 1 NE 21 : Q =   6.761 MeV     26   1  55  27  QINU =  0.000 MeV
+  79    1 NE 20 ( 1 PROT , 0 OOOOO ) 1 NA 21 : Q =   5.979 MeV     26   2  55  -1  QINU =  1.409 MeV
+  80    1 NE 20 ( 0 OOOOO, 1 HE  4 ) 1 O  16 : Q =  -4.730 MeV     26  55   5  20  QINU =  0.000 MeV
+  81    1 NE 20 ( 1 HE  4, 0 OOOOO ) 1 MG 24 : Q =   9.316 MeV     26   5  55  33  QINU =  0.000 MeV
+  82    1 NE 20 ( 1 HE  4, 1 PROT  ) 1 NA 23 : Q =  -2.377 MeV     26   5   2  31  QINU =  0.000 MeV
+  83    1 NE 21 ( 1 NEUT , 0 OOOOO ) 1 NE 22 : Q =  10.363 MeV     27   1  55  28  QINU =  0.000 MeV
+  84    1 NE 21 ( 1 NEUT , 1 HE  4 ) 1 O  18 : Q =   0.696 MeV     27   1   5  22  QINU =  0.000 MeV
+  85    1 NE 21 ( 1 PROT , 0 OOOOO ) 1 NA 22 : Q =   6.739 MeV     27   2  55  29  QINU =  0.000 MeV
+  86    1 NE 21 ( 1 HE  4, 0 OOOOO ) 1 MG 25 : Q =   9.886 MeV     27   5  55  35  QINU =  0.000 MeV
+  87    1 NE 21 ( 1 HE  4, 1 NEUT  ) 1 MG 24 : Q =   2.555 MeV     27   5   1  33  QINU =  0.000 MeV
+  88    1 NE 22 ( 1 NEUT , 0 OOOOO ) 1 NA 23 : Q =   9.576 MeV     28   1  55  31  QINU =  2.350 MeV
+  89    1 NE 22 ( 1 PROT , 0 OOOOO ) 1 NA 23 : Q =   8.794 MeV     28   2  55  31  QINU =  0.000 MeV
+  90    1 NE 22 ( 1 HE  4, 1 NEUT  ) 1 MG 25 : Q =  -0.477 MeV     28   5   1  35  QINU =  0.000 MeV
+  91    1 NE 22 ( 1 HE  4, 0 OOOOO ) 1 MG 26 : Q =  10.615 MeV     28   5  55  36  QINU =  0.000 MeV
+  92    1 NA 22 ( 0 OOOOO, 0 OOOOO ) 1 NE 22 : Q =   2.842 MeV     29  55  55  28  QINU =  1.043 MeV
+  93    1 NA 22 ( 1 NEUT , 0 OOOOO ) 1 NA 23 : Q =  12.418 MeV     29   1  55  31  QINU =  0.000 MeV
+  94    1 NA 22 ( 1 NEUT , 1 PROT  ) 1 NE 22 : Q =   3.624 MeV     29   1   2  28  QINU =  0.000 MeV
+  95    1 NA 22 ( 1 PROT , 0 OOOOO ) 1 MG 23 : Q =  11.636 MeV     29   2  55  -1  QINU =  1.669 MeV
+  96    1 NA 23 ( 1 NEUT , 0 OOOOO ) 1 MG 24 : Q =  12.475 MeV     31   1  55  33  QINU =  2.926 MeV
+  97    1 NA 23 ( 1 PROT , 1 HE  4 ) 1 NE 20 : Q =   2.377 MeV     31   2   5  26  QINU =  0.000 MeV
+  98    1 NA 23 ( 1 PROT , 0 OOOOO ) 1 MG 24 : Q =  11.693 MeV     31   2  55  33  QINU =  0.000 MeV
+  99    1 NA 23 ( 1 HE  4, 1 PROT  ) 1 MG 26 : Q =   1.821 MeV     31   5   2  36  QINU =  0.000 MeV
+ 100    1 MG 24 ( 1 NEUT , 0 OOOOO ) 1 MG 25 : Q =   7.331 MeV     33   1  55  35  QINU =  0.000 MeV
+ 101    1 MG 24 ( 1 PROT , 0 OOOOO ) 1 AL 25 : Q =   6.549 MeV     33   2  55  -1  QINU =  1.782 MeV
+ 102    1 MG 24 ( 1 HE  4, 1 PROT  ) 1 AL 27 : Q =  -1.600 MeV     33   5   2  40  QINU =  0.000 MeV
+ 103    1 MG 24 ( 1 HE  4, 0 OOOOO ) 1 SI 28 : Q =   9.985 MeV     33   5  55  41  QINU =  0.000 MeV
+ 104    1 MG 25 ( 1 NEUT , 0 OOOOO ) 1 MG 26 : Q =  11.092 MeV     35   1  55  36  QINU =  0.000 MeV
+ 105    1 MG 25 ( 1 PROT , 0 OOOOO ) 1 AL26m : Q =   6.078 MeV     35   2  55  -1  QINU =  0.000 MeV
+ 106    1 MG 25 ( 1 PROT , 0 OOOOO ) 1 AL26g : Q =   6.306 MeV     35   2  55  -1  QINU =  0.000 MeV
+ 107    1 MG 25 ( 1 HE  4, 1 PROT  ) 1 SI 28 : Q =   3.436 MeV     35   5   2  41  QINU =  2.485 MeV
+ 108    1 MG 25 ( 1 HE  4, 1 NEUT  ) 1 SI 28 : Q =   2.654 MeV     35   5   1  41  QINU =  0.000 MeV
+ 109    1 MG 25 ( 1 HE  4, 0 OOOOO ) 1 SI 29 : Q =  11.127 MeV     35   5  55  42  QINU =  0.000 MeV
+ 110    1 MG 26 ( 1 NEUT , 0 OOOOO ) 1 AL 27 : Q =   9.054 MeV     36   1  55  40  QINU =  1.452 MeV
+ 111    1 MG 26 ( 1 PROT , 0 OOOOO ) 1 AL 27 : Q =   8.272 MeV     36   2  55  40  QINU =  0.000 MeV
+ 112    1 MG 26 ( 1 HE  4, 0 OOOOO ) 1 SI 30 : Q =  10.644 MeV     36   5  55  43  QINU =  0.000 MeV
+ 113    1 MG 26 ( 1 HE  4, 1 PROT  ) 1 SI 29 : Q =   0.817 MeV     36   5   2  42  QINU =  1.998 MeV
+ 114    1 MG 26 ( 1 HE  4, 1 NEUT  ) 1 SI 29 : Q =   0.035 MeV     36   5   1  42  QINU =  0.000 MeV
+ 115    1 AL26m ( 0 OOOOO, 0 OOOOO ) 1 MG 26 : Q =   4.232 MeV     -1  55  55  36  QINU =  1.759 MeV
+ 116    1 AL26m ( 1 NEUT , 1 PROT  ) 1 MG 26 : Q =   5.014 MeV     -1   1   2  36  QINU =  0.000 MeV
+ 117    1 AL26m ( 1 NEUT , 1 HE  4 ) 1 NA 23 : Q =   3.193 MeV     -1   1   5  31  QINU =  0.000 MeV
+ 118    1 AL26m ( 1 NEUT , 0 OOOOO ) 1 AL 27 : Q =  13.286 MeV     -1   1  55  40  QINU =  0.000 MeV
+ 119    1 AL26m ( 1 PROT , 0 OOOOO ) 1 SI 27 : Q =  11.501 MeV     -1   2  55  -1  QINU =  1.543 MeV
+ 120    1 AL26g ( 0 OOOOO, 0 OOOOO ) 1 MG 26 : Q =   4.004 MeV     -1  55  55  36  QINU =  1.643 MeV
+ 121    1 AL26g ( 1 NEUT , 0 OOOOO ) 1 AL 27 : Q =  13.058 MeV     -1   1  55  40  QINU =  0.000 MeV
+ 122    1 AL26g ( 1 NEUT , 1 PROT  ) 1 MG 26 : Q =   4.786 MeV     -1   1   2  36  QINU =  0.000 MeV
+ 123    1 AL26g ( 1 NEUT , 1 HE  4 ) 1 NA 23 : Q =   2.965 MeV     -1   1   5  31  QINU =  0.000 MeV
+ 124    1 AL26g ( 1 PROT , 0 OOOOO ) 1 SI 27 : Q =  11.273 MeV     -1   2  55  -1  QINU =  1.543 MeV
+ 125    1 AL26g ( 0 OOOOO, 0 OOOOO ) 1 AL26m : Q =  -0.228 MeV     -1  55  55  -1  QINU =  0.000 MeV
+ 126    1 AL 27 ( 1 PROT , 0 OOOOO ) 1 SI 28 : Q =  11.585 MeV     40   2  55  41  QINU =  0.000 MeV
+ 127    1 AL 27 ( 1 PROT , 1 HE  4 ) 1 MG 24 : Q =   1.600 MeV     40   2   5  33  QINU =  0.000 MeV
+ 128    1 AL 27 ( 1 HE  4, 1 NEUT  ) 1 P  30 : Q =   1.590 MeV     40   5   1  -1  QINU =  1.759 MeV
+ 129    1 AL 27 ( 1 HE  4, 1 PROT  ) 1 SI 30 : Q =   2.372 MeV     40   5   2  43  QINU =  0.000 MeV
+ 130    1 SI 28 ( 1 NEUT , 0 OOOOO ) 1 SI 29 : Q =   8.473 MeV     41   1  55  42  QINU =  0.000 MeV
+ 131    1 SI 28 ( 1 PROT , 0 OOOOO ) 1 P  29 : Q =   7.691 MeV     41   2  55  -1  QINU =  2.120 MeV
+ 132    1 SI 28 ( 1 HE  4, 0 OOOOO ) 1 S  32 : Q =   6.948 MeV     41   5  55  45  QINU =  0.000 MeV
+ 133    1 SI 29 ( 1 NEUT , 0 OOOOO ) 1 SI 30 : Q =  10.609 MeV     42   1  55  43  QINU =  0.000 MeV
+ 134    1 SI 29 ( 1 PROT , 0 OOOOO ) 1 P  30 : Q =   9.827 MeV     42   2  55  -1  QINU =  1.759 MeV
+ 135    1 SI 30 ( 1 NEUT , 0 OOOOO ) 1 SI 31 : Q =   8.079 MeV     43   1  55  -1  QINU =  0.870 MeV
+ 136    1 SI 30 ( 1 PROT , 0 OOOOO ) 1 P  31 : Q =   7.297 MeV     43   2  55  44  QINU =  0.000 MeV
+ 137    1 P  31 ( 1 NEUT , 0 OOOOO ) 1 P  32 : Q =   9.646 MeV     44   1  55  -1  QINU =  0.986 MeV
+ 138    1 P  31 ( 1 PROT , 1 HE  4 ) 1 SI 28 : Q =   1.916 MeV     44   2   5  41  QINU =  0.000 MeV
+ 139    1 P  31 ( 1 PROT , 0 OOOOO ) 1 S  32 : Q =   8.864 MeV     44   2  55  45  QINU =  0.000 MeV
+ 140    1 S  32 ( 1 NEUT , 0 OOOOO ) 1 S  33 : Q =   8.641 MeV     45   1  55  46  QINU =  0.000 MeV
+ 141    1 S  32 ( 1 NEUT , 1 HE  4 ) 1 SI 29 : Q =   1.525 MeV     45   1   5  42  QINU =  0.000 MeV
+ 142    1 S  32 ( 1 PROT , 0 OOOOO ) 1 CL 33 : Q =   7.859 MeV     45   2  55  -1  QINU =  2.444 MeV
+ 143    1 S  33 ( 1 NEUT , 0 OOOOO ) 1 S  34 : Q =  11.417 MeV     46   1  55  47  QINU =  0.000 MeV
+ 144    1 S  33 ( 1 NEUT , 1 HE  4 ) 1 SI 30 : Q =   3.493 MeV     46   1   5  43  QINU =  0.000 MeV
+ 145    1 S  33 ( 1 PROT , 0 OOOOO ) 1 CL 34 : Q =  10.635 MeV     46   2  55  -1  QINU =  2.398 MeV
+ 146    1 S  34 ( 1 NEUT , 0 OOOOO ) 1 S  35 : Q =   6.985 MeV     47   1  55  48  QINU =  0.000 MeV
+ 147    1 S  34 ( 1 PROT , 0 OOOOO ) 1 CL 35 : Q =   6.371 MeV     47   2  55  49  QINU =  0.000 MeV
+ 148    1 S  35 ( 0 OOOOO, 0 OOOOO ) 1 CL 35 : Q =   0.168 MeV     48  55  55  49  QINU =  0.110 MeV
+ 149    1 S  35 ( 1 NEUT , 0 OOOOO ) 1 S  36 : Q =   9.889 MeV     48   1  55  50  QINU =  0.000 MeV
+ 150    1 S  35 ( 1 PROT , 0 OOOOO ) 1 CL 36 : Q =   7.965 MeV     48   2  55  51  QINU =  0.000 MeV
+ 151    1 CL 35 ( 1 NEUT , 0 OOOOO ) 1 CL 36 : Q =   8.579 MeV     49   1  55  51  QINU =  0.000 MeV
+ 152    1 CL 35 ( 1 PROT , 0 OOOOO ) 1 AR 36 : Q =   8.505 MeV     49   2  55  -1  QINU =  0.000 MeV
+ 153    1 S  36 ( 1 NEUT , 0 OOOOO ) 1 S  37 : Q =   9.169 MeV     50   1  55  -1  QINU =  2.598 MeV
+ 154    1 S  36 ( 1 PROT , 0 OOOOO ) 1 CL 37 : Q =   8.387 MeV     50   2  55  52  QINU =  0.000 MeV
+ 155    1 CL 36 ( 0 OOOOO, 0 OOOOO ) 1 AR 36 : Q =   0.708 MeV     51  55  55  -1  QINU =  0.440 MeV
+ 156    1 CL 36 ( 1 NEUT , 0 OOOOO ) 1 CL 37 : Q =  10.311 MeV     51   1  55  52  QINU =  0.000 MeV
+ 157    1 CL 36 ( 1 PROT , 0 OOOOO ) 1 AR 37 : Q =   9.529 MeV     51   2  55  -1  QINU =  0.814 MeV
+ 158    1 CL 37 ( 1 NEUT , 0 OOOOO ) 1 CL 38 : Q =  11.024 MeV     52   1  55  -1  QINU =  2.624 MeV
+ 159    1 CL 37 ( 1 PROT , 0 OOOOO ) 1 AR 38 : Q =  10.242 MeV     52   2  55  -1  QINU =  0.000 MeV
+
+nuclear network references:
+

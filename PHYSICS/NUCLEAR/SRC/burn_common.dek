@@ -1,0 +1,7 @@
+c..for communicating the thermodynamic state
+c..btemp     = temperature
+c..bden      = density
+
+      double precision btemp,bden
+      common /brnfxt1/ btemp,bden
+

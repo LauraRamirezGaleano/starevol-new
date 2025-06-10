@@ -1,0 +1,633 @@
+%!PS-Adobe-3.0
+%%BoundingBox: 54 72 535 761
+%%Creator: Mozilla (NetScape) HTML->PS
+%%DocumentData: Clean7Bit
+%%Orientation: Portrait
+%%Pages: 3
+%%PageOrder: Ascend
+%%Title: The Network Generator: Instructions
+%%EndComments
+%%BeginProlog
+[ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright
+ /parenleft /parenright /asterisk /plus /comma /hyphen /period /slash /zero /one
+ /two /three /four /five /six /seven /eight /nine /colon /semicolon
+ /less /equal /greater /question /at /A /B /C /D /E
+ /F /G /H /I /J /K /L /M /N /O
+ /P /Q /R /S /T /U /V /W /X /Y
+ /Z /bracketleft /backslash /bracketright /asciicircum /underscore /quoteleft /a /b /c
+ /d /e /f /g /h /i /j /k /l /m
+ /n /o /p /q /r /s /t /u /v /w
+ /x /y /z /braceleft /bar /braceright /asciitilde /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /space /exclamdown /cent /sterling /currency /yen /brokenbar /section /dieresis /copyright
+ /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron /degree /plusminus /twosuperior /threesuperior
+ /acute /mu /paragraph /periodcentered /cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf
+ /threequarters /questiondown /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+ /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis /Eth /Ntilde
+ /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply /Oslash /Ugrave /Uacute /Ucircumflex
+ /Udieresis /Yacute /Thorn /germandbls /agrave /aacute /acircumflex /atilde /adieresis /aring
+ /ae /ccedilla /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+ /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide /oslash /ugrave
+ /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis] /isolatin1encoding exch def
+/c { matrix currentmatrix currentpoint translate
+     3 1 roll scale newpath 0 0 1 0 360 arc setmatrix } bind def
+/F0
+    /Times-Roman findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/f0 { /F0 findfont exch scalefont setfont } bind def
+/F1
+    /Times-Bold findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/f1 { /F1 findfont exch scalefont setfont } bind def
+/F2
+    /Times-Italic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/f2 { /F2 findfont exch scalefont setfont } bind def
+/F3
+    /Times-BoldItalic findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/f3 { /F3 findfont exch scalefont setfont } bind def
+/F4
+    /Courier findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/f4 { /F4 findfont exch scalefont setfont } bind def
+/F5
+    /Courier-Bold findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/f5 { /F5 findfont exch scalefont setfont } bind def
+/F6
+    /Courier-Oblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/f6 { /F6 findfont exch scalefont setfont } bind def
+/F7
+    /Courier-BoldOblique findfont
+    dup length dict begin
+	{1 index /FID ne {def} {pop pop} ifelse} forall
+	/Encoding isolatin1encoding def
+    currentdict end
+definefont pop
+/f7 { /F7 findfont exch scalefont setfont } bind def
+/rhc {
+    {
+        currentfile read {
+	    dup 97 ge
+		{ 87 sub true exit }
+		{ dup 48 ge { 48 sub true exit } { pop } ifelse }
+	    ifelse
+	} {
+	    false
+	    exit
+	} ifelse
+    } loop
+} bind def
+
+/cvgray { % xtra_char npix cvgray - (string npix long)
+    dup string
+    0
+    {
+	rhc { cvr 4.784 mul } { exit } ifelse
+	rhc { cvr 9.392 mul } { exit } ifelse
+	rhc { cvr 1.824 mul } { exit } ifelse
+	add add cvi 3 copy put pop
+	1 add
+	dup 3 index ge { exit } if
+    } loop
+    pop
+    3 -1 roll 0 ne { rhc { pop } if } if
+    exch pop
+} bind def
+
+/smartimage12rgb { % w h b [matrix] smartimage12rgb -
+    /colorimage where {
+	pop
+	{ currentfile rowdata readhexstring pop }
+	false 3
+	colorimage
+    } {
+	exch pop 8 exch
+	3 index 12 mul 8 mod 0 ne { 1 } { 0 } ifelse
+	4 index
+	6 2 roll
+	{ 2 copy cvgray }
+	image
+	pop pop
+    } ifelse
+} def
+/cshow { dup stringwidth pop 2 div neg 0 rmoveto show } bind def
+/rshow { dup stringwidth pop neg 0 rmoveto show } bind def
+/BeginEPSF {
+  /b4_Inc_state save def
+  /dict_count countdictstack def
+  /op_count count 1 sub def
+  userdict begin
+  /showpage {} def
+  0 setgray 0 setlinecap 1 setlinewidth 0 setlinejoin
+  10 setmiterlimit [] 0 setdash newpath
+  /languagelevel where
+  { pop languagelevel 1 ne
+    { false setstrokeadjust false setoverprint } if
+  } if
+} bind def
+/EndEPSF {
+  count op_count sub {pop} repeat
+  countdictstack dict_count sub {end} repeat
+  b4_Inc_state restore
+} bind def
+%%EndProlog
+%%Page: 1 1
+%%BeginPageSetup
+/pagelevel save def
+54 0 translate
+%%EndPageSetup
+newpath 0 72 moveto 481 0 rlineto 0 689 rlineto -481 0 rlineto  closepath clip newpath
+0 754.4 moveto
+481 0 rlineto 0 -1.4 rlineto -481 0 rlineto closepath  fill 
+127.9 721.3 moveto
+14 f1
+(The Network Generator: Instructions) show
+178.7 694.3 moveto
+12 f0
+(Version 1: March 2, 1999) show
+74.5 681 moveto
+12 f0
+(For questions, remarks, suggestions: contact ajorisse%astro.ulb.ac.be) show
+0 671.9 moveto
+481 0 rlineto 0 -1.4 rlineto -481 0 rlineto closepath  fill 
+0 638.8 moveto
+14 f1
+(How to construct a network) show
+0 611.8 moveto
+12 f0
+(To construct a network, proceed along the following steps: ) show
+18.1 589.3 moveto
+3.3 3.3 c  fill 
+28 585.2 moveto
+12 f0
+(construct one reaction at a time by selecting the reacting nuclei in the available list. See ) show
+450.9 585.2 moveto
+12 f0
+(here) show
+28 571.9 moveto
+12 f0
+(the rules for coding the reactions. ) show
+18.1 562.7 moveto
+3.3 3.3 c  fill 
+28 558.6 moveto
+12 f0
+(Click on the button 'Add reaction to the network'. You will then see the network constructed) show
+28 545.3 moveto
+12 f0
+(so far. At this step, you have the possibility to remove the last reaction by clicking on the) show
+28 532 moveto
+12 f0
+(button 'Delete reaction from network'. ) show
+18.1 522.8 moveto
+3.3 3.3 c  fill 
+28 518.7 moveto
+12 f0
+(Once the network is complete, click on 'Compute reaction rates'. You will then be asked to) show
+28 505.4 moveto
+12 f0
+(fill in the minimum and maximum temperatures of the grid, as well as the number of grid) show
+28 492.1 moveto
+12 f0
+(points. ) show
+18.1 482.9 moveto
+3.3 3.3 c  fill 
+28 478.8 moveto
+12 f0
+(Click on the button 'Compute rates'. A table with the requested reaction rates appears,) show
+28 465.5 moveto
+12 f0
+(followed by the log file providing supplementary information, like the list of all available) show
+28 452.2 moveto
+12 f0
+(rates for a given reaction, the parameters used in the computation of the reverse factor \(in case) show
+28 438.9 moveto
+12 f0
+(the rate is computed from the rate of the reverse reaction\), the reason why Netgen failed to) show
+28 425.6 moveto
+12 f0
+(find the requested reaction in its libraries,...) show
+28 412.3 moveto
+12 f0
+(Note that lines containing non-numeric data are commented by a '#' to allow an easy) show
+28 399 moveto
+12 f0
+(interface with computer programs. ) show
+0 371.9 moveto
+12 f1
+(Rules for coding the network) show
+18.1 349.4 moveto
+3.3 3.3 c  fill 
+28 345.3 moveto
+12 f0
+(OOOOO stands for any non-baryonic particle \(i.e. gamma, neutrino, electron,...\) ) show
+18.1 336.1 moveto
+3.3 3.3 c  fill 
+28 332 moveto
+12 f0
+(Reactions with identical particles should be coded with the appropriate stoechiometric) show
+28 318.7 moveto
+12 f0
+(coefficient ) show
+18.1 309.5 moveto
+3.3 3.3 c  fill 
+28 305.4 moveto
+12 f0
+(As a rule, the most massive particle in the entrance channel is given first; in the exit channel,) show
+28 292.1 moveto
+12 f0
+(the most massive particle is given last ) show
+18.1 282.9 moveto
+3.3 3.3 c  fill 
+28 278.8 moveto
+12 f0
+(A few nuclei have separate entries for the ground and isomeric levels: these are 26Al, 85Kr,) show
+28 265.5 moveto
+12 f0
+(93Tc, 95Tc, 99Tc, 115In, 176Lu and 180Ta, since it may be that these nuclei are not) show
+28 252.2 moveto
+12 f0
+(thermalized at temperatures of astrophysical interest. Besides the usual entry \(with no further) show
+28 238.9 moveto
+12 f0
+(qualifier\) denoting the thermalized nucleus, two supplementary entries are available in the) show
+28 225.6 moveto
+12 f0
+(menu for Al, Kr, Tc, In, Lu and Ta: \(g\) corresponding to the ground state, and \(m\) to the) show
+28 212.3 moveto
+12 f0
+(isomeric state. ) show
+0 185.2 moveto
+12 f1
+(Bibliographic source code ) show
+0 158.6 moveto
+12 f0
+(For most reactions, different rates are proposed. These can be selected with 'bib index', according) show
+0 145.3 moveto
+12 f0
+(to the following rules:) show
+18.1 122.8 moveto
+3.3 3.3 c  fill 
+28 118.7 moveto
+12 f0
+(for reactions from NACRE:) show
+161.6 118.7 moveto
+12 f0
+( ) show
+46.1 109.5 moveto
+3.3 3.3 c  stroke 
+56 105.4 moveto
+12 f0
+(1 = nominal rate) show
+135 105.4 moveto
+12 f0
+( ) show
+46.1 96.2 moveto
+3.3 3.3 c  stroke 
+56 92.1 moveto
+12 f0
+(2 = lower limit) show
+127.7 92.1 moveto
+12 f0
+( ) show
+46.1 82.9 moveto
+3.3 3.3 c  stroke 
+56 78.8 moveto
+12 f0
+(3 = upper limit) show
+127.7 78.8 moveto
+12 f0
+( ) show
+pagelevel restore
+showpage
+%%Page: 2 2
+%%BeginPageSetup
+/pagelevel save def
+54 0 translate
+%%EndPageSetup
+newpath 0 72 moveto 481 0 rlineto 0 689 rlineto -481 0 rlineto  closepath clip newpath
+46.1 754.3 moveto
+3.3 3.3 c  stroke 
+56 750.2 moveto
+12 f0
+(10 = ) show
+80.7 750.2 moveto
+12 f0
+(Hauser-Feshbach) show
+164 750.2 moveto
+12 f0
+( \(if Z >= 8\)) show
+218.1 750.2 moveto
+12 f0
+( ) show
+46.1 741 moveto
+3.3 3.3 c  stroke 
+56 736.9 moveto
+12 f0
+(11 = most recent rate in use before NACRE \(generally CF88\)) show
+351.3 736.9 moveto
+12 f0
+( ) show
+46.1 727.7 moveto
+3.3 3.3 c  stroke 
+56 723.6 moveto
+12 f0
+(12 = second most recent rate in use before NACRE ) show
+46.1 714.4 moveto
+3.3 3.3 c  stroke 
+56 710.3 moveto
+12 f0
+(13 = etc..) show
+100.7 710.3 moveto
+12 f0
+( ) show
+46.1 701.1 moveto
+3.3 3.3 c  stroke 
+56 697 moveto
+12 f0
+(100 = forces the use of ) show
+168.7 697 moveto
+12 f0
+(Iliadis et al. table of proton-capture rates on 20 < A < 40 nuclei) show
+56 683.7 moveto
+12 f0
+(\(2001, ApJS 134, 151\), when available) show
+243.3 683.7 moveto
+12 f0
+( ) show
+18.1 661.2 moveto
+3.3 3.3 c  fill 
+28 657.1 moveto
+12 f0
+(for reactions not in NACRE:) show
+165.9 657.1 moveto
+12 f0
+( ) show
+46.1 647.9 moveto
+3.3 3.3 c  stroke 
+56 643.8 moveto
+12 f0
+(1 = most recent rate \(usually ) show
+196 643.8 moveto
+12 f0
+(Iliadis et al. 2000) show
+279.3 643.8 moveto
+12 f0
+( for proton-capture reactions\)) show
+420.2 643.8 moveto
+12 f0
+( ) show
+46.1 634.6 moveto
+3.3 3.3 c  stroke 
+56 630.5 moveto
+12 f0
+(10 = ) show
+80.7 630.5 moveto
+12 f0
+(Hauser-Feshbach) show
+164 630.5 moveto
+12 f0
+( \(if A > 8\)) show
+212.7 630.5 moveto
+12 f0
+( ) show
+46.1 621.3 moveto
+3.3 3.3 c  stroke 
+56 617.2 moveto
+12 f0
+(11 = most recent rate before Iliadis et al. \(usually CF88\)) show
+325.7 617.2 moveto
+12 f0
+( ) show
+46.1 608 moveto
+3.3 3.3 c  stroke 
+56 603.9 moveto
+12 f0
+(12 = second most recent rate etc.. \(as listed ) show
+265.7 603.9 moveto
+12 f0
+(here) show
+286.3 603.9 moveto
+12 f0
+(\)) show
+290.2 603.9 moveto
+12 f0
+( ) show
+46.1 594.7 moveto
+3.3 3.3 c  stroke 
+56 590.6 moveto
+12 f0
+(100 = forces the use of Iliadis et al. rate when available) show
+321.3 590.6 moveto
+12 f0
+( ) show
+46.1 581.4 moveto
+3.3 3.3 c  stroke 
+56 577.3 moveto
+12 f0
+(200 = forces the use of ) show
+168.7 577.3 moveto
+12 f0
+(Bao et al. table of radiative neutron-capture rates) show
+403.2 577.3 moveto
+12 f0
+( \(2000, Atomic) show
+56 564 moveto
+12 f0
+(Data and Nucl. Data Tables 75, 1\)) show
+219.9 564 moveto
+12 f0
+( ) show
+18.1 541.5 moveto
+3.3 3.3 c  fill 
+28 537.4 moveto
+12 f0
+(for weak-interaction rates:) show
+154.6 537.4 moveto
+12 f0
+( ) show
+46.1 528.2 moveto
+3.3 3.3 c  stroke 
+56 524.1 moveto
+12 f0
+(1 = nominal rate from Goriely \(1999, Astron. Astrophys. 342, 881; ) show
+380.4 524.1 moveto
+12 f0
+(Table available in) show
+56 510.8 moveto
+12 f0
+(electronic form) show
+129.6 510.8 moveto
+12 f0
+(\), updating Takahashi & Yokoi \(1987, Atomic Data Nucl. Data Tables) show
+56 497.5 moveto
+12 f0
+(36, 375\) table) show
+122.3 497.5 moveto
+12 f0
+( ) show
+46.1 488.3 moveto
+3.3 3.3 c  stroke 
+56 484.2 moveto
+12 f0
+(2 = low rate from Goriely \(1999\)) show
+214.7 484.2 moveto
+12 f0
+( ) show
+46.1 475 moveto
+3.3 3.3 c  stroke 
+56 470.9 moveto
+12 f0
+(3 = high rate from Goriely \(1999\)) show
+218 470.9 moveto
+12 f0
+( ) show
+46.1 461.7 moveto
+3.3 3.3 c  stroke 
+56 457.6 moveto
+12 f0
+(4 = forces the use of Takahashi & Yokoi \(1987, Atomic Data Nucl. Data Tables 36,) show
+56 444.3 moveto
+12 f0
+(375\) table) show
+104.3 444.3 moveto
+12 f0
+( ) show
+46.1 435.1 moveto
+3.3 3.3 c  stroke 
+56 431 moveto
+12 f0
+(300 = forces the use of Langanke & Martinez \(2000, Nucl.Phys. A 673, 481\) table ) show
+0 404.4 moveto
+12 f0
+(A list of available sources for a given reaction is provided in the log file coming with the reaction) show
+0 391.1 moveto
+12 f0
+(rates. For example:) show
+0 367.2 moveto
+10 f4
+(===============================================================================) show
+0 356.7 moveto
+10 f4
+(   168   1 NE 19 \( 1 PROT , 0 OOOOO\)  1 NA 20 ) show
+0 335.7 moveto
+10 f4
+( Number of rates available = 8) show
+0 314.7 moveto
+10 f4
+( #  Date    Reference ) show
+0 304.2 moveto
+10 f4
+( 1  120296  Omega_gamma\(447keV\) = 0 meV / Lower limit for the 3 higher r) show
+0 293.7 moveto
+10 f4
+(            esonances                                                   ) show
+0 283.2 moveto
+10 f4
+( 2  120296  Omega_gamma\(447keV\) = 18 meV \(LLN upper limit\) / Michotte et) show
+0 272.7 moveto
+10 f4
+(             al., 1996, Phys. Lett., B381, 402 Upper limit for the 3 hig) show
+0 262.2 moveto
+10 f4
+(            her resonances                                              ) show
+0 251.7 moveto
+10 f4
+( 3  290794  Omega_gamma\(447keV\) = 18 meV \(LLN\)/ Michotte et al., 1996, P) show
+0 241.2 moveto
+10 f4
+(            hys. Lett., B381, 402 + Other resonances from:  Smith M.S., ) show
+0 230.7 moveto
+10 f4
+(            Magnus P.V., Hahn K.I., Howard A.J., Parker P.D., Champagne ) show
+0 220.2 moveto
+10 f4
+(            A.E., Mao Z.Q., 1992, Nucl.Phys. A536, 333                  ) show
+0 209.7 moveto
+10 f4
+( 4  150993  Omega_gamma\(447keV\) = 7 meV / Smith M.S., Magnus P.V., Hahn ) show
+0 199.2 moveto
+10 f4
+(            K.I., Howard A.J., Parker P.D., Champagne A.E., Mao Z.Q., 19) show
+0 188.7 moveto
+10 f4
+(            92, Nucl.Phys. A536, 333                                    ) show
+0 178.2 moveto
+10 f4
+( 5  240493  Kubono S., Orihara H., Kato S., Kajino T., 1989,ApJ 344, 460) show
+0 167.7 moveto
+10 f4
+( 6       0  DESCOUVEMONT 1989 -- OBSOLETE                               ) show
+0 157.2 moveto
+10 f4
+( 7  240493  Langanke K., Wiescher M., Fowler W.A., Goerres J.,1986, ApJ ) show
+0 146.7 moveto
+10 f4
+(            301, 629                                                    ) show
+0 136.2 moveto
+10 f4
+( 8  250493  CF88                                                        ) show
+0 125.7 moveto
+10 f4
+(===============================================================================) show
+0 102 moveto
+12 f0
+(In the above list, the bib code is in the first column, the second column provides the date at which) show
+0 88.7 moveto
+12 f0
+(the corresponding rate became available in Netgen, and the third column provides the complete) show
+0 75.4 moveto
+12 f0
+(reference, with comments if appropriate. ) show
+pagelevel restore
+showpage
+%%Page: 3 3
+%%BeginPageSetup
+/pagelevel save def
+54 0 translate
+%%EndPageSetup
+newpath 0 72 moveto 481 0 rlineto 0 689 rlineto -481 0 rlineto  closepath clip newpath
+0 731.7 moveto
+18 f1
+(Back to the form) show
+129.4 731.7 moveto
+18 f1
+( ) show
+pagelevel restore
+showpage
+%%EOF

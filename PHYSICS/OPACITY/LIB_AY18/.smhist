@@ -1,0 +1,872 @@
+box
+kippen 11
+hrdselect2
+kippen 21
+box
+hrdselect2
+readi m0.8_zm1.75_mod_soldiff_ks66_rot2_metal_bis MOD_SOLDIFF_KS66_ROT2_METAL 0 0 24
+hrdselect2
+nn 21,24
+hrd
+z
+plot XH1
+box
+xlim 0 1e9
+plot XH1
+box
+erase
+vare
+hrdselect2
+Li
+hrdselect2
+nn 13
+defx t
+plot Hburn_Mt
+box
+ix &
+ix 1
+plot Hburn_Mt
+box
+nn 21
+plot Hburn_Mt
+box
+nn 21,24
+plot Hburn_Mt
+nn <1 2 11 12>
+plot Hburn_Mt
+evolelemsel
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+evolelemsel
+readi mod_soldiff_atmk_rot_new_good MOD_SOLDIFF_ATMK_ROT_NEW 0 42850 11
+evolelemsel
+hrdselect
+window 1 1 1 1
+hrdselect
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+hrdselect
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+hrdselect
+hrdselect2
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+hrdselect2
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+hrdselect2
+evolLiselect
+evolLiselect2
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+evolLiselect2
+period
+vare
+readi mod_soldiff_ks66_rot_nuadd5e4 MOD_SOLDIFF_KS66_ROT_nuadd5e4 0 0 15
+                readi mod_soldiff_ks66_rot2_nuadd5e4 MOD_SOLDIFF_KS66_ROT2_nuadd5e4 0 0 16
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+evolelemsel2
+evolelemsel
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+evolelemsel
+evolelemsel2
+vare
+reload 24
+vare
+hrdselect2
+window 1 1 1 1
+hrdselect2
+z
+evolelemsel2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega
+window 1 1 1 1
+profomega
+vars
+readclas
+readdiffu
+readrot
+readrot2
+profomega
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+readrot
+readrot2
+readpop2
+varstruc
+vars
+nn <21 31 41 51 61>
+vars
+nn <21 41 51 61>
+vars
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega2
+profomega
+profomega2
+defx Mr
+plot omega
+varstruc
+gos
+plot omega
+defx Mr
+plot omega
+vars
+plot omega
+plot omega_21
+set ome21 = (omega_21/(2*PI)*1e6)
+plot omega
+defx r
+erase
+plot PXO16
+box
+plot omega
+gos
+plot omega
+plot Omega
+plot omega
+erase
+profomega2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega2
+profomega
+profomega2
+dlconv 1
+hrdselect
+hrdselect2
+evolLiselect
+evolLiselect2
+period
+evolLiselect
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+reload 15
+goe
+reload 15
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+reload 15
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+period2
+gos
+goe
+evolelemsel
+evolelemsel2
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+evolelemsel2
+gos
+profomega
+window 1 1 1 1
+profomega
+profomega2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega2
+profLiselect
+profelemevol3
+profelemM3
+profelemM2
+profelemM1
+profomega2
+window 1 1 1 1
+profomega2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+profomega2
+goe
+evolLiselect
+ctype lightblue connect lt13 NLi13
+vare
+ctype lightblue connect lt15 NLi15
+reload 15
+ctype lightblue connect lt15 NLi15
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+evolLiselect
+ctype lightblue connect lt15 NLi15
+ctype lightblue connect lt13 NLi13
+ctype orange5 connect lt141 NLi14
+ctype orange5 connect lt14 NLi14
+ctype orange5 connect lt16 NLi16
+reload 16
+ctype magenta ltype 4 connect lt17 NLi17
+ctype orange5 connect lt16 NLi16
+vare
+goe
+readi mod_soldiff_ks66_rotsolide MOD_SOLDIFF_KS66_ROTSOLIDE 0 0 18
+                readi mod_soldiff_ks66_rot2solide MOD_SOLDIFF_KS66_ROT2SOLIDE  0 0 19
+nn <11 12 13 14 15 16 18 19>
+hrd
+box
+ctype 0
+hrd
+box
+z
+box
+defx t
+vare
+plot YHe4
+vare
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+period
+evolLiselect
+ctype lightblue connect lt18 NLi18
+ctype lime connect lt19 NLi19
+reload 16
+nn 16
+hrd
+ctype 0
+hrd
+z
+plot YHe4
+defx t
+plot YHe4
+vare
+plot XH1
+defx
+t
+plot XH1
+defx model
+plot XH1
+nn 15
+plot XH1
+nn 14
+plot XH1
+quit
+macro read "/Users/td23/SMONGO/macro2/Lecture_atm_rot.sm"
+readclas
+readstarevol
+readrotation
+readi mod_soldiff_atmk_rot_new_good MOD_SOLDIFF_ATMK_ROT_NEW 0 42850 11
+nn 16
+hrd
+plot YHe4
+defx t
+plot YHe4
+plot XH1
+readLA
+kippen 1
+box
+kippen 16
+kippen 12
+xlim 0 3e8
+kippen 12
+kippen 14
+kippen 11
+readpop2
+macro read "/Users/td23/SMONGO/macro2/Profil_atm_rot.sm"
+readclas
+readdiffu
+readrot
+readrot2
+readpop2
+goe
+period
+vare
+nn <11 12 13 14 15 16>
+compbouvier 01
+nn <11 17 13 14 15 16>
+compbouvier 01
+nn <11 12 13 14 15 16>
+vare
+nn <11 12 23 24>
+compbouvier 01
+vare
+add 18
+add 19
+compbouvier 01
+vare
+varevol
+plot Prot
+vare
+compbouvier 01
+hrdselect
+quit
+macro read "/Users/td23/SMONGO/macro2/Lecture_Li_rot_v3.sm"
+readi dkyle_chimie_good_K5e30_zgradmu_hydro2_nuadd3.5e4 DKYLE_CHIMIE2 0 0 12
+readi dkyle_chimie_good_K5e30_slowrot_zgradmu_hydro_nuadd3.5e4 DKYLE_CHIMIE_SLOWROT 0 0 11
+readnew
+evolLi
+readi m1p0_z0134_medn GRILLE_LOUIS 0 0 51
+set NLi51 = lg(YLi7_51/YH1_51/7)+12
+set lt51 = lg(t_51)
+ctype yellow connect lt51 NLi51
+ctype black connect lt51 NLi51
+c
+evolLi
+comp2bouvier
+vare
+nn 1,8
+comp2bouvier
+vare
+nn <4 12>
+comp2bouvier
+evolLi
+evolLibis2
+evolLi
+macro read "/Users/td23/SMONGO/macro2/Lecture_Li_rot_v3.sm"
+evolLi
+vare
+reload 8
+evolLi
+vare
+macro read "/Users/td23/SMONGO/macro2/Lecture_Li_rot_v3.sm"
+evolLi
+macro read "/Users/td23/SMONGO/macro2/Lecture_Li_rot_v3.sm"
+evolLi
+macro read "/Users/td23/SMONGO/macro2/Lecture_Li_rot_v3.sm"
+evolLi
+ctype cyan relocate 9.8 2.6 label Model AGSS09
+ctype cyan relocate 9.8 2.4 label Models AY18
+ctype cyan relocate 9.8 2.5 label Models AY18
+macro read "/Users/td23/SMONGO/macro2/Lecture_Li_rot_v3.sm"
+evolLi
+reload 8
+evolLi
+macro read "/Users/td23/SMONGO/macro2/Lecture_Li_rot_v3.sm"
+evolLi
+macro read "/Users/td23/SMONGO/macro2/Lecture_Li_rot_v3.sm"
+evolLi
+readi rot1_dturbul_nuadd3.5e4_K5e30_ay18 ROT1_DTURBUL 0 0 9
+ctype lithblue ltype 2 connect lt9 NLi9
+set NLi9 = ((lg(YLi7_9/YH1_9/7)+12)/3.23)*3.31
+set lt9 = lg(t_9)
+ctype lithblue ltype 2 connect lt9 NLi9
+ctype ligthblue ltype 2 connect lt9 NLi9
+ctype lightblue ltype 2 connect lt9 NLi9
+reload 8
+evolLi
+vare
+reload 8 reload 9
+readi rot1_solide_dkyle_K9.3e30_ay18 ROT_SOLIDE_DKYLE 0 0 10
+macro read "/Users/td23/SMONGO/macro2/Lecture_Li_rot_v3.sm"
+evolLi
+ctype redpurple connect lt9 NLi9
+vare
+ctype pink4 connect lt10 NLi10
+macro read "/Users/td23/SMONGO/macro2/visu_opa.sm"
+erase
+fig1
+cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+           data fort.705
+           lines 1 1
+           read { x 1 y 2 z 3}
+           lines 2 0
+           read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+           erase
+           ctype 0
+           limits t -9 8
+           box
+           ltype 0
+           ctype 0 connect t kr0
+           ctype red connect t kr1
+           ctype blue connect t kr2
+           ctype green2 connect t kr3
+           ctype magenta connect t kr4
+           ctype cyan connect t kr5
+           ctype orange3 connect t kr6
+           ctype merlot connect t kr7
+           toplabel Z = 0.01, X = 0.7 Y = 0.29, AGSS09
+           cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+           data fort.705
+           lines 1 1
+           read { x 1 y 2 z 3}
+           lines 2 0
+           read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+           #erase
+           ctype 0
+           limits t -9 8
+           #box
+           ltype 3
+           #lweight 3
+           ctype 0 connect t kr0
+           ctype red connect t kr1
+           ctype blue connect t kr2
+           ctype green2 connect t kr3
+           ctype magenta connect t kr4
+           ctype cyan connect t kr5
+           ctype orange3 connect t kr6
+           ctype merlot connect t kr7
+           toplabel Z = 0.01, X = 0.7 Y = 0.29, AY18
+macro read "/Users/td23/SMONGO/macro2/visu_opa.sm"
+fig2
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t dkr0
+        ctype 0 connect t dkr0
+        ctype red connect t dkr1
+        ctype blue connect t dkr2
+        ctype green2 connect t dkr3
+        ctype magenta connect t dkr4
+        ctype cyan connect t dkr5
+        ctype orange3 connect t dkr6
+        ctype merlot connect t dkr7
+box
+macro read "/Users/td23/SMONGO/macro2/visu_opa.sm"
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t dkr0
+        box
+        ctype 0 connect t dkr0
+        ctype red connect t dkr1
+        ctype blue connect t dkr2
+        ctype green2 connect t dkr3
+        ctype magenta connect t dkr4
+        ctype cyan connect t dkr5
+        ctype orange3 connect t dkr6
+        ctype merlot connect t dkr7
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+toplabel Z = 0.01, X = 0.7 Y = 0.29
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t -1e-3 1e-3
+        box
+        ctype 0 connect t dkr0
+        ctype red connect t dkr1
+        ctype blue connect t dkr2
+        ctype green2 connect t dkr3
+        ctype magenta connect t dkr4
+        ctype cyan connect t dkr5
+        ctype orange3 connect t dkr6
+        ctype merlot connect t dkr7
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+        toplabel Z = 0.01, X = 0.7 Y = 0.29
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t dkr0
+        box
+        ctype 0 connect t dkr0
+        ctype red connect t dkr1
+        ctype blue connect t dkr2
+        ctype green2 connect t dkr3
+        ctype magenta connect t dkr4
+        ctype cyan connect t dkr5
+        ctype orange3 connect t dkr6
+        ctype merlot connect t dkr7
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+        toplabel Z = 0.01, X = 0.7 Y = 0.29
+c
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t dkr0
+        box
+        ctype 0 connect t -1e-2 1e-2
+        ctype red connect t dkr1
+        ctype blue connect t dkr2
+        ctype green2 connect t dkr3
+        ctype magenta connect t dkr4
+        ctype cyan connect t dkr5
+        ctype orange3 connect t dkr6
+        ctype merlot connect t dkr7
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+        toplabel Z = 0.01, X = 0.7 Y = 0.29
+erase
+cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+           data fort.705
+           lines 1 1
+           read { x 1 y 2 z 3}
+           lines 2 0
+           read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+           erase
+           ctype 0
+           limits t -9 8
+           box
+           ltype 0
+           ctype 0 connect t kr0
+           ctype red connect t kr1
+           ctype blue connect t kr2
+           ctype green2 connect t kr3
+           ctype magenta connect t kr4
+           ctype cyan connect t kr5
+           ctype orange3 connect t kr6
+           ctype merlot connect t kr7
+           toplabel Z = 0.01, X = 0.7 Y = 0.29, AGSS09
+           cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+           data fort.705
+           lines 1 1
+           read { x 1 y 2 z 3}
+           lines 2 0
+           read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+           #erase
+           ctype 0
+           limits t -9 8
+           #box
+           ltype 3
+           #lweight 3
+           ctype 0 connect t kr0
+           ctype red connect t kr1
+           ctype blue connect t kr2
+           ctype green2 connect t kr3
+           ctype magenta connect t kr4
+           ctype cyan connect t kr5
+           ctype orange3 connect t kr6
+           ctype merlot connect t kr7
+           toplabel Z = 0.01, X = 0.7 Y = 0.29, AY18
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t dkr0
+        box
+        ctype 0 connect t -1e-2 1e-2
+        ctype red connect t dkr1
+        ctype blue connect t dkr2
+        ctype green2 connect t dkr3
+        ctype magenta connect t dkr4
+        ctype cyan connect t dkr5
+        ctype orange3 connect t dkr6
+        ctype merlot connect t dkr7
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+        toplabel Z = 0.01, X = 0.7 Y = 0.29
+c
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t dkr0
+        box
+        ctype 0 connect t -5e-3 5e-3
+        ctype red connect t dkr1
+        ctype blue connect t dkr2
+        ctype green2 connect t dkr3
+        ctype magenta connect t dkr4
+        ctype cyan connect t dkr5
+        ctype orange3 connect t dkr6
+        ctype merlot connect t dkr7
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+        toplabel Z = 0.01, X = 0.7 Y = 0.29
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t -5e-3 5e-3
+        box
+        ctype 0 connect t dkr0
+        ctype red connect t dkr1
+        ctype blue connect t dkr2
+        ctype green2 connect t dkr3
+        ctype magenta connect t dkr4
+        ctype cyan connect t dkr5
+        ctype orange3 connect t dkr6
+        ctype merlot connect t dkr7
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+        toplabel Z = 0.01, X = 0.7 Y = 0.29
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t -5e-3 5e-3
+        box
+        ctype 0 connect t dkr0
+        relocate 9 4e-3 label log R = -9.0
+        ctype red connect t dkr1
+        relocate 9 3.5e-3 label log R = -8.5
+        ctype blue connect t dkr2
+        relocate 9 3e-3 label log R = -8.0
+        ctype green2 connect t dkr3
+        relocate 9 2.5e-3 label log R = -7.5
+        ctype magenta connect t dkr4
+        relocate 9 2e-3 label log R = -7.0
+        ctype cyan connect t dkr5
+        relocate 9 1.5e-3 label log R = -6.5
+        ctype orange3 connect t dkr6
+        relocate 9 1e-3 label log R = -6.0
+        ctype merlot connect t dkr7
+        relocate 9 0.5e-3 label log R = -5.5
+        ctype 0
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+        toplabel Z = 0.01, X = 0.7 Y = 0.29
+ctype 0
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t -5e-3 5e-3
+        box
+        ltype 0
+        ctype 0 connect t dkr0
+        relocate 9 4e-3 label log R = -9.0
+        ctype red connect t dkr1
+        relocate 9 3.5e-3 label log R = -8.5
+        ctype blue connect t dkr2
+        relocate 9 3e-3 label log R = -8.0
+        ctype green2 connect t dkr3
+        relocate 9 2.5e-3 label log R = -7.5
+        ctype magenta connect t dkr4
+        relocate 9 2e-3 label log R = -7.0
+        ctype cyan connect t dkr5
+        relocate 9 1.5e-3 label log R = -6.5
+        ctype orange3 connect t dkr6
+        relocate 9 1e-3 label log R = -6.0
+        ctype merlot connect t dkr7
+        relocate 9 0.5e-3 label log R = -5.5
+        ctype 0
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+        toplabel Z = 0.01, X = 0.7 Y = 0.29
+erase
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_09
+        data fort.705
+        lines 1 1
+        read { x 1 y 2 z 3}
+        lines 2 0
+        read {t 1 kr0 19 kr1 21 kr2 23 kr3 24 kr4 25 kr5 26 kr6 27 kr7 28}
+        cd /Users/td23/STAREVOL/EVOL/PHYSICS/OPACITY/LIB_AY18
+        data fort.705
+        lines 1 1
+        read { x2 1 y2 2 z2 3}
+        lines 2 0
+        read {t2 1 kr02 19 kr12 21 kr22 23 kr32 24 kr42 25 kr52 26 kr62 27 kr72 28}
+        set dkr0 = (kr0-kr02)/kr0
+        set dkr1 = (kr1-kr12)/kr1
+        set dkr2 = (kr2-kr22)/kr2
+        set dkr3 = (kr3-kr32)/kr3
+        set dkr4 = (kr4-kr42)/kr4
+        set dkr5 = (kr5-kr52)/kr5
+        set dkr6 = (kr6-kr62)/kr6
+        set dkr7 = (kr7-kr72)/kr7
+        limits t -5e-3 5e-3
+        box
+        ltype 0
+        ctype 0 connect t dkr0
+        relocate 9 4e-3 label log R = -9.0
+        ctype red connect t dkr1
+        relocate 9 3.5e-3 label log R = -8.5
+        ctype blue connect t dkr2
+        relocate 9 3e-3 label log R = -8.0
+        ctype green2 connect t dkr3
+        relocate 9 2.5e-3 label log R = -7.5
+        ctype magenta connect t dkr4
+        relocate 9 2e-3 label log R = -7.0
+        ctype cyan connect t dkr5
+        relocate 9 1.5e-3 label log R = -6.5
+        ctype orange3 connect t dkr6
+        relocate 9 1e-3 label log R = -6.0
+        ctype merlot connect t dkr7
+        relocate 9 0.5e-3 label log R = -5.5
+        ctype 0
+        xlabel log T
+        ylabel (kr_{A09}-kr_{Y18})/kr_{A09}
+        toplabel Z = 0.01, X = 0.7 Y = 0.29
+evolLi
+plot XH1
+vare
+nn 1,12
+plot XH1
+defx t
+plot XH1
+vare
+nn <1 4 5 6 8 9>
+plot XH1
+plot YHe4
+quit

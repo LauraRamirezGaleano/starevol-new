@@ -1,0 +1,19 @@
+  17    1 BE  7 ( 1 PROT , 0 OOOOO)  1 B   8 : Q =   0.136 MeV      8   2  55   9  QINU =  0.000 MeV
+  14    1 LI  7 ( 1 PROT , 1 HE  4)  1 HE  4 : Q =  17.346 MeV      7   2   5   5  QINU =  0.000 MeV
+  10    1 HE  4 ( 1 HE  3, 0 OOOOO)  1 BE  7 : Q =   1.587 MeV      5   4  55   8  QINU =  0.000 MeV
+  12    1 LI  6 ( 1 PROT , 0 OOOOO)  1 BE  7 : Q =   5.607 MeV      6   2  55   8  QINU =  0.000 MeV
+  15    1 LI  7 ( 1 DEUT , 1 NEUT )  2 HE  4 : Q =  15.122 MeV      7   3   1   5  QINU =  0.000 MeV
+  18    1 BE  7 ( 1 DEUT , 1 PROT )  2 HE  4 : Q =  16.766 MeV      8   3   2   5  QINU =  0.000 MeV
+  20    1 B   8 ( 0 OOOOO, 1 PROT )  1 BE  7 : Q =  -0.136 MeV      9  55   2   8  QINU =  0.000 MeV
+  24    1 B  10 ( 1 PROT , 1 HE  4)  1 BE  7 : Q =   1.146 MeV     11   2   5   8  QINU =  0.000 MeV
+
+nuclear network references:
+
+   17  Nacre reaction rates 280399  be7pg    (nominal)                                                                                                                            
+   14  Nacre reaction rates 280399  li7pa    (nominal)                                                                                                                            
+   10  Nacre reaction rates 280399  he3ag    (nominal)                                                                                                                            
+   12  Nacre reaction rates 280399  li6pg    (nominal)                                                                                                                            
+   15  CF88                                                                                                                                                                       
+   18  CF88                                                                                                                                                                       
+   20  Nacre reaction rates 280399  be7pg    (nominal)  REVERSE                                                                                                                   
+   24  Nacre reaction rates 280399  b10pa    (nominal)                                                                                                                            

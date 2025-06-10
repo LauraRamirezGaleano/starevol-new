@@ -1,0 +1,733 @@
+c..
+c..network common block declarations
+
+
+c..global sizes of the main storage
+c..abignet   = maximum size of the network = maximum numer of isotopes
+c..abigrat   = maximum number of reaction rates
+
+      integer          abignet,abigrat
+      parameter        (abignet   = 500,
+     1                  abigrat   = 6000)
+
+
+
+c..ionmax  = number of isotopes in the network
+c..neqs    = number of equations (ionmax + 3)
+c..nrat    = number of reaction rates in the network
+      integer          ionmax,neqs,nrat
+      common /netc1/   ionmax,neqs,nrat
+
+
+
+c..idnet   = integer identification of network is being used
+c..netname = name of the network 
+      integer          idnet
+      character*8      netname
+      common /netc2/   idnet,netname
+      integer          idaprox13,idaprox19,idtorch47,idtorch76,
+     1                 idtorch127,idtorch200,idtorch489,idpp123,idcno,
+     2                 idhotcno,idppcno,idwwrp,idpphotcno,
+     3                 idiso7,idachain,idalfa7,idtorchpp,
+     4                 idtorchcno,idbigbang,idtorchbb
+      parameter        (idaprox13  = 1, 
+     1                  idaprox19  = 2, 
+     4                  idachain   = 3,
+     3                  idiso7     = 4,
+     5                  idalfa7    = 5,
+     7                  idpp123    = 6,
+     8                  idcno      = 7,
+     9                  idhotcno   = 8,
+     &                  idwwrp     = 9,
+     1                  idppcno    = 10,
+     2                  idpphotcno = 11,
+     2                  idtorch47  = 12,
+     3                  idtorch76  = 13, 
+     4                  idtorch127 = 14,
+     5                  idtorch200 = 15,
+     6                  idtorch489 = 16)
+      parameter        (idtorchpp  = 17,
+     1                  idtorchcno = 18,
+     2                  idbigbang  = 19,
+     3                  idtorchbb  = 20)
+
+
+
+
+c..flags for turning on or off weak interactions and screening corrections 
+      integer          weak_on,screen_on
+      common /flagc1/  weak_on,screen_on
+
+
+
+
+c..logicals for the type of burning and storage for an 
+c..adiabatic expansion/compression
+c..
+c..one_step    = true means do the integration in one time step mode
+c..hydrostatic = true means do the integration in hydrostatic mode
+c..expansion   = true turns on the adiabatic mode
+c..self_heat   = true turns on the self_heat mode
+c..bbang       = true turns on the early universe mode 
+c..psi         = expansion (+1.0) or a compression (-1.0) for adiabatic mode
+c..den0        = initial density for the adiabatic mode
+c..temp0       = initial temperature for the adiabatic mode
+c..temp_stop   = final adiabatic temperature at which the run terminates
+c..iener       = pointer for the integrated energy equation
+c..itemp       = pointer for the temperature equation
+c..iden        = pointer for the density equation
+
+
+      logical          one_step,hydrostatic,expansion,self_heat,
+     1                 bbang
+      integer          iener,itemp,iden
+      double precision psi,den0,temp0,temp_stop
+      common /netadbt/ psi,den0,temp0,temp_stop,
+     1                 iener,itemp,iden,
+     2                 one_step,hydrostatic,expansion,self_heat,
+     3                 bbang
+
+
+
+
+c..logicals and storage for stopping the evolution if a chosen
+c..mass fraction drops below a certain value
+c..name_stop = name of isotope to stop on
+c..xmass_stop = mass fraction of name_stop at whick to halt
+c..id_stop    = the identification number of name_stop
+
+      character*4      name_stop
+      integer          id_stop
+      double precision xmass_stop
+      common /netnmst/ xmass_stop,id_stop,name_stop
+
+
+
+
+c..pointers and a logical for orienting the torch network in
+c..down-arrow mode which puts n,p,a at the end of the network or in
+c..up-arrow mode which puts n,p,a at the beginning of the network
+c..these are set in routine init_torch 
+
+      logical          downarrow
+      integer          ionbeg,ionend
+      common /netc3/   ionbeg,ionend,downarrow
+
+
+
+
+c..mass fractions, other composition variables
+c..xmass   = mass fractions
+c..ymass   = molar fractions
+c..ndens   = number densities
+c..aion    = number of nucleons
+c..zion    = number of protons
+c..nion    = number of neutrons
+c..bion    = binding energies
+c..wpart   = partition functions - statistical weights
+
+      double precision xmass(abignet),ymass(abignet),
+     1                 aion(abignet),zion(abignet),
+     2                 nion(abignet),bion(abignet),wpart(abignet)
+      common /netc6a/  xmass,ymass,aion,zion,nion,bion,wpart
+
+
+
+
+
+c..the raw reaction rates, their screening factors and the reaction rates
+c..ratraw    = the unscreened reaction rates 
+c..dratrawdt = derivative of ratraw with temperature
+c..dratrawdd = derivative of ratraw with density
+c..scfac     = screening factors
+c..dscfacdt  = derivative of scfac with temperature
+c..dscfacdd  = derivative of scfac with density
+c..ratdum    = the screened reaction rates
+c..dratdumdt = derivative of ratdum with temperature
+c..dratdumdd = derivative of ratdum with density
+
+
+      double precision ratraw(abigrat),dratrawdt(abigrat),
+     1                 dratrawdd(abigrat),scfac(abigrat),
+     2                 dscfacdt(abigrat),dscfacdd(abigrat),
+     3                 ratdum(abigrat),dratdumdt(abigrat),
+     4                 dratdumdd(abigrat)
+
+      common /scc2b2/  ratraw,dratrawdt,
+     1                 dratrawdd,scfac,
+     2                 dscfacdt,dscfacdd,
+     3                 ratdum,dratdumdt,
+     4                 dratdumdd
+
+
+
+
+
+c..for tabular evaluation of the raw reaction rates
+c..allow storage for 120/points per decade
+c..logical use_tables for determing if tables are to be used
+
+      integer          nrattab,use_tables
+      parameter        (nrattab = 601) 
+      double precision rattab(abigrat,nrattab),
+     1                 drattabdt(abigrat,nrattab),
+     2                 drattabdd(abigrat,nrattab),
+     3                 ttab(nrattab),dtab(abigrat)
+      common /rcm2t/   rattab,drattabdt,drattabdd,
+     1                 ttab,dtab,use_tables
+
+
+
+
+
+c..names of the isotopes and reaction rates
+c..flonam  = name of the reaction sequence
+c..ratnam  = name of the reaction rate
+c..ionam   = name of the isotope in the network
+
+      character*16     flonam(abigrat)
+      character*16     ratnam(abigrat)
+      character*5      ionam(abignet)
+      common /netc4/   flonam,ratnam,ionam
+
+
+
+
+
+c..nuclear energy generation communication
+c..sdot      = total nuclear energy generation rate
+c..sneut     = total neutrino energy loss rate
+c..sneutpp   = neutrino losses from the ppchains
+c..sneutcno  = neutrino losses from the cno cycles
+c..spen      = neutrino losses from p=>n
+c..snep      = neutrino losses from n=>p
+c..snuw      = neutrino losses from weak reactions on heavy nuclei
+
+      double precision sdot,sneut,
+     1                 sneutpp,sneutcno,spen,snep,snuw
+      common /netc7/   sdot,sneut,
+     1                 sneutpp,sneutcno,spen,snep,snuw
+
+
+c..reaction flow communication
+      integer          nflowx
+      double precision flofor(abigrat),florev(abigrat),
+     1                 flonet(abigrat)
+      common  /netflo/ flofor,florev,flonet,nflowx
+
+
+
+
+
+c..for nice identification of key isotopes
+       integer   nisotp
+       parameter (nisotp=74) 
+       integer 
+     1      ih1,iprot,ineut,ihe4,ih2,ih3,ihe3,ili6,ili7,ibe7,
+     2      ibe9,ib8,ib10,ib11,ic11,ic12,ic13,ic14,in13,in14,
+     3      in15,io14,io15,io16,io17,io18,if17,if18,if19,ine18,
+     4      ine19,ine20,ine21,ine22,ina21,ina22,ina23,img22,img23,img24,
+     5      img25,img26,ial25,ial26,ial27,isi27,isi28,isi29,isi30,ip30,
+     6      ip31,is30,is31,is32,icl35,iar36,ik39,ica40,isc45,iti44,
+     7      iti48,iv51,icr48,icr52,imn55,ife52,ife54,ife56,ico59,ini56,
+     8      ini58,icu63,izn60,izn64
+
+      common /netc8/
+     1      ih1,iprot,ineut,ihe4,ih2,ih3,ihe3,ili6,ili7,ibe7,
+     2      ibe9,ib8,ib10,ib11,ic11,ic12,ic13,ic14,in13,in14,
+     3      in15,io14,io15,io16,io17,io18,if17,if18,if19,ine18,
+     4      ine19,ine20,ine21,ine22,ina21,ina22,ina23,img22,img23,img24,
+     5      img25,img26,ial25,ial26,ial27,isi27,isi28,isi29,isi30,ip30,
+     6      ip31,is30,is31,is32,icl35,iar36,ik39,ica40,isc45,iti44,
+     7      iti48,iv51,icr48,icr52,imn55,ife52,ife54,ife56,ico59,ini56,
+     8      ini58,icu63,izn60,izn64
+
+
+
+
+c..for easy aprox13 rate identification:
+      integer          ir3a,   irg3a,  ircag,  ir1212, ir1216, iroga, 
+     1                 iroag,  irnega, irneag, irmgga, irmgag, irsiga,
+     2                 irmgap, iralpa, iralpg, irsigp, irsiag, irsga,
+     3                 irsiap, irppa,  irppg,  irsgp,  irsag,  irarga,
+     4                 irsap,  irclpa, irclpg, irargp, irarag, ircaga,
+     5                 irarap, irkpa,  irkpg,  ircagp, ircaag, irtiga,
+     6                 ircaap, irscpa, irscpg, irtigp, irtiag, ircrga,
+     7                 irtiap, irvpa,  irvpg,  ircrgp, ircrag, irfega,
+     8                 ircrap, irmnpa, irmnpg, irfegp, irfeag, irniga,
+     9                 ir1616, iraan
+      common /netc12/  ir3a,   irg3a,  ircag,  ir1212, ir1216, iroga, 
+     1                 iroag,  irnega, irneag, irmgga, irmgag, irsiga,
+     2                 irmgap, iralpa, iralpg, irsigp, irsiag, irsga,
+     3                 irsiap, irppa,  irppg,  irsgp,  irsag,  irarga,
+     4                 irsap,  irclpa, irclpg, irargp, irarag, ircaga,
+     5                 irarap, irkpa,  irkpg,  ircagp, ircaag, irtiga,
+     6                 ircaap, irscpa, irscpg, irtigp, irtiag, ircrga,
+     7                 irtiap, irvpa,  irvpg,  ircrgp, ircrag, irfega,
+     8                 ircrap, irmnpa, irmnpg, irfegp, irfeag, irniga,
+     9                 ir1616, iraan
+
+
+
+c..add these rates for the aprox19 network
+      integer          irpp,   ir33,   ircpg,  irnpg,  iropg, 
+     1                 irnag,  irfeap, ircopa, ircopg, irnigp, irfepg, 
+     2                 ircogp, ir52ng, ir53gn, ir53ng, ir54gn, irheng,
+     3                 irhegn, irhng,  irhegp, irpen,
+     4                 irnep,  irn56ec,ifa,    ifg
+      common /netc13/  irpp,   ir33,   ircpg,  irnpg,  iropg, 
+     1                 irnag,  irfeap, ircopa, ircopg, irnigp, irfepg, 
+     2                 ircogp, ir52ng, ir53gn, ir53ng, ir54gn, irheng,
+     3                 irhegn, irhng,  irhegp, irpen,
+     4                 irnep,  irn56ec,ifa,    ifg
+
+
+
+c..add these rates for the pp123 network
+      integer          irbepg, irb8ep, irbeec
+      common /netc13a/ irbepg, irb8ep, irbeec
+
+
+
+c..add these rates for the cno networks
+      integer          irc12pg, irn13gp,  irn13enu, irc13pg,   irn14gp,  
+     1                 irn14pg, iro15gp,  iro15enu, irn15pa,   irc12ap, 
+     2                 irn15pg, iro16gp,  iro16pg,  irf17gp,   irf17enu,
+     3                 iro17pa, irn14ap,  iro17pg,  irf18gp,   irf18enu, 
+     4                 iro18pa, irn15ap,  iro18pg,  irf19gp,   irf19pa, 
+     5                 iro16ap, irn13pg,  iro14gp,  iro14enu,  iro14ap,
+     6                 irf17pa, irf17pg,  irne18gp, irne18enu, irf18pa,    
+     7                 iro15ap, irne18ap, iro15ag,  irne19pg,  irsi26ap
+      common /netc13b/ irc12pg, irn13gp,  irn13enu, irc13pg,   irn14gp,  
+     1                 irn14pg, iro15gp,  iro15enu, irn15pa,   irc12ap, 
+     2                 irn15pg, iro16gp,  iro16pg,  irf17gp,   irf17enu,
+     3                 iro17pa, irn14ap,  iro17pg,  irf18gp,   irf18enu, 
+     4                 iro18pa, irn15ap,  iro18pg,  irf19gp,   irf19pa, 
+     5                 iro16ap, irn13pg,  iro14gp,  iro14enu,  iro14ap,
+     6                 irf17pa, irf17pg,  irne18gp, irne18enu, irf18pa,    
+     7                 iro15ap, irne18ap, iro15ag,  irne19pg,  irsi26ap
+
+
+c..add these rates for the bigbang network
+      integer          irweakn,  irweakp,  irpng,   irdgn,    irdpn, 
+     1                 ir2pnp,   irdng,    irtgn,   irddp,    irtpd,
+     2                 irdpg,    irhe3gp,  irddn,   irhe3nd,  irtpn, 
+     3                 irhe3np,  irddg,    irhe4gd, irtpg,    irhe4gp,
+     4                 irtdn,    irhe4nd,  irtt2n,  irhe42nt, irhe3ng,
+     5                 irhe4gn,  irhe3dp,  irhe4pd, irhe3td,  irhe4dt,
+     6                 irhe3tnp, irhe4pnt, ir33inv, irhe4npg, irli6gpn,
+     7                 irhe4dg,  irli6gd,  irhe4tn, irli6nt,  irli6phe3,
+     8                 irhe4he3p,irhe4tg,  irli7gt, irli7pa,  ir2he4ga,
+     9                 irli7dn,  irli7t2n, irli7he3np, ir34,  ir34inv, 
+     &                 irli6pg,  irbe7gp,  irli7pn, irbe7np,  irbe7dp,
+     1                 irbe7tnp, irbe7he32p,irbe9pa,irli6ap,  irbe7pg, 
+     2                 irb8gp,   irli6ag,  irb10ga, irli7an,  irb10na,
+     3                 irbe9pg,  irb10gp,  irb10pa, irbe7ap,  irli7ag, 
+     4                 irb11ga,  irb11pa,  ir2he4ap,irbe7ag,  irc11ga, 
+     5                 irb11pn,  irc11np,  irb8ap,  irc11pa,  irb10pg,
+     6                 irc11gp,  irc11na,  irbe9an, irc12na,  irb11pg, 
+     7                 irc12gp,  irb11ap,  irc14pa, irli6ng,  irli7gn   
+
+
+      common /netc13d/ irweakn,  irweakp,  irpng,   irdgn,    irdpn, 
+     1                 ir2pnp,   irdng,    irtgn,   irddp,    irtpd,
+     2                 irdpg,    irhe3gp,  irddn,   irhe3nd,  irtpn, 
+     3                 irhe3np,  irddg,    irhe4gd, irtpg,    irhe4gp,
+     4                 irtdn,    irhe4nd,  irtt2n,  irhe42nt, irhe3ng,
+     5                 irhe4gn,  irhe3dp,  irhe4pd, irhe3td,  irhe4dt,
+     6                 irhe3tnp, irhe4pnt, ir33inv, irhe4npg, irli6gpn,
+     7                 irhe4dg,  irli6gd,  irhe4tn, irli6nt,  irli6phe3,
+     8                 irhe4he3p,irhe4tg,  irli7gt, irli7pa,  ir2he4ga,
+     9                 irli7dn,  irli7t2n, irli7he3np, ir34,  ir34inv, 
+     &                 irli6pg,  irbe7gp,  irli7pn, irbe7np,  irbe7dp,
+     1                 irbe7tnp, irbe7he32p,irbe9pa,irli6ap,  irbe7pg, 
+     2                 irb8gp,   irli6ag,  irb10ga, irli7an,  irb10na,
+     3                 irbe9pg,  irb10gp,  irb10pa, irbe7ap,  irli7ag, 
+     4                 irb11ga,  irb11pa,  ir2he4ap,irbe7ag,  irc11ga, 
+     5                 irb11pn,  irc11np,  irb8ap,  irc11pa,  irb10pg,
+     6                 irc11gp,  irc11na,  irbe9an, irc12na,  irb11pg, 
+     7                 irc12gp,  irb11ap,  irc14pa, irli6ng,  irli7gn    
+
+
+
+
+c..still for the bigbang
+      double precision eta1,xnnu,hubble,cmbtemp
+      common /netc13d/ eta1,xnnu,hubble,cmbtemp
+
+
+
+
+c..for electron capture on proton and positron capture on neutron reads
+c      double precision  rrpen(6,7),rrnep(6,7)
+c      common /rnepc1/   rrpen,rrnep
+
+
+
+
+c..for the ffn weak rates
+      integer          nfuldim
+c      parameter        (nfuldim = 190)
+      parameter        (nfuldim = 600)
+
+      double precision datful(5*nfuldim,6,7)
+      common /fulcom/  datful
+      double precision datfuleq(5*nfuldim*6*7)
+      equivalence      (datful,datfuleq)
+
+      integer          icode(nfuldim),nful,nfulnot
+      double precision qn(nfuldim),rectot,rpdtot,redtot,eectot,
+     1                 epdtot,eedtot,wrate
+      common /fuldat/  qn,rectot,rpdtot,redtot,eectot,epdtot,
+     2                 eedtot,wrate,icode,nful,nfulnot
+
+      double precision  recful(nfuldim),rpdful(nfuldim),
+     1                  redful(nfuldim),eec(nfuldim),eed(nfuldim)
+      common /fulrat/   recful,rpdful,redful,eec,eed
+
+
+
+
+c..for reading the strong and e&m rate coefficients
+      integer          cxdim
+      parameter        (cxdim=30000)
+      double precision cx(cxdim)
+      common  /strngc/ cx
+
+
+
+
+c..for the cross sections and rates
+c..sig   = strong & weak reaction rates
+c..signu = neutrino reaction rates
+      integer          ic1(10,abignet),ic2(10,abignet),nrr(7,abignet),
+     1                 nrrneut(7,abignet),ist(abignet),
+     2                 kmax,inetin
+      common /crsc1/   ic1,ic2,nrr,nrrneut,ist,kmax,inetin
+
+      double precision sigraw(14,abignet),sigrawdt(14,abignet),
+     1                 sigrawdd(14,abignet),sig(14,abignet),
+     2                 sigdt(14,abignet),sigdd(14,abignet),
+     3                 as(6*abignet),gs(6*abignet),
+     4                 signuc(4,abignet)
+      common /crsc2/   sigraw,sigrawdt,sigrawdd,sig,sigdt,sigdd,
+     1                 as,gs,signuc
+
+
+
+
+
+c..for setting the torch network
+c..this will cover 100 different entries, which should be plenty
+      integer          izzz(100),inmin(100),inmax(100)
+      common /zetc1/   izzz,inmin,inmax
+
+
+
+
+
+c..raw rates and their derivatives
+      double precision rpen_raw,rpendt_raw,rpendd_raw,
+     1                 rnep_raw,rnepdt_raw,rnepdd_raw,
+     2                 ra3_raw,ra3dt_raw,ra3dd_raw,
+     3                 ral_raw,raldt_raw,raldd_raw,
+     4                 rpp_raw,rppdt_raw,rppdd_raw,
+     5                 rpng_raw,rpngdt_raw,rpngdd_raw,
+     6                 rdgn_raw,rdgndt_raw,rdgndd_raw,
+     7                 rdpn_raw,rdpndt_raw,rdpndd_raw,
+     8                 r2pnp_raw,r2pnpdt_raw,r2pnpdd_raw,
+     9                 rddp_raw,rddpdt_raw,rddpdd_raw,
+     &                 rtpd_raw,rtpddt_raw,rtpddd_raw,
+     1                 rddg_raw,rddgdt_raw,rddgdd_raw,
+     2                 rhe4gd_raw,rhe4gddt_raw,rhe4gddd_raw,
+     3                 rddn_raw,rddndt_raw,rddndd_raw,
+     4                 rhe3nd_raw,rhe3nddt_raw,rhe3nddd_raw,
+     5                 rh3pg_raw,rh3pgdt_raw,rh3pgdd_raw,
+     6                 rhe4gp_raw,rhe4gpdt_raw,rhe4gpdd_raw
+
+      common /hnamc2/  rpen_raw,rpendt_raw,rpendd_raw,
+     1                 rnep_raw,rnepdt_raw,rnepdd_raw,
+     2                 ra3_raw,ra3dt_raw,ra3dd_raw,
+     3                 ral_raw,raldt_raw,raldd_raw,
+     4                 rpp_raw,rppdt_raw,rppdd_raw,
+     5                 rpng_raw,rpngdt_raw,rpngdd_raw,
+     6                 rdgn_raw,rdgndt_raw,rdgndd_raw,
+     7                 rdpn_raw,rdpndt_raw,rdpndd_raw,
+     8                 r2pnp_raw,r2pnpdt_raw,r2pnpdd_raw,
+     9                 rddp_raw,rddpdt_raw,rddpdd_raw,
+     &                 rtpd_raw,rtpddt_raw,rtpddd_raw,
+     1                 rddg_raw,rddgdt_raw,rddgdd_raw,
+     2                 rhe4gd_raw,rhe4gddt_raw,rhe4gddd_raw,
+     3                 rddn_raw,rddndt_raw,rddndd_raw,
+     4                 rhe3nd_raw,rhe3nddt_raw,rhe3nddd_raw,
+     5                 rh3pg_raw,rh3pgdt_raw,rh3pgdd_raw,
+     6                 rhe4gp_raw,rhe4gpdt_raw,rhe4gpdd_raw
+
+
+      double precision rtdn_raw,rtdndt_raw,rtdndd_raw,
+     1                 rhe4nd_raw,rhe4nddt_raw,rhe4nddd_raw,
+     2                 rli7t2n_raw,rli7t2ndt_raw,rli7t2ndd_raw,
+     3                 rtt2n_raw,rtt2ndt_raw,rtt2ndd_raw,
+     4                 rhe42nt_raw,rhe42ntdt_raw,rhe42ntdd_raw,
+     5                 rhe3ng_raw,rhe3ngdt_raw,rhe3ngdd_raw,
+     6                 rhe4gn_raw,rhe4gndt_raw,rhe4gndd_raw,
+     7                 r33_raw,r33dt_raw,r33dd_raw,
+     8                 r33inv_raw,r33invdt_raw,r33invdd_raw,
+     9                 rhe3dp_raw,rhe3dpdt_raw,rhe3dpdd_raw,
+     &                 rhe4pd_raw,rhe4pddt_raw,rhe4pddd_raw,
+     1                 rhe3td_raw,rhe3tddt_raw,rhe3tddd_raw,
+     2                 rhe4dt_raw,rhe4dtdt_raw,rhe4dtdd_raw,
+     3                 rhe3tnp_raw,rhe3tnpdt_raw,rhe3tnpdd_raw,
+     4                 rli7pag_raw,rli7pagdt_raw,rli7pagdd_raw,
+     5                 r2he4ga_raw,r2he4gadt_raw,r2he4gadd_raw,
+     6                 rli7dn_raw,rli7dndt_raw,rli7dndd_raw
+
+      common /hnamc2/  rtdn_raw,rtdndt_raw,rtdndd_raw,
+     1                 rhe4nd_raw,rhe4nddt_raw,rhe4nddd_raw,
+     2                 rli7t2n_raw,rli7t2ndt_raw,rli7t2ndd_raw,
+     3                 rtt2n_raw,rtt2ndt_raw,rtt2ndd_raw,
+     4                 rhe42nt_raw,rhe42ntdt_raw,rhe42ntdd_raw,
+     5                 rhe3ng_raw,rhe3ngdt_raw,rhe3ngdd_raw,
+     6                 rhe4gn_raw,rhe4gndt_raw,rhe4gndd_raw,
+     7                 r33_raw,r33dt_raw,r33dd_raw,
+     8                 r33inv_raw,r33invdt_raw,r33invdd_raw,
+     9                 rhe3dp_raw,rhe3dpdt_raw,rhe3dpdd_raw,
+     &                 rhe4pd_raw,rhe4pddt_raw,rhe4pddd_raw,
+     1                 rhe3td_raw,rhe3tddt_raw,rhe3tddd_raw,
+     2                 rhe4dt_raw,rhe4dtdt_raw,rhe4dtdd_raw,
+     3                 rhe3tnp_raw,rhe3tnpdt_raw,rhe3tnpdd_raw,
+     4                 rli7pag_raw,rli7pagdt_raw,rli7pagdd_raw,
+     5                 r2he4ga_raw,r2he4gadt_raw,r2he4gadd_raw,
+     6                 rli7dn_raw,rli7dndt_raw,rli7dndd_raw
+
+
+      double precision rli7he3np_raw,rli7he3npdt_raw,rli7he3npdd_raw,
+     1                 rbe7dp_raw,rbe7dpdt_raw,rbe7dpdd_raw,
+     2                 rbe7tnp_raw,rbe7tnpdt_raw,rbe7tnpdd_raw,
+     3                 rbe7he32p_raw,rbe7he32pdt_raw,rbe7he32pdd_raw,
+     4                 raan_raw,raandt_raw,raandd_raw,
+     5                 rgaan_raw,rgaandt_raw,rgaandd_raw,
+     6                 rbe9pd_raw,rbe9pddt_raw,rbe9pddd_raw,
+     7                 rb8ep_raw,rb8epdt_raw,rb8epdd_raw,
+     8                 rb11pa_raw,rb11padt_raw,rb11padd_raw,
+     9                 r3ap_raw,r3apdt_raw,r3apdd_raw,
+     &                 rc11na_raw,rc11nadt_raw,rc11nadd_raw
+
+      common /hnamc2/  rli7he3np_raw,rli7he3npdt_raw,rli7he3npdd_raw,
+     1                 rbe7dp_raw,rbe7dpdt_raw,rbe7dpdd_raw,
+     2                 rbe7tnp_raw,rbe7tnpdt_raw,rbe7tnpdd_raw,
+     3                 rbe7he32p_raw,rbe7he32pdt_raw,rbe7he32pdd_raw,
+     4                 raan_raw,raandt_raw,raandd_raw,
+     5                 rgaan_raw,rgaandt_raw,rgaandd_raw,
+     6                 rbe9pd_raw,rbe9pddt_raw,rbe9pddd_raw,
+     7                 rb8ep_raw,rb8epdt_raw,rb8epdd_raw,
+     8                 rb11pa_raw,rb11padt_raw,rb11padd_raw,
+     9                 r3ap_raw,r3apdt_raw,r3apdd_raw,
+     &                 rc11na_raw,rc11nadt_raw,rc11nadd_raw
+
+
+
+c..screened rates and their derivatives
+      double precision rpen,rpendt,rpendd,
+     1                 rnep,rnepdt,rnepdd,
+     2                 ra3,ra3dt,ra3dd,
+     3                 ral,raldt,raldd,
+     4                 rpp,rppdt,rppdd,
+     5                 rpng,rpngdt,rpngdd,
+     6                 rdgn,rdgndt,rdgndd,
+     7                 rdpn,rdpndt,rdpndd,
+     8                 r2pnp,r2pnpdt,r2pnpdd,
+     9                 rddp,rddpdt,rddpdd,
+     &                 rtpd,rtpddt,rtpddd,
+     1                 rddg,rddgdt,rddgdd,
+     2                 rhe4gd,rhe4gddt,rhe4gddd,
+     3                 rddn,rddndt,rddndd,
+     4                 rhe3nd,rhe3nddt,rhe3nddd,
+     5                 rh3pg,rh3pgdt,rh3pgdd,
+     6                 rhe4gp,rhe4gpdt,rhe4gpdd
+
+      common /scate2/  rpen,rpendt,rpendd,
+     1                 rnep,rnepdt,rnepdd,
+     2                 ra3,ra3dt,ra3dd,
+     3                 ral,raldt,raldd,
+     4                 rpp,rppdt,rppdd,
+     5                 rpng,rpngdt,rpngdd,
+     6                 rdgn,rdgndt,rdgndd,
+     7                 rdpn,rdpndt,rdpndd,
+     8                 r2pnp,r2pnpdt,r2pnpdd,
+     9                 rddp,rddpdt,rddpdd,
+     &                 rtpd,rtpddt,rtpddd,
+     1                 rddg,rddgdt,rddgdd,
+     2                 rhe4gd,rhe4gddt,rhe4gddd,
+     3                 rddn,rddndt,rddndd,
+     4                 rhe3nd,rhe3nddt,rhe3nddd,
+     5                 rh3pg,rh3pgdt,rh3pgdd,
+     6                 rhe4gp,rhe4gpdt,rhe4gpdd
+
+
+      double precision rtdn,rtdndt,rtdndd,
+     1                 rhe4nd,rhe4nddt,rhe4nddd,
+     2                 rli7t2n,rli7t2ndt,rli7t2ndd,
+     3                 rtt2n,rtt2ndt,rtt2ndd,
+     4                 rhe42nt,rhe42ntdt,rhe42ntdd,
+     5                 rhe3ng,rhe3ngdt,rhe3ngdd,
+     6                 rhe4gn,rhe4gndt,rhe4gndd,
+     7                 r33,r33dt,r33dd,
+     8                 r33inv,r33invdt,r33invdd,
+     9                 rhe3dp,rhe3dpdt,rhe3dpdd,
+     &                 rhe4pd,rhe4pddt,rhe4pddd,
+     1                 rhe3td,rhe3tddt,rhe3tddd,
+     2                 rhe4dt,rhe4dtdt,rhe4dtdd,
+     3                 rhe3tnp,rhe3tnpdt,rhe3tnpdd,
+     4                 rli7pag,rli7pagdt,rli7pagdd,
+     5                 r2he4ga,r2he4gadt,r2he4gadd,
+     6                 rli7dn,rli7dndt,rli7dndd
+
+      common /scate2/  rtdn,rtdndt,rtdndd,
+     1                 rhe4nd,rhe4nddt,rhe4nddd,
+     2                 rli7t2n,rli7t2ndt,rli7t2ndd,
+     3                 rtt2n,rtt2ndt,rtt2ndd,
+     4                 rhe42nt,rhe42ntdt,rhe42ntdd,
+     5                 rhe3ng,rhe3ngdt,rhe3ngdd,
+     6                 rhe4gn,rhe4gndt,rhe4gndd,
+     7                 r33,r33dt,r33dd,
+     8                 r33inv,r33invdt,r33invdd,
+     9                 rhe3dp,rhe3dpdt,rhe3dpdd,
+     &                 rhe4pd,rhe4pddt,rhe4pddd,
+     1                 rhe3td,rhe3tddt,rhe3tddd,
+     2                 rhe4dt,rhe4dtdt,rhe4dtdd,
+     3                 rhe3tnp,rhe3tnpdt,rhe3tnpdd,
+     4                 rli7pag,rli7pagdt,rli7pagdd,
+     5                 r2he4ga,r2he4gadt,r2he4gadd,
+     6                 rli7dn,rli7dndt,rli7dndd
+
+
+      double precision rli7he3np,rli7he3npdt,rli7he3npdd,
+     1                 rbe7dp,rbe7dpdt,rbe7dpdd,
+     2                 rbe7tnp,rbe7tnpdt,rbe7tnpdd,
+     3                 rbe7he32p,rbe7he32pdt,rbe7he32pdd,
+     4                 raan,raandt,raandd,
+     5                 rgaan,rgaandt,rgaandd,
+     6                 rbe9pd,rbe9pddt,rbe9pddd,
+     7                 rb8ep,rb8epdt,rb8epdd,
+     8                 rb11pa,rb11padt,rb11padd,
+     9                 r3ap,r3apdt,r3apdd,
+     &                 rc11na,rc11nadt,rc11nadd
+
+      common /scate2/  rli7he3np,rli7he3npdt,rli7he3npdd,
+     1                 rbe7dp,rbe7dpdt,rbe7dpdd,
+     2                 rbe7tnp,rbe7tnpdt,rbe7tnpdd,
+     3                 rbe7he32p,rbe7he32pdt,rbe7he32pdd,
+     4                 raan,raandt,raandd,
+     5                 rgaan,rgaandt,rgaandd,
+     6                 rbe9pd,rbe9pddt,rbe9pddd,
+     7                 rb8ep,rb8epdt,rb8epdd,
+     8                 rb11pa,rb11padt,rb11padd,
+     9                 r3ap,r3apdt,r3apdd,
+     &                 rc11na,rc11nadt,rc11nadd
+
+
+
+
+
+
+c..c12+c12 raw and screened
+      double precision r1212n_raw,r1212ndt_raw,r1212ndd_raw,
+     1                 rmg23nc_raw,rmg23ncdt_raw,rmg23ncdd_raw,    
+     2                 r1212p_raw,r1212pdt_raw,r1212pdd_raw,
+     3                 rna23pc_raw,rna23pcdt_raw,rna23pcdd_raw,
+     4                 r1212a_raw,r1212adt_raw,r1212add_raw,  
+     5                 rne20ac_raw,rne20acdt_raw,rne20acdd_raw,
+     6                 r1212p,r1212pdt,r1212pdd,
+     7                 rna23pc,rna23pcdt,rna23pcdd,
+     8                 r1212n,r1212ndt,r1212ndd,
+     9                 rmg23nc,rmg23ncdt,rmg23ncdd,    
+     &                 r1212a,r1212adt,r1212add,  
+     1                 rne20ac,rne20acdt,rne20acdd  
+
+      common /heavc1/  r1212n_raw,r1212ndt_raw,r1212ndd_raw,
+     1                 rmg23nc_raw,rmg23ncdt_raw,rmg23ncdd_raw,    
+     2                 r1212p_raw,r1212pdt_raw,r1212pdd_raw,
+     3                 rna23pc_raw,rna23pcdt_raw,rna23pcdd_raw,
+     4                 r1212a_raw,r1212adt_raw,r1212add_raw,  
+     5                 rne20ac_raw,rne20acdt_raw,rne20acdd_raw,
+     6                 r1212p,r1212pdt,r1212pdd,
+     7                 rna23pc,rna23pcdt,rna23pcdd,
+     8                 r1212n,r1212ndt,r1212ndd,
+     9                 rmg23nc,rmg23ncdt,rmg23ncdd,    
+     &                 r1212a,r1212adt,r1212add,  
+     1                 rne20ac,rne20acdt,rne20acdd  
+
+
+c..o16+o16 raw and screened
+      double precision r1616n_raw,r1616ndt_raw,r1616ndd_raw,
+     1                 rs31no_raw,rs31nodt_raw,rs31nodd_raw,    
+     2                 r1616p_raw,r1616pdt_raw,r1616pdd_raw,
+     3                 rp31po_raw,rp31podt_raw,rp31podd_raw,
+     4                 r1616a_raw,r1616adt_raw,r1616add_raw,  
+     5                 rsi28ao_raw,rsi28aodt_raw,rsi28aodd_raw,
+     6                 r1616d_raw,r1616ddt_raw,r1616ddd_raw,  
+     7                 rp30do_raw,rp30dodt_raw,rp30dodd_raw,
+     8                 r1616n,r1616ndt,r1616ndd,
+     9                 rs31no,rs31nodt,rs31nodd,    
+     &                 r1616p,r1616pdt,r1616pdd,
+     1                 rp31po,rp31podt,rp31podd,
+     2                 r1616a,r1616adt,r1616add,  
+     3                 rsi28ao,rsi28aodt,rsi28aodd,
+     4                 r1616d,r1616ddt,r1616ddd,  
+     5                 rp30do,rp30dodt,rp30dodd
+
+      common /heavc1/  r1616n_raw,r1616ndt_raw,r1616ndd_raw,
+     1                 rs31no_raw,rs31nodt_raw,rs31nodd_raw,    
+     2                 r1616p_raw,r1616pdt_raw,r1616pdd_raw,
+     3                 rp31po_raw,rp31podt_raw,rp31podd_raw,
+     4                 r1616a_raw,r1616adt_raw,r1616add_raw,  
+     5                 rsi28ao_raw,rsi28aodt_raw,rsi28aodd_raw,
+     6                 r1616d_raw,r1616ddt_raw,r1616ddd_raw,  
+     7                 rp30do_raw,rp30dodt_raw,rp30dodd_raw,
+     8                 r1616n,r1616ndt,r1616ndd,
+     9                 rs31no,rs31nodt,rs31nodd,    
+     &                 r1616p,r1616pdt,r1616pdd,
+     1                 rp31po,rp31podt,rp31podd,
+     2                 r1616a,r1616adt,r1616add,  
+     3                 rsi28ao,rsi28aodt,rsi28aodd,
+     4                 r1616d,r1616ddt,r1616ddd,  
+     5                 rp30do,rp30dodt,rp30dodd
+
+
+
+c..c12+o16 raw and screened
+      double precision r1216n_raw,r1216ndt_raw,r1216ndd_raw,
+     1                 rsi27no_raw,rsi27nodt_raw,rsi27nodd_raw,    
+     2                 r1216p_raw,r1216pdt_raw,r1216pdd_raw,
+     3                 ral27po_raw,ral27podt_raw,ral27podd_raw,
+     4                 r1216a_raw,r1216adt_raw,r1216add_raw,  
+     5                 rmg24ao_raw,rmg24aodt_raw,rmg24aodd_raw,
+     6                 r1216n,r1216ndt,r1216ndd,
+     7                 rsi27no,rsi27nodt,rsi27nodd,    
+     8                 r1216p,r1216pdt,r1216pdd,
+     9                 ral27po,ral27podt,ral27podd,
+     &                 r1216a,r1216adt,r1216add,  
+     1                 rmg24ao,rmg24aodt,rmg24aodd
+
+
+      common /heavc1/  r1216n_raw,r1216ndt_raw,r1216ndd_raw,
+     1                 rsi27no_raw,rsi27nodt_raw,rsi27nodd_raw,    
+     2                 r1216p_raw,r1216pdt_raw,r1216pdd_raw,
+     3                 ral27po_raw,ral27podt_raw,ral27podd_raw,
+     4                 r1216a_raw,r1216adt_raw,r1216add_raw,  
+     5                 rmg24ao_raw,rmg24aodt_raw,rmg24aodd_raw,
+     6                 r1216n,r1216ndt,r1216ndd,
+     7                 rsi27no,rsi27nodt,rsi27nodd,    
+     8                 r1216p,r1216pdt,r1216pdd,
+     9                 ral27po,ral27podt,ral27podd,
+     &                 r1216a,r1216adt,r1216add,  
+     1                 rmg24ao,rmg24aodt,rmg24aodd
+
+
+
+
+
+c..lets try having a work array that gets used whenever
+      double precision zwork1(abignet),crap,crapdt,crapdd
+      common /zworkc1/ zwork1,crap,crapdt,crapdd

@@ -1,0 +1,4072 @@
+ Flags:
+ 0:                            -> keep as it is   and lin spline
+ -1: <sigma>(n,g) -> * RHO * 7.7629e+04 * SQRT(T8) and lin spline
+ -12: (n,g) from SMOKER         -> * RHO           and lin spline
+ -11: photodissociation,beta-   -> keep as it is   and log spline
+ -13: electronic capture        -> * RHO / PME     and log spline
+ -14: electronic capture on Be7 -> * RHO / PME     and log spline
+      check that rate does not exceed 1.51E-07 at T9 < 0.001
+ 1,3,10,30:beta rho sensitive   -> interpolate rho and log spline
+ -10:                           -> * RHO           and log spline
+ -100: charged, identical       -> * RHO*RHO       and log spline
+ -200: charged, four particles  -> * RHO*RHO*RHO   and log spline
+ HAUSER-FESHBACH RATES ARE FROM Nucdat DIRECTORY
+================================================================================
+
+2 PROT  ( 0 OOOOO, 0 OOOOO)  1 DEUT  
+ Short-cut reaction...
+ Intermediate nucleus is HE  2 
+ Missing reaction is 2 H   1 ( OOOOO , OOOOO ) HE  2 
+
+
+     1   2 PROT  ( 0 OOOOO, 0 OOOOO)  1 DEUT  
+
+                      T9 =   0.002 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ppnu     (nominal)             
+ 2  280399  Nacre reaction rates 280399  ppnu     (low)                 
+ 3  280399  Nacre reaction rates 280399  ppnu     (high)                
+
+ Ref. # 1 selected for reaction ppnu     (nominal)                   
+===============================================================================
+     2   1 DEUT  ( 1 PROT , 0 OOOOO)  1 HE  3 
+
+                      T9 =   0.001 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  dpg      (nominal)             
+ 2  280399  Nacre reaction rates 280399  dpg      (low)                 
+ 3  280399  Nacre reaction rates 280399  dpg      (high)                
+
+ Ref. # 1 selected for reaction dpg      (nominal)                   
+===============================================================================
+     3   2 DEUT  ( 0 OOOOO, 0 OOOOO)  1 HE  4 
+
+                      T9 =   0.001 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ddg      (nominal)             
+ 2  280399  Nacre reaction rates 280399  ddg      (low)                 
+ 3  280399  Nacre reaction rates 280399  ddg      (high)                
+
+ Ref. # 1 selected for reaction ddg      (nominal)                   
+===============================================================================
+     4   2 DEUT  ( 0 OOOOO, 1 NEUT )  1 HE  3 
+
+                      T9 =   0.001 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ddn      (nominal)             
+ 2  280399  Nacre reaction rates 280399  ddn      (low)                 
+ 3  280399  Nacre reaction rates 280399  ddn      (high)                
+
+ Ref. # 1 selected for reaction ddn      (nominal)                   
+===============================================================================
+     5   1 HE  3 ( 1 DEUT , 1 PROT )  1 HE  4 
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+ 2  240493  Smith M.S., Kawano L.H., Malaney R.A., 1993, ApJS85, 219 WAR
+            NING: Valid 0.01 < T9 < 2                                   
+
+ Ref. # 1 selected for reaction 1 HE  3 ( 1 DEUT , 1 PROT )  1 HE  4 
+===============================================================================
+     6   2 HE  3 ( 0 OOOOO, 2 PROT )  1 HE  4 
+
+                      T9 =   0.003 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  he3he3   (nominal)             
+ 2  280399  Nacre reaction rates 280399  he3he3   (low)                 
+ 3  280399  Nacre reaction rates 280399  he3he3   (high)                
+
+ Ref. # 1 selected for reaction he3he3   (nominal)                   
+===============================================================================
+     7   1 HE  4 ( 1 DEUT , 0 OOOOO)  1 LI  6 
+
+                      T9 =   0.002 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  dag      (nominal)             
+ 2  280399  Nacre reaction rates 280399  dag      (low)                 
+ 3  280399  Nacre reaction rates 280399  dag      (high)                
+
+ Ref. # 1 selected for reaction dag      (nominal)                   
+===============================================================================
+     8   1 HE  4 ( 1 HE  3, 0 OOOOO)  1 BE  7 
+
+                      T9 =   0.005 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  he3ag    (nominal)             
+ 2  280399  Nacre reaction rates 280399  he3ag    (low)                 
+ 3  280399  Nacre reaction rates 280399  he3ag    (high)                
+
+ Ref. # 1 selected for reaction he3ag    (nominal)                   
+===============================================================================
+     9   3 HE  4 ( 0 OOOOO, 0 OOOOO)  1 C  12 
+
+                      T9 =   0.010 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  aaag     (nominal)             
+ 2  280399  Nacre reaction rates 280399  aaag     (low)                 
+ 3  280399  Nacre reaction rates 280399  aaag     (high)                
+
+ Ref. # 1 selected for reaction aaag     (nominal)                   
+===============================================================================
+    10   1 LI  6 ( 1 PROT , 0 OOOOO)  1 BE  7 
+
+                      T9 =   0.001 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  li6pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  li6pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  li6pg    (high)                
+
+ Ref. # 1 selected for reaction li6pg    (nominal)                   
+===============================================================================
+    11   1 LI  6 ( 1 PROT , 1 HE  3)  1 HE  4 
+
+                      T9 =   0.001 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  li6pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  li6pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  li6pa    (high)                
+
+ Ref. # 1 selected for reaction li6pa    (nominal)                   
+===============================================================================
+1 LI  7 ( 1 PROT , 1 HE  4)  1 HE  4 
+ rewritten as 1 LI  7 ( 1 PROT , 0 OOOOO)  2 HE  4 
+
+    12   1 LI  7 ( 1 PROT , 1 HE  4)  1 HE  4 
+
+                      T9 =   0.001 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  li7pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  li7pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  li7pa    (high)                
+
+ Ref. # 1 selected for reaction li7pa    (nominal)                   
+===============================================================================
+    13   1 LI  7 ( 1 DEUT , 1 NEUT )  2 HE  4 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 LI  7 ( 1 DEUT , 1 NEUT )  2 HE  4 
+===============================================================================
+BE  7 ( OOOOO , OOOOO ) LI  7  treated as electron capture
+
+    14   1 BE  7 ( 0 OOOOO, 0 OOOOO)  1 LI  7 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  231294  CF88 / Valid at T9 < 3 /WARNING: To obtain reaction rate, mu
+            ltiply by RHO / MEAN MOL WEIGHT PER ELECTRON in cm-3.The res
+            ulting rate must not exceed  1.51E-7 at T9 < 0.001          
+
+ Ref. # 1 selected for reaction 1 BE  7 ( 0 OOOOO, 0 OOOOO)  1 LI  7 
+===============================================================================
+    15   1 BE  7 ( 1 PROT , 0 OOOOO)  1 B   8 
+
+                      T9 =   0.003 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  be7pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  be7pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  be7pg    (high)                
+
+ Ref. # 1 selected for reaction be7pg    (nominal)                   
+===============================================================================
+    16   1 BE  7 ( 1 DEUT , 1 PROT )  2 HE  4 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 BE  7 ( 1 DEUT , 1 PROT )  2 HE  4 
+===============================================================================
+1 B   8 ( 0 OOOOO, 0 OOOOO)  2 HE  4 
+ Short-cut reaction...
+ Intermediate nucleus is BE  8 
+ Missing reaction is 1 B   8 ( OOOOO , OOOOO ) BE  8 
+
+
+    17   1 B   8 ( 0 OOOOO, 0 OOOOO)  2 HE  4 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  140303  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the
+             Nuclides (Japanese Nuclear Data Committee and Nuclear Data 
+            Center; Japan Atomic Energy Research Institute)  / Experimen
+            tal beta-decay rate                                         
+
+ Ref. # 1 selected for reaction 1 B   8 ( 0 OOOOO, 0 OOOOO)  1 BE  8 
+===============================================================================
+    18   1 BE  9 ( 1 PROT , 0 OOOOO)  1 B  10 
+
+                      T9 =   0.003 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  be9pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  be9pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  be9pg    (high)                
+
+ Ref. # 1 selected for reaction be9pg    (nominal)                   
+===============================================================================
+    19   1 BE  9 ( 1 PROT , 1 DEUT )  2 HE  4 
+
+                      T9 =   0.002 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  be9pd    (nominal)             
+ 2  280399  Nacre reaction rates 280399  be9pd    (low)                 
+ 3  280399  Nacre reaction rates 280399  be9pd    (high)                
+
+ Ref. # 1 selected for reaction be9pd    (nominal)                   
+===============================================================================
+    20   1 BE  9 ( 1 PROT , 1 HE  4)  1 LI  6 
+
+                      T9 =   0.002 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  be9pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  be9pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  be9pa    (high)                
+
+ Ref. # 1 selected for reaction be9pa    (nominal)                   
+===============================================================================
+    21   1 B  10 ( 1 PROT , 1 HE  4)  1 BE  7 
+
+                      T9 =   0.003 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  b10pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  b10pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  b10pa    (high)                
+
+ Ref. # 1 selected for reaction b10pa    (nominal)                   
+===============================================================================
+1 B  10 ( 1 PROT , 0 OOOOO)  1 B  11 
+ Short-cut reaction...
+ Intermediate nucleus is C  11 
+ Missing reaction is 1 B  10 ( H   1 , OOOOO ) C  11 
+
+
+    22   1 B  10 ( 1 PROT , 0 OOOOO)  1 B  11 
+
+                      T9 =   0.004 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  b10pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  b10pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  b10pg    (high)                
+
+ Ref. # 1 selected for reaction b10pg    (nominal)                   
+===============================================================================
+    23   1 B  11 ( 1 PROT , 0 OOOOO)  1 C  12 
+
+                      T9 =   0.004 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  b11pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  b11pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  b11pg    (high)                
+
+ Ref. # 1 selected for reaction b11pg    (nominal)                   
+===============================================================================
+1 B  11 ( 1 PROT , 1 HE  4)  2 HE  4 
+ rewritten as 1 B  11 ( 1 PROT , 0 OOOOO)  3 HE  4 
+
+    24   1 B  11 ( 1 PROT , 1 HE  4)  2 HE  4 
+
+                      T9 =   0.003 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  b11pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  b11pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  b11pa    (high)                
+
+ Ref. # 1 selected for reaction b11pa    (nominal)                   
+===============================================================================
+    25   1 B  11 ( 1 HE  4, 1 PROT )  1 C  14 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 B  11 ( 1 HE  4, 1 PROT )  1 C  14 
+===============================================================================
+    26   1 C  12 ( 1 NEUT , 0 OOOOO)  1 C  13 
+ Stellar enhancement factor could not be computed,
+ because file /www/docs-default/Nucdata/Sef/sefC         could not be opened
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 C  12 ( 1 NEUT , 0 OOOOO)  1 C  13 
+===============================================================================
+    27   1 C  12 ( 1 PROT , 0 OOOOO)  1 N  13 
+
+                      T9 =   0.006 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  c12pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  c12pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  c12pg    (high)                
+
+ Ref. # 1 selected for reaction c12pg    (nominal)                   
+===============================================================================
+    28   1 C  12 ( 1 HE  4, 0 OOOOO)  1 O  16 
+
+                      T9 =   0.060 10.000
+ Stellar enhancement factor: 1.000  1.010
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  c12ag    (nominal)             
+ 2  280399  Nacre reaction rates 280399  c12ag    (low)                 
+ 3  280399  Nacre reaction rates 280399  c12ag    (high)                
+
+ Ref. # 1 selected for reaction c12ag    (nominal)                   
+===============================================================================
+    29   2 C  12 ( 0 OOOOO, 1 HE  4)  1 NE 20 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  240493  CF88; valid  for T9 < 6                                     
+
+ Ref. # 1 selected for reaction 2 C  12 ( 0 OOOOO, 1 HE  4)  1 NE 20 
+===============================================================================
+    30   2 C  12 ( 0 OOOOO, 1 PROT )  1 NA 23 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  240493  CF88; valid for T9 < 6                                      
+
+ Ref. # 1 selected for reaction 2 C  12 ( 0 OOOOO, 1 PROT )  1 NA 23 
+===============================================================================
+    31   1 C  13 ( 1 NEUT , 0 OOOOO)  1 C  14 
+ Stellar enhancement factor could not be computed,
+ because file /www/docs-default/Nucdata/Sef/sefC         could not be opened
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 C  13 ( 1 NEUT , 0 OOOOO)  1 C  14 
+===============================================================================
+    32   1 C  13 ( 1 PROT , 0 OOOOO)  1 N  14 
+
+                      T9 =   0.007 10.000
+ Stellar enhancement factor: 1.000  0.950
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  c13pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  c13pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  c13pg    (high)                
+
+ Ref. # 1 selected for reaction c13pg    (nominal)                   
+===============================================================================
+    33   1 C  13 ( 1 HE  4, 1 NEUT )  1 O  16 
+
+                      T9 =   0.040 10.000
+ Stellar enhancement factor: 1.000  1.030
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  c13an    (nominal)             
+ 2  280399  Nacre reaction rates 280399  c13an    (low)                 
+ 3  280399  Nacre reaction rates 280399  c13an    (high)                
+
+ Ref. # 1 selected for reaction c13an    (nominal)                   
+===============================================================================
+    34   1 N  13 ( 0 OOOOO, 0 OOOOO)  1 C  13 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  140303  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the
+             Nuclides (Japanese Nuclear Data Committee and Nuclear Data 
+            Center; Japan Atomic Energy Research Institute)  / Experimen
+            tal beta-decay rate                                         
+
+ Ref. # 1 selected for reaction 1 N  13 ( 0 OOOOO, 0 OOOOO)  1 C  13 
+===============================================================================
+    35   1 N  13 ( 1 NEUT , 1 PROT )  1 C  13 
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1  100799  Nacre nominal (explicit reverse)                            
+ 2       0  CF88REV                                                     
+
+ Ref. # 1 selected for reaction 1 N  13 ( 1 NEUT , 1 PROT )  1 C  13 
+===============================================================================
+1 N  13 ( 1 PROT , 0 OOOOO)  1 N  14 
+ Short-cut reaction...
+ Intermediate nucleus is O  14 
+ Missing reaction is 1 N  13 ( H   1 , OOOOO ) O  14 
+
+
+    36   1 N  13 ( 1 PROT , 0 OOOOO)  1 N  14 
+
+                      T9 =   0.008 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  n13pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  n13pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  n13pg    (high)                
+
+ Ref. # 1 selected for reaction n13pg    (nominal)                   
+===============================================================================
+1 C  14 ( 1 NEUT , 0 OOOOO)  1 N  15 
+ Short-cut reaction...
+ Intermediate nucleus is C  15 
+ Missing reaction is 1 C  14 ( n   1 , OOOOO ) C  15 
+
+
+    37   1 C  14 ( 1 NEUT , 0 OOOOO)  1 N  15 
+ Stellar enhancement factor could not be computed,
+ because file /www/docs-default/Nucdata/Sef/sefC         could not be opened
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 C  14 ( 1 NEUT , 0 OOOOO)  1 C  15 
+===============================================================================
+    38   1 C  14 ( 1 PROT , 0 OOOOO)  1 N  15 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  240493  Wiescher M., Goerres J., Thielemann F.-K., 1990, ApJ 363, 34
+            0                                                           
+
+ Ref. # 1 selected for reaction 1 C  14 ( 1 PROT , 0 OOOOO)  1 N  15 
+===============================================================================
+    39   1 C  14 ( 1 PROT , 1 NEUT )  1 N  14 
+ WARNING: Attempt to compute reverse factor terminated
+ because partition function file /www/docs-default/Nucdata/Pfunc/pfN        not found
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 C  14 ( 1 PROT , 1 NEUT )  1 N  14 
+===============================================================================
+    40   1 C  14 ( 1 PROT , 1 HE  4)  1 B  11 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 C  14 ( 1 PROT , 1 HE  4)  1 B  11 
+===============================================================================
+    41   1 C  14 ( 1 HE  4, 1 NEUT )  1 O  17 
+
+ WARNING: NaN present in the data at low temperatures up to grid point  40
+
+ WARNING: NaN present in the data at high  temperatures from grid point  77
+1 C  14 ( 1 HE  4, 1 NEUT )  1 O  17 
+ WARNING: Extrapolation from MOST not possible
+
+file /www/docs-default/Nucdata/Acap/acapC       not found
+ Terminate extrapolation process!
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1  240493  Schatz H., Kappeler F.,  Koehler P.E., Wiescher M.,  Trautve
+            tter H.P., 1993 ApJ 413, 750 WARNING: Valid 0.1 < T9 < 1.1  
+ 2       0  FCZ67                                                       
+
+ Ref. # 1 selected for reaction 1 C  14 ( 1 HE  4, 1 NEUT )  1 O  17 
+===============================================================================
+    42   1 C  14 ( 1 HE  4, 0 OOOOO)  1 O  18 
+
+ WARNING: NaN present in the data at high  temperatures from grid point  84
+1 C  14 ( 1 HE  4, 0 OOOOO)  1 O  18 
+ WARNING: Extrapolation from MOST not possible
+
+file /www/docs-default/Nucdata/Acap/acapC       not found
+ Terminate extrapolation process!
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  240493  Not valid above T9=3!DC + SUB: Funck C., Langanke K., 1989, 
+            ApJ 344, 46 +Hashimoto M., Nomoto K., Arai K., Kaminisi K., 
+            1986, ApJ 307, 687RES: Gai M., Keddy R., Bromley D.A., Olnes
+            s J.W., Warburton E.K., 1987, Phys. Rev. C36, 1256          
+
+ Ref. # 1 selected for reaction 1 C  14 ( 1 HE  4, 0 OOOOO)  1 O  18 
+===============================================================================
+    43   1 N  14 ( 1 NEUT , 0 OOOOO)  1 N  15 
+ Stellar enhancement factor could not be computed,
+ because file /www/docs-default/Nucdata/Sef/sefN         could not be opened
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 N  14 ( 1 NEUT , 0 OOOOO)  1 N  15 
+===============================================================================
+    44   1 N  14 ( 1 NEUT , 1 PROT )  1 C  14 
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1       0  Koehler P.E., O'Brien, H.A. 1989, Phys. Rev. C 39, 1655     
+ 2       0  Brehm et al. 1988, Z. Phys. A 330, 167                      
+
+ Ref. # 1 selected for reaction 1 N  14 ( 1 NEUT , 1 PROT )  1 C  14 
+===============================================================================
+    45   1 N  14 ( 1 PROT , 0 OOOOO)  1 O  15 
+
+                      T9 =   0.008 10.000
+ Stellar enhancement factor: 1.000  0.990
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  n14pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  n14pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  n14pg    (high)                
+
+ Ref. # 1 selected for reaction n14pg    (nominal)                   
+===============================================================================
+    46   1 N  14 ( 1 HE  4, 0 OOOOO)  1 F  18 
+
+                      T9 =   0.070 10.000
+ Stellar enhancement factor: 1.000  0.980
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  n14ag    (nominal)             
+ 2  280399  Nacre reaction rates 280399  n14ag    (low)                 
+ 3  280399  Nacre reaction rates 280399  n14ag    (high)                
+
+ Ref. # 1 selected for reaction n14ag    (nominal)                   
+===============================================================================
+1 N  15 ( 1 NEUT , 0 OOOOO)  1 O  16 
+ Short-cut reaction...
+ Intermediate nucleus is N  16 
+ Missing reaction is 1 N  15 ( n   1 , OOOOO ) N  16 
+
+
+    47   1 N  15 ( 1 NEUT , 0 OOOOO)  1 O  16 
+ Stellar enhancement factor could not be computed,
+ because file /www/docs-default/Nucdata/Sef/sefN         could not be opened
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 N  15 ( 1 NEUT , 0 OOOOO)  1 N  16 
+===============================================================================
+    48   1 N  15 ( 1 PROT , 1 HE  4)  1 C  12 
+
+                      T9 =   0.005 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  n15pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  n15pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  n15pa    (high)                
+
+ Ref. # 1 selected for reaction n15pa    (nominal)                   
+===============================================================================
+    49   1 N  15 ( 1 PROT , 0 OOOOO)  1 O  16 
+
+                      T9 =   0.007 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  n15pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  n15pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  n15pg    (high)                
+
+ Ref. # 1 selected for reaction n15pg    (nominal)                   
+===============================================================================
+    50   1 N  15 ( 1 HE  4, 0 OOOOO)  1 F  19 
+
+                      T9 =   0.080 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  n15ag    (nominal)             
+ 2  280399  Nacre reaction rates 280399  n15ag    (low)                 
+ 3  280399  Nacre reaction rates 280399  n15ag    (high)                
+
+ Ref. # 1 selected for reaction n15ag    (nominal)                   
+===============================================================================
+    51   1 O  15 ( 0 OOOOO, 0 OOOOO)  1 N  15 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  140303  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the
+             Nuclides (Japanese Nuclear Data Committee and Nuclear Data 
+            Center; Japan Atomic Energy Research Institute)  / Experimen
+            tal beta-decay rate                                         
+
+ Ref. # 1 selected for reaction 1 O  15 ( 0 OOOOO, 0 OOOOO)  1 N  15 
+===============================================================================
+    52   1 O  15 ( 1 NEUT , 1 HE  4)  1 C  12 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88REV                                                     
+
+ Ref. # 1 selected for reaction 1 O  15 ( 1 NEUT , 1 HE  4)  1 C  12 
+===============================================================================
+    53   1 O  15 ( 1 NEUT , 1 PROT )  1 N  15 
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1  260600  Nacre nominal (explicit reverse)                            
+ 2       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 O  15 ( 1 NEUT , 1 PROT )  1 N  15 
+===============================================================================
+    54   1 O  16 ( 1 NEUT , 0 OOOOO)  1 O  17 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope O  16  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefO 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 O  16 ( 1 NEUT , 0 OOOOO)  1 O  17 
+===============================================================================
+1 O  16 ( 1 PROT , 0 OOOOO)  1 O  17 
+ Short-cut reaction...
+ Intermediate nucleus is F  17 
+ Missing reaction is 1 O  16 ( H   1 , OOOOO ) F  17 
+
+
+    55   1 O  16 ( 1 PROT , 0 OOOOO)  1 O  17 
+
+                      T9 =   0.010 10.000
+ Stellar enhancement factor: 1.000  1.040
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o16pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  o16pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  o16pg    (high)                
+
+ Ref. # 1 selected for reaction o16pg    (nominal)                   
+===============================================================================
+    56   1 O  16 ( 1 HE  4, 0 OOOOO)  1 NE 20 
+
+                      T9 =   0.100 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o16ag    (nominal)             
+ 2  280399  Nacre reaction rates 280399  o16ag    (low)                 
+ 3  280399  Nacre reaction rates 280399  o16ag    (high)                
+
+ Ref. # 1 selected for reaction o16ag    (nominal)                   
+===============================================================================
+1 O  16 ( 1 C  12, 1 NEUT )  1 AL 27 
+ Short-cut reaction...
+ Intermediate nucleus is SI 27 
+ Missing reaction is 1 O  16 ( C  12 , n   1 ) SI 27 
+
+
+    57   1 O  16 ( 1 C  12, 1 NEUT )  1 AL 27 
+
+ WARNING: NaN present in the data at low temperatures up to grid point  56
+ WARNING: Extrapolation from MOST not possible
+  reaction kind is not one available in MOST
+  Terminate extrapolation process!
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  240493  CF88, valid above T9 = 0.5                                  
+
+ Ref. # 1 selected for reaction 1 O  16 ( 1 C  12, 1 NEUT )  1 SI 27 
+===============================================================================
+    58   1 O  16 ( 1 C  12, 1 PROT )  1 AL 27 
+
+ WARNING: NaN present in the data at low temperatures up to grid point  56
+ WARNING: Extrapolation from MOST not possible
+  reaction kind is not one available in MOST
+  Terminate extrapolation process!
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  240493  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 O  16 ( 1 C  12, 1 PROT )  1 AL 27 
+===============================================================================
+    59   1 O  16 ( 1 C  12, 1 HE  4)  1 MG 24 
+
+ WARNING: NaN present in the data at low temperatures up to grid point  56
+ WARNING: Extrapolation from MOST not possible
+  reaction kind is not one available in MOST
+  Terminate extrapolation process!
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  240493  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 O  16 ( 1 C  12, 1 HE  4)  1 MG 24 
+===============================================================================
+    60   2 O  16 ( 0 OOOOO, 1 PROT )  1 P  31 
+
+ WARNING: NaN present in the data at low temperatures up to grid point  68
+ WARNING: Extrapolation from MOST not possible
+  reaction kind is not one available in MOST
+  Terminate extrapolation process!
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  240493  CF88                                                        
+
+ Ref. # 1 selected for reaction 2 O  16 ( 0 OOOOO, 1 PROT )  1 P  31 
+===============================================================================
+    61   2 O  16 ( 0 OOOOO, 1 HE  4)  1 SI 28 
+
+ WARNING: NaN present in the data at low temperatures up to grid point  68
+ WARNING: Extrapolation from MOST not possible
+  reaction kind is not one available in MOST
+  Terminate extrapolation process!
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  240493  CF88                                                        
+
+ Ref. # 1 selected for reaction 2 O  16 ( 0 OOOOO, 1 HE  4)  1 SI 28 
+===============================================================================
+    62   1 O  17 ( 1 NEUT , 1 HE  4)  1 C  14 
+
+ WARNING: NaN present in the data at low temperatures up to grid point  40
+
+ WARNING: NaN present in the data at high  temperatures from grid point  77
+1 O  17 ( 1 NEUT , 1 HE  4)  1 C  14 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Ncap/ncapO 
+
+T8 = 0.10E+01: H-F    = 0.76E+01 data = 0.58E+01    ratio: log(data/H-F)  = -.18E+01
+
+T8 = 0.10E+00: H-F    = 0.78E+01 renorm = 0.60E+01
+T8 = 0.14E+00: H-F    = 0.78E+01 renorm = 0.60E+01
+T8 = 0.19E+00: H-F    = 0.78E+01 renorm = 0.60E+01
+T8 = 0.23E+00: H-F    = 0.78E+01 renorm = 0.60E+01
+T8 = 0.28E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.33E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.37E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.41E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.46E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.51E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.55E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.59E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.64E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.69E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.73E+00: H-F    = 0.77E+01 renorm = 0.59E+01
+T8 = 0.78E+00: H-F    = 0.76E+01 renorm = 0.58E+01
+T8 = 0.82E+00: H-F    = 0.76E+01 renorm = 0.58E+01
+T8 = 0.86E+00: H-F    = 0.76E+01 renorm = 0.58E+01
+T8 = 0.91E+00: H-F    = 0.76E+01 renorm = 0.58E+01
+T8 = 0.95E+00: H-F    = 0.76E+01 renorm = 0.58E+01
+
+ low-T extrapolation successfully completed
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+
+ Using file /www/docs-default/Nucdata/Ncap/ncapO 
+
+T8 = 0.10E+02: H-F    = 0.75E+01 data = 0.72E+01    ratio: log(data/H-F)  = -.32E+00
+
+T8 = 0.13E+02: H-F    = 0.75E+01 renorm = 0.72E+01
+T8 = 0.16E+02: H-F    = 0.75E+01 renorm = 0.72E+01
+T8 = 0.19E+02: H-F    = 0.76E+01 renorm = 0.72E+01
+T8 = 0.21E+02: H-F    = 0.76E+01 renorm = 0.73E+01
+T8 = 0.24E+02: H-F    = 0.76E+01 renorm = 0.73E+01
+T8 = 0.27E+02: H-F    = 0.76E+01 renorm = 0.73E+01
+T8 = 0.30E+02: H-F    = 0.77E+01 renorm = 0.74E+01
+T8 = 0.33E+02: H-F    = 0.77E+01 renorm = 0.74E+01
+T8 = 0.36E+02: H-F    = 0.77E+01 renorm = 0.74E+01
+T8 = 0.39E+02: H-F    = 0.77E+01 renorm = 0.74E+01
+T8 = 0.41E+02: H-F    = 0.78E+01 renorm = 0.74E+01
+T8 = 0.44E+02: H-F    = 0.78E+01 renorm = 0.75E+01
+T8 = 0.47E+02: H-F    = 0.78E+01 renorm = 0.75E+01
+T8 = 0.50E+02: H-F    = 0.78E+01 renorm = 0.75E+01
+
+ high-T extrapolation successfully completed
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1  240493  Schatz H., Kappeler F.,  Koehler P.E., Wiescher M.,  Trautve
+            tter H.P., 1993 ApJ 413, 750 WARNING: Valid 0.1 < T9 < 1.1  
+ 2       0  FCZ67                                                       
+
+ Ref. # 1 selected for reaction 1 O  17 ( 1 NEUT , 1 HE  4)  1 C  14 
+===============================================================================
+    63   1 O  17 ( 1 NEUT , 0 OOOOO)  1 O  18 
+
+                      T9 =   0.001  5.000
+ Stellar enhancement factor: 1.000  1.020
+  from isotope O  17  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefO 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  Wagoner R., 1969, ApJS 18, 247                              
+
+ Ref. # 1 selected for reaction 1 O  17 ( 1 NEUT , 0 OOOOO)  1 O  18 
+===============================================================================
+    64   1 O  17 ( 1 PROT , 0 OOOOO)  1 F  18 
+
+                      T9 =   0.009 10.000
+ Stellar enhancement factor: 1.000  0.940
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o17pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  o17pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  o17pg    (high)                
+
+ Ref. # 1 selected for reaction o17pg    (nominal)                   
+===============================================================================
+    65   1 O  17 ( 1 PROT , 1 HE  4)  1 N  14 
+
+                      T9 =   0.009 10.000
+ Stellar enhancement factor: 1.000  1.070
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o17pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  o17pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  o17pa    (high)                
+
+ Ref. # 1 selected for reaction o17pa    (nominal)                   
+===============================================================================
+    66   1 O  17 ( 1 HE  4, 1 NEUT )  1 NE 20 
+
+                      T9 =   0.070 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o17an    (nominal)             
+ 2  280399  Nacre reaction rates 280399  o17an    (low)                 
+ 3  280399  Nacre reaction rates 280399  o17an    (high)                
+
+ Ref. # 1 selected for reaction o17an    (nominal)                   
+===============================================================================
+    67   1 O  17 ( 1 HE  4, 0 OOOOO)  1 NE 21 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 O  17 ( 1 HE  4, 0 OOOOO)  1 NE 21 
+===============================================================================
+1 O  18 ( 1 NEUT , 0 OOOOO)  1 F  19 
+ Short-cut reaction...
+ Intermediate nucleus is O  19 
+ Missing reaction is 1 O  18 ( n   1 , OOOOO ) O  19 
+
+
+    68   1 O  18 ( 1 NEUT , 0 OOOOO)  1 F  19 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope O  18  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefO 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 O  18 ( 1 NEUT , 0 OOOOO)  1 O  19 
+===============================================================================
+    69   1 O  18 ( 1 PROT , 0 OOOOO)  1 F  19 
+
+                      T9 =   0.007 10.000
+ Stellar enhancement factor: 1.000  0.960
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o18pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  o18pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  o18pg    (high)                
+
+ Ref. # 1 selected for reaction o18pg    (nominal)                   
+===============================================================================
+    70   1 O  18 ( 1 PROT , 1 HE  4)  1 N  15 
+
+                      T9 =   0.007 10.000
+ Stellar enhancement factor: 1.000  0.930
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o18pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  o18pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  o18pa    (high)                
+
+ Ref. # 1 selected for reaction o18pa    (nominal)                   
+===============================================================================
+    71   1 O  18 ( 1 HE  4, 0 OOOOO)  1 NE 22 
+
+                      T9 =   0.070 10.000
+ Stellar enhancement factor: 1.000  0.880
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o18ag    (nominal)             
+ 2  280399  Nacre reaction rates 280399  o18ag    (low)                 
+ 3  280399  Nacre reaction rates 280399  o18ag    (high)                
+
+ Ref. # 1 selected for reaction o18ag    (nominal)                   
+===============================================================================
+    72   1 O  18 ( 1 HE  4, 1 NEUT )  1 NE 21 
+
+                      T9 =   0.140 10.000
+ Stellar enhancement factor: 1.000  1.040
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o18an    (nominal)             
+ 2  280399  Nacre reaction rates 280399  o18an    (low)                 
+ 3  280399  Nacre reaction rates 280399  o18an    (high)                
+
+ Ref. # 1 selected for reaction o18an    (nominal)                   
+===============================================================================
+    73   1 F  18 ( 0 OOOOO, 0 OOOOO)  1 O  18 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  140303  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the
+             Nuclides (Japanese Nuclear Data Committee and Nuclear Data 
+            Center; Japan Atomic Energy Research Institute)  / Experimen
+            tal beta-decay rate                                         
+
+ Ref. # 1 selected for reaction 1 F  18 ( 0 OOOOO, 0 OOOOO)  1 O  18 
+===============================================================================
+    74   1 F  18 ( 1 NEUT , 1 PROT )  1 O  18 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 F  18 ( 1 NEUT , 1 PROT )  1 O  18 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Ncap/ncapF 
+
+T8 = 0.10E+00: H-F    = 0.78E+01 data = 0.78E+01    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction F  18(n,p)O  18                      
+===============================================================================
+    75   1 F  18 ( 1 NEUT , 1 HE  4)  1 N  15 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 F  18 ( 1 NEUT , 1 HE  4)  1 N  15 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Ncap/ncapF 
+
+T8 = 0.10E+00: H-F    = 0.83E+01 data = 0.83E+01    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction F  18(n,a)N  15                      
+===============================================================================
+    76   1 F  18 ( 1 HE  4, 1 PROT )  1 NE 21 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  Wagoner R., 1969, ApJS 18, 247                              
+
+ Ref. # 1 selected for reaction 1 F  18 ( 1 HE  4, 1 PROT )  1 NE 21 
+===============================================================================
+1 F  19 ( 1 NEUT , 0 OOOOO)  1 NE 20 
+ Short-cut reaction...
+ Intermediate nucleus is F  20 
+ Missing reaction is 1 F  19 ( n   1 , OOOOO ) F  20 
+
+
+    77   1 F  19 ( 1 NEUT , 0 OOOOO)  1 NE 20 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  0.866
+  from isotope F  19  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefF 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 F  19 ( 1 NEUT , 0 OOOOO)  1 F  20 
+===============================================================================
+    78   1 F  19 ( 1 PROT , 0 OOOOO)  1 NE 20 
+
+                      T9 =   0.013 10.000
+ Stellar enhancement factor: 1.000  0.640
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  f19pg    (nominal)             
+ 2  280399  Nacre reaction rates 280399  f19pg    (low)                 
+ 3  280399  Nacre reaction rates 280399  f19pg    (high)                
+
+ Ref. # 1 selected for reaction f19pg    (nominal)                   
+===============================================================================
+    79   1 F  19 ( 1 PROT , 1 HE  4)  1 O  16 
+
+                      T9 =   0.009 10.000
+ Stellar enhancement factor: 1.000  1.110
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  f19pa    (nominal)             
+ 2  280399  Nacre reaction rates 280399  f19pa    (low)                 
+ 3  280399  Nacre reaction rates 280399  f19pa    (high)                
+
+ Ref. # 1 selected for reaction f19pa    (nominal)                   
+===============================================================================
+    80   1 F  19 ( 1 HE  4, 1 PROT )  1 NE 22 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  250493  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 F  19 ( 1 HE  4, 1 PROT )  1 NE 22 
+===============================================================================
+    81   1 NE 20 ( 1 NEUT , 0 OOOOO)  1 NE 21 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope NE 20  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefNE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 NE 20 ( 1 NEUT , 0 OOOOO)  1 NE 21 
+===============================================================================
+1 NE 20 ( 1 PROT , 0 OOOOO)  1 NE 21 
+ Short-cut reaction...
+ Intermediate nucleus is NA 21 
+ Missing reaction is 1 NE 20 ( H   1 , OOOOO ) NA 21 
+
+
+    82   1 NE 20 ( 1 PROT , 0 OOOOO)  1 NE 21 
+
+                      T9 =   0.011 10.000
+ Stellar enhancement factor: 1.000  0.960
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ne20pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  ne20pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  ne20pg   (high)                
+
+ Ref. # 1 selected for reaction ne20pg   (nominal)                   
+===============================================================================
+    83   1 NE 20 ( 0 OOOOO, 1 HE  4)  1 O  16 
+
+                      T9 =   0.100 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ Using analytical reverse factor from vit_CF88.f
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  40
+1 O  16 ( 0 OOOOO, 1 OOOOO)  1 O  16 
+ WARNING: Reaction channel not found in MOST file 
+ WARNING: Extrapolation from MOST not possible
+
+reaction not found in file /www/docs-default/Nucdata/Acap/acapO      
+ Terminate extrapolation process!
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  o16ag    (nominal)  REVERSE    
+ 2  280399  Nacre reaction rates 280399  o16ag    (low)      REVERSE    
+ 3  280399  Nacre reaction rates 280399  o16ag    (high)     REVERSE    
+
+ Ref. # 1 selected for reaction o16ag    (nominal)  REVERSE          
+===============================================================================
+    84   1 NE 20 ( 1 HE  4, 0 OOOOO)  1 MG 24 
+
+                      T9 =   0.150 10.000
+ Stellar enhancement factor: 1.000  0.660
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ne20ag   (nominal)             
+ 2  280399  Nacre reaction rates 280399  ne20ag   (low)                 
+ 3  280399  Nacre reaction rates 280399  ne20ag   (high)                
+
+ Ref. # 1 selected for reaction ne20ag   (nominal)                   
+===============================================================================
+    85   1 NE 20 ( 1 HE  4, 1 PROT )  1 NA 23 
+
+                      T9 =   0.012 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ Using analytical reverse factor from vit_CF88.f
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  21
+1 NE 20 ( 1 HE  4, 1 PROT )  1 NA 23 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Acap/acapNE
+
+T8 = 0.14E+00: H-F    = -.98E+02 data = -.99E+02    ratio: log(data/H-F)  = -.10E+01
+
+T8 = 0.10E+00: H-F    = -.98E+02 renorm = -.99E+02
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  na23pa   (nominal)  REVERSE    
+ 2  280399  Nacre reaction rates 280399  na23pa   (low)      REVERSE    
+ 3  280399  Nacre reaction rates 280399  na23pa   (high)     REVERSE    
+
+ Ref. # 1 selected for reaction na23pa   (nominal)  REVERSE          
+===============================================================================
+    86   1 NE 21 ( 1 NEUT , 0 OOOOO)  1 NE 22 
+
+                      T9 =   0.001  5.000
+ Stellar enhancement factor: 1.000  0.883
+  from isotope NE 21  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefNE
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 75, 1             
+ 2       0  Almeida J., Kaeppeler F., 1983, ApJ 265, 417                
+
+ Ref. # 1 selected for reaction 1 NE 21 ( 1 NEUT , 0 OOOOO)  1 NE 22 
+===============================================================================
+    87   1 NE 21 ( 1 NEUT , 1 HE  4)  1 O  18 
+
+ WARNING: NaN present in the data at low temperatures up to grid point  35
+1 NE 21 ( 1 NEUT , 1 HE  4)  1 O  18 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Ncap/ncapNE
+
+T8 = 0.78E+00: H-F    = 0.23E+01 data = -.88E+00    ratio: log(data/H-F)  = -.32E+01
+
+T8 = 0.10E+00: H-F    = 0.21E+01 renorm = -.10E+01
+T8 = 0.14E+00: H-F    = 0.22E+01 renorm = -.10E+01
+T8 = 0.19E+00: H-F    = 0.22E+01 renorm = -.10E+01
+T8 = 0.23E+00: H-F    = 0.22E+01 renorm = -.99E+00
+T8 = 0.28E+00: H-F    = 0.22E+01 renorm = -.97E+00
+T8 = 0.33E+00: H-F    = 0.22E+01 renorm = -.96E+00
+T8 = 0.37E+00: H-F    = 0.22E+01 renorm = -.94E+00
+T8 = 0.41E+00: H-F    = 0.22E+01 renorm = -.92E+00
+T8 = 0.46E+00: H-F    = 0.23E+01 renorm = -.91E+00
+T8 = 0.51E+00: H-F    = 0.23E+01 renorm = -.89E+00
+T8 = 0.55E+00: H-F    = 0.23E+01 renorm = -.89E+00
+T8 = 0.59E+00: H-F    = 0.23E+01 renorm = -.89E+00
+T8 = 0.64E+00: H-F    = 0.23E+01 renorm = -.89E+00
+T8 = 0.69E+00: H-F    = 0.23E+01 renorm = -.88E+00
+T8 = 0.73E+00: H-F    = 0.23E+01 renorm = -.88E+00
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1  260600  Nacre nominal (explicit reverse)                            
+ 2       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 NE 21 ( 1 NEUT , 1 HE  4)  1 O  18 
+===============================================================================
+    88   1 NE 21 ( 1 PROT , 0 OOOOO)  1 NA 22 
+
+                      T9 =   0.015 10.000
+ Stellar enhancement factor: 1.000  0.900
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ne21pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  ne21pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  ne21pg   (high)                
+
+ Ref. # 1 selected for reaction ne21pg   (nominal)                   
+===============================================================================
+    89   1 NE 21 ( 1 HE  4, 0 OOOOO)  1 MG 25 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 NE 21 ( 1 HE  4, 0 OOOOO)  1 MG 25 
+===============================================================================
+    90   1 NE 21 ( 1 HE  4, 1 NEUT )  1 MG 24 
+
+                      T9 =   0.100 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ne21an   (nominal)             
+ 2  280399  Nacre reaction rates 280399  ne21an   (low)                 
+ 3  280399  Nacre reaction rates 280399  ne21an   (high)                
+
+ Ref. # 1 selected for reaction ne21an   (nominal)                   
+===============================================================================
+1 NE 22 ( 1 NEUT , 0 OOOOO)  1 NA 23 
+ Short-cut reaction...
+ Intermediate nucleus is NE 23 
+ Missing reaction is 1 NE 22 ( n   1 , OOOOO ) NE 23 
+
+
+    91   1 NE 22 ( 1 NEUT , 0 OOOOO)  1 NA 23 
+
+                      T9 =   0.012  2.901
+ Stellar enhancement factor: 1.000  1.010
+  from isotope NE 22  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefNE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  100701  Beer H., Sedyshev P.V., Rochow W., Mohr P., Oberhummer H., 2
+            001, Phys. Rev. C, in press                                 
+
+ Ref. # 1 selected for reaction 1 NE 22 ( 1 NEUT , 0 OOOOO)  1 NE 23 
+===============================================================================
+    92   1 NE 22 ( 1 PROT , 0 OOOOO)  1 NA 23 
+
+                      T9 =   0.010 10.000
+ Stellar enhancement factor: 1.000  0.730
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ne22pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  ne22pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  ne22pg   (high)                
+
+ Ref. # 1 selected for reaction ne22pg   (nominal)                   
+===============================================================================
+    93   1 NE 22 ( 1 HE  4, 1 NEUT )  1 MG 25 
+
+                      T9 =   0.120 10.000
+ Stellar enhancement factor: 1.000  1.020
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ne22an   (nominal)             
+ 2  280399  Nacre reaction rates 280399  ne22an   (low)                 
+ 3  280399  Nacre reaction rates 280399  ne22an   (high)                
+
+ Ref. # 1 selected for reaction ne22an   (nominal)                   
+===============================================================================
+    94   1 NE 22 ( 1 HE  4, 0 OOOOO)  1 MG 26 
+
+                      T9 =   0.100 10.000
+ Stellar enhancement factor: 1.000  0.870
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  ne22ag   (nominal)             
+ 2  280399  Nacre reaction rates 280399  ne22ag   (low)                 
+ 3  280399  Nacre reaction rates 280399  ne22ag   (high)                
+
+ Ref. # 1 selected for reaction ne22ag   (nominal)                   
+===============================================================================
+    95   1 NA 22 ( 0 OOOOO, 0 OOOOO)  1 NE 22 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  140303  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the
+             Nuclides (Japanese Nuclear Data Committee and Nuclear Data 
+            Center; Japan Atomic Energy Research Institute)  / Experimen
+            tal beta-decay rate                                         
+
+ Ref. # 1 selected for reaction 1 NA 22 ( 0 OOOOO, 0 OOOOO)  1 NE 22 
+===============================================================================
+    96   1 NA 22 ( 1 NEUT , 0 OOOOO)  1 NA 23 
+
+ WARNING: Minimum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction Na 22(n,g)Na 23                      
+===============================================================================
+    97   1 NA 22 ( 1 NEUT , 1 PROT )  1 NE 22 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 NA 22 ( 1 NEUT , 1 PROT )  1 NE 22 
+===============================================================================
+1 NA 22 ( 1 PROT , 0 OOOOO)  1 NA 23 
+ Short-cut reaction...
+ Intermediate nucleus is MG 23 
+ Missing reaction is 1 NA 22 ( H   1 , OOOOO ) MG 23 
+
+
+    98   1 NA 22 ( 1 PROT , 0 OOOOO)  1 NA 23 
+
+                      T9 =   0.012 10.000
+ Stellar enhancement factor: 1.000  0.590
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  na22pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  na22pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  na22pg   (high)                
+
+ Ref. # 1 selected for reaction na22pg   (nominal)                   
+===============================================================================
+1 NA 23 ( 1 NEUT , 0 OOOOO)  1 MG 24 
+ Short-cut reaction...
+ Intermediate nucleus is NA 24 
+ Missing reaction is 1 NA 23 ( n   1 , OOOOO ) NA 24 
+
+
+    99   1 NA 23 ( 1 NEUT , 0 OOOOO)  1 MG 24 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  0.998
+  from isotope NA 23  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefNA
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 NA 23 ( 1 NEUT , 0 OOOOO)  1 NA 24 
+===============================================================================
+   100   1 NA 23 ( 1 PROT , 1 HE  4)  1 NE 20 
+
+                      T9 =   0.012 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  na23pa   (nominal)             
+ 2  280399  Nacre reaction rates 280399  na23pa   (low)                 
+ 3  280399  Nacre reaction rates 280399  na23pa   (high)                
+
+ Ref. # 1 selected for reaction na23pa   (nominal)                   
+===============================================================================
+   101   1 NA 23 ( 1 PROT , 0 OOOOO)  1 MG 24 
+
+                      T9 =   0.018 10.000
+ Stellar enhancement factor: 1.000  0.800
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  na23pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  na23pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  na23pg   (high)                
+
+ Ref. # 1 selected for reaction na23pg   (nominal)                   
+===============================================================================
+   102   1 NA 23 ( 1 HE  4, 1 PROT )  1 MG 26 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 NA 23 ( 1 HE  4, 1 PROT )  1 MG 26 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Acap/acapNA
+
+T8 = 0.10E+00: H-F    = -.86E+02 data = -.86E+02    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction Na 23(a,p)Mg 26                      
+===============================================================================
+   103   1 MG 24 ( 1 NEUT , 0 OOOOO)  1 MG 25 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope MG 24  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefMG
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 MG 24 ( 1 NEUT , 0 OOOOO)  1 MG 25 
+===============================================================================
+1 MG 24 ( 1 PROT , 0 OOOOO)  1 MG 25 
+ Short-cut reaction...
+ Intermediate nucleus is AL 25 
+ Missing reaction is 1 MG 24 ( H   1 , OOOOO ) AL 25 
+
+
+   104   1 MG 24 ( 1 PROT , 0 OOOOO)  1 MG 25 
+
+                      T9 =   0.025 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  mg24pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  mg24pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  mg24pg   (high)                
+
+ Ref. # 1 selected for reaction mg24pg   (nominal)                   
+===============================================================================
+   105   1 MG 24 ( 1 HE  4, 1 PROT )  1 AL 27 
+
+                      T9 =   0.025 10.000
+ Stellar enhancement factor: 1.000  1.320
+  provided by NACRE
+
+ Using analytical reverse factor from vit_CF88.f
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  24
+1 MG 24 ( 1 HE  4, 1 PROT )  1 AL 27 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Acap/acapMG
+
+T8 = 0.28E+00: H-F    = -.98E+02 data = -.99E+02    ratio: log(data/H-F)  = -.10E+01
+
+T8 = 0.10E+00: H-F    = -.98E+02 renorm = -.99E+02
+T8 = 0.14E+00: H-F    = -.98E+02 renorm = -.99E+02
+T8 = 0.19E+00: H-F    = -.98E+02 renorm = -.99E+02
+T8 = 0.23E+00: H-F    = -.98E+02 renorm = -.99E+02
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  al27pa   (nominal)  REVERSE    
+ 2  280399  Nacre reaction rates 280399  al27pa   (low)      REVERSE    
+ 3  280399  Nacre reaction rates 280399  al27pa   (high)     REVERSE    
+
+ Ref. # 1 selected for reaction al27pa   (nominal)  REVERSE          
+===============================================================================
+   106   1 MG 24 ( 1 HE  4, 0 OOOOO)  1 SI 28 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 MG 24 ( 1 HE  4, 0 OOOOO)  1 SI 28 
+===============================================================================
+   107   1 MG 25 ( 1 NEUT , 0 OOOOO)  1 MG 26 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope MG 25  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefMG
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 MG 25 ( 1 NEUT , 0 OOOOO)  1 MG 26 
+===============================================================================
+   108   1 MG 25 ( 1 PROT , 0 OOOOO)  1 AL 26m
+
+                      T9 =   0.015 10.000
+ Stellar enhancement factor: 1.000  0.660
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  mg25pg3  (nominal)             
+ 2  280399  Nacre reaction rates 280399  mg25pg3  (low)                 
+ 3  280399  Nacre reaction rates 280399  mg25pg3  (high)                
+
+ Ref. # 1 selected for reaction mg25pg3  (nominal)                   
+===============================================================================
+   109   1 MG 25 ( 1 PROT , 0 OOOOO)  1 AL 26g
+
+                      T9 =   0.015 10.000
+ Stellar enhancement factor: 1.000  0.660
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  mg25pg2  (nominal)             
+ 2  280399  Nacre reaction rates 280399  mg25pg2  (low)                 
+ 3  280399  Nacre reaction rates 280399  mg25pg2  (high)                
+
+ Ref. # 1 selected for reaction mg25pg2  (nominal)                   
+===============================================================================
+1 MG 25 ( 1 HE  4, 1 PROT )  1 SI 28 
+ Short-cut reaction...
+ Intermediate nucleus is AL 28 
+ Missing reaction is 1 MG 25 ( HE  4 , H   1 ) AL 28 
+
+
+   110   1 MG 25 ( 1 HE  4, 1 PROT )  1 SI 28 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 MG 25 ( 1 HE  4, 1 PROT )  1 AL 28 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Acap/acapMG
+
+T8 = 0.10E+00: H-F    = -.98E+02 data = -.98E+02    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction Mg 25(a,p)Al 28                      
+===============================================================================
+   111   1 MG 25 ( 1 HE  4, 1 NEUT )  1 SI 28 
+
+                      T9 =   0.130 10.000
+ Stellar enhancement factor: 1.000  0.950
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  mg25an   (nominal)             
+ 2  280399  Nacre reaction rates 280399  mg25an   (low)                 
+ 3  280399  Nacre reaction rates 280399  mg25an   (high)                
+
+ Ref. # 1 selected for reaction mg25an   (nominal)                   
+===============================================================================
+   112   1 MG 25 ( 1 HE  4, 0 OOOOO)  1 SI 29 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 MG 25 ( 1 HE  4, 0 OOOOO)  1 SI 29 
+===============================================================================
+1 MG 26 ( 1 NEUT , 0 OOOOO)  1 AL 27 
+ Short-cut reaction...
+ Intermediate nucleus is MG 27 
+ Missing reaction is 1 MG 26 ( n   1 , OOOOO ) MG 27 
+
+
+   113   1 MG 26 ( 1 NEUT , 0 OOOOO)  1 AL 27 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope MG 26  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefMG
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 MG 26 ( 1 NEUT , 0 OOOOO)  1 MG 27 
+===============================================================================
+   114   1 MG 26 ( 1 PROT , 0 OOOOO)  1 AL 27 
+
+                      T9 =   0.016 10.000
+ Stellar enhancement factor: 1.000  0.660
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  mg26pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  mg26pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  mg26pg   (high)                
+
+ Ref. # 1 selected for reaction mg26pg   (nominal)                   
+===============================================================================
+   115   1 MG 26 ( 1 HE  4, 0 OOOOO)  1 SI 30 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 MG 26 ( 1 HE  4, 0 OOOOO)  1 SI 30 
+===============================================================================
+1 MG 26 ( 1 HE  4, 1 PROT )  1 SI 29 
+ Short-cut reaction...
+ Intermediate nucleus is AL 29 
+ Missing reaction is 1 MG 26 ( HE  4 , H   1 ) AL 29 
+
+
+   116   1 MG 26 ( 1 HE  4, 1 PROT )  1 SI 29 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 MG 26 ( 1 HE  4, 1 PROT )  1 AL 29 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Acap/acapMG
+
+T8 = 0.10E+00: H-F    = -.98E+02 data = -.98E+02    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction Mg 26(a,p)Al 29                      
+===============================================================================
+   117   1 MG 26 ( 1 HE  4, 1 NEUT )  1 SI 29 
+
+                      T9 =   0.130 10.000
+ Stellar enhancement factor: 1.000  1.000
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  mg26an   (nominal)             
+ 2  280399  Nacre reaction rates 280399  mg26an   (low)                 
+ 3  280399  Nacre reaction rates 280399  mg26an   (high)                
+
+ Ref. # 1 selected for reaction mg26an   (nominal)                   
+===============================================================================
+   118   1 AL 26m( 0 OOOOO, 0 OOOOO)  1 MG 26 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  140303  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the
+             Nuclides (Japanese Nuclear Data Committee and Nuclear Data 
+            Center; Japan Atomic Energy Research Institute)  / Experimen
+            tal beta-decay rate                                         
+
+ Ref. # 1 selected for reaction 1 AL 26m( 0 OOOOO, 0 OOOOO)  1 MG 26 
+===============================================================================
+   119   1 AL 26m( 1 NEUT , 1 PROT )  1 MG 26 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 AL 26m( 1 NEUT , 1 PROT )  1 MG 26 
+===============================================================================
+   120   1 AL 26m( 1 NEUT , 1 HE  4)  1 NA 23 
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1  260600  Nacre nominal (explicit reverse)                            
+ 2       0  CF88                                                        
+
+ Ref. # 1 selected for reaction 1 AL 26m( 1 NEUT , 1 HE  4)  1 NA 23 
+===============================================================================
+   121   1 AL 26m( 1 NEUT , 0 OOOOO)  1 AL 27 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  Woosley S.E., Fowler W.A., Holmes J.A., Zimmerman B.A., 1978
+            , Atomic Data Nucl. Data Tables 22, 371                     
+
+ Ref. # 1 selected for reaction 1 AL 26m( 1 NEUT , 0 OOOOO)  1 AL 27 
+===============================================================================
+1 AL 26m( 1 PROT , 0 OOOOO)  1 AL 27 
+ Short-cut reaction...
+ Intermediate nucleus is SI 27 
+ Missing reaction is 1 AL 26m( H   1 , OOOOO ) SI 27 
+
+
+   122   1 AL 26m( 1 PROT , 0 OOOOO)  1 AL 27 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  al26pg2  (nominal)             
+ 2  280399  Nacre reaction rates 280399  al26pg2  (low)                 
+ 3  280399  Nacre reaction rates 280399  al26pg2  (high)                
+
+ Ref. # 1 selected for reaction al26pg2  (nominal)                   
+===============================================================================
+   123   1 AL 26g( 0 OOOOO, 0 OOOOO)  1 MG 26 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  140303  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the
+             Nuclides (Japanese Nuclear Data Committee and Nuclear Data 
+            Center; Japan Atomic Energy Research Institute)  / Experimen
+            tal beta-decay rate                                         
+
+ Ref. # 1 selected for reaction 1 AL 26g( 0 OOOOO, 0 OOOOO)  1 MG 26 
+===============================================================================
+   124   1 AL 26g( 1 NEUT , 0 OOOOO)  1 AL 27 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  Woosley S.E., Fowler W.A., Holmes J.A., Zimmerman B.A., 1978
+            , Atomic Data Nucl. Data Tables 22, 371                     
+
+ Ref. # 1 selected for reaction 1 AL 26g( 1 NEUT , 0 OOOOO)  1 AL 27 
+===============================================================================
+   125   1 AL 26g( 1 NEUT , 1 PROT )  1 MG 26 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1       0  CF88; Total rate (g+m) above T8 = 3.9                       
+
+ Ref. # 1 selected for reaction 1 AL 26g( 1 NEUT , 1 PROT )  1 MG 26 
+===============================================================================
+   126   1 AL 26g( 1 NEUT , 1 HE  4)  1 NA 23 
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1  260600  Nacre nominal (explicit reverse) (total m+g rate above T8=3.
+            9                                                           
+ 2       0  CF88; Total rate (g+m) above T8 = 3.9                       
+
+ Ref. # 1 selected for reaction 1 AL 26g( 1 NEUT , 1 HE  4)  1 NA 23 
+===============================================================================
+1 AL 26g( 1 PROT , 0 OOOOO)  1 AL 27 
+ Short-cut reaction...
+ Intermediate nucleus is SI 27 
+ Missing reaction is 1 AL 26g( H   1 , OOOOO ) SI 27 
+
+
+   127   1 AL 26g( 1 PROT , 0 OOOOO)  1 AL 27 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 AL 26g( 1 PROT , 0 OOOOO)  1 SI 27 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapAL
+
+T8 = 0.10E+00: H-F    = -.32E+02 data = -.36E+02    ratio: log(data/H-F)  = -.46E+01
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  151200  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001, 
+            ApJS 134, 151                                               
+
+ Ref. # 1 selected for reaction 1 AL 26g( 1 PROT , 0 OOOOO)  1 SI 27 
+===============================================================================
+   128   1 AL 26g( 0 OOOOO, 0 OOOOO)  1 AL 26m
+
+ WARNING: NaN present in the data at high  temperatures from grid point  53
+ WARNING: Extrapolation from MOST not possible
+  reaction kind is not one available in MOST
+  Terminate extrapolation process!
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40399  Vogelaar R.B., 1989, Ph.D.thesis, Caltech - WARNING: Transit
+            ion rate from ground to isomeric state through the mediating
+             417 and 1058 keV levels. Only relevant at T8 < 3.9 when nuc
+            leus is not thermalized (Ward R.A., Fowler W.A., 1980, ApJ 2
+            38, 266)                                                    
+
+ Ref. # 1 selected for reaction 1 AL 26g( 0 OOOOO, 0 OOOOO)  1 AL 26m
+===============================================================================
+   129   1 AL 27 ( 1 PROT , 0 OOOOO)  1 SI 28 
+
+                      T9 =   0.025 10.000
+ Stellar enhancement factor: 1.000  0.740
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  al27pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  al27pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  al27pg   (high)                
+
+ Ref. # 1 selected for reaction al27pg   (nominal)                   
+===============================================================================
+   130   1 AL 27 ( 1 PROT , 1 HE  4)  1 MG 24 
+
+                      T9 =   0.025 10.000
+ Stellar enhancement factor: 1.000  1.320
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  al27pa   (nominal)             
+ 2  280399  Nacre reaction rates 280399  al27pa   (low)                 
+ 3  280399  Nacre reaction rates 280399  al27pa   (high)                
+
+ Ref. # 1 selected for reaction al27pa   (nominal)                   
+===============================================================================
+1 AL 27 ( 1 HE  4, 1 NEUT )  1 SI 30 
+ Short-cut reaction...
+ Intermediate nucleus is P  30 
+ Missing reaction is 1 AL 27 ( HE  4 , n   1 ) P  30 
+
+
+   131   1 AL 27 ( 1 HE  4, 1 NEUT )  1 SI 30 
+
+                      T9 =   0.450 10.000
+ Stellar enhancement factor: 1.000  1.190
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  al27an   (nominal)             
+ 2  280399  Nacre reaction rates 280399  al27an   (low)                 
+ 3  280399  Nacre reaction rates 280399  al27an   (high)                
+
+ Ref. # 1 selected for reaction al27an   (nominal)                   
+===============================================================================
+   132   1 AL 27 ( 1 HE  4, 1 PROT )  1 SI 30 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 AL 27 ( 1 HE  4, 1 PROT )  1 SI 30 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Acap/acapAL
+
+T8 = 0.10E+00: H-F    = -.98E+02 data = -.98E+02    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction Al 27(a,p)Si 30                      
+===============================================================================
+   133   1 SI 28 ( 1 NEUT , 0 OOOOO)  1 SI 29 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope SI 28  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefSI
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 SI 28 ( 1 NEUT , 0 OOOOO)  1 SI 29 
+===============================================================================
+1 SI 28 ( 1 PROT , 0 OOOOO)  1 SI 29 
+ Short-cut reaction...
+ Intermediate nucleus is P  29 
+ Missing reaction is 1 SI 28 ( H   1 , OOOOO ) P  29 
+
+
+   134   1 SI 28 ( 1 PROT , 0 OOOOO)  1 SI 29 
+
+                      T9 =   0.030 10.000
+ Stellar enhancement factor: 1.000  0.930
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  si28pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  si28pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  si28pg   (high)                
+
+ Ref. # 1 selected for reaction si28pg   (nominal)                   
+===============================================================================
+   135   1 SI 28 ( 1 HE  4, 0 OOOOO)  1 S  32 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 SI 28 ( 1 HE  4, 0 OOOOO)  1 S  32 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Acap/acapSI
+
+T8 = 0.10E+00: H-F    = -.98E+02 data = -.98E+02    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction Si 28(a,g)S  32                      
+===============================================================================
+   136   1 SI 29 ( 1 NEUT , 0 OOOOO)  1 SI 30 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope SI 29  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefSI
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 SI 29 ( 1 NEUT , 0 OOOOO)  1 SI 30 
+===============================================================================
+1 SI 29 ( 1 PROT , 0 OOOOO)  1 SI 30 
+ Short-cut reaction...
+ Intermediate nucleus is P  30 
+ Missing reaction is 1 SI 29 ( H   1 , OOOOO ) P  30 
+
+
+   137   1 SI 29 ( 1 PROT , 0 OOOOO)  1 SI 30 
+
+                      T9 =   0.025 10.000
+ Stellar enhancement factor: 1.000  0.700
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  si29pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  si29pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  si29pg   (high)                
+
+ Ref. # 1 selected for reaction si29pg   (nominal)                   
+===============================================================================
+1 SI 30 ( 1 NEUT , 0 OOOOO)  1 P  31 
+ Short-cut reaction...
+ Intermediate nucleus is SI 31 
+ Missing reaction is 1 SI 30 ( n   1 , OOOOO ) SI 31 
+
+
+   138   1 SI 30 ( 1 NEUT , 0 OOOOO)  1 P  31 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope SI 30  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefSI
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 SI 30 ( 1 NEUT , 0 OOOOO)  1 SI 31 
+===============================================================================
+   139   1 SI 30 ( 1 PROT , 0 OOOOO)  1 P  31 
+
+                      T9 =   0.025 10.000
+ Stellar enhancement factor: 1.000  0.790
+  provided by NACRE
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ Number of rates available = 3
+
+ #  Date    Reference 
+ 1  280399  Nacre reaction rates 280399  si30pg   (nominal)             
+ 2  280399  Nacre reaction rates 280399  si30pg   (low)                 
+ 3  280399  Nacre reaction rates 280399  si30pg   (high)                
+
+ Ref. # 1 selected for reaction si30pg   (nominal)                   
+===============================================================================
+1 P  31 ( 1 NEUT , 0 OOOOO)  1 S  32 
+ Short-cut reaction...
+ Intermediate nucleus is P  32 
+ Missing reaction is 1 P  31 ( n   1 , OOOOO ) P  32 
+
+
+   140   1 P  31 ( 1 NEUT , 0 OOOOO)  1 S  32 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope P  31  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefP 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 P  31 ( 1 NEUT , 0 OOOOO)  1 P  32 
+===============================================================================
+   141   1 P  31 ( 1 PROT , 1 HE  4)  1 SI 28 
+
+                      T9 =   0.010 10.000
+ Stellar enhancement factor: 1.000  1.425
+  from isotope P  31  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefP 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 P  31 ( 1 PROT , 1 HE  4)  1 SI 28 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapP 
+
+T8 = 0.10E+00: H-F    = -.37E+02 data = -.43E+02    ratio: log(data/H-F)  = -.57E+01
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  151200  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001, 
+            ApJS 134, 151                                               
+
+ Ref. # 1 selected for reaction 1 P  31 ( 1 PROT , 1 HE  4)  1 SI 28 
+===============================================================================
+   142   1 P  31 ( 1 PROT , 0 OOOOO)  1 S  32 
+
+                      T9 =   0.010 10.000
+ Stellar enhancement factor: 1.000  0.667
+  from isotope P  31  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefP 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 P  31 ( 1 PROT , 0 OOOOO)  1 S  32 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapP 
+
+T8 = 0.10E+00: H-F    = -.36E+02 data = -.41E+02    ratio: log(data/H-F)  = -.46E+01
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  151200  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001, 
+            ApJS 134, 151                                               
+
+ Ref. # 1 selected for reaction 1 P  31 ( 1 PROT , 0 OOOOO)  1 S  32 
+===============================================================================
+   143   1 S  32 ( 1 NEUT , 0 OOOOO)  1 S  33 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope S  32  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefS 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 S  32 ( 1 NEUT , 0 OOOOO)  1 S  33 
+===============================================================================
+   144   1 S  32 ( 1 NEUT , 1 HE  4)  1 SI 29 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 S  32 ( 1 NEUT , 1 HE  4)  1 SI 29 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Ncap/ncapS 
+
+T8 = 0.10E+00: H-F    = 0.30E+01 data = 0.30E+01    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction S  32(n,a)Si 29                      
+===============================================================================
+1 S  32 ( 1 PROT , 0 OOOOO)  1 S  33 
+ Short-cut reaction...
+ Intermediate nucleus is CL 33 
+ Missing reaction is 1 S  32 ( H   1 , OOOOO ) CL 33 
+
+
+   145   1 S  32 ( 1 PROT , 0 OOOOO)  1 S  33 
+
+                      T9 =   0.010 10.000
+ Stellar enhancement factor: 1.000  0.874
+  from isotope S  32  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefS 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 S  32 ( 1 PROT , 0 OOOOO)  1 CL 33 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapS 
+
+T8 = 0.10E+00: H-F    = -.38E+02 data = -.43E+02    ratio: log(data/H-F)  = -.50E+01
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  151200  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001, 
+            ApJS 134, 151                                               
+
+ Ref. # 1 selected for reaction 1 S  32 ( 1 PROT , 0 OOOOO)  1 CL 33 
+===============================================================================
+   146   1 S  33 ( 1 NEUT , 0 OOOOO)  1 S  34 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope S  33  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefS 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 S  33 ( 1 NEUT , 0 OOOOO)  1 S  34 
+===============================================================================
+   147   1 S  33 ( 1 NEUT , 1 HE  4)  1 SI 30 
+
+ Number of rates available = 2
+
+ #  Date    Reference 
+ 1   30993   Wagemans C., Weigmann H., Barthelemy R., 1987, Nucl.Phys. A
+            469, 497 renormalized from 115 to 110mb thermal cross sectio
+            n (Wagemans C., D'hondt P., Brissot R., 1993, in: Nuclei in 
+            the Cosmos, eds. F. Kappeler & K. Wisshak, Inst. of Phys. Pu
+            bl., Bristol, p. 247 WARNING: Valid 0.14 < T9 < 2.3         
+ 2       0  Auchampaugh G.F., Halperin J., Macklin R.L.,  Howard W.M., 1
+            975, Phys.Rev. C12, 1126                                    
+
+ Ref. # 1 selected for reaction 1 S  33 ( 1 NEUT , 1 HE  4)  1 SI 30 
+===============================================================================
+1 S  33 ( 1 PROT , 0 OOOOO)  1 S  34 
+ Short-cut reaction...
+ Intermediate nucleus is CL 34 
+ Missing reaction is 1 S  33 ( H   1 , OOOOO ) CL 34 
+
+
+   148   1 S  33 ( 1 PROT , 0 OOOOO)  1 S  34 
+
+                      T9 =   0.020 10.000
+ Stellar enhancement factor: 1.000  0.791
+  from isotope S  33  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefS 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  23
+1 S  33 ( 1 PROT , 0 OOOOO)  1 CL 34 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapS 
+
+T8 = 0.23E+00: H-F    = -.31E+02 data = -.43E+02    ratio: log(data/H-F)  = -.12E+02
+
+T8 = 0.10E+00: H-F    = -.38E+02 renorm = -.50E+02
+T8 = 0.14E+00: H-F    = -.35E+02 renorm = -.47E+02
+T8 = 0.19E+00: H-F    = -.33E+02 renorm = -.45E+02
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  151200  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001, 
+            ApJS 134, 151                                               
+
+ Ref. # 1 selected for reaction 1 S  33 ( 1 PROT , 0 OOOOO)  1 CL 34 
+===============================================================================
+   149   1 S  34 ( 1 NEUT , 0 OOOOO)  1 S  35 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope S  34  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefS 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 S  34 ( 1 NEUT , 0 OOOOO)  1 S  35 
+===============================================================================
+   150   1 S  34 ( 1 PROT , 0 OOOOO)  1 CL 35 
+
+                      T9 =   0.030 10.000
+ Stellar enhancement factor: 1.000  0.782
+  from isotope S  34  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefS 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  25
+1 S  34 ( 1 PROT , 0 OOOOO)  1 CL 35 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapS 
+
+T8 = 0.33E+00: H-F    = -.26E+02 data = -.29E+02    ratio: log(data/H-F)  = -.34E+01
+
+T8 = 0.10E+00: H-F    = -.38E+02 renorm = -.41E+02
+T8 = 0.14E+00: H-F    = -.35E+02 renorm = -.39E+02
+T8 = 0.19E+00: H-F    = -.33E+02 renorm = -.36E+02
+T8 = 0.23E+00: H-F    = -.31E+02 renorm = -.34E+02
+T8 = 0.28E+00: H-F    = -.28E+02 renorm = -.32E+02
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  151200  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001, 
+            ApJS 134, 151                                               
+
+ Ref. # 1 selected for reaction 1 S  34 ( 1 PROT , 0 OOOOO)  1 CL 35 
+===============================================================================
+   151   1 S  35 ( 0 OOOOO, 0 OOOOO)  1 CL 35 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  140303  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the
+             Nuclides (Japanese Nuclear Data Committee and Nuclear Data 
+            Center; Japan Atomic Energy Research Institute)  / Experimen
+            tal beta-decay rate                                         
+
+ Ref. # 1 selected for reaction 1 S  35 ( 0 OOOOO, 0 OOOOO)  1 CL 35 
+===============================================================================
+   152   1 S  35 ( 1 NEUT , 0 OOOOO)  1 S  36 
+
+ WARNING: Minimum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction S  35(n,g)S  36                      
+===============================================================================
+   153   1 S  35 ( 1 PROT , 0 OOOOO)  1 CL 36 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 S  35 ( 1 PROT , 0 OOOOO)  1 CL 36 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapS 
+
+T8 = 0.10E+00: H-F    = -.38E+02 data = -.38E+02    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction S  35(p,g)Cl 36                      
+===============================================================================
+   154   1 CL 35 ( 1 NEUT , 0 OOOOO)  1 CL 36 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope CL 35  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefCL
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 CL 35 ( 1 NEUT , 0 OOOOO)  1 CL 36 
+===============================================================================
+   155   1 CL 35 ( 1 PROT , 0 OOOOO)  1 AR 36 
+
+                      T9 =   0.010 10.000
+ Stellar enhancement factor: 1.000  0.780
+  from isotope CL 35  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefCL
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 CL 35 ( 1 PROT , 0 OOOOO)  1 AR 36 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapCL
+
+T8 = 0.10E+00: H-F    = -.40E+02 data = -.40E+02    ratio: log(data/H-F)  = -.57E-01
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  151200  Iliadis C., D'Auria J.M., Starrfield S., Wiescher M., 2001, 
+            ApJS 134, 151                                               
+
+ Ref. # 1 selected for reaction 1 CL 35 ( 1 PROT , 0 OOOOO)  1 AR 36 
+===============================================================================
+1 S  36 ( 1 NEUT , 0 OOOOO)  1 CL 37 
+ Short-cut reaction...
+ Intermediate nucleus is S  37 
+ Missing reaction is 1 S  36 ( n   1 , OOOOO ) S  37 
+
+
+   156   1 S  36 ( 1 NEUT , 0 OOOOO)  1 CL 37 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope S  36  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefS 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 S  36 ( 1 NEUT , 0 OOOOO)  1 S  37 
+===============================================================================
+   157   1 S  36 ( 1 PROT , 0 OOOOO)  1 CL 37 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 S  36 ( 1 PROT , 0 OOOOO)  1 CL 37 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapS 
+
+T8 = 0.10E+00: H-F    = -.38E+02 data = -.38E+02    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction S  36(p,g)Cl 37                      
+===============================================================================
+   158   1 CL 36 ( 0 OOOOO, 0 OOOOO)  1 AR 36 
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1  140303  Horiguchi T., Tachibana T.,  Katakura J., 1996. Chart of the
+             Nuclides (Japanese Nuclear Data Committee and Nuclear Data 
+            Center; Japan Atomic Energy Research Institute)  / Experimen
+            tal beta-decay rate                                         
+
+ Ref. # 1 selected for reaction 1 CL 36 ( 0 OOOOO, 0 OOOOO)  1 AR 36 
+===============================================================================
+   159   1 CL 36 ( 1 NEUT , 0 OOOOO)  1 CL 37 
+
+ WARNING: Minimum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction Cl 36(n,g)Cl 37                      
+===============================================================================
+1 CL 36 ( 1 PROT , 0 OOOOO)  1 CL 37 
+ Short-cut reaction...
+ Intermediate nucleus is AR 37 
+ Missing reaction is 1 CL 36 ( H   1 , OOOOO ) AR 37 
+
+
+AR 37 ( OOOOO , OOOOO ) CL 37  treated as electron capture
+
+   160   1 CL 36 ( 1 PROT , 0 OOOOO)  1 CL 37 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 CL 36 ( 1 PROT , 0 OOOOO)  1 AR 37 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapCL
+
+T8 = 0.10E+00: H-F    = -.40E+02 data = -.40E+02    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction Cl 36(p,g)Ar 37                      
+===============================================================================
+1 CL 37 ( 1 NEUT , 0 OOOOO)  1 AR 38 
+ Short-cut reaction...
+ Intermediate nucleus is CL 38 
+ Missing reaction is 1 CL 37 ( n   1 , OOOOO ) CL 38 
+
+
+   161   1 CL 37 ( 1 NEUT , 0 OOOOO)  1 AR 38 
+
+                      T9 =   0.058  1.160
+ Stellar enhancement factor: 1.000  1.000
+  from isotope CL 37  in file  http://astropc0.ulb.ac.be/Nucdata/Sef/sefCL
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: Maximum grid temperature outside tabular range
+ Extrapolating assuming constant Na sigma v for grid point   1
+ Extrapolating assuming constant Na sigma v for grid point   2
+ Extrapolating assuming constant Na sigma v for grid point   3
+ Extrapolating assuming constant Na sigma v for grid point   4
+ Extrapolating assuming constant Na sigma v for grid point   5
+ Extrapolating assuming constant Na sigma v for grid point   6
+ Extrapolating assuming constant Na sigma v for grid point   7
+ Extrapolating assuming constant Na sigma v for grid point   8
+ Extrapolating assuming constant Na sigma v for grid point   9
+ Extrapolating assuming constant Na sigma v for grid point  10
+ Extrapolating assuming constant Na sigma v for grid point  11
+ Extrapolating assuming constant Na sigma v for grid point  12
+ Extrapolating assuming constant Na sigma v for grid point  13
+ Extrapolating assuming constant Na sigma v for grid point  14
+ Extrapolating assuming constant Na sigma v for grid point  15
+ Extrapolating assuming constant Na sigma v for grid point  16
+ Extrapolating assuming constant Na sigma v for grid point  17
+ Extrapolating assuming constant Na sigma v for grid point  18
+ Extrapolating assuming constant Na sigma v for grid point  19
+ Extrapolating assuming constant Na sigma v for grid point  20
+ Extrapolating assuming constant Na sigma v for grid point  21
+ Extrapolating assuming constant Na sigma v for grid point  22
+ Extrapolating assuming constant Na sigma v for grid point  23
+ Extrapolating assuming constant Na sigma v for grid point  24
+ Extrapolating assuming constant Na sigma v for grid point  25
+ Extrapolating assuming constant Na sigma v for grid point  26
+ Extrapolating assuming constant Na sigma v for grid point  27
+ Extrapolating assuming constant Na sigma v for grid point  28
+ Extrapolating assuming constant Na sigma v for grid point  29
+ Extrapolating assuming constant Na sigma v for grid point  30
+ Extrapolating assuming constant Na sigma v for grid point  31
+ Extrapolating assuming constant Na sigma v for grid point  77
+ Extrapolating assuming constant Na sigma v for grid point  78
+ Extrapolating assuming constant Na sigma v for grid point  79
+ Extrapolating assuming constant Na sigma v for grid point  80
+ Extrapolating assuming constant Na sigma v for grid point  81
+ Extrapolating assuming constant Na sigma v for grid point  82
+ Extrapolating assuming constant Na sigma v for grid point  83
+ Extrapolating assuming constant Na sigma v for grid point  84
+ Extrapolating assuming constant Na sigma v for grid point  85
+ Extrapolating assuming constant Na sigma v for grid point  86
+ Extrapolating assuming constant Na sigma v for grid point  87
+ Extrapolating assuming constant Na sigma v for grid point  88
+ Extrapolating assuming constant Na sigma v for grid point  89
+ Extrapolating assuming constant Na sigma v for grid point  90
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   40400  Bao Z.Y., Beer H., Kaeppeler F., Voss F., Wisshak K., Rausch
+            er T., 2000, Atom. Data Nucl. Data Tables 76, 70            
+
+ Ref. # 1 selected for reaction 1 CL 37 ( 1 NEUT , 0 OOOOO)  1 CL 38 
+===============================================================================
+   162   1 CL 37 ( 1 PROT , 0 OOOOO)  1 AR 38 
+
+ WARNING: Minimum grid temperature outside tabular range
+
+ WARNING: NaN present in the data at low temperatures up to grid point  20
+1 CL 37 ( 1 PROT , 0 OOOOO)  1 AR 38 
+
+ ** Attempt to extrapolate experimental data by applying  slope of Hauser-Feshbach rate
+    to last experimental data point **
+/www/docs-default/Nucdata/Pcap/pcapCL
+
+T8 = 0.10E+00: H-F    = -.40E+02 data = -.40E+02    ratio: log(data/H-F)  = 0.00E+00
+
+
+ low-T extrapolation successfully completed
+
+ Number of rates available = 1
+
+ #  Date    Reference 
+ 1   41104  Hauser-Feshbach                                             
+
+ Ref. # 1 selected for reaction Cl 37(p,g)Ar 38                      
+===============================================================================

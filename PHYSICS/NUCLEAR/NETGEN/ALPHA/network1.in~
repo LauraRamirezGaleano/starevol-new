@@ -1,0 +1,32 @@
+1        1 MG 24 ( 1 HE  4, 1 PROT )  1 AL 27
+1        1 AL 27 ( 1 PROT , 1 HE  4)  1 MG 24
+1        1 AL 27 ( 1 PROT , 0 OOOOO)  1 SI 28
+1        1 SI 28 ( 0 OOOOO, 1 PROT )  1 AL 27
+1        1 SI 28 ( 1 HE  4, 1 PROT )  1 P  31
+1        1 P  31 ( 1 PROT , 1 HE  4)  1 SI 28
+1        1 P  31 ( 1 PROT , 0 OOOOO)  1 S  32
+1        1 S  32 ( 0 OOOOO, 1 PROT )  1 P  31
+1        1 S  32 ( 1 HE  4, 1 PROT )  1 CL 35
+1        1 CL 35 ( 1 PROT , 1 HE  4)  1 S  32
+1        1 CL 35 ( 1 PROT , 0 OOOOO)  1 AR 36
+1        1 AR 36 ( 0 OOOOO, 1 PROT )  1 CL 35
+1        1 AR 36 ( 1 HE  4, 1 PROT )  1 K  39
+1        1 K  39 ( 1 PROT , 1 HE  4)  1 AR 36
+1        1 K  39 ( 1 PROT , 0 OOOOO)  1 CA 40
+1        1 CA 40 ( 0 OOOOO, 1 PROT )  1 K  39
+1        1 CA 40 ( 1 HE  4, 1 PROT )  1 SC 43
+1        1 SC 43 ( 1 PROT , 1 HE  4)  1 CA 40
+1        1 SC 43 ( 1 PROT , 0 OOOOO)  1 TI 44
+1        1 TI 44 ( 0 OOOOO, 1 PROT )  1 SC 43
+1        1 TI 44 ( 1 HE  4, 1 PROT )  1 V  47
+1        1 V  47 ( 1 PROT , 1 HE  4)  1 TI 44
+1        1 V  47 ( 1 PROT , 0 OOOOO)  1 CR 48
+1        1 CR 48 ( 0 OOOOO, 1 PROT )  1 V  47
+1        1 CR 48 ( 1 HE  4, 1 PROT )  1 MN 51
+1        1 MN 51 ( 1 PROT , 1 HE  4)  1 CR 48
+1        1 MN 51 ( 1 PROT , 0 OOOOO)  1 FE 52
+1        1 FE 52 ( 0 OOOOO, 1 PROT )  1 MN 51
+1        1 FE 52 ( 1 HE  4, 1 PROT )  1 CO 55
+1        1 CO 55 ( 1 PROT , 1 HE  4)  1 FE 52
+1        1 CO 55 ( 1 PROT , 0 OOOOO)  1 FE 52
+1        1 FE 52 ( 0 OOOOO, 1 PROT )  1 CO 55

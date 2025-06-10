@@ -1,0 +1,8 @@
+ftp ftp.ast.cam.ac.uk
+login: anonymous
+passwd: e-mail address
+cd pub/hg
+mget opa_v9f.tar.gz
+bye
+
+
