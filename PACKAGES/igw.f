@@ -279,8 +279,8 @@ c      include 'evolcom.transpondesexcit'
       double precision sigmaret,dintret,xN2,ll1
       double precision amp_crit,amp_1,x_depot,abslogamp_crit
       double precision integrand,numerator(nsh),denominator
-      double precision alpha_val,dr,N,N2, Omega_d(nsh)
-      double precision tamp,zeta,sigma2,ll1_15,coriolis
+      double precision alpha_val,dr,N,N2, Omega_d
+      double precision tamp,zeta,sigma2,coriolis
       double precision dr_arr(nsh),domega_arr(nsh)
       integer n_allerretour
       integer i,k,k1,kk,un,allerretour
@@ -293,8 +293,7 @@ c      include 'evolcom.transpondesexcit'
       abslogamp_crit=abs(log10(amp_crit))
 
       ll1=(dfloat(ll+1)*dfloat(ll))**1.5d0
-      !ll1_15 = ll1**1.5d0
-      !alpha_val = 1.d0 - dfloat(mm*mm)/ll1!dfloat(mm*mm)/ll1
+      alpha_val = 1.d0 - dfloat(mm*mm)/(dfloat(ll+1)*dfloat(ll))
       do k=1,ncouche
         xintret(k)=0.d0
         depotonde(k)=0.d0
@@ -329,18 +328,18 @@ C        xN2=dsqrt(xN_o(k)/(xN_o(k)-sigmaret**2))
         !xN2=dsqrt(abs(xN_o(k)/(xN_o(k)-sigmaret**2)))
         !dintret=ll1**1.5d0*fint(k)*xN2/sigmaret**4
         ! Compute Omega and dOmega/dr
-        !Omega_d = vomega(k)
-        !tamp = domega_arr(k)/dr_arr(k)
+        Omega_d = vomega(k)
+        tamp = domega_arr(k)/dr_arr(k)
         !dr = dr_arr(k)
         
-        !zeta = 2.d0*Omega_d +(r(k)*tamp)
-        !coriolis = (alpha_val*2.d0*Omega_d*zeta)
+        zeta = 2.d0*Omega_d +(r(k)*tamp)
+        coriolis = (alpha_val*2.d0*Omega_d*zeta)
         !coriolis = 0.0d0
-        numerator(k) = xNt_o(k)!+coriolis
+        numerator(k) = xNt_o(k)+coriolis
 
         !xN2 = N/dsqrt(abs(denominator -coriolis))
-        xN2=dsqrt(abs(xN_o(k)/(xN_o(k)-sigmaret**2)))
-        !xN2=dsqrt(abs(xN_o(k)/(xN_o(k)+coriolis-sigmaret**2)))
+        !xN2=dsqrt(abs(xN_o(k)/(xN_o(k)-sigmaret**2)))
+        xN2=dsqrt(abs(xN_o(k)/(xN_o(k)+coriolis-sigmaret**2)))
 
 !             integrand = (xKm_o (k)+xnuvv_o(k))* (N/sigma2) * 
 ! &                  (numerator/sigma2) * xN2/(r(k)**3)
