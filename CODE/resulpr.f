@@ -353,18 +353,19 @@ c        enddo
       if (no.eq.maxmod) then
          if (microdiffus.or.thermohaline.or.igw) then
             if (igw) then
-            print *,'LR 85 is written!'
+               print *,'LR 85 is written!'
 
                do k = 1,nmod
                   if (dabs(lumondestot(k)).lt.1d-99)
      &                 lumondestot(k) = 0.d0
                   if (dabs(lumondes_surf(k)).lt.1d-99)
      &                 lumondes_surf(k) = 0.d0
-                  if (dabs(lumondes_core(k)).lt.1d-99)
+                  if (dabs(lumondes_core(k)).lt.1d-99) 
      &                 lumondes_core(k) = 0.d0
                   brunt(k)=brunt_o(nmod-k+1)
                   lumwaves(k)=lumwave(nmod-k+1)
                enddo
+               print *,'lumwaves=',lumwaves !LR 20250616
 
    !             ! Diagnostic print loop LR 20250319
    !             print *,'nmod=',nmod
@@ -392,8 +393,8 @@ c        enddo
      &              tautime(k,ic13pg), Ereac(k,ic13pg), 
      &              tautime(k,in14pg), Ereac(k,in14pg), 
      &              tautime(k,icpg), Ereac(k,icpg)
-                  ! Output to standard output to verify this record is written.
-                  !write(*,*) 'Before lumwaves(', k, ') =', lumwaves(k)
+                  ! Output to standard output to verify this is written.
+                  !write(*,*) 'resulpr lumwaves(', k, ') =', lumwaves(k)
                enddo
                ! Diagnostic loop LR 20250408
                         

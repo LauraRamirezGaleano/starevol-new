@@ -495,8 +495,13 @@ c      close (25)  !  evolchc5
       close (41)  !  evoltc1
       close (42)  !  evoltc2
       close (43)  !  evolas
+      
 
-      if (irotbin.ne.0.or.microdiffus.or.thermohaline.or.igw) close (85) ! evolvarang
+      if (irotbin.ne.0.or.microdiffus.or.thermohaline.or.igw) then
+         close (85) ! evolvarang
+         close (98) !unit_wave
+         close (102) !unit_wave2
+      endif   
 
 c$$$      if (ifail.gt.0) then
 c$$$         stop 'failed'

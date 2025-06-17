@@ -40,6 +40,7 @@ c........................Rajoute par Alice
       include 'evolcom.therm'
       include 'evolcom.therm2'
       include 'evolcom.var'
+      include 'evolcom.igw' ! LR 20250616
 
 #ifdef GYRE     
 c......................Rajoute par Alice

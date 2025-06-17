@@ -32,6 +32,7 @@
       include 'evolcom.therm'
 
       include 'evolcom.grad'
+      include 'evolcom.igw' ! LR 20250616
 
       integer iiter
       integer ncm(neq)
