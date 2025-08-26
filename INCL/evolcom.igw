@@ -97,6 +97,12 @@ C From CC_2007
       double precision S_number(nsh)    ! S = 2 Omega / N
       double precision Y_number(nsh)    ! Y = Ri^(-1/2)
       double precision Fr_number(nsh, nfreq) ! Froude number (Fr = sigma / N)
+      !LR 20250617
+      double precision xintret_target_out,xintret_target_in
+      double precision xintret_target_out2,xintret_target_in2
+      common /xintret_target_block/ xintret_target_out(nsh),
+     & xintret_target_in(nsh), xintret_target_out2(nsh),
+     & xintret_target_in2(nsh)
 
       common /igw_transp/ om_o(nsh),xdm_o(nsh),xNt_o(nsh),
      &     xN_o(nsh),brunt_o(nsh)

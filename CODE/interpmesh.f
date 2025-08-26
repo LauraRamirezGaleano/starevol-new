@@ -57,6 +57,7 @@
       include 'evolcom.therm'
       include 'evolcom.transp'
       include 'evolcom.var'
+      include 'evolcom.igw' !LR 20250617
 
       integer ls,il,il0,il1,ir,ir1,ir2
       integer ia,ib,ic,id,iab,icd,ka,kb

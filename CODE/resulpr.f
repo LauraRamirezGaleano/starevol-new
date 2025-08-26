@@ -56,12 +56,12 @@ C <--
       double precision brunt,lumwaves(nsh),bruntV2,bruntV
       !double precision lumwave !LR 20250408
       double precision depottotn,depottot_surfn,depottot_coren
-      double precision depotondestotn,vrn
+      double precision depotondestotn,vrn, xintret_target1_out(nsh)!LR 20250619
+      double precision xintret_target1_in(nsh), xintret_target2_in(nsh)
+      double precision xintret_target2_out(nsh) 
 
       double precision abundelec     ! Ajout pour creer donnees Montreal (Mars 2018)
- 
 
-      !----LR 20250407
       character*1 crzc(nsh)
       logical partialmix
       !common /igw_diffusion/ lumwave(nsh)  !LR 20250408
@@ -353,7 +353,7 @@ c        enddo
       if (no.eq.maxmod) then
          if (microdiffus.or.thermohaline.or.igw) then
             if (igw) then
-               print *,'LR 85 is written!'
+               !print *,'LR 85 is written!'
 
                do k = 1,nmod
                   if (dabs(lumondestot(k)).lt.1d-99)
@@ -364,14 +364,13 @@ c        enddo
      &                 lumondes_core(k) = 0.d0
                   brunt(k)=brunt_o(nmod-k+1)
                   lumwaves(k)=lumwave(nmod-k+1)
+                  !--LR 20250617
+                  xintret_target1_out(k)=xintret_target_out(nmod-k+1) 
+                  xintret_target1_in(k)=xintret_target_in(nmod-k+1) 
+                  xintret_target2_out(k)=xintret_target_out2(nmod-k+1) 
+                  xintret_target2_in(k)=xintret_target_in2(nmod-k+1) 
                enddo
-               print *,'lumwaves=',lumwaves !LR 20250616
 
-   !             ! Diagnostic print loop LR 20250319
-   !             print *,'nmod=',nmod
-   !             do k = 1,nmod
-   !                print *,'Before writing, phiKS(', k,')=',
-   !   &                phiKS(k)
    !             enddo
                rewind (85)
                ! Diagnostic loop LR 20250408
@@ -380,9 +379,10 @@ c        enddo
      &              depottot(k)/lsun, depottot_surf(k)/lsun, 
      &              depottot_core(k)/lsun, depotwaves(k)/lsun, 
      &              Dondes(k), Dondeschim(k), lumwaves(k), 
-     &              lumwave_core(k), lumondes_surf(k), lumondes_core(k), 
-     &              lumondestot(k), brunt(k), vr(k)/rsun, vxpsi(k), 
-     &              Dmicro(k), vmicro(k), Dthc(k), phiKS(k), 
+     &              lumwave_core(k),xintret_target1_in(k),        ! lumondes_surf(k)->xintret_target1_in(k)
+     &              xintret_target2_in(k),xintret_target2_out(k), ! lumondes_core(k)-> xintret_target2_in(k)
+     &              xintret_target1_out(k),vr(k)/rsun,            !brunt(k)->xintret_target1_out(k) ! lumondestot(k)->xintret_target2_out(k)
+     &              vxpsi(k),Dmicro(k), vmicro(k), Dthc(k), phiKS(k), 
      &              deltaKS(k), tautime(k,ippg), Ereac(k,ippg), 
      &              tautime(k,ipdg), Ereac(k,ipdg), tautime(k,i2he3), 
      &              Ereac(k,i2he3), tautime(k,ihe3ag), Ereac(k,ihe3ag), 
@@ -393,34 +393,8 @@ c        enddo
      &              tautime(k,ic13pg), Ereac(k,ic13pg), 
      &              tautime(k,in14pg), Ereac(k,in14pg), 
      &              tautime(k,icpg), Ereac(k,icpg)
-                  ! Output to standard output to verify this is written.
-                  !write(*,*) 'resulpr lumwaves(', k, ') =', lumwaves(k)
-               enddo
-               ! Diagnostic loop LR 20250408
-                        
-   !             write (85) (lgdmic(k),lgdturb(k),vom(k),
-   !   &              depottot(k)/lsun,depottot_surf(k)/lsun,
-   !   &              depottot_core(k)/lsun,
-   !   &              depotwaves(k)/lsun,Dondes(k),Dondeschim(k),
-   !   &              lumwaves(k),lumwave_core(k),
-   !   &              lumondes_surf(k),lumondes_core(k),lumondestot(k),
-   !   &              brunt(k),vr(k)/rsun,vxpsi(k),
-   !   &              Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
-   !   &              deltaKS(k),tautime(k,ippg),Ereac(k,ippg),tautime(k
-   !   &              ,ipdg), Ereac(k,ipdg),tautime(k,i2he3),Ereac(k
-   !   &              ,i2he3),tautime(k,ihe3ag), Ereac(k,ihe3ag),tautime(k
-   !   &              ,ibe7beta),Ereac(k,ibe7beta), tautime(k,ili7pa)
-   !   &              ,Ereac(k,ili7pa),tautime(k,ibe7pg), Ereac(k,ibe7pg)
-   !   &              ,tautime(k,ib8beta),Ereac(k,ib8beta), tautime(k
-   !   &              ,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg), Ereac(k
-   !   &              ,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1,nmod)
-   !             ! Diagnostic print loop LR 20250408
-   !             !print *,'After writing, lumwaves(',k,')=',lumwaves(k)
-   !             do k = 1,nmod
-   !                print *,'After writing, lumwaves(', k,')=',
-   !   &                lumwaves(k)
-   !             enddo
 
+               enddo
 
             else
                print *,'85 in else!'

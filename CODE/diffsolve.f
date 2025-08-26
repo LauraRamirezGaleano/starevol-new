@@ -23,6 +23,7 @@
       include 'evolcom.teq'
       include 'evolcom.therm'
       include 'evolcom.var'
+      include 'evolcom.igw' !LR 20250617
 
       integer, intent (in) :: ielem
       integer ij,ndt,ndb,error

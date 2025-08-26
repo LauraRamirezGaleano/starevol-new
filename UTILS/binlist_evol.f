@@ -108,7 +108,8 @@ C      double precision dtcour,lmax,tmax,enucmax
       double precision hptce,rtce,rc,tc_hp,rc_hp,rce,tc_r,rc_r
       double precision tc_m,rc_m,tc_max,rc_max,secd,mce,factdc
       double precision lgdmic,lgdturb,vpsi
-      double precision Ri_n,S_n,Y_n !Added LR Jan 2025
+      double precision Ri_n,S_n,Y_n,lumwaves(nsh) !Added LR LR 20250616 
+      double precision brunt(nsh) !LR 20250616
       logical shockdetect
 
       integer kbce,ktce
@@ -241,10 +242,10 @@ C Modif Nadège (16/02/10)
 
 C     Modif 24/10/2023 -------------------------------------------------
                                                                        
-      character hydrodynamics*1
+      integer hydrodynamics
+      integer n_turbul(1)
       double precision evolpar_version
       double precision dm_ext
-      integer n_turbul(1)
       double precision Tfix,om_turbul,PM_turbul
       double precision disctime,dlnvma0,dlnvmi0,dlnenuc0
       double precision massend0,massrate0
@@ -797,30 +798,80 @@ c.. Smoothing the soundspeed profile
 
       if (microdiffus.or.thermohaline.or.igw) then
          if (igw) then
+            !print *,'Reading igw file' !LR
             open (unit=85, file = trim(diresults) // trim(name) // 'o',
      &           form = 'unformatted', status = 'old', action = 'read', 
      &           err=42)
-            !print *,'LR open ',trim(diresults) // trim(name) // 'o'
-
-            read (85, end=42, err=42) (lgdmic(k),lgdturb(k),vom(k),
-     &           depottot(k),depottot_surf(k),
-     &           depottot_core(k),
-     &           depotondestot(k),Dondes(k),Dondeschim(k),
-     &           lumwave(k),lumwave_core(k),
-     &           lumondes_surf(k),lumondes_core(k),lumondestot(k),
-     &           brunt_o(k),vr(k),vxpsi(k),
-     &           Dmicro(k),vmicro(k),Dthc(k),phiKS(k),          
-     &           deltaKS(k),tautime(k,ippg),Ereac(k,ippg),tautime(k
-     &           ,ipdg), Ereac(k,ipdg),tautime(k,i2he3),Ereac(k
-     &           ,i2he3),tautime(k,ihe3ag), Ereac(k,ihe3ag),tautime(k
-     &           ,ibe7beta),Ereac(k,ibe7beta), tautime(k,ili7pa)
-     &           ,Ereac(k,ili7pa),tautime(k,ibe7pg), Ereac(k,ibe7pg)
-     &           ,tautime(k,ib8beta),Ereac(k,ib8beta), tautime(k
-     &           ,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg), Ereac(k
-     &           ,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1,nmod)
-            do k =1,nmod
-               print *,'LR read bin', lumwave(k), deltaKS(k)
+            !file_2c = trim(diresults) // trim(name) // 'o'
+            !print *,'Open file to read ',file_2c !LR
+            do k = 1, nmod
+   !                read(85, end=42, err=42) lgdmic(k), lgdturb(k), 
+   !   &              vom(k), depottot(k), depottot_surf(k), 
+   !   &              depottot_core(k), depotwaves(k), 
+   !   &              Dondes(k), Dondeschim(k), lumwaves(k), 
+   !   &              lumwave_core(k), lumondes_surf(k), lumondes_core(k), 
+   !   &              lumondestot(k), brunt(k), vr(k), vxpsi(k), 
+   !   &              Dmicro(k), vmicro(k), Dthc(k), phiKS(k), 
+   !   &              deltaKS(k), tautime(k,ippg), Ereac(k,ippg), 
+   !   &              tautime(k,ipdg), Ereac(k,ipdg), tautime(k,i2he3), 
+   !   &              Ereac(k,i2he3), tautime(k,ihe3ag), Ereac(k,ihe3ag), 
+   !   &              tautime(k,ibe7beta), Ereac(k,ibe7beta), 
+   !   &              tautime(k,ili7pa), Ereac(k,ili7pa), 
+   !   &              tautime(k,ibe7pg), Ereac(k,ibe7pg), 
+   !   &              tautime(k,ib8beta), Ereac(k,ib8beta), 
+   !   &              tautime(k,ic13pg), Ereac(k,ic13pg), 
+   !   &              tautime(k,in14pg), Ereac(k,in14pg), 
+   !   &              tautime(k,icpg), Ereac(k,icpg)
+   !          enddo
+                  read(85, end=42, err=42) lgdmic(k), lgdturb(k), 
+     &              vom(k), depottot(k), depottot_surf(k), 
+     &              depottot_core(k), depotwaves(k), 
+     &              Dondes(k), Dondeschim(k), lumwaves(k), 
+     &              lumwave_core(k),xintret_target_in(k),
+     &              xintret_target_in2(k), ! lumwave_core(k), lumondes_surf(k), lumondes_core(k)
+     &              xintret_target_out2(k),xintret_target_out(k),vr(k), !brunt(k), ! LR 20250617
+     &              vxpsi(k),Dmicro(k), vmicro(k), Dthc(k), phiKS(k), 
+     &              deltaKS(k), tautime(k,ippg), Ereac(k,ippg), 
+     &              tautime(k,ipdg), Ereac(k,ipdg), tautime(k,i2he3), 
+     &              Ereac(k,i2he3), tautime(k,ihe3ag), Ereac(k,ihe3ag), 
+     &              tautime(k,ibe7beta), Ereac(k,ibe7beta), 
+     &              tautime(k,ili7pa), Ereac(k,ili7pa), 
+     &              tautime(k,ibe7pg), Ereac(k,ibe7pg), 
+     &              tautime(k,ib8beta), Ereac(k,ib8beta), 
+     &              tautime(k,ic13pg), Ereac(k,ic13pg), 
+     &              tautime(k,in14pg), Ereac(k,in14pg), 
+     &              tautime(k,icpg), Ereac(k,icpg)
             enddo
+
+            !read (85, end=42, err=42,) (lgdmic(k),lgdturb(k),vom(k),
+   !          read (85,end=42,err=42,iostat=ios) (lgdmic(k),lgdturb(k),
+   !   &           vom(k),depottot(k),depottot_surf(k),
+   !   &           depottot_core(k),
+   !   &           depotondestot(k),Dondes(k),Dondeschim(k),
+   !   &           lumwave(k),lumwave_core(k),
+   !   &           lumondes_surf(k),lumondes_core(k),lumondestot(k),
+   !   &           brunt_o(k),vr(k),vxpsi(k),
+   !   &           Dmicro(k),vmicro(k),Dthc(k),phiKS(k),          
+   !   &           deltaKS(k),tautime(k,ippg),Ereac(k,ippg),tautime(k
+   !   &           ,ipdg), Ereac(k,ipdg),tautime(k,i2he3),Ereac(k
+   !   &           ,i2he3),tautime(k,ihe3ag), Ereac(k,ihe3ag),tautime(k
+   !   &           ,ibe7beta),Ereac(k,ibe7beta), tautime(k,ili7pa)
+   !   &           ,Ereac(k,ili7pa),tautime(k,ibe7pg), Ereac(k,ibe7pg)
+   !   &           ,tautime(k,ib8beta),Ereac(k,ib8beta), tautime(k
+   !   &           ,ic13pg),Ereac(k,ic13pg),tautime(k,in14pg), Ereac(k
+   !   &           ,in14pg),tautime(k,icpg),Ereac(k,icpg), k = 1,nmod)
+
+            !print *, 'After read, ios=', ios
+            !if (ios /= 0) print *, 'Read error: ios=', ios
+
+            !print *,'vom after ',vom
+            ! do k = 1, nmod
+            !    print *,'vom after ',vom(k)
+            !    print *,'lgdturb after',lgdturb(k)
+            ! enddo
+            ! do k =1,nmod
+            !    print *,'LR read bin', lumwave(k), deltaKS(k)
+            ! enddo
          else
             open (unit=85, file = trim(diresults) // trim(name) // 'o',
      &           form = 'unformatted', status = 'old', action = 'read', 
@@ -845,6 +896,10 @@ c.. Smoothing the soundspeed profile
      $           ,nmod)
          endif
  42      close (85)
+         ! print *, 'After read, ios=', ios
+         ! !if (ios /= 0) print *, 'Read error: ios=', ios
+         ! print *,'lumwaves',lumwaves
+
       endif
 
       !print *,'DEPOTTOT',depottot(:)
@@ -1132,7 +1187,7 @@ c.. not done in diffinit
 
          enddo
          do i = 1,nmod-1 
-            print *,'lumwave =',lumwave(i)
+            !print *,'lumwave =',lumwave(i)
             tamp = (vomega(i+1)-vomega(i))/(r(i+1)-r(i))
             !Ri_n(i) = xN_o(i)/(r(i)*5.d1*tamp)**2 !Previus Version, Why 5.d1, Should be 0.5?
             Ri_n(i) = xN_o(i)/(r(i)*tamp)**2
@@ -1710,11 +1765,14 @@ c.. file.p0
 c..   banners
       write (11,1211)
       write (12,1212)
-      if (microdiffus) then
-         write(13,1224)
-      else
-         write (13,1213)
-      endif
+      !LR Modificaction 2025/07/09
+      !Solved missmatch in the format
+      write(13,1224)
+      ! if (microdiffus) then
+      !    write(13,1224)
+      ! else
+      !    !write (13,1213)
+      ! endif
       if (version.lt.2.1d0) then
          write (*,*) 'Old network (version < 2.10) detected'
          write (14,2214)
@@ -1737,8 +1795,9 @@ C...fin modif Nadège
 
 c.. file.p1
       do i = 1,nmod
-            if (vr(i).gt.1.d30) vr(i) = 0.d0
-            if (vr(i).lt.-1.d30) vr(i) = 0.d0    
+         if (abs(vr(i)) < 1.0d-30) then 
+               vr(i) = 0.d0
+         endif   
          write (11,2810) i,rcrz(i),r(i)/rsun,t(i),vvro(i),vvp(i),beta(i)
      &        ,eta(i),lnf(i),sr(i),lum(i)/lsun,u(i),mr(i),accel(i),vr(i)
       enddo
@@ -1795,6 +1854,13 @@ c..   file.p3
             if (Dthc(i).gt.0.d0.or.rcrz(i).eq.2) iscr = iscr+100
             if (Dherw(i).gt.0.d0.or.rcrz(i).eq.1) iscr = iscr+1000
             if (tconv(i).gt.1.d37) tconv(i) = 1.d37
+
+            !LR Modif 2025/07/09 Rossby Number 
+            Ro(i) = 0.d0
+            if (tconv(i).gt.0.d0.and.vomega(i).gt.0.d0) then
+               Ro(i) = 1.d0/(tconv(i)*vomega(i))
+            endif
+
 c$$$            if (microdiffus) then ! Ajout TD Fev.2018
                if (i.eq.1) then
                   flux = 1.d0
@@ -1814,6 +1880,7 @@ c$$$            if (microdiffus) then ! Ajout TD Fev.2018
      $              ,enupla(i),egrav(i),enunucl(i),Dconv(i),dturb(i)
      $              ,dherw(i),Dsc(i),Dthc(i),Dondes(i) ,Dondes(i)
      $              ,Dturbul(i),Dbar(i),Dkyle(i),coefDtacho(i),iscr
+     $              ,Ro(i)  !LR Modif 2025/07/09
 c$$$         else
 c$$$            if (i.eq.1) then
 c$$$               flux = 1.d0
@@ -1931,17 +1998,36 @@ C...fin modif Nadège
 
 c.. fichier onde .p14
       if (igw) then
+         !print *, 'Writing file .p14'
+         !print *, 'lumwaves = ', lumwaves
          open (unit=26,file=trim(dirmongo) // 'DATA/' // 
      &        name(1:lenci(name)) //cmodel// '.p14',status = 'unknown')
          write(26,2626)
+
          do k = 1,nmod
-            write (26,2627) k,lgdmic(k),lgdturb(k),vom(k),
+            if (abs(vr(k)) < 1.0d-30) then 
+               vr(k) = 0.d0
+            endif   
+            if (abs(vxpsi(k)) < 1.0d-30) then 
+               vxpsi(k) = 0.d0
+            endif
+   !          write (26,2627) k,lgdmic(k),lgdturb(k),vom(k),
+   !   &           depottot(k),depottot_surf(k),
+   !   &           depottot_core(k),
+   !   &           depotondestot(k),Dondes(k),Dondeschim(k),
+   !   &           lumwaves(k),lumwave_core(k),
+   !   &           lumondes_surf(k),lumondes_core(k),lumondestot(k),
+   !   &           brunt_o(k),vr(k),vxpsi(k),
+   !   &           Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
+   !   &           deltaKS(k)
+             write (26,2627) k,lgdmic(k),lgdturb(k),vom(k),
      &           depottot(k),depottot_surf(k),
      &           depottot_core(k),
      &           depotondestot(k),Dondes(k),Dondeschim(k),
-     &           lumwave(k),lumwave_core(k),
-     &           lumondes_surf(k),lumondes_core(k),lumondestot(k),
-     &           brunt_o(k),vr(k),vxpsi(k),
+     &           lumwaves(k),lumwave_core(k),
+     &           xintret_target_in(k),xintret_target_in2(k),
+     &           xintret_target_out2(k),
+     &           xintret_target_out(k),vr(k),vxpsi(k), !brunt_o(k),
      &           Dmicro(k),vmicro(k),Dthc(k),phiKS(k),
      &           deltaKS(k)
          enddo
@@ -2014,17 +2100,17 @@ c.. *.p3
 !C Modif CC ondes (11/07/07) 
      &     'Dondes',6x,'Dondeschim',6x,'lumwave',3x,'scz')
 c Ajout TD Fev.2018      
- 1224 format ('# nsh',3x,'VmicroHe',6x,'VmicroHeTP',6x ,'VmicroC12',6x
-     $     ,'VmicroC12TP',6x,'VmicroC13' ,6x ,'VmicroC13TP',6x
-     $     ,'VmicroN14',6x,'VmicroN14TP',6x ,'VmicroN15',6x
-     $     ,'VmicroN15TP',6x, 'VmicroO16' ,6x,'VmicroO16TP',6x
-     $     ,'VmicroO17' ,6x,'VmicroO17TP',6x,'VmicroO18' ,6x
-     $     ,'VmicroO18TP'6x, 'VmicroNe',6x ,'VmicroNeTP',6x,'VmicroNa'
-     $     ,6x,'VmicroNaTP' ,3x,'tconv',6x ,'Vconv',6x,'rfconv',5x
+ 1224 format ('# nsh',2x,'VmicroHe',4x,'VmicroHeTP',2x ,'VmicroC12',3x
+     $     ,'VmicroC12TP',1x,'VmicroC13' ,3x ,'VmicroC13TP',1x
+     $     ,'VmicroN14',3x,'VmicroN14TP',1x ,'VmicroN15',3x
+     $     ,'VmicroN15TP',1x, 'VmicroO16' ,3x,'VmicroO16TP',1x
+     $     ,'VmicroO17' ,3x,'VmicroO17TP',1x,'VmicroO18' ,3x
+     $     ,'VmicroO18TP'1x, 'VmicroNe',4x ,'VmicroNeTP',2x,'VmicroNa'
+     $     ,4x,'VmicroNaTP' ,1x,'tconv',6x ,'Vconv',9x,'rfconv',7x
      $     ,'rfrad' ,6x, 'enucl',7x,'enupla',7x ,'egrav',5x,'enunucl',6x
-     $     ,'Dconv' ,7x, 'dturb',6x, 'Dherw ',6x ,' Dsc  ',7x,'Dthc',6x
-     $     ,'Dondes' ,6x ,'Dondeschim',6x,'Dturbulence',6x,'Dbar',6x
-     $     ,'Dkyle',6x,'Dtacho',3x,'scz')
+     $     ,'Dconv' ,7x, 'dturb',6x, 'Dherw ',6x ,' Dsc  ',7x,'Dthc',8x
+     $     ,'Dondes' ,6x ,'Dondeschim',2x,'Dturbulence',6x,'Dbar',6x
+     $     ,'Dkyle',6x,'Dtacho',3x,'scz',3x,'Ro') !LR Modif 2025/07/09
 cFin ajout TD Fev.2018      
  3210 format (1x,i4,1x,1pe10.4,1x,1pe10.4,1x,1pe12.3,1x,
 !C Modif CC ondes (12/04/07) 
@@ -2032,7 +2118,7 @@ cFin ajout TD Fev.2018
 !C Modif CC ondes (11/07/07) 
      &     1pe12.3,14(1x,1pe11.4),1x,i4)
  3213 format (1x,i4,20(1x,1pe11.4),1x,1pe10.4,1x,1pe10.4,1x,1pe12.3,1x
-     $     ,1pe12.3,15(1x,1pe11.4),1x,i4)   ! Add by TD Fev.2018        
+     $     ,1pe12.3,15(1x,1pe11.4),1x,i4,1x,1pe11.4)   ! Add by TD Fev.2018 -> LR Modif 2025/07/09       
 c.. *.p10
  1220 format ('# nsh',4x,'omega',8x,'Ucirc',7x,'Dshear',5x,'Dcirc',
      &     6x,'Dtot',8x,'Dh',9 x,' psi ',7x,'xlambda',5x,
@@ -2103,11 +2189,11 @@ c..   old version < 2.10
      $     ,'Eb8b',6x ,'Tc13p',6x ,'Ec13p',6x ,'Tn14p',6x,'En14p',6x
      $     ,'Tc12p',6x ,'Ec12p')
 
- 2626 format('# nsh',5x,'lgdmic',6x,'lgdturb',5x,'vom',9x,'depottot',4x
+ 2626 format('# nsh',1x,'lgdmic',6x,'lgdturb',5x,'vom',9x,'depottot',1x
      &     ,'depottot_surf',1x,'depottot_core',1x,'depotondestot',1x
-     &     ,'Dondes',6x,'Dondeschim',2x,'lumwave',5x,'lumwave_core',1x
-     &     ,'lumondes_surf',1x,'lumondes_core',1x,'lumondestot',1x
-     &     ,'brunt_o',5x,'vr',10x,'vxpsi',7x,'Dmicro2',5x,'vmicro2',5x
+     &     ,'Dondes',2x,'Dondeschim',2x,'lumwaves',2x,'lumwave_core',3x
+     &     ,'tau_in',6x,'tau_in_2',3x,'tau_out_2',2x 
+     &     ,'tau_out',5x,'vr',10x,'vxpsi',7x,'Dmicro2',5x,'vmicro2',3x 
      &     ,'Dthc',8x,'phiKS',7x,'deltaKS')
  2627 format(i4,22(1x,1pe11.4))
 

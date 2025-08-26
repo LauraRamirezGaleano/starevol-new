@@ -38,6 +38,7 @@
       include 'evolcom.teq'
       include 'evolcom.therm'
       include 'evolcom.var'
+      include 'evolcom.igw' !LR 20250617
 
       integer imin,imax,mmean
       integer kl,i,l,k,ij

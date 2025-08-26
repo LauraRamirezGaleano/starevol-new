@@ -33,6 +33,8 @@
       include 'evolcom.therm'
       include 'evolcom.therm2'
       include 'evolcom.var'
+      include 'evolcom.igw' ! LR 20250616
+
 
       integer error,jpass
       integer imin,imax

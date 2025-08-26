@@ -269,6 +269,8 @@ c      include 'evolcom.transpondesexcit'
       include 'evolcom.igw'
       include 'evolcom.rot' !LR Added
       include 'evolcom.var' !LR Added
+      include 'evolcom.cons' !LR Added
+      include 'evolcom.transp' !LR Added
 
       integer mtu,npasr,ncouche,ll,mm
       double precision omegaloc,d_om(nsh)
@@ -285,7 +287,12 @@ c      include 'evolcom.transpondesexcit'
       integer n_allerretour
       integer i,k,k1,kk,un,allerretour
       logical retrograde
-      double precision t_start, t_end
+      !To check the evolution of the wave frequency LR 20250606
+      integer, parameter :: l_target = 1, m_target = 1
+      double precision freq_target, freq_target2
+
+      freq_target=1.d0*2.d0*pi*1.d-6 !1.0 microHz
+      freq_target2=2.d0*2.d0*pi*1.d-6 !2 microHz
 
       allerretour=0
       n_allerretour=0
@@ -299,9 +306,26 @@ c      include 'evolcom.transpondesexcit'
         depotonde(k)=0.d0
       enddo
 
+      !LR Added to track target wave evolution
+      if (ll == l_target .and. mm == m_target) then 
+            if (abs(omegaloc - freq_target) < 1d-8) then
+                  do k=1, ncouche
+                        xintret_target_out(k) = 0.d0 
+                        xintret_target_in(k) = 0.d0
+                  enddo
+            endif
+            if (abs(omegaloc - freq_target2) < 1d-8) then
+                  do k=1, ncouche
+                        xintret_target_out2(k) = 0.d0 
+                        xintret_target_in2(k) = 0.d0
+                  enddo
+            endif
+      endif
+
       ! Precompute dr and domega/dr arrays if possible LR modiffication
       do k = 1, ncouche-1
-         dr_arr(k) = r(k+1) - r(k)
+         !dr_arr(k) = r(k+1) - r(k)
+         dr_arr(k) = rray_o(k+1) - rray_o(k) ! LR modiffication 20250612
          domega_arr(k) = vomega(k+1) - vomega(k)
       enddo
 
@@ -332,7 +356,8 @@ C        xN2=dsqrt(xN_o(k)/(xN_o(k)-sigmaret**2))
         tamp = domega_arr(k)/dr_arr(k)
         !dr = dr_arr(k)
         
-        zeta = 2.d0*Omega_d +(r(k)*tamp)
+        !zeta = 2.d0*Omega_d +(r(k)*tamp)
+        zeta = 2.d0*Omega_d +(rray_o(k)*tamp)
         coriolis = (alpha_val*2.d0*Omega_d*zeta)
         !coriolis = 0.0d0
         numerator(k) = xNt_o(k)+coriolis
@@ -384,22 +409,30 @@ CC (18/09/09)
             ampret(k1)=dexp(-xintret(k1))
             !print *,'ampret(k1)=dexp(-xintret(k1))'
          endif
-        !print *, 'amplitude=', ampret(k1)
-        !print *, '---------------------'
-C	kk=min(k,k1)
-C        depotondes(kk)=depotondes(kk)-ampret(k)+ampret(k1)
+
          depotonde(k1)=depotonde(k1)-ampret(k)+ampret(k1)
          sigmaret=omegaloc+dfloat(mm)*d_om(k+un+un)
-      !    print *,'sigmaret',sigmaret,'brunt_o(k+un+un)',brunt_o(k+un+un)
-      !    print *, 'should be sigmaret<brunt_o(k+un+un)'
-      !    if (un.eq.1 .and. sigmaret.gt.brunt_o(k+un+un)) then
-      !       print *, 'DEBUG un.eq.1 .and. sigmaret.gt.brunt_o(k+un+un)'
-      !    endif
-      !    if (k1.eq.npasr) then
-      !       print *, 'DEBUG k1.eq.npasr'
-      !    endif
-      !    if (rray_o(k).lt.1.d-3) print *, 'DEBUG rray_o(k).lt.1.d-3'
-         
+
+         !For the first target frequency
+         if (ll == l_target .and. mm == m_target .and.
+     &       abs(omegaloc - freq_target) < 1d-8) then
+            if (un.eq.-1) then !For outward wave
+                  xintret_target_out(k1) = xintret(k1) 
+            else if (un.eq.1) then !For inward wave
+                  xintret_target_in(k1) = xintret(k1) 
+            endif 
+         endif
+         !For the second target frequency
+         if (ll == l_target .and. mm == m_target .and.
+     &       abs(omegaloc - freq_target2) < 1d-8) then
+            if (un.eq.-1) then !For outward wave
+                  xintret_target_out2(k1) = xintret(k1) 
+            endif
+            if (un.eq.1) then !For inward wave
+                  xintret_target_in2(k1) = xintret(k1) 
+            endif 
+         endif
+
          if ((un.eq.1 .and. sigmaret.gt.brunt_o(k+un+un)) 
      &       .or. (k1.eq.(npasr-1)).or.rray_o(k).lt.1.d-3) then
             un=-1
@@ -410,14 +443,8 @@ C        depotondes(kk)=depotondes(kk)-ampret(k)+ampret(k1)
             un=+1
             allerretour=allerretour+1
             retrograde = .false.
-            !print *,'k1.eq.mtu'
-            !print *,'retrograde = .false.'
          endif
       enddo
-      !call cpu_time(t_end)
-      !print *, 'Time in ond_int main loop:', t_end-t_start
-
-C      print *,'Dans ond_int, apres 1ere boucle'
 
 C Si l'onde n'est pas dissipee apres 1 aller-retour, on calcule d'aller-retour le nombre necessaire,
 C et le depot associe
@@ -594,6 +621,11 @@ c      include 'evolcom.transpondesexcit'
       double precision omega_S
 C Test CC (25/11/04)
       double precision sumdepottot
+      !LR Added to track wave evolution
+      logical, save :: first_call = .true.
+      logical, save :: first_call2 = .true.
+      integer unit_wave, unit_wave2
+      common /waveunit/ unit_wave, unit_wave2
 C Modif CC (28/10/09) 
 C Passage de depottot_surf et depottot_core dans evolcom.transpondesexcit
 C      double precision depottot_surf(nsh),depottot_core(nsh)
@@ -615,7 +647,23 @@ C      endif
       enddo
 
       print *,'nfreq=',nfreq,' lmax=',llmax,' On va entrer dans ond_int'
+      !---LR Added to open a file for wave evolution data
 
+      if (first_call) then
+         unit_wave = 98
+         open(unit=unit_wave, file='wave_evolution1microHz.dat',
+     &     status='replace')
+         write(unit_wave,*) '# k1  r r_norm  ampret  xintret  depotonde'
+         first_call = .false.
+      endif
+      if (first_call2) then
+         unit_wave2 = 102
+         open(unit=unit_wave2, file='wave_evolution10microHz.dat',
+     &     status='replace')
+         write(unit_wave2,*) '# k1  r r_norm ampret  xintret  depotonde'
+         first_call2 = .false.
+      endif
+!      -------------------
 C      if(iterondes.eq.1) then 
       if (igwsurfrot) then 
           do ii=1,nfreq
