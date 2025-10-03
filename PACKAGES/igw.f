@@ -290,9 +290,12 @@ c      include 'evolcom.transpondesexcit'
       !To check the evolution of the wave frequency LR 20250606
       integer, parameter :: l_target = 1, m_target = 1
       double precision freq_target, freq_target2
+      
+      integer unit_wave, unit_wave2
+      common /waveunit/ unit_wave, unit_wave2
 
       freq_target=1.d0*2.d0*pi*1.d-6 !1.0 microHz
-      freq_target2=2.d0*2.d0*pi*1.d-6 !2 microHz
+      freq_target2=2.d0*2.d0*pi*1.d-6 !2.0 microHz
 
       allerretour=0
       n_allerretour=0
@@ -418,18 +421,33 @@ CC (18/09/09)
      &       abs(omegaloc - freq_target) < 1d-8) then
             if (un.eq.-1) then !For outward wave
                   xintret_target_out(k1) = xintret(k1) 
-            else if (un.eq.1) then !For inward wave
+                  write(unit_wave,*) k1, rray_o(k1),
+     &            xintret_target_out(k1),
+     &            depotonde(k1),un
+            endif
+            if (un.eq.1) then !For inward wave
                   xintret_target_in(k1) = xintret(k1) 
+                  write(unit_wave,*) k1, rray_o(k1),
+     &            xintret_target_in(k1),
+     &            depotonde(k1),un
             endif 
          endif
-         !For the second target frequency
+         !For the second target frequency DEBUG LR
+         !print *, 'freq_target2, omegaloc', freq_target2, omegaloc
+         !print *, 'abs diff', abs(omegaloc - freq_target2)
          if (ll == l_target .and. mm == m_target .and.
      &       abs(omegaloc - freq_target2) < 1d-8) then
             if (un.eq.-1) then !For outward wave
                   xintret_target_out2(k1) = xintret(k1) 
+                  write(unit_wave2,*) k1, rray_o(k1),
+     &            xintret_target_out2(k1),
+     &            depotonde(k1),un
             endif
             if (un.eq.1) then !For inward wave
                   xintret_target_in2(k1) = xintret(k1) 
+                  write(unit_wave2,*) k1, rray_o(k1),
+     &            xintret_target_out2(k1),
+     &            depotonde(k1),un
             endif 
          endif
 
@@ -470,6 +488,9 @@ C <--
            enddo
         endif
       endif
+
+      ! close(unit_wave) !Closed in starevol.f
+      ! close(unit_wave2)!Closed in starevol.f
 
       return
       end
@@ -653,14 +674,14 @@ C      endif
          unit_wave = 98
          open(unit=unit_wave, file='wave_evolution1microHz.dat',
      &     status='replace')
-         write(unit_wave,*) '# k1  r r_norm  ampret  xintret  depotonde'
+         write(unit_wave,*) '# k1 r_norm xintret depotonde un'
          first_call = .false.
       endif
       if (first_call2) then
          unit_wave2 = 102
-         open(unit=unit_wave2, file='wave_evolution10microHz.dat',
+         open(unit=unit_wave2, file='wave_evolution2microHz.dat',
      &     status='replace')
-         write(unit_wave2,*) '# k1  r r_norm ampret  xintret  depotonde'
+         write(unit_wave2,*) '# k1 r_norm xintret depotonde un'
          first_call2 = .false.
       endif
 !      -------------------
